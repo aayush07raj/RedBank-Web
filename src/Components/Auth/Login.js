@@ -1,18 +1,32 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-
 
 import login from './images/login.png'
 import avatar from './images/avatar.png'
-
+import home from '../screen/home';
 
 import {Avatar, Grid, Paper, TextField, FormControlLabel, Checkbox, Button, Typography} from '@material-ui/core'
 
+class Login extends Component{
+    constructor(props){
+    super(props)
 
+    this.state={
+        email: '',
+        password:'',
+        isLoggedin:false,
+    }
+}
 
-function Login(){
-
-
+    handleSubmit=() => {
+        this.setState(prevState => ({
+            isLoggedin : !prevState.isLoggedin
+        })
+        )
+        console.log(this.state.isLoggedin)     
+    }
+        
+    render(){
     const paperStyle = {padding :30, height: '65vh', width: 380, margin: "150px auto"}
     const margin = {marginTop: "20px"}
 
@@ -30,8 +44,8 @@ function Login(){
                         <img src={avatar} width="80px"/>
                             <h2 style={{marginTop:"10px"}}>Sign In</h2>
                         </Grid>
-                        <TextField label="Email" placeholder="Enter your email" type="email" fullWidth required style={margin}/> 
-                        <TextField label="Password" placeholder="Enter your password" type="password" fullWidth required style={margin}/> 
+                        <TextField onChange={this.handleChange} label="Email" placeholder="Enter your email" type="email" fullWidth required style={margin}/> 
+                        <TextField onChange={this.handleChange} label="Password" placeholder="Enter your password" type="password" fullWidth required style={margin}/> 
 
                         <Typography style={margin}>
                             <Link to="/ForgotPassword">Forgot password</Link>
@@ -47,8 +61,8 @@ function Login(){
                             label="Remember Me"
                             style={margin}
                         />
-                    <Button variant="contained" color="primary" fullWidth style={margin}>
-                    <Link to="/" style={{color:'white'}}>Login</Link>
+                    <Button onClick= {this.handleSubmit} variant="contained" color="primary" fullWidth style={margin}>
+                    <Link to="home" style={{color:'white'}}>Login</Link>
                     </Button>
                     
 
@@ -68,6 +82,7 @@ function Login(){
         </Grid>
         </>
     )
+                        }
 }
 
 
