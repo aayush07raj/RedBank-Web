@@ -20,7 +20,7 @@ function LoggedOutNavbar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={{background: '#E94364'}}>
         <Toolbar variant="dense">
           <Typography variant="h6" color="inherit">
             Photos

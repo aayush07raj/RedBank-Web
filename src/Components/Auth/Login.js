@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import login from './images/login.png'
 import avatar from './images/avatar.png'
 import {Grid, Paper, TextField, FormControlLabel, Checkbox, Button, Typography} from '@material-ui/core'
+import LoggedOutNavbar from '../layouts/loggedoutNavbar'
 
 function Login(props){
 
@@ -17,7 +18,7 @@ function Login(props){
             isLoggedin:  !prevState.isLoggedin
         })
         )
-        console.log(this.state.isLoggedin)
+        // console.log(this.state.isLoggedin)
     }
 
     const handleChange = e => {
@@ -34,13 +35,16 @@ function Login(props){
     }
 
     return(
-        <Grid container style={{marginTop:"100px"}}>
+        <>
+        <LoggedOutNavbar/>
+        
+        <Grid container style={{marginTop:"100px",backgroundColor:'#E94364'}}>
 
-            <Grid item xs={6} align='center'>               
+            <Grid item xs={6} container justify='center' alignItems='center' >               
                     <img src={login} alt='login' />                       
             </Grid>
 
-            <Grid item xs={6} align='center'>               
+            <Grid item xs={6} container justify='center' alignItems='center'>               
                         <Paper style={paperStyle} elevation={5} >
                                 <Grid align="center"> 
                                 <img src={avatar} width="80px"/>
@@ -70,12 +74,13 @@ function Login(props){
                                 onChange={handleChange}/> 
 
                                 <Typography style={margin}>
-                                    <Link to="/forgot">Forgot password</Link>
+                                    <Link to="/ForgotPassword">Forgot password</Link>
                                 </Typography>
 
-                                <Button 
-                                onClick= {handleSubmit}variant="contained" color="primary" fullWidth style={margin} onClick={handleClick} >
-                                <Link to="/home" style={{color:'white'}}>Login</Link>
+                                <Button variant="contained" color="primary" fullWidth style={{marginTop:'20px',backgroundColor:'#E94364'}} onClick={handleSubmit} >
+                                    <Link to="/home" >
+                                    Login
+                                    </Link>
                                 </Button>                            
 
                                 <Grid align="center">
@@ -91,6 +96,8 @@ function Login(props){
             </Grid>      
 
         </Grid>
+        </>
+       
     )
 }
 
