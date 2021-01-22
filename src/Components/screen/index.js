@@ -4,7 +4,7 @@ import { Navbar } from '../layouts'
 import Home from './home';
 
 
-function index() {
+function Index() {
     return (
         <div>
             <Navbar/>
@@ -13,4 +13,4 @@ function index() {
     )
 }
 
-export default index
+export default Index

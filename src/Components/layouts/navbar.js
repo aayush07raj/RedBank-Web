@@ -1,29 +1,8 @@
 import React, { Fragment } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import Button from "@material-ui/core/Button";
+import { makeStyles , AppBar, Toolbar, Typography, IconButton, MenuItem, Menu, Button, Badge, MenuIcon  } from "@material-ui/core/";
 import { Link } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import Badge from "@material-ui/core/Badge";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
-// import Avatar from '@material-ui/core/Avatar';
-import Home from "../screen/home";
-import MenuIcon from '@material-ui/icons/Menu';
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//   },
-//   menuButton: {
-//     marginRight: theme.spacing(2),
-//   },
-// }));
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -143,36 +122,3 @@ export default function MenuAppBar() {
 
 // Logged Out 
 
-
-// import React from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
-// import AppBar from '@material-ui/core/AppBar';
-// import Toolbar from '@material-ui/core/Toolbar';
-// import Typography from '@material-ui/core/Typography';
-// import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//   },
-//   menuButton: {
-//     marginRight: theme.spacing(2),
-//   },
-// }));
-
-// export default function DenseAppBar() {
-//   const classes = useStyles();
-
-//   return (
-//     <div className={classes.root}>
-//       <AppBar position="static">
-//         <Toolbar variant="dense">
-//           <Typography variant="h6" color="inherit">
-//             Photos
-//           </Typography>
-//         </Toolbar>
-//       </AppBar>
-//     </div>
-//   );
-// }

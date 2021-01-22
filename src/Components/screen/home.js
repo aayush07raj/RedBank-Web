@@ -2,11 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Typography, Box, Container, Grid, Card, CardActionArea, CardActions, CardMedia, CardContent, Avatar, Paper } from '@material-ui/core/';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+// import YouTube from 'react-youtube';
 
 const useStyles = makeStyles((theme) => ({
-  appBar: {
-    backgroundColor: "#fff"
-  },
   hero: {
     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://unblast.com/wp-content/uploads/2020/04/Female-Doctor-Vector-Illustration.jpg')`,
     height: "600px",
@@ -34,18 +32,19 @@ const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: "100%",
   },
-//   media: {
-//     height: 240
-//   },
-//   cardActions: {
-//     display: "flex",
-//     margin: "0 10px",
-//     justifyContent: "space-between"
-//   },
-//   author: {
-//     display: "flex"
-//   },
 }));
+
+const opts = {
+  height: '390',
+  width: '640',
+  playerVars: {
+    autoplay: 1,
+  },
+};
+// const videoReady(event) {
+//   // access to player in all event handlers via event.target
+//   event.target.pauseVideo();
+// }
 
 function Home() {
   const classes = useStyles();
@@ -105,10 +104,8 @@ function Home() {
             <Grid xs={6}>
             <Card>
                     <Typography>Video Part</Typography>
+                    {/* <YouTube videoId="E9QxiGPwab4" opts={opts} onReady={videoReady} />; */}
                     
-                    <CardMedia
-                     component="img"
-                     image="https://www.blood.ca/sites/default/files/styles/max_650x650/public/2018-09/DonorRecipient-Chart_1.jpg?itok=2keH_33B/1920x1080" style={{height: 650}}></CardMedia>
                 </Card>
             </Grid>
         </Grid>
@@ -150,3 +147,7 @@ function Home() {
 }
 
 export default Home;
+
+
+
+// E9QxiGPwab4

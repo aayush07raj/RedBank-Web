@@ -1,88 +1,97 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
-
 import login from './images/login.png'
 import avatar from './images/avatar.png'
-import home from '../screen/home';
+import {Grid, Paper, TextField, FormControlLabel, Checkbox, Button, Typography} from '@material-ui/core'
 
-import {Avatar, Grid, Paper, TextField, FormControlLabel, Checkbox, Button, Typography} from '@material-ui/core'
+function Login(props){
 
-class Login extends Component{
-    constructor(props){
-    super(props)
+    const[state,setState]=useState({email:'', password:'', isLoggedin:false })
 
-    this.state={
-        email: '',
-        password:'',
-        isLoggedin:false,
-    }
-}
+    const paperStyle ={display:'flex', width:380, flexDirection: 'column', padding: '30px'}
+    const margin = {marginTop: "20px"}
+    
 
-    handleSubmit=() => {
-        this.setState(prevState => ({
-            isLoggedin : !prevState.isLoggedin
+    const handleSubmit = () => {
+        setState(prevState=>({
+            isLoggedin:  !prevState.isLoggedin
         })
         )
-        console.log(this.state.isLoggedin)     
+        console.log(this.state.isLoggedin)
     }
-        
-    render(){
-    const paperStyle = {padding :30, height: '65vh', width: 380, margin: "150px auto"}
-    const margin = {marginTop: "20px"}
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setState(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleClick = () => {
+        setState({email:'',password:''})
+        console.log(state)
+    }
 
     return(
-        <>
-       
-        <Grid container>
+        <Grid container style={{marginTop:"100px"}}>
 
-            <Grid item xs={6} >
-            <img src={login} style={{margin: "100px"}}/>
+            <Grid item xs={6} align='center'>               
+                    <img src={login} alt='login' />                       
             </Grid>
-            <Grid item xs={6}>
-                <Paper elevation={10} style={paperStyle}>
-                        <Grid align="center"> 
-                        <img src={avatar} width="80px"/>
-                            <h2 style={{marginTop:"10px"}}>Sign In</h2>
-                        </Grid>
-                        <TextField onChange={this.handleChange} label="Email" placeholder="Enter your email" type="email" fullWidth required style={margin}/> 
-                        <TextField onChange={this.handleChange} label="Password" placeholder="Enter your password" type="password" fullWidth required style={margin}/> 
 
-                        <Typography style={margin}>
-                            <Link to="/ForgotPassword">Forgot password</Link>
-                        </Typography>
+            <Grid item xs={6} align='center'>               
+                        <Paper style={paperStyle} elevation={5} >
+                                <Grid align="center"> 
+                                <img src={avatar} width="80px"/>
+                                    <h2 style={{marginTop:"10px"}}>Sign In</h2>
+                                </Grid>
 
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                name="checkedB"
-                                color="primary"                                
-                            />
-                            }
-                            label="Remember Me"
-                            style={margin}
-                        />
-                    <Button onClick= {this.handleSubmit} variant="contained" color="primary" fullWidth style={margin}>
-                    <Link to="home" style={{color:'white'}}>Login</Link>
-                    </Button>
-                    
+                                <TextField 
+                                label="Email"
+                                placeholder="Enter your email"
+                                type="email"
+                                fullWidth
+                                required                                                            
+                                style={margin}
+                                name='email'
+                                value={state.email}
+                                onChange={handleChange} /> 
 
-                    <Grid align="center">
-                            <Typography style={margin}>
-                                <p>New user ? <Link to="/Options">Sign up</Link></p>                        
-                            </Typography>
-                            <h3 style={margin}>OR</h3>                        
-                            <Typography style={margin}>
-                                <Link to="/Options">Sign in with google account</Link>
-                            </Typography>
-                    </Grid>
-                    
-                </Paper>
-            </Grid>
+                                <TextField
+                                label="Password"
+                                placeholder="Enter your password"
+                                type="password"
+                                fullWidth
+                                required                                
+                                style={margin}
+                                name='password'
+                                value={state.password}
+                                onChange={handleChange}/> 
+
+                                <Typography style={margin}>
+                                    <Link to="/forgot">Forgot password</Link>
+                                </Typography>
+
+                                <Button 
+                                onClick= {handleSubmit}variant="contained" color="primary" fullWidth style={margin} onClick={handleClick} >
+                                <Link to="/home" style={{color:'white'}}>Login</Link>
+                                </Button>                            
+
+                                <Grid align="center">
+                                        <Typography style={margin}>
+                                            <p>New user ? <Link to="/Options">Sign up</Link></p>                        
+                                        </Typography>
+                                        <h3 style={margin}>OR</h3>                        
+                                        <Typography style={margin}>
+                                            <Link to="/Options">Sign in with google account</Link>
+                                        </Typography>
+                                </Grid>                    
+                        </Paper>                   
+            </Grid>      
 
         </Grid>
-        </>
     )
-                        }
 }
 
 
