@@ -1,30 +1,44 @@
-import React from 'react'
+import React from "react";
 
-import {Link} from 'react-router-dom'
+import { Grid, Divider, Paper } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import SideMenu from "../layouts/SideMenu";
+import Navbar from "../layouts/navbar";
 
-import {Avatar, Grid, Paper, TextField, FormControlLabel, Checkbox, Button, Typography} from '@material-ui/core'
+const styles = makeStyles({
+  styleDiv: {
+    paddingLeft: "300px",
+    width: "100%",
+  },
+  h1: {
+    paddingLeft: "100px",
+    marginTop: "60px",
+  },
+  paper: {
+    height: "400px",
+    width: "450px",
+  },
+});
 
-function Test(){
+function Test() {
+  const classes = styles();
+  return (
+    <>
+      <SideMenu />
+      <div className={classes.styleDiv}>
+        <Navbar />
+        <h1 className={classes.h1}>My Profile</h1>
+        <Divider />
 
-    const paperStyle = {padding :20, height: 140, width:100}
-   
-    
-
-    return(
-        <Grid container >
-            <Grid item xs={12} >
-                <Grid container direction="row" justify="center" alignItems="center" >        
-                    <Paper elevation={10} style={paperStyle}>
-                        <h1>HI</h1>    
-                    </Paper>
-                    <Paper elevation={10} style={paperStyle}>
-                        <h1>HI</h1>    
-                    </Paper>
-                </Grid>
-            </Grid>
+        <Grid container justify="center">
+          <Grid item>
+            <Paper className={classes.paper} elevation={5}>
+              <form></form>
+            </Paper>
+          </Grid>
         </Grid>
-    )
+      </div>
+    </>
+  );
 }
-
-
 export default Test;

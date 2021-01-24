@@ -41,10 +41,7 @@ const opts = {
     autoplay: 1,
   },
 };
-// const videoReady(event) {
-//   // access to player in all event handlers via event.target
-//   event.target.pauseVideo();
-// }
+
 
 function Home() {
   const classes = useStyles();
@@ -148,6 +145,3 @@ function Home() {
 
 export default Home;
 
-
-
-// E9QxiGPwab4

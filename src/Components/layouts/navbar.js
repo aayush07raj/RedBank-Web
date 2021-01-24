@@ -14,12 +14,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1
   }
-  // sectionDesktop: {
-  //   display: "none",
-  //   [theme.breakpoints.up("sm")]: {
-  //     display: "flex"
-  //   }
-  // }
+  
 }));
 
 export default function MenuAppBar() {
@@ -34,16 +29,7 @@ export default function MenuAppBar() {
     setAnchorEl(null);
   };
 
-  // const mobileMenu = (
-  //   <Menu>
-  //     <MenuItem component={Link} to="/about">
-  //       About
-  //     </MenuItem>
-  //     <MenuItem component={Link} to="/about">
-  //       Service
-  //     </MenuItem>
-  //   </Menu>
-  // );
+  
 
   return (
     <Fragment className={classes.root}>
