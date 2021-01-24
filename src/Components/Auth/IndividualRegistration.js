@@ -322,15 +322,15 @@ function IndividualRegistration() {
                 type="submit"
                 disabled={validate()}
               >
-                <Link to="/Login">Sign up</Link>
+                <Link to="/home">Sign up</Link>
               </Button>
 
               <Typography align="center" style={margin}>
                 <p>
                   By Signing up, you are{" "}
-                  <span style={{ color: "#E94364", fontWeight: "bold" }}>
-                    accepting to our terms of service
-                  </span>
+                  <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
+                  accepting to our terms of service
+                </Link>
                 </p>
               </Typography>
 

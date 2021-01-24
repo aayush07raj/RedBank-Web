@@ -1,35 +1,3 @@
-// import React, {useState} from 'react';
-// import {Route, Switch} from 'react-router-dom'
-// import Index from './Components/Auth/index';
-// // import Home from './Components/screen/home';
-// import Home from './Components/screen/index'
-// // import ForgotPassword from './Components//ForgotPassword';
-// // import ForgotPassword from './ForgotPassword';
-
-// function App(){
-
-//   return(
-//     <>
-//     <Switch>
-//       <Route exact path="/home" component={Home}/>
-//       {/* <Route path="/forgot" component={ForgotPassword}/> */}
-//       <Route exact path='/' component={Index}  />
-//     </Switch>
-//     </>
-//   )
-//   }
-
-
-// export default App
-
-
-
-
-
-
-
-
-
 import React, {useState} from 'react';
 import {Route, Switch} from 'react-router-dom'
 import index from './index.css';
@@ -43,6 +11,7 @@ import IndividualRegistration from './Components/Auth/IndividualRegistration';
 import HospitalRegistration from './Components/Auth/HospitalRegistration';
 import BloodBankRegistration from './Components/Auth/BloodBankRegistration';
 import Home from './Components/screen/index'
+import Terms from './Components/Auth/terms';
 
 import Test from './Components/Auth/Test';
 
@@ -54,6 +23,7 @@ function App(){
     <> 
     <Switch>
     <Route exact path="/home" component={Home}/>
+      <Route exact path='/terms' component={Terms}/>
       <Route exact path='/' component={Login}/>
       <Route exact path='/ForgotPassword' component={ForgotPassword}/>
       <Route exact path='/VerifyCode' component={VerifyCode}/>

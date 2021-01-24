@@ -3,6 +3,7 @@ import { makeStyles , AppBar, Toolbar, Typography, IconButton, MenuItem, Menu, B
 import { Link } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import Logo from "./redbanklogo.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1
+  },
+  logo:{
+    height:40,
   }
   
 }));
@@ -30,14 +34,13 @@ export default function MenuAppBar() {
   };
 
   
-
   return (
     <Fragment className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={{background: '#E94364'}}>
         <Toolbar>
         {/* <Avatar alt="Remy Sharp" src="./redbanklogo.svg" /> */}
-          <Typography  variant="h6" className={classes.title}>
-            Photos
+        <Typography to="/Home" component={Link} variant="h6" className={classes.title}>
+          <img src={Logo} alt="logo" className={classes.logo} />
           </Typography>
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 17 new notifications" color="inherit">
