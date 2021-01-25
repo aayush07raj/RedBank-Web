@@ -114,20 +114,26 @@ function HospitalRegistration() {
 
   const schema = {
     name: Joi.string().min(3).max(30).required(),
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "in"] },
-    }),
-    license: Joi.required(),
+    email: Joi.string()
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "in"] },
+      })
+      .required(),
+    license: Joi.string().required(),
     phone: Joi.array().required(),
-    address: Joi.required(),
+    address: Joi.string().required(),
     state: Joi.string().required(),
     district: Joi.string().required(),
     pincode: Joi.number()
+      .positive()
       .min(6)
       .message("Pincode must contain 6 digits")
       .required(),
-    password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+    password: Joi.string()
+      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+      .message("Enter a stronger password")
+      .required(),
     cPassword: Joi.ref("password"),
   };
 
@@ -171,45 +177,47 @@ function HospitalRegistration() {
               placeholder="Enter your full name"
               type="text"
               fullWidth
-              required
               style={margin}
               name="name"
               value={state.data.name}
               onChange={handleChange}
+              error={state.errors && state.errors.name}
+              helperText={
+                state.errors && state.errors.name ? state.errors.name : null
+              }
             />
-            {state.errors && state.errors.name ? (
-              <p style={{ color: "red" }}> {state.errors.name} </p>
-            ) : null}
 
             <TextField
               label="Email"
               placeholder="Enter your email"
               type="email"
               fullWidth
-              required
               style={margin}
               name="email"
               value={state.data.email}
               onChange={handleChange}
+              error={state.errors && state.errors.email}
+              helperText={
+                state.errors && state.errors.email ? state.errors.email : null
+              }
             />
-            {state.errors && state.errors.email ? (
-              <p style={{ color: "red" }}> {state.errors.email} </p>
-            ) : null}
 
             <TextField
               label="License Number"
               placeholder="Enter your license number"
               type="text"
               fullWidth
-              required
               style={margin}
               name="license"
               value={state.data.license}
               onChange={handleChange}
+              error={state.errors && state.errors.license}
+              helperText={
+                state.errors && state.errors.license
+                  ? state.errors.license
+                  : null
+              }
             />
-            {state.errors && state.errors.license ? (
-              <p style={{ color: "red" }}> {state.errors.license} </p>
-            ) : null}
 
             {state.data.phone.map((val, idx) => (
               <TextField
@@ -217,7 +225,6 @@ function HospitalRegistration() {
                 placeholder="Enter your phone number"
                 type="number"
                 fullWidth
-                required
                 style={margin}
                 name="phone"
                 value={val}
@@ -225,27 +232,30 @@ function HospitalRegistration() {
                   handleNumberChange(e, idx);
                 }}
                 key={idx}
+                error={state.errors && state.errors.phone}
+                helperText={
+                  state.errors && state.errors.phone ? state.errors.phone : null
+                }
               />
             ))}
             <Button onClick={handleAdd}>{maxLimit}</Button>
-            {state.errors && state.errors.phone ? (
-              <p style={{ color: "red" }}> {state.errors.phone} </p>
-            ) : null}
 
             <TextField
               label="Registered Address"
               placeholder="Enter your registered address"
               type="text"
               fullWidth
-              required
               style={margin}
               name="address"
               value={state.data.address}
               onChange={handleChange}
+              error={state.errors && state.errors.address}
+              helperText={
+                state.errors && state.errors.address
+                  ? state.errors.address
+                  : null
+              }
             />
-            {state.errors && state.errors.address ? (
-              <p style={{ color: "red" }}> {state.errors.address} </p>
-            ) : null}
 
             <FormControl style={margin}>
               <InputLabel>State</InputLabel>
@@ -261,9 +271,6 @@ function HospitalRegistration() {
                 ))}
               </Select>
             </FormControl>
-            {state.errors && state.errors.state ? (
-              <p style={{ color: "red" }}> {state.errors.state} </p>
-            ) : null}
 
             <FormControl style={margin}>
               <InputLabel>District</InputLabel>
@@ -280,54 +287,57 @@ function HospitalRegistration() {
                 ))}
               </Select>
             </FormControl>
-            {state.errors && state.errors.district ? (
-              <p style={{ color: "red" }}> {state.errors.district} </p>
-            ) : null}
 
             <TextField
               label="Pincode"
               placeholder="Enter your pincode"
               type="number"
               fullWidth
-              required
               style={margin}
               name="pincode"
               value={state.data.pincode}
               onChange={handleChange}
+              error={state.errors && state.errors.pincode}
+              helperText={
+                state.errors && state.errors.pincode
+                  ? state.errors.pincode
+                  : null
+              }
             />
-            {state.errors && state.errors.pincode ? (
-              <p style={{ color: "red" }}> {state.errors.pincode} </p>
-            ) : null}
 
             <TextField
               label="Password"
               placeholder="Create your password"
               type="password"
               fullWidth
-              required
               style={margin}
               name="password"
               value={state.data.password}
               onChange={handleChange}
+              error={state.errors && state.errors.password}
+              helperText={
+                state.errors && state.errors.password
+                  ? state.errors.password
+                  : null
+              }
             />
-            {state.errors && state.errors.password ? (
-              <p style={{ color: "red" }}> {state.errors.password} </p>
-            ) : null}
 
             <TextField
               label="Confirm Password"
               placeholder="Confirm your password"
               type="password"
               fullWidth
-              required
               style={margin}
               name="cPassword"
               value={state.data.cPassword}
               onChange={handleChange}
+              error={state.errors && state.errors.cPassword}
+              helperText={
+                state.errors && state.errors.cPassword
+                  ? "passwords do not match"
+                  : null
+              }
             />
-            {state.errors && state.errors.cPassword ? (
-              <p style={{ color: "red" }}> {state.errors.cPassword} </p>
-            ) : null}
 
             <Button
               variant="contained"
@@ -335,7 +345,6 @@ function HospitalRegistration() {
               type="submit"
               disabled={validate()}
             >
-              {" "}
               <Link to="/home">Sign up</Link>
             </Button>
 

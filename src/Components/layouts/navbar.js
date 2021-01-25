@@ -3,7 +3,7 @@ import { makeStyles , AppBar, Toolbar, Typography, IconButton, MenuItem, Menu, B
 import { Link } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
-import Logo from "./redbanklogo.svg";
+import Logo from "./logo.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {

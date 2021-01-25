@@ -111,9 +111,13 @@ function IndividualRegistration() {
     email: Joi.string()
       .email({ minDomainSegments: 2, tlds: { allow: ["com", "in"] } })
       .required(),
-    dob: Joi.date().less("1-1-2077").greater("1-1-2003"),
+    dob: Joi.date()
+      .less("1-1-2077")
+      .message("must be between 18-56 years")
+      .greater("1-1-2003")
+      .message("must be between 18-56 years"),
     phone: Joi.number().positive().required(),
-    address: Joi.required(),
+    address: Joi.string().required(),
     state: Joi.string().required(),
     district: Joi.string().required(),
     pincode: Joi.number()
@@ -124,9 +128,9 @@ function IndividualRegistration() {
     bg: Joi.required(),
     password: Joi.string()
       .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-      .message("Password must contain an uppercase, a lowercase and a digit")
+      .message("Enter a stronger password")
       .required(),
-    cPassword: Joi.any().valid(Joi.ref("password")).required(),
+    cPassword: Joi.ref("password"),
   };
 
   return (
@@ -150,76 +154,78 @@ function IndividualRegistration() {
                 placeholder="Enter your full name"
                 type="text"
                 fullWidth
-                required
                 style={margin}
                 name="name"
                 value={state.data.name}
                 onChange={handleChange}
+                error={state.errors && state.errors.name}
+                helperText={
+                  state.errors && state.errors.name ? state.errors.name : null
+                }
               />
-              {state.errors && state.errors.name ? (
-                <p style={{ color: "red" }}> {state.errors.name} </p>
-              ) : null}
 
               <TextField
                 label="Email"
                 placeholder="Enter your email"
                 type="email"
                 fullWidth
-                required
                 style={margin}
                 name="email"
                 value={state.data.email}
                 onChange={handleChange}
+                error={state.errors && state.errors.email}
+                helperText={
+                  state.errors && state.errors.email ? state.errors.email : null
+                }
               />
-              {state.errors && state.errors.email ? (
-                <p style={{ color: "red" }}> {state.errors.email} </p>
-              ) : null}
 
               <InputLabel style={{ marginTop: "20px" }}>
-                Date of Birth*
+                Date of Birth
               </InputLabel>
               <TextField
                 type="date"
                 fullWidth
-                required
                 style={margin}
                 name="dob"
                 value={state.data.dob}
                 onChange={handleChange}
+                error={state.errors && state.errors.dob}
+                helperText={
+                  state.errors && state.errors.dob ? state.errors.dob : null
+                }
               />
-              {state.errors && state.errors.dob ? (
-                <p style={{ color: "red" }}> {state.errors.dob} </p>
-              ) : null}
 
               <TextField
                 label="Phone"
                 placeholder="Enter your phone number"
                 type="number"
                 fullWidth
-                required
                 style={margin}
                 name="phone"
                 value={state.data.phone}
                 onChange={handleChange}
+                error={state.errors && state.errors.phone}
+                helperText={
+                  state.errors && state.errors.phone ? state.errors.phone : null
+                }
               />
-              {state.errors && state.errors.phone ? (
-                <p style={{ color: "red" }}> {state.errors.phone} </p>
-              ) : null}
 
               <TextField
                 label="Current Address"
                 placeholder="Enter your current address"
                 type="text"
                 fullWidth
-                required
                 style={margin}
                 name="address"
                 value={state.data.address}
                 onChange={handleChange}
+                error={state.errors && state.errors.address}
+                helperText={
+                  state.errors && state.errors.address
+                    ? state.errors.address
+                    : null
+                }
               />
-              {state.errors && state.errors.address ? (
-                <p style={{ color: "red" }}> {state.errors.address} </p>
-              ) : null}
 
               <FormControl style={margin}>
                 <InputLabel>State</InputLabel>
@@ -227,15 +233,18 @@ function IndividualRegistration() {
                   name="state"
                   onChange={handleChange}
                   value={state.data.state}
+                  error={state.errors && state.errors.state}
+                  helperText={
+                    state.errors && state.errors.state
+                      ? state.errors.state
+                      : null
+                  }
                 >
                   {states.states.map((item) => (
                     <MenuItem value={item.state}>{item.state}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
-              {state.errors && state.errors.state ? (
-                <p style={{ color: "red" }}> {state.errors.state} </p>
-              ) : null}
 
               <FormControl style={margin}>
                 <InputLabel>District</InputLabel>
@@ -244,34 +253,42 @@ function IndividualRegistration() {
                   name="district"
                   onChange={handleChange}
                   value={state.data.district}
+                  error={state.errors && state.errors.district}
+                  helperText={
+                    state.errors && state.errors.district
+                      ? state.errors.district
+                      : null
+                  }
                 >
                   {states.states[selectedStateIndex].districts.map((item) => (
                     <MenuItem value={item}>{item}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
-              {state.errors && state.errors.district ? (
-                <p style={{ color: "red" }}> {state.errors.district} </p>
-              ) : null}
 
               <TextField
                 label="Pincode"
                 placeholder="Enter your pincode"
                 type="number"
                 fullWidth
-                required
                 style={margin}
                 name="pincode"
                 value={state.data.pincode}
                 onChange={handleChange}
+                error={state.errors && state.errors.pincode}
+                helperText={
+                  state.errors && state.errors.pincode
+                    ? state.errors.pincode
+                    : null
+                }
               />
-              {state.errors && state.errors.pincode ? (
-                <p style={{ color: "red" }}> {state.errors.pincode} </p>
-              ) : null}
 
               <FormControl style={margin}>
-                <InputLabel required>Blood Group</InputLabel>
+                <InputLabel>Blood Group</InputLabel>
                 <Select name="bg" onChange={handleChange} value={state.data.bg}>
+                  error={state.errors && state.errors.bg}
+                  helperText=
+                  {state.errors && state.errors.bg ? state.errors.bg : null}
                   <MenuItem value={"A+"}>A+</MenuItem>
                   <MenuItem value={"A-"}>A-</MenuItem>
                   <MenuItem value={"B+"}>B+</MenuItem>
@@ -282,39 +299,40 @@ function IndividualRegistration() {
                   <MenuItem value={"O-"}>O-</MenuItem>
                 </Select>
               </FormControl>
-              {state.errors && state.errors.bg ? (
-                <p style={{ color: "red" }}> {state.errors.bg} </p>
-              ) : null}
 
               <TextField
                 label="Password"
                 placeholder="Create your password"
                 type="password"
                 fullWidth
-                required
                 style={margin}
                 name="password"
                 value={state.data.password}
                 onChange={handleChange}
+                error={state.errors && state.errors.password}
+                helperText={
+                  state.errors && state.errors.password
+                    ? state.errors.password
+                    : null
+                }
               />
-              {state.errors && state.errors.password ? (
-                <p style={{ color: "red" }}> {state.errors.password} </p>
-              ) : null}
 
               <TextField
                 label="Confirm Password"
                 placeholder="Confirm your password"
                 type="password"
                 fullWidth
-                required
                 style={margin}
                 name="cPassword"
                 value={state.data.cPassword}
                 onChange={handleChange}
+                error={state.errors && state.errors.cPassword}
+                helperText={
+                  state.errors && state.errors.cPassword
+                    ? "passwords do not match"
+                    : null
+                }
               />
-              {state.errors && state.errors.cPassword ? (
-                <p style={{ color: "red" }}> {state.errors.cPassword} </p>
-              ) : null}
 
               <Button
                 variant="contained"
@@ -326,13 +344,13 @@ function IndividualRegistration() {
               </Button>
 
               <Typography align="center" style={margin}>
-                <p>
-                  By Signing up, you are{" "}
-                  <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
+              <p>
+                By Signing up, you are{" "}
+                <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
                   accepting to our terms of service
                 </Link>
-                </p>
-              </Typography>
+              </p>
+            </Typography>
 
               <Typography align="center" style={margin}>
                 <Link to="/Login">Already a user ? Sign in</Link>
