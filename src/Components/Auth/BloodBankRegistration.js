@@ -353,7 +353,7 @@ function BloodBankRegistration() {
               <p>
                 By Signing up, you are{" "}
                 <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
-                  accepting to our terms of service
+                ACCEPTING OUR TERMS AND CONDITION
                 </Link>
               </p>
             </Typography>

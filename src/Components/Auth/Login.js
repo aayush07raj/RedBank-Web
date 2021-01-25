@@ -15,7 +15,10 @@ function Login(){
 
     const schema = {
         email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'in'] } }),
-        password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+        password: Joi.string()
+      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+      .message("Enter a stronger password")
+      .required(),
     };
     
     const handleClick = () => {
@@ -91,24 +94,39 @@ function Login(){
                                 placeholder="Enter your email"
                                 // type="email"
                                 fullWidth
-                                required                                                            
+                                required   
+                                variant="outlined"                                                         
                                 style={margin}
                                 name='email'
                                 value={state.email}
-                                onChange={handleChange} />
-                                <p style={{color:'red'}}>{state.errors.email}</p> 
+                                onChange={handleChange} 
+                                error={state.errors && state.errors.email}
+              helperText={
+                state.errors && state.errors.email ? state.errors.email : null
+              }
+                                
+                                />
+                                {/* <p style={{color:'red'}}>{state.errors.email}</p>  */}
 
                                 <TextField
                                 label="Password"
                                 placeholder="Enter your password"
                                 type="password"
                                 fullWidth
-                                required                                
+                                required    
+                                variant="outlined"                             
                                 style={margin}
                                 name='password'
                                 value={state.password}
-                                onChange={handleChange}/> 
-                                <p style={{color:'red'}}>{state.errors.password}</p>
+                                onChange={handleChange}
+                                error={state.errors && state.errors.password}
+              helperText={
+                state.errors && state.errors.password
+                  ? state.errors.password
+                  : null
+              }
+                                /> 
+                                {/* <p style={{color:'red'}}>{state.errors.password}</p> */}
 
                                 <Typography style={margin}>
                                     <Link to="/ForgotPassword">Forgot password</Link>
