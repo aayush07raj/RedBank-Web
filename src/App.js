@@ -11,7 +11,7 @@ import HospitalRegistration from "./Components/Auth/HospitalRegistration";
 import BloodBankRegistration from "./Components/Auth/BloodBankRegistration";
 import Home from "./Components/screen/home";
 import Terms from "./Components/Auth/terms";
-
+import Profile from "./Components/screen/profile/index"
 import Test from "./Components/Auth/Test";
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
     <>
       <Switch>
         <Route exact path="/home" component={Home} />
+        <Route exact path="/profile" component={Profile}/>
         <Route exact path="/terms" component={Terms} />
         <Route exact path="/" component={Login} />
         <Route exact path="/ForgotPassword" component={ForgotPassword} />

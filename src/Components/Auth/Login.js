@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import login from "./images/login.png";
 import avatar from "./images/avatar.png";
 import { Grid, Paper, TextField, Button, Typography } from "@material-ui/core";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import Joi from "joi";
+import axios from 'axios';
 
 function Login() {
   const [state, setState] = useState({
     data: { email: "", password: "" },
     errors: {},
   });
+
+  useEffect(()=>{
+    alert("working");
+    async function getData(){
+      const res = await axios.get(``)
+    }
+  })
 
   const paperStyle = {
     display: "flex",

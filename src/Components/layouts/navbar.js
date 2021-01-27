@@ -84,7 +84,7 @@ export default function MenuAppBar() {
             <Button
               color="inherit"
               component={Link}
-              to="/about"
+              to="/profile"
               // style={{ padding: 5 }}
               variant="h7"
             >

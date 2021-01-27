@@ -373,7 +373,7 @@ function BloodBankRegistration() {
                 style={{
                   backgroundColor: "#E94364",
                   marginTop: "20px",
-                  color: "white",
+                  // color: "white",
                 }}
                 type="submit"
                 disabled={validate()}
