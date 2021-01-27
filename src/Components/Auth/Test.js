@@ -1,119 +1,375 @@
-import React, { Component } from "react";
+import {
+  Grid,
+  Paper,
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  FormControlLabel,
+  Checkbox,
+  Button,
+  Typography,
+} from "@material-ui/core";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import individual from "./images/individual.png";
+import states from "./states.json";
 import Joi from "joi";
-import { Grid, Paper, TextField, Button, Typography } from "@material-ui/core";
+import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 
-const paperStyle = {
-  display: "flex",
-  width: 380,
-  flexDirection: "column",
-  padding: "30px",
-};
+import { useSelector, useDispatch } from "react-redux";
+import Registration from "../../redux/Actions/Actions";
 
-const margin = { marginTop: "20px" };
-class Test extends Component {
-  state = {
-    account: { name: "", password: "" },
-    errors: {},
+function IndividualRegistration() {
+  const dispatch = useDispatch();
+
+  const state = useSelector((state) => state);
+
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    dob: "",
+    phone: "",
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    bg: "",
+    password: "",
+    cPassword: "",
+    terms: false,
+  });
+
+  const history = useHistory();
+  const [errors, setErrors] = useState({});
+
+  const [enable, setEnable] = useState(true);
+  const [selectedStateIndex, setSelectedStateIndex] = useState(0);
+
+  const paperStyle = {
+    height: "auto",
+    width: "450px",
+    display: "flex",
+    flexDirection: "column",
+    padding: "30px",
+  };
+  const margin = { marginTop: "15px" };
+
+  const validateProperty = ({ name, value }) => {
+    const inputField = { [name]: value };
+    const fieldSchema = Joi.object({ [name]: schema[name] });
+    const { error } = fieldSchema.validate(inputField);
+    return error ? error.details[0].message : null;
   };
 
-  validateProperty = ({ name, value }) => {
-    if (name === "name") {
-      if (value.trim() === "") return "Username is required";
+  const validate = () => {
+    const formSchema = Joi.object(schema);
+    const { error } = formSchema.validate(data, {
+      abortEarly: false,
+    });
+
+    if (!error) return null;
+
+    const allErrors = {};
+    for (let err of error.details) {
+      allErrors[err.path[0]] = err.message;
     }
-    if (name === "password") {
-      if (value.trim() === "") return "Password is required";
+    return allErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "state") {
+      setEnable(false);
+      setSelectedStateIndex(
+        states.states.findIndex((item) => item.state === value)
+      );
     }
+
+    const allErrors = { ...errors };
+    const errorMsg = validateProperty(e.target);
+    if (errorMsg) {
+      allErrors[name] = errorMsg;
+    } else {
+      delete allErrors[name];
+    }
+    const updatedData = { ...data };
+    updatedData[name] = value;
+    setData(updatedData);
+    setErrors(allErrors);
   };
 
-  validate = () => {
-    const errors = {};
-
-    const { account } = this.state;
-
-    if (account.name.trim() === "") errors.name = "required";
-    if (account.password.trim() === "") errors.password = "required";
-
-    return Object.keys(errors).length === 0 ? null : errors;
+  const handleTermsCheck = (e) => {
+    const updatedData = { ...data };
+    updatedData[e.target.name] = e.target.checked;
+    const allErrors = { ...errors };
+    setData(updatedData);
+    setErrors(allErrors);
   };
 
-  handleChange = ({ target: input }) => {
-    const errors = { ...this.state.errors };
-    const errorMessage = this.validateProperty(input);
-
-    if (errorMessage) errors[input.name] = errorMessage;
-    else delete errors[input.name];
-
-    const account = { ...this.state.account };
-    account[input.name] = input.value;
-    this.setState({ account, errors });
-  };
-
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    const errors = validate();
 
-    const errors = this.validate();
-    this.setState({ errors: errors || {} });
+    setErrors({ errors: errors || {} });
     if (errors) return;
 
-    console.log("Submitted");
+    dispatch(Registration(data));
+
+    history.push("/home");
   };
 
-  render() {
-    const { account } = this.state;
-    return (
-      <>
-        <Grid item xs={12} container justify="center" alignItems="center">
-          <form onSubmit={this.handleSubmit}>
+  const schema = {
+    name: Joi.string().min(3).max(30).required(),
+    email: Joi.string()
+      .email({ minDomainSegments: 2, tlds: { allow: ["com", "in"] } })
+      .required(),
+    dob: Joi.date()
+      .less("1-1-2003")
+      .message("must be between 18-56 years")
+      .greater("1-1-1957")
+      .message("must be between 18-56 years"),
+    phone: Joi.number().min(10).positive().required(),
+    address: Joi.string().required(),
+    state: Joi.string().required(),
+    district: Joi.string().required(),
+    pincode: Joi.number()
+      .positive()
+      .min(6)
+      .message("Pincode must contain 6 digits")
+      .required(),
+    bg: Joi.required(),
+    password: Joi.string()
+      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+      .message("Enter a stronger password")
+      .required(),
+    cPassword: Joi.ref("password"),
+    terms: Joi.boolean().required().invalid(false),
+  };
+
+  return (
+    <>
+      <LoggedOutNavbar />
+
+      <Grid container style={{ margin: "20px auto" }}>
+        <Grid item xs={6} container justify="center" alignItems="center">
+          <img src={individual} alt="individual" style={{ maxWidth: "100%" }} />
+        </Grid>
+
+        <Grid item xs={6} container justify="center" alignItems="center">
+          <form>
             <Paper style={paperStyle} elevation={5}>
+              <h2 style={{ marginTop: "10px" }} align="center">
+                Individual Registration
+              </h2>
+
               <TextField
-                style={margin}
                 label="Name"
-                placeholder="Enter your name"
+                placeholder="Enter your full name"
                 type="text"
                 fullWidth
-                variant="outlined"
+                style={margin}
                 name="name"
-                value={account.name}
-                onChange={this.handleChange}
-                error={this.state.errors && this.state.errors.name}
+                value={data.name}
+                onChange={handleChange}
+                inputProps={{
+                  maxLength: 30,
+                }}
+                error={errors && errors.name}
+                helperText={errors && errors.name ? errors.name : null}
+              />
+
+              <TextField
+                label="Email"
+                placeholder="Enter your email"
+                type="email"
+                fullWidth
+                style={margin}
+                name="email"
+                value={data.email}
+                onChange={handleChange}
+                error={errors && errors.email}
+                helperText={errors && errors.email ? errors.email : null}
+              />
+
+              <InputLabel style={{ marginTop: "35px" }}>
+                Date of Birth
+              </InputLabel>
+              <TextField
+                type="date"
+                fullWidth
+                style={margin}
+                name="dob"
+                value={data.dob}
+                onChange={handleChange}
+                error={errors && errors.dob}
+                helperText={errors && errors.dob ? errors.dob : null}
+              />
+
+              <TextField
+                label="Phone"
+                placeholder="Enter your phone number"
+                type="text"
+                fullWidth
+                style={margin}
+                name="phone"
+                value={data.phone}
+                onChange={handleChange}
+                inputProps={{
+                  maxLength: 10,
+                }}
+                error={errors && errors.phone}
+                helperText={errors && errors.phone ? errors.phone : null}
+              />
+
+              <TextField
+                label="Current Address"
+                placeholder="Enter your current address"
+                type="text"
+                fullWidth
+                style={margin}
+                name="address"
+                value={data.address}
+                onChange={handleChange}
+                error={errors && errors.address}
+                helperText={errors && errors.address ? errors.address : null}
+              />
+
+              <FormControl style={margin}>
+                <InputLabel>State</InputLabel>
+                <Select
+                  name="state"
+                  onChange={handleChange}
+                  value={data.state}
+                  error={errors && errors.state}
+                  helperText={errors && errors.state ? errors.state : null}
+                >
+                  {states.states.map((item) => (
+                    <MenuItem value={item.state}>{item.state}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl style={margin}>
+                <InputLabel>District</InputLabel>
+                <Select
+                  inputProps={{ readOnly: enable }}
+                  name="district"
+                  onChange={handleChange}
+                  value={data.district}
+                  error={errors && errors.district}
+                  helperText={
+                    errors && errors.district ? errors.district : null
+                  }
+                >
+                  {states.states[selectedStateIndex].districts.map((item) => (
+                    <MenuItem value={item}>{item}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <TextField
+                label="Pincode"
+                placeholder="Enter your pincode"
+                type="text"
+                fullWidth
+                style={margin}
+                name="pincode"
+                value={data.pincode}
+                onChange={handleChange}
+                inputProps={{
+                  maxLength: 6,
+                }}
+                error={errors && errors.pincode}
+                helperText={errors && errors.pincode ? errors.pincode : null}
+              />
+
+              <FormControl style={margin}>
+                <InputLabel>Blood Group</InputLabel>
+                <Select name="bg" onChange={handleChange} value={data.bg}>
+                  error={errors && errors.bg}
+                  helperText=
+                  {errors && errors.bg ? errors.bg : null}
+                  <MenuItem value={"A+"}>A+</MenuItem>
+                  <MenuItem value={"A-"}>A-</MenuItem>
+                  <MenuItem value={"B+"}>B+</MenuItem>
+                  <MenuItem value={"B-"}>B-</MenuItem>
+                  <MenuItem value={"AB+"}>AB+</MenuItem>
+                  <MenuItem value={"AB-"}>AB-</MenuItem>
+                  <MenuItem value={"O+"}>O+</MenuItem>
+                  <MenuItem value={"O-"}>O-</MenuItem>
+                </Select>
+              </FormControl>
+
+              <TextField
+                label="Password"
+                placeholder="Create your password"
+                type="password"
+                fullWidth
+                style={margin}
+                name="password"
+                value={data.password}
+                onChange={handleChange}
+                error={errors && errors.password}
+                helperText={errors && errors.password ? errors.password : null}
+              />
+
+              <TextField
+                label="Confirm Password"
+                placeholder="Confirm your password"
+                type="password"
+                fullWidth
+                style={margin}
+                name="cPassword"
+                value={data.cPassword}
+                onChange={handleChange}
+                error={data.password !== data.cPassword ? true : false}
                 helperText={
-                  this.state.errors && this.state.errors.name
-                    ? this.state.errors.name
+                  data.password !== data.cPassword
+                    ? "passwords do not match"
                     : null
                 }
               />
 
-              <TextField
+              <FormControlLabel
                 style={margin}
-                label="Password"
-                placeholder="Enter your password"
-                type="password"
-                fullWidth
-                variant="outlined"
-                name="password"
-                value={account.password}
-                onChange={this.handleChange}
-                error={this.state.errors && this.state.errors.password}
-                helperText={
-                  this.state.errors && this.state.errors.password
-                    ? this.state.errors.password
-                    : null
+                control={
+                  <Checkbox
+                    onChange={handleTermsCheck}
+                    inputProps={{ required: true }}
+                    name="terms"
+                  />
                 }
+                label="Accept Terms and Conditions"
               />
+              <Link
+                to="/terms"
+                style={{ color: "#E94364", fontWeight: "bold" }}
+              >
+                (Click here for terms and condition)
+              </Link>
 
               <Button
                 variant="contained"
-                color="primary"
+                style={{ backgroundColor: "#E94364", marginTop: "20px" }}
                 type="submit"
-                style={margin}
+                disabled={validate()}
+                onClick={handleSubmit}
               >
-                Login
+                Sign up
               </Button>
+
+              <Typography align="center" style={margin}>
+                <Link to="/Login">Already a user ? Sign in</Link>
+              </Typography>
             </Paper>
           </form>
         </Grid>
-      </>
-    );
-  }
+      </Grid>
+    </>
+  );
 }
-export default Test;
+
+export default IndividualRegistration;

@@ -13,10 +13,13 @@ import Home from "./Components/screen/home";
 import Terms from "./Components/Auth/terms";
 import Profile from "./Components/screen/profile/index"
 import Test from "./Components/Auth/Test";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 function App() {
   return (
     <>
+    <Provider store={store}>
       <Switch>
         <Route exact path="/home" component={Home} />
         <Route exact path="/profile" component={Profile}/>
@@ -45,6 +48,7 @@ function App() {
 
         <Route exact path="/Test" component={Test} />
       </Switch>
+      </Provider>
     </>
   );
 }
