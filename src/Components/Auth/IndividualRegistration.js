@@ -6,33 +6,36 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  FormControlLabel,
+  Checkbox,
   Button,
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import individual from "./images/individual.png";
 import states from "./states.json";
 import Joi from "joi";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 
 function IndividualRegistration() {
-  const [state, setState] = useState({
-    data: {
-      name: "",
-      email: "",
-      dob: "",
-      phone: "",
-      address: "",
-      state: "",
-      district: "",
-      pincode: "",
-      bg: "",
-      password: "",
-      cPassword: "",
-    },
-    errors: {},
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    dob: "",
+    phone: "",
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    bg: "",
+    password: "",
+    cPassword: "",
+    terms: false,
   });
+
+  const history = useHistory();
+  const [errors, setErrors] = useState({});
 
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
@@ -55,25 +58,21 @@ function IndividualRegistration() {
 
   const validate = () => {
     const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(state.data, {
+    const { error } = formSchema.validate(data, {
       abortEarly: false,
     });
 
     if (!error) return null;
 
-    const errors = {};
+    const allErrors = {};
     for (let err of error.details) {
-      errors[err.path[0]] = err.message;
+      allErrors[err.path[0]] = err.message;
     }
-    return errors;
+    return allErrors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
 
     if (name === "state") {
       setEnable(false);
@@ -82,26 +81,36 @@ function IndividualRegistration() {
       );
     }
 
-    const errors = { ...state.errors };
+    const allErrors = { ...errors };
     const errorMsg = validateProperty(e.target);
     if (errorMsg) {
-      errors[e.target.name] = errorMsg;
+      allErrors[name] = errorMsg;
     } else {
-      delete errors[e.target.name];
+      delete allErrors[name];
     }
-    const data = { ...state.data };
-    data[e.target.name] = e.target.value;
-    setState({ data, errors });
+    const updatedData = { ...data };
+    updatedData[name] = value;
+    setData(updatedData);
+    setErrors(allErrors);
+  };
+
+  const handleTermsCheck = (e) => {
+    const updatedData = { ...data };
+    updatedData[e.target.name] = e.target.checked;
+    const allErrors = { ...errors };
+    setData(updatedData);
+    setErrors(allErrors);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
 
-    setState({ errors: errors || {} });
+    setErrors({ errors: errors || {} });
     if (errors) return;
 
-    console.log(state.data);
+    console.log(data);
+    history.push("/home");
   };
 
   const schema = {
@@ -114,7 +123,7 @@ function IndividualRegistration() {
       .message("must be between 18-56 years")
       .greater("1-1-1957")
       .message("must be between 18-56 years"),
-    phone: Joi.number().positive().required(),
+    phone: Joi.number().min(10).positive().required(),
     address: Joi.string().required(),
     state: Joi.string().required(),
     district: Joi.string().required(),
@@ -129,6 +138,7 @@ function IndividualRegistration() {
       .message("Enter a stronger password")
       .required(),
     cPassword: Joi.ref("password"),
+    terms: Joi.boolean().required().invalid(false),
   };
 
   return (
@@ -141,7 +151,7 @@ function IndividualRegistration() {
         </Grid>
 
         <Grid item xs={6} container justify="center" alignItems="center">
-          <form onSubmit={handleSubmit}>
+          <form>
             <Paper style={paperStyle} elevation={5}>
               <h2 style={{ marginTop: "10px" }} align="center">
                 Individual Registration
@@ -154,12 +164,13 @@ function IndividualRegistration() {
                 fullWidth
                 style={margin}
                 name="name"
-                value={state.data.name}
+                value={data.name}
                 onChange={handleChange}
-                error={state.errors && state.errors.name}
-                helperText={
-                  state.errors && state.errors.name ? state.errors.name : null
-                }
+                inputProps={{
+                  maxLength: 30,
+                }}
+                error={errors && errors.name}
+                helperText={errors && errors.name ? errors.name : null}
               />
 
               <TextField
@@ -169,12 +180,10 @@ function IndividualRegistration() {
                 fullWidth
                 style={margin}
                 name="email"
-                value={state.data.email}
+                value={data.email}
                 onChange={handleChange}
-                error={state.errors && state.errors.email}
-                helperText={
-                  state.errors && state.errors.email ? state.errors.email : null
-                }
+                error={errors && errors.email}
+                helperText={errors && errors.email ? errors.email : null}
               />
 
               <InputLabel style={{ marginTop: "35px" }}>
@@ -185,27 +194,26 @@ function IndividualRegistration() {
                 fullWidth
                 style={margin}
                 name="dob"
-                value={state.data.dob}
+                value={data.dob}
                 onChange={handleChange}
-                error={state.errors && state.errors.dob}
-                helperText={
-                  state.errors && state.errors.dob ? state.errors.dob : null
-                }
+                error={errors && errors.dob}
+                helperText={errors && errors.dob ? errors.dob : null}
               />
 
               <TextField
                 label="Phone"
                 placeholder="Enter your phone number"
-                type="number"
+                type="text"
                 fullWidth
                 style={margin}
                 name="phone"
-                value={state.data.phone}
+                value={data.phone}
                 onChange={handleChange}
-                error={state.errors && state.errors.phone}
-                helperText={
-                  state.errors && state.errors.phone ? state.errors.phone : null
-                }
+                inputProps={{
+                  maxLength: 10,
+                }}
+                error={errors && errors.phone}
+                helperText={errors && errors.phone ? errors.phone : null}
               />
 
               <TextField
@@ -215,14 +223,10 @@ function IndividualRegistration() {
                 fullWidth
                 style={margin}
                 name="address"
-                value={state.data.address}
+                value={data.address}
                 onChange={handleChange}
-                error={state.errors && state.errors.address}
-                helperText={
-                  state.errors && state.errors.address
-                    ? state.errors.address
-                    : null
-                }
+                error={errors && errors.address}
+                helperText={errors && errors.address ? errors.address : null}
               />
 
               <FormControl style={margin}>
@@ -230,13 +234,9 @@ function IndividualRegistration() {
                 <Select
                   name="state"
                   onChange={handleChange}
-                  value={state.data.state}
-                  error={state.errors && state.errors.state}
-                  helperText={
-                    state.errors && state.errors.state
-                      ? state.errors.state
-                      : null
-                  }
+                  value={data.state}
+                  error={errors && errors.state}
+                  helperText={errors && errors.state ? errors.state : null}
                 >
                   {states.states.map((item) => (
                     <MenuItem value={item.state}>{item.state}</MenuItem>
@@ -250,12 +250,10 @@ function IndividualRegistration() {
                   inputProps={{ readOnly: enable }}
                   name="district"
                   onChange={handleChange}
-                  value={state.data.district}
-                  error={state.errors && state.errors.district}
+                  value={data.district}
+                  error={errors && errors.district}
                   helperText={
-                    state.errors && state.errors.district
-                      ? state.errors.district
-                      : null
+                    errors && errors.district ? errors.district : null
                   }
                 >
                   {states.states[selectedStateIndex].districts.map((item) => (
@@ -267,26 +265,25 @@ function IndividualRegistration() {
               <TextField
                 label="Pincode"
                 placeholder="Enter your pincode"
-                type="number"
+                type="text"
                 fullWidth
                 style={margin}
                 name="pincode"
-                value={state.data.pincode}
+                value={data.pincode}
                 onChange={handleChange}
-                error={state.errors && state.errors.pincode}
-                helperText={
-                  state.errors && state.errors.pincode
-                    ? state.errors.pincode
-                    : null
-                }
+                inputProps={{
+                  maxLength: 6,
+                }}
+                error={errors && errors.pincode}
+                helperText={errors && errors.pincode ? errors.pincode : null}
               />
 
               <FormControl style={margin}>
                 <InputLabel>Blood Group</InputLabel>
-                <Select name="bg" onChange={handleChange} value={state.data.bg}>
-                  error={state.errors && state.errors.bg}
+                <Select name="bg" onChange={handleChange} value={data.bg}>
+                  error={errors && errors.bg}
                   helperText=
-                  {state.errors && state.errors.bg ? state.errors.bg : null}
+                  {errors && errors.bg ? errors.bg : null}
                   <MenuItem value={"A+"}>A+</MenuItem>
                   <MenuItem value={"A-"}>A-</MenuItem>
                   <MenuItem value={"B+"}>B+</MenuItem>
@@ -305,14 +302,10 @@ function IndividualRegistration() {
                 fullWidth
                 style={margin}
                 name="password"
-                value={state.data.password}
+                value={data.password}
                 onChange={handleChange}
-                error={state.errors && state.errors.password}
-                helperText={
-                  state.errors && state.errors.password
-                    ? state.errors.password
-                    : null
-                }
+                error={errors && errors.password}
+                helperText={errors && errors.password ? errors.password : null}
               />
 
               <TextField
@@ -322,38 +315,40 @@ function IndividualRegistration() {
                 fullWidth
                 style={margin}
                 name="cPassword"
-                value={state.data.cPassword}
+                value={data.cPassword}
                 onChange={handleChange}
-                error={
-                  state.data.password !== state.data.cPassword ? true : false
-                }
+                error={data.password !== data.cPassword ? true : false}
                 helperText={
-                  state.data.password !== state.data.cPassword
+                  data.password !== data.cPassword
                     ? "passwords do not match"
                     : null
                 }
               />
+
+              <FormControlLabel
+                style={margin}
+                control={
+                  <Checkbox
+                    onChange={handleTermsCheck}
+                    inputProps={{ required: true }}
+                    name="terms"
+                  />
+                }
+                label="Accept Terms and Conditions"
+              />
+               <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
+               (Click here for terms and condition) 
+                </Link>
 
               <Button
                 variant="contained"
                 style={{ backgroundColor: "#E94364", marginTop: "20px" }}
                 type="submit"
                 disabled={validate()}
+                onClick={handleSubmit}
               >
-                <Link to="/home">Sign up</Link>
+                Sign up
               </Button>
-
-              <Typography align="center" style={margin}>
-                <p>
-                  By Signing up, you are{" "}
-                  <Link
-                    to="/terms"
-                    style={{ color: "#E94364", fontWeight: "bold" }}
-                  >
-                    ACCEPTING OUR TERMS AND CONDITIONS
-                  </Link>
-                </p>
-              </Typography>
 
               <Typography align="center" style={margin}>
                 <Link to="/Login">Already a user ? Sign in</Link>

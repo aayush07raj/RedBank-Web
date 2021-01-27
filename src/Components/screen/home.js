@@ -9,6 +9,7 @@ import {
   CardMedia,
   Paper,
 } from "@material-ui/core/";
+import { Navbar } from "../layouts";
 
 // import YouTube from 'react-youtube';
 
@@ -54,6 +55,9 @@ function Home() {
   const classes = useStyles();
 
   return (
+    <>
+    <Navbar/>
+    
     <div className="Home">
       <Box className={classes.hero}>
         <Box>Red Bank</Box>
@@ -147,6 +151,7 @@ function Home() {
         </Grid>
       </Container>
     </div>
+    </>
   );
 }
 

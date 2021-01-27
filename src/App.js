@@ -9,7 +9,7 @@ import ResetPassword from "./Components/Auth/ResetPassword";
 import IndividualRegistration from "./Components/Auth/IndividualRegistration";
 import HospitalRegistration from "./Components/Auth/HospitalRegistration";
 import BloodBankRegistration from "./Components/Auth/BloodBankRegistration";
-import Home from "./Components/screen/index";
+import Home from "./Components/screen/home";
 import Terms from "./Components/Auth/terms";
 
 import Test from "./Components/Auth/Test";

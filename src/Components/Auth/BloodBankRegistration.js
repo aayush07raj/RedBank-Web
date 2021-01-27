@@ -364,7 +364,12 @@ function BloodBankRegistration() {
                   />
                 }
                 label="Accept Terms and Conditions"
+                
               />
+              <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
+               (Click here for terms and condition) 
+                </Link>
+              
 
               <Button
                 variant="contained"
