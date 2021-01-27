@@ -1,16 +1,15 @@
-import React from 'react'
-import {Route, Switch} from 'react-router-dom'
-import { Navbar } from '../layouts'
-import Home from './home';
+import React from "react";
 
+import { Navbar } from "../layouts";
+import Home from "./home";
 
 function Index() {
-    return (
-        <div>
-            <Navbar/>
-            <Home/>    
-        </div>
-    )
+  return (
+    <div>
+      <Navbar />
+      <Home />
+    </div>
+  );
 }
 
-export default Index
+export default Index;

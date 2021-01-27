@@ -1,5 +1,15 @@
 import React, { Fragment } from "react";
-import { makeStyles , AppBar, Toolbar, Typography, IconButton, MenuItem, Menu, Button, Badge, MenuIcon  } from "@material-ui/core/";
+import {
+  makeStyles,
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  MenuItem,
+  Menu,
+  Button,
+  Badge,
+} from "@material-ui/core/";
 import { Link } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
@@ -7,18 +17,17 @@ import Logo from "./logo.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
-  logo:{
-    height:40,
-  }
-  
+  logo: {
+    height: 40,
+  },
 }));
 
 export default function MenuAppBar() {
@@ -33,14 +42,18 @@ export default function MenuAppBar() {
     setAnchorEl(null);
   };
 
-  
   return (
     <Fragment className={classes.root}>
-      <AppBar position="static" style={{background: '#E94364'}}>
+      <AppBar position="static" style={{ background: "#E94364" }}>
         <Toolbar>
-        {/* <Avatar alt="Remy Sharp" src="./redbanklogo.svg" /> */}
-        <Typography to="/Home" component={Link} variant="h6" className={classes.title}>
-          <img src={Logo} alt="logo" className={classes.logo} />
+          {/* <Avatar alt="Remy Sharp" src="./redbanklogo.svg" /> */}
+          <Typography
+            to="/Home"
+            component={Link}
+            variant="h6"
+            className={classes.title}
+          >
+            <img src={Logo} alt="logo" className={classes.logo} />
           </Typography>
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 17 new notifications" color="inherit">
@@ -108,6 +121,4 @@ export default function MenuAppBar() {
   );
 }
 
-
-// Logged Out 
-
+// Logged Out

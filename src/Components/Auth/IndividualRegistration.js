@@ -7,8 +7,6 @@ import {
   InputLabel,
   FormControl,
   Button,
-  FormControlLabel,
-  Checkbox,
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
@@ -112,9 +110,9 @@ function IndividualRegistration() {
       .email({ minDomainSegments: 2, tlds: { allow: ["com", "in"] } })
       .required(),
     dob: Joi.date()
-      .less("1-1-2077")
+      .less("1-1-2003")
       .message("must be between 18-56 years")
-      .greater("1-1-2003")
+      .greater("1-1-1957")
       .message("must be between 18-56 years"),
     phone: Joi.number().positive().required(),
     address: Joi.string().required(),
@@ -179,7 +177,7 @@ function IndividualRegistration() {
                 }
               />
 
-              <InputLabel style={{ marginTop: "20px" }}>
+              <InputLabel style={{ marginTop: "35px" }}>
                 Date of Birth
               </InputLabel>
               <TextField
@@ -326,9 +324,11 @@ function IndividualRegistration() {
                 name="cPassword"
                 value={state.data.cPassword}
                 onChange={handleChange}
-                error={state.errors && state.errors.cPassword}
+                error={
+                  state.data.password !== state.data.cPassword ? true : false
+                }
                 helperText={
-                  state.errors && state.errors.cPassword
+                  state.data.password !== state.data.cPassword
                     ? "passwords do not match"
                     : null
                 }
@@ -344,13 +344,16 @@ function IndividualRegistration() {
               </Button>
 
               <Typography align="center" style={margin}>
-              <p>
-                By Signing up, you are{" "}
-                <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
-                  ACCEPTING OUR TERMS AND CONDITION
-                </Link>
-              </p>
-            </Typography>
+                <p>
+                  By Signing up, you are{" "}
+                  <Link
+                    to="/terms"
+                    style={{ color: "#E94364", fontWeight: "bold" }}
+                  >
+                    ACCEPTING OUR TERMS AND CONDITIONS
+                  </Link>
+                </p>
+              </Typography>
 
               <Typography align="center" style={margin}>
                 <Link to="/Login">Already a user ? Sign in</Link>

@@ -12,28 +12,29 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import hospital from "./images/hospital.jpg";
 import states from "./states.json";
 import Joi from "joi";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 
-function HospitalRegistration() {
-  const [state, setState] = useState({
-    data: {
-      name: "",
-      email: "",
-      license: "",
-      phone: [""],
-      address: "",
-      state: "",
-      district: "",
-      pincode: "",
-      password: "",
-      cPassword: "",
-    },
-    errors: {},
+function BloodBankRegistration() {
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    license: "",
+    phone: [""],
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    password: "",
+    cPassword: "",
+    terms: false,
   });
+
+  const history = useHistory();
+  const [errors, setErrors] = useState({});
 
   const [maxLimit, setMaxLimit] = useState("Add a phone number");
   const [enable, setEnable] = useState(true);
@@ -46,6 +47,7 @@ function HospitalRegistration() {
     flexDirection: "column",
     padding: "30px",
   };
+
   const margin = { marginTop: "15px" };
 
   const validateProperty = ({ name, value }) => {
@@ -57,25 +59,21 @@ function HospitalRegistration() {
 
   const validate = () => {
     const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(state.data, {
+    const { error } = formSchema.validate(data, {
       abortEarly: false,
     });
 
     if (!error) return null;
 
-    const errors = {};
+    const allErrors = {};
     for (let err of error.details) {
-      errors[err.path[0]] = err.message;
+      allErrors[err.path[0]] = err.message;
     }
-    return errors;
+    return allErrors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
 
     if (name === "state") {
       setEnable(false);
@@ -84,32 +82,36 @@ function HospitalRegistration() {
       );
     }
 
-    if (name === "checked") {
-      setState((prevState) => ({
-        ...prevState,
-        [name]: e.target.checked,
-      }));
-    }
-
-    const errors = { ...state.errors };
+    const allErrors = { ...errors };
     const errorMsg = validateProperty(e.target);
     if (errorMsg) {
-      errors[e.target.name] = errorMsg;
+      allErrors[name] = errorMsg;
     } else {
-      delete errors[e.target.name];
+      delete allErrors[name];
     }
-    const data = { ...state.data };
-    data[e.target.name] = e.target.value;
-    setState({ data, errors });
+    const updatedData = { ...data };
+    updatedData[name] = value;
+    setData(updatedData);
+    setErrors(allErrors);
   };
 
-  const handleSubmit = () => {
+  const handleTermsCheck = (e) => {
+    const updatedData = { ...data };
+    updatedData[e.target.name] = e.target.checked;
+    const allErrors = { ...errors };
+    setData(updatedData);
+    setErrors(allErrors);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const errors = validate();
 
-    setState({ errors: errors || {} });
+    setErrors({ errors: errors || {} });
     if (errors) return;
 
-    console.log(state);
+    console.log(data);
+    history.push("/home");
   };
 
   const schema = {
@@ -121,7 +123,7 @@ function HospitalRegistration() {
       })
       .required(),
     license: Joi.string().required(),
-    phone: Joi.array().required(),
+    phone: Joi.array().items(Joi.number().min(10).required()).max(5),
     address: Joi.string().required(),
     state: Joi.string().required(),
     district: Joi.string().required(),
@@ -135,22 +137,38 @@ function HospitalRegistration() {
       .message("Enter a stronger password")
       .required(),
     cPassword: Joi.ref("password"),
+    terms: Joi.boolean().required().invalid(false),
   };
 
   const handleNumberChange = (e, id) => {
-    setState((prevState) => {
-      const newPhoneState = [...prevState.data.phone];
-      newPhoneState[id] = e.target.value;
-      return {
-        data: { ...state.data, phone: newPhoneState },
-      };
+    const allErrors = { ...errors };
+    const errorMsg = validatePhone(e.target);
+    if (errorMsg) {
+      errors[e.target.name] = errorMsg;
+    } else {
+      delete errors[e.target.name];
+    }
+
+    const updatedData = { ...data };
+    updatedData.phone[id] = e.target.value;
+    setData(updatedData);
+    setErrors(allErrors);
+  };
+
+  const validatePhone = ({ name, value }) => {
+    const phone = { [name]: value };
+    const phoneSchema = Joi.object({
+      [name]: Joi.number().min(10).label("Phone Number"),
     });
+    const { error } = phoneSchema.validate(phone);
+    return error ? error.details[0].message : null;
   };
 
   const handleAdd = () => {
-    if (state.data.phone.length < 5) {
-      setState((prevState) => ({
-        data: { ...prevState.data, phone: [...prevState.data.phone, ""] },
+    if (data.phone.length < 5) {
+      setData((prevState) => ({
+        ...prevState,
+        phone: [...prevState.phone, ""],
       }));
     } else {
       setMaxLimit("Maximum limit reached");
@@ -167,204 +185,209 @@ function HospitalRegistration() {
         </Grid>
 
         <Grid item xs={6} container justify="center" alignItems="center">
-          <Paper style={paperStyle} elevation={5}>
-            <h2 style={{ marginTop: "10px" }} align="center">
-              Hospital Registration
-            </h2>
+          <form>
+            <Paper style={paperStyle} elevation={5}>
+              <h2 style={{ marginTop: "10px" }} align="center">
+                Hospital Registration
+              </h2>
 
-            <TextField
-              label="Name"
-              placeholder="Enter your full name"
-              type="text"
-              fullWidth
-              style={margin}
-              name="name"
-              value={state.data.name}
-              onChange={handleChange}
-              error={state.errors && state.errors.name}
-              helperText={
-                state.errors && state.errors.name ? state.errors.name : null
-              }
-            />
-
-            <TextField
-              label="Email"
-              placeholder="Enter your email"
-              type="email"
-              fullWidth
-              style={margin}
-              name="email"
-              value={state.data.email}
-              onChange={handleChange}
-              error={state.errors && state.errors.email}
-              helperText={
-                state.errors && state.errors.email ? state.errors.email : null
-              }
-            />
-
-            <TextField
-              label="License Number"
-              placeholder="Enter your license number"
-              type="text"
-              fullWidth
-              style={margin}
-              name="license"
-              value={state.data.license}
-              onChange={handleChange}
-              error={state.errors && state.errors.license}
-              helperText={
-                state.errors && state.errors.license
-                  ? state.errors.license
-                  : null
-              }
-            />
-
-            {state.data.phone.map((val, idx) => (
               <TextField
-                label="Phone"
-                placeholder="Enter your phone number"
-                type="number"
+                label="Name"
+                placeholder="Enter your full name"
+                type="text"
                 fullWidth
                 style={margin}
-                name="phone"
-                value={val}
-                onChange={(e) => {
-                  handleNumberChange(e, idx);
+                name="name"
+                value={data.name}
+                onChange={handleChange}
+                inputProps={{
+                  maxLength: 30,
                 }}
-                key={idx}
-                error={state.errors && state.errors.phone}
+                error={errors && errors.name ? true : false}
+                helperText={errors && errors.name ? errors.name : null}
+              />
+
+              <TextField
+                label="Email"
+                placeholder="Enter your email"
+                type="email"
+                fullWidth
+                style={margin}
+                name="email"
+                value={data.email}
+                onChange={handleChange}
+                error={errors && errors.email ? true : false}
+                helperText={errors && errors.email ? errors.email : null}
+              />
+
+              <TextField
+                label="License Number"
+                placeholder="Enter your license number"
+                type="text"
+                fullWidth
+                style={margin}
+                name="license"
+                value={data.license}
+                onChange={handleChange}
+                error={errors && errors.license ? true : false}
+                helperText={errors && errors.license ? errors.license : null}
+              />
+
+              {data.phone.map((val, idx) => (
+                <TextField
+                  label={`Phone-${idx + 1}`}
+                  placeholder="Enter your phone number"
+                  type="text"
+                  fullWidth
+                  style={margin}
+                  name={`phone${idx}`}
+                  value={val}
+                  onChange={(e) => {
+                    handleNumberChange(e, idx);
+                  }}
+                  key={idx}
+                  inputProps={{
+                    maxLength: 10,
+                  }}
+                  error={errors && errors[`phone${idx}`] ? true : false}
+                  helperText={
+                    errors && errors[`phone${idx}`]
+                      ? errors[`phone${idx}`]
+                      : null
+                  }
+                />
+              ))}
+              <Button onClick={handleAdd}>{maxLimit}</Button>
+
+              <TextField
+                label="Registered Address"
+                placeholder="Enter your registered address"
+                type="text"
+                fullWidth
+                style={margin}
+                name="address"
+                value={data.address}
+                onChange={handleChange}
+                error={errors && errors.address ? true : false}
+                helperText={errors && errors.address ? errors.address : null}
+              />
+
+              <FormControl style={margin}>
+                <InputLabel>State</InputLabel>
+                <Select name="state" onChange={handleChange} value={data.state}>
+                  {states.states.map((item, id) => (
+                    <MenuItem value={item.state} key={id}>
+                      {item.state}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl style={margin}>
+                <InputLabel>District</InputLabel>
+                <Select
+                  inputProps={{ readOnly: enable }}
+                  name="district"
+                  onChange={handleChange}
+                  value={data.district}
+                >
+                  {states.states[selectedStateIndex].districts.map(
+                    (item, id) => (
+                      <MenuItem value={item} key={id}>
+                        {item}
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+              </FormControl>
+
+              <TextField
+                label="Pincode"
+                placeholder="Enter your pincode"
+                type="text"
+                fullWidth
+                style={margin}
+                name="pincode"
+                value={data.pincode}
+                onChange={handleChange}
+                inputProps={{
+                  maxLength: 6,
+                }}
+                error={errors && errors.pincode ? true : false}
+                helperText={errors && errors.pincode ? errors.pincode : null}
+              />
+
+              <TextField
+                label="Password"
+                placeholder="Create your password"
+                type="password"
+                fullWidth
+                style={margin}
+                name="password"
+                value={data.password}
+                onChange={handleChange}
+                inputProps={{
+                  maxLength: 30,
+                }}
+                error={errors && errors.password ? true : false}
+                helperText={errors && errors.password ? errors.password : null}
+              />
+
+              <TextField
+                label="Confirm Password"
+                placeholder="Confirm your password"
+                type="password"
+                fullWidth
+                style={margin}
+                name="cPassword"
+                value={data.cPassword}
+                onChange={handleChange}
+                inputProps={{
+                  maxLength: 30,
+                }}
+                error={data.password !== data.cPassword ? true : false}
                 helperText={
-                  state.errors && state.errors.phone ? state.errors.phone : null
+                  data.password !== data.cPassword
+                    ? "passwords do not match"
+                    : null
                 }
               />
-            ))}
-            <Button onClick={handleAdd}>{maxLimit}</Button>
 
-            <TextField
-              label="Registered Address"
-              placeholder="Enter your registered address"
-              type="text"
-              fullWidth
-              style={margin}
-              name="address"
-              value={state.data.address}
-              onChange={handleChange}
-              error={state.errors && state.errors.address}
-              helperText={
-                state.errors && state.errors.address
-                  ? state.errors.address
-                  : null
-              }
-            />
+              <FormControlLabel
+                style={margin}
+                control={
+                  <Checkbox
+                    onChange={handleTermsCheck}
+                    inputProps={{ required: true }}
+                    name="terms"
+                  />
+                }
+                label="Accept Terms and Conditions"
+              />
 
-            <FormControl style={margin}>
-              <InputLabel>State</InputLabel>
-              <Select
-                name="state"
-                onChange={handleChange}
-                value={state.data.state}
+              <Button
+                variant="contained"
+                style={{
+                  backgroundColor: "#E94364",
+                  marginTop: "20px",
+                  color: "white",
+                }}
+                type="submit"
+                disabled={validate()}
+                onClick={handleSubmit}
               >
-                {states.states.map((item, id) => (
-                  <MenuItem value={item.state} key={id}>
-                    {item.state}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+                Sign Up
+              </Button>
 
-            <FormControl style={margin}>
-              <InputLabel>District</InputLabel>
-              <Select
-                inputProps={{ readOnly: enable }}
-                name="district"
-                onChange={handleChange}
-                value={state.data.district}
-              >
-                {states.states[selectedStateIndex].districts.map((item, id) => (
-                  <MenuItem value={item} key={id}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <TextField
-              label="Pincode"
-              placeholder="Enter your pincode"
-              type="number"
-              fullWidth
-              style={margin}
-              name="pincode"
-              value={state.data.pincode}
-              onChange={handleChange}
-              error={state.errors && state.errors.pincode}
-              helperText={
-                state.errors && state.errors.pincode
-                  ? state.errors.pincode
-                  : null
-              }
-            />
-
-            <TextField
-              label="Password"
-              placeholder="Create your password"
-              type="password"
-              fullWidth
-              style={margin}
-              name="password"
-              value={state.data.password}
-              onChange={handleChange}
-              error={state.errors && state.errors.password}
-              helperText={
-                state.errors && state.errors.password
-                  ? state.errors.password
-                  : null
-              }
-            />
-
-            <TextField
-              label="Confirm Password"
-              placeholder="Confirm your password"
-              type="password"
-              fullWidth
-              style={margin}
-              name="cPassword"
-              value={state.data.cPassword}
-              onChange={handleChange}
-              error={state.errors && state.errors.cPassword}
-              helperText={
-                state.errors && state.errors.cPassword
-                  ? "passwords do not match"
-                  : null
-              }
-            />
-
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#E94364", marginTop: "20px" }}
-              type="submit"
-              disabled={validate()}
-            >
-              <Link to="/home">Sign up</Link>
-            </Button>
-
-            <Typography align="center" style={margin}>
-              <p>
-                By Signing up, you are{" "}
-                <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
-                ACCEPTING OUR TERMS AND CONDITION
-                </Link>
-              </p>
-            </Typography>
-
-            <Typography align="center" style={margin}>
-              <Link to="/Login">Already a user ? Sign in</Link>
-            </Typography>
-          </Paper>
+              <Typography align="center" style={margin}>
+                <Link to="/Login">Already a user ? Sign in</Link>
+              </Typography>
+            </Paper>
+          </form>
         </Grid>
       </Grid>
     </>
   );
 }
 
-export default HospitalRegistration;
+export default BloodBankRegistration;
