@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import login from "./images/login.png";
 import avatar from "./images/avatar.png";
@@ -9,16 +9,11 @@ import axios from 'axios';
 
 function Login() {
   const [state, setState] = useState({
-    data: { email: "", password: "" },
+    data: { email: "", password: ""},
     errors: {},
+    isLoggedIn: false,
   });
 
-  useEffect(()=>{
-    alert("working");
-    async function getData(){
-      const res = await axios.get(``)
-    }
-  })
 
   const paperStyle = {
     display: "flex",
@@ -44,10 +39,23 @@ function Login() {
     const errors = validate();
 
     setState({ errors: errors || {} });
-    if (errors) return;
+    if (errors) return; 
 
     console.log(state);
   };
+
+  const forAxios=()=>{
+    axios.post('http://localhost:5000/login', {
+      email    : state.data.email,
+      password : state.data.password
+    })
+  .then(response => {
+    console.log(state)
+    console.log(response)
+    setState(!state.isLoggedIn)
+  })
+  }
+
 
   const validateProperty = ({ name, value }) => {
     const inputField = { [name]: value };
@@ -99,13 +107,13 @@ function Login() {
         style={{ marginTop: "100px", backgroundColor: "#E94364" }}
       >
         <Grid item xs={6} container justify="center" alignItems="center">
-          <img src={login} alt="" />
+          <img src={login} alt="#" />
         </Grid>
 
         <Grid item xs={6} container justify="center" alignItems="center">
           <Paper style={paperStyle} elevation={5}>
             <Grid align="center">
-              <img src={avatar} width="80px" />
+              <img alt="" src={avatar} width="80px" />
               <h2 style={{ marginTop: "10px" }}>Sign In</h2>
             </Grid>
 
@@ -154,7 +162,7 @@ function Login() {
               color="primary"
               fullWidth
               style={{ marginTop: "20px", backgroundColor: "#E94364" }}
-              onClick={handleClick}
+              onClick={function(event){handleClick(); forAxios();}}
               disabled={validate() ? true : false}
             >
               <Link to="/home">Login</Link>
