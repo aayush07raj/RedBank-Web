@@ -11,7 +11,7 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
-import { Navbar } from "../../layouts/";
+import { Navbar, Footer } from "../../layouts/";
 import statesData from "../../Auth/states.json";
 import Table from "../../screen/services/useTable";
 
@@ -162,9 +162,7 @@ function FindDonors() {
                     onChange={handleChange}
                     label="Select your State"
                   >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
+                   
                     {statesData.states.map((item, id) => (
                       <MenuItem key={id} value={item.state}>
                         {item.state}
@@ -182,9 +180,7 @@ function FindDonors() {
                     onChange={handleChange}
                     label="Select your District"
                   >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
+                    
                     {statesData.states[selectedStateIndex].districts.map(
                       (item, id) => (
                         <MenuItem key={id} value={item}>
@@ -241,6 +237,7 @@ function FindDonors() {
           </Grid>
         </Grid>
       </Container>
+      <Footer/>
     </>
   );
 }

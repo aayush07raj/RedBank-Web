@@ -9,7 +9,7 @@ import {
   CardMedia,
   Paper,
 } from "@material-ui/core/";
-import { Navbar } from "../layouts";
+import { Navbar, Footer } from "../layouts";
 
 // import YouTube from 'react-youtube';
 
@@ -151,6 +151,7 @@ function Home() {
         </Grid>
       </Container>
     </div>
+    <Footer/>
     </>
   );
 }
