@@ -18,6 +18,9 @@ import states from "./states.json";
 import Joi from "joi";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 
+import { useSelector, useDispatch } from "react-redux";
+import registerHospital from "../../redux/Actions/registerHospital";
+
 function BloodBankRegistration() {
   const [data, setData] = useState({
     name: "",
@@ -32,6 +35,9 @@ function BloodBankRegistration() {
     cPassword: "",
     terms: false,
   });
+
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
 
   const history = useHistory();
   const [errors, setErrors] = useState({});
@@ -110,7 +116,7 @@ function BloodBankRegistration() {
     setErrors({ errors: errors || {} });
     if (errors) return;
 
-    console.log(data);
+    dispatch(registerHospital(data));
     history.push("/home");
   };
 
@@ -364,9 +370,12 @@ function BloodBankRegistration() {
                 }
                 label="Accept Terms and Conditions"
               />
-              <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
-               (Click here for terms and condition) 
-                </Link>
+              <Link
+                to="/terms"
+                style={{ color: "#E94364", fontWeight: "bold" }}
+              >
+                (Click here for terms and condition)
+              </Link>
 
               <Button
                 variant="contained"

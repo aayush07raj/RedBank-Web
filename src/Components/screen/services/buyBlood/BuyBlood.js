@@ -1,49 +1,52 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
-    Container,
-    Grid,
-    makeStyles,
-    Paper,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    TextField,
-    Button,
-  } from "@material-ui/core";
-import {Navbar, Footer} from '../../../layouts';
+  Container,
+  Grid,
+  makeStyles,
+  Paper,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Button,
+} from "@material-ui/core";
+import { Navbar, Footer } from "../../../layouts/";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
 
-
 const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      padding: theme.spacing(5),
-      width: "550px",
-      display: "flex",
-      flexDirection: "column",
-    },
-    formControl: {
-      marginTop: theme.spacing(3),
-      minWidth: 250,
-    },
-    tableContainer: {
-      marginTop: theme.spacing(9),
-      marginBottom: theme.spacing(3),
-    },
-    tables: {
-      padding: theme.spacing(3),
-    },
-  }));
+  paper: {
+    marginTop: theme.spacing(8),
+    padding: theme.spacing(5),
+    width: "550px",
+    display: "flex",
+    flexDirection: "column",
+  },
+  formControl: {
+    marginTop: theme.spacing(3),
+    minWidth: 250,
+  },
+  tableContainer: {
+    marginTop: theme.spacing(9),
+    marginBottom: theme.spacing(3),
+  },
+  tables: {
+    padding: theme.spacing(3),
+  },
+}));
 
 
-  function UpcomingDrive() {
-    const [data, setData] = useState({
-        state: "",
-        district: "",
-        pincode: "",
-      });
+function FindDonors() {
+
+  const [data, setData] = useState({
+    state: "",
+    district: "",
+    pincode: "",
+    bg: [],
+    component: [],
+    units: "",
+  });
 
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
@@ -68,16 +71,16 @@ const useStyles = makeStyles((theme) => ({
     console.log(data);
   };
 
-  return(
+  return (
     <>
-        <Navbar />
+      <Navbar />
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
                 <h2 style={{ marginTop: "10px" }} align="center">
-                  Upcoming Drives
+                  Buy Blood
                 </h2>
 
                 <FormControl variant="outlined" className={classes.formControl}>
@@ -127,6 +130,50 @@ const useStyles = makeStyles((theme) => ({
                   onChange={handleChange}
                   inputProps={{ maxLength: 10 }}
                 />
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>Select required Blood Groups</InputLabel>
+                  <Select
+                    label="Select required Blood Groups"
+                    name="bg"
+                    onChange={handleChange}
+                    value={data.bg}
+                  >
+                    <MenuItem value={"A+"}>A+</MenuItem>
+                    <MenuItem value={"A-"}>A-</MenuItem>
+                    <MenuItem value={"B+"}>B+</MenuItem>
+                    <MenuItem value={"B-"}>B-</MenuItem>
+                    <MenuItem value={"AB+"}>AB+</MenuItem>
+                    <MenuItem value={"AB-"}>AB-</MenuItem>
+                    <MenuItem value={"O+"}>O+</MenuItem>
+                    <MenuItem value={"O-"}>O-</MenuItem>
+                  </Select>
+                </FormControl>
+
+                 <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>Select Component</InputLabel>
+                  <Select
+                    label="Select Component"
+                    name="component"
+                    onChange={handleChange}
+                    value={data.component}
+                  >
+                    <MenuItem value={"Blood"}>Blood</MenuItem>
+                    <MenuItem value={"Plasma"}>Plasma</MenuItem>
+                    <MenuItem value={"Platelets"}>Platelets</MenuItem>
+                  </Select>
+                </FormControl> 
+
+                <TextField
+                  className={classes.formControl}
+                  label="Required Units"
+                  type="text"
+                  name="units"
+                  value={data.units}
+                  variant="outlined"
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 10 }}
+                />           
                 <Button
                   type="submit"
                   variant="contained"
@@ -144,7 +191,7 @@ const useStyles = makeStyles((theme) => ({
       </Container>
       <Footer/>
     </>
-  );    
-  };
+  );
+}
 
-  export default UpcomingDrive;
+export default FindDonors;

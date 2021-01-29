@@ -18,16 +18,27 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+
 import SendIcon from "@material-ui/icons/Send";
 
-function createData(name, contact, date, time, address, state, district, pincode, bg) {
-  return { name, contact, date, time, address, state, district, pincode, bg };
+function createData(name, contact, address, email, bg) {
+  return { name, contact, address, email, bg };
 }
 
 const rows = [
-  createData("John Doe",'1','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-  createData("Johnq Cena",'2','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-  createData("Johnq C1221ena",'2','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+  createData("Cupcak a", 304, 3.7, 67, 4.3),
+  createData("Cupcake a", 305, 3.5, 63, 4.2),
+  createData("Eclair", 262, 16.0, 24, 6.0),
+  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+  createData("Gingerbread", 356, 16.0, 49, 3.9),
+  createData("Honeycomb", 408, 3.2, 87, 6.5),
+  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+  createData("Jelly Bean", 375, 0.0, 94, 0.0),
+  createData("KitKat", 518, 26.0, 65, 7.0),
+  createData("Lollipop", 392, 0.2, 98, 0.0),
+  createData("Marshmallow", 318, 0, 81, 2.0),
+  createData("Nougat", 360, 19.0, 9, 37.0),
+  createData("Oreo", 437, 18.0, 63, 4.0),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -61,16 +72,17 @@ const headCells = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Organization Name",
+    label: "Name",
   },
   { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
-  { id: "date", numeric: true, disablePadding: false, label: "Date" },
-  { id: "time", numeric: true, disablePadding: false, label: "Time" },
   { id: "address", numeric: true, disablePadding: false, label: "Address" },
-  { id: "state", numeric: true, disablePadding: false, label: "State" },
-  { id: "district", numeric: true, disablePadding: false, label: "District" },
-  { id: "pincode", numeric: true, disablePadding: false, label: "Pincode" },
-  { id: "bg", numeric: true, disablePadding: false, label: "Blood Group" },
+  { id: "email", numeric: true, disablePadding: false, label: "Email" },
+  {
+    id: "bg",
+    numeric: true,
+    disablePadding: false,
+    label: "Blood Group",
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -90,7 +102,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-      <TableCell padding="checkbox">
+        <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -184,7 +196,7 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          List of all upcoming drives
+          List of all available Donors
         </Typography>
       )}
 
@@ -345,12 +357,8 @@ export default function EnhancedTable() {
                         {row.name}
                       </TableCell>
                       <TableCell align="right">{row.contact}</TableCell>
-                      <TableCell align="right">{row.date}</TableCell>
-                      <TableCell align="right">{row.time}</TableCell>
                       <TableCell align="right">{row.address}</TableCell>
-                      <TableCell align="right">{row.state}</TableCell>
-                      <TableCell align="right">{row.district}</TableCell>
-                      <TableCell align="right">{row.pincode}</TableCell>
+                      <TableCell align="right">{row.email}</TableCell>
                       <TableCell align="right">{row.bg}</TableCell>
                     </TableRow>
                   );

@@ -18,8 +18,11 @@ import Test from "./Components/Auth/Test";
 // import MainHospital from "./Components/screen/profile/Hospital/MainHospital";
 
 //services
-import FindDonors from "./Components/screen/services/findDonor/FindDonors";
+import FindDonors from "./Components/screen/services/findDonors/FindDonors";
 import UpcomingDrive from "./Components/screen/services/upcomingDrive/UpcomingDrive";
+import BuyBlood from "./Components/screen/services/buyBlood/BuyBlood";
+import MyCommitments from "./Components/screen/services/myCommitments/MyCommitments";
+import MyPurchases from "./Components/screen/services/myPurchases/MyPurchases";
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -60,6 +63,9 @@ function App() {
 
           <Route exact path="/FindDonors" component={FindDonors} />
           <Route exact path="/UpcomingDrive" component={UpcomingDrive} />
+          <Route exact path="/BuyBlood" component={BuyBlood} />
+          <Route exact path="/MyCommitments" component={MyCommitments} />
+          <Route exact path="/MyPurchases" component={MyPurchases} />
         </Switch>
       </Provider>
     </>

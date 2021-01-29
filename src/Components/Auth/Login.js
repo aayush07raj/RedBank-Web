@@ -1,19 +1,26 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import login from "./images/login.png";
 import avatar from "./images/avatar.png";
 import { Grid, Paper, TextField, Button, Typography } from "@material-ui/core";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import Joi from "joi";
-import axios from 'axios';
+import axios from "axios";
+
+import { useSelector, useDispatch } from "react-redux";
+import logging from "../../redux/Actions/login";
 
 function Login() {
-  const [state, setState] = useState({
-    data: { email: "", password: ""},
-    errors: {},
-    isLoggedIn: false,
-  });
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
 
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const paperStyle = {
     display: "flex",
@@ -35,27 +42,43 @@ function Login() {
       .required(),
   };
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     const errors = validate();
 
-    setState({ errors: errors || {} });
-    if (errors) return; 
+    setErrors({ errors: errors || {} });
+    if (errors) return;
 
-    console.log(state);
+    axios
+      .post("http://localhost:5000/login", {
+        email: data.email,
+        password: data.password,
+      })
+      .then(function (response) {
+        if (response.data.success) {
+          setIsLoggedIn(true);
+          console.log(isLoggedIn);
+          dispatch(logging(isLoggedIn));
+          history.push("/home");
+        } else {
+          console.log(response.data.error)
+          if (response.data.error.includes("email")) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              email: response.data.error,
+            }));
+          } else if (response.data.error.includes("password")) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              password: response.data.error,
+            }));
+          }
+        }
+      })
+      .catch(function (error) {
+        window.alert(error.message);
+      });
   };
-
-  const forAxios=()=>{
-    axios.post('http://localhost:5000/login', {
-      email    : state.data.email,
-      password : state.data.password
-    })
-  .then(response => {
-    console.log(state)
-    console.log(response)
-    setState(!state.isLoggedIn)
-  })
-  }
-
 
   const validateProperty = ({ name, value }) => {
     const inputField = { [name]: value };
@@ -66,36 +89,33 @@ function Login() {
 
   const validate = () => {
     const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(state.data, {
+    const { error } = formSchema.validate(data, {
       abortEarly: false,
     });
 
     if (!error) return null;
 
-    const errors = {};
-    for (let item of error.details) {
-      errors[item.path[0]] = item.message;
+    const allErrors = {};
+    for (let err of error.details) {
+      allErrors[err.path[0]] = err.message;
     }
-    return errors;
+    return allErrors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
 
-    const errors = { ...state.errors };
+    const allErrors = { ...errors };
     const errorMsg = validateProperty(e.target);
     if (errorMsg) {
-      errors[e.target.name] = errorMsg;
+      allErrors[name] = errorMsg;
     } else {
-      delete errors[e.target.name];
+      delete allErrors[name];
     }
-    const data = { ...state.data };
-    data[e.target.name] = e.target.value;
-    setState({ data, errors });
+    const updatedData = { ...data };
+    updatedData[name] = value;
+    setData(updatedData);
+    setErrors(allErrors);
   };
 
   return (
@@ -126,12 +146,10 @@ function Login() {
               variant="outlined"
               style={margin}
               name="email"
-              value={state.email}
+              value={data.email}
               onChange={handleChange}
-              error={state.errors && state.errors.email}
-              helperText={
-                state.errors && state.errors.email ? state.errors.email : null
-              }
+              error={errors && errors.email}
+              helperText={errors && errors.email ? errors.email : null}
             />
 
             <TextField
@@ -143,14 +161,10 @@ function Login() {
               variant="outlined"
               style={margin}
               name="password"
-              value={state.password}
+              value={data.password}
               onChange={handleChange}
-              error={state.errors && state.errors.password}
-              helperText={
-                state.errors && state.errors.password
-                  ? state.errors.password
-                  : null
-              }
+              error={errors && errors.password}
+              helperText={errors && errors.password ? errors.password : null}
             />
 
             <Typography style={margin}>
@@ -162,10 +176,10 @@ function Login() {
               color="primary"
               fullWidth
               style={{ marginTop: "20px", backgroundColor: "#E94364" }}
-              onClick={function(event){handleClick(); forAxios();}}
+              onClick={handleClick}
               disabled={validate() ? true : false}
             >
-              <Link to="/home">Login</Link>
+              Login
             </Button>
 
             <Grid align="center">

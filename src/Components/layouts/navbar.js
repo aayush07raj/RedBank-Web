@@ -88,14 +88,19 @@ export default function MenuAppBar() {
               onClose={handleClose}
             >
               <MenuItem onClick={handleClose}>
-                <Link to="/about">Buy Blood</Link>
+                <Link to="/BuyBlood">Buy Blood</Link>
               </MenuItem>
               <MenuItem onClick={handleClose}>
                 <Link to="/FindDonors">Find Donors</Link>
               </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyCommitments">My Commitments</Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyPurchases">My Purchases</Link>
+              </MenuItem>
               <MenuItem onClick={handleClose}>Active Donor Request</MenuItem>
-              <MenuItem onClick={handleClose}>My Purchase</MenuItem>
-              <MenuItem onClick={handleClose}>My Commitments</MenuItem>
+        
               <MenuItem onClick={handleClose}>
                 <Link to="/UpcomingDrive">Upcoming Drive</Link></MenuItem>
             </Menu>
