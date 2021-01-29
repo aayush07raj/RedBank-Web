@@ -11,9 +11,9 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
-import { Navbar, Footer } from "../../layouts/";
-import statesData from "../../Auth/states.json";
-import Table from "../../screen/services/useTable";
+import { Navbar, Footer } from "../../../layouts/";
+import statesData from "../../../Auth/states.json";
+import Table from "./useTable";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

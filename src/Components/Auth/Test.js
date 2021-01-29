@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import { Navbar } from "../layouts/";
 import statesData from "../Auth/states.json";
-import Table from "../screen/services/useTable";
+import Table from "../screen/services/findDonor/useTable";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

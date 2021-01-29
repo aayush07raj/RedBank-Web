@@ -96,7 +96,8 @@ export default function MenuAppBar() {
               <MenuItem onClick={handleClose}>Active Donor Request</MenuItem>
               <MenuItem onClick={handleClose}>My Purchase</MenuItem>
               <MenuItem onClick={handleClose}>My Commitments</MenuItem>
-              <MenuItem onClick={handleClose}>Upcoming Drives</MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/UpcomingDrive">Upcoming Drive</Link></MenuItem>
             </Menu>
             <Button
               color="inherit"
