@@ -22,16 +22,15 @@ import Button from '@material-ui/core/Button';
 
 import SendIcon from "@material-ui/icons/Send";
 
-function createData(name, contact, address,  district,state, pincode) {
-  return { name, contact, address,  district,state, pincode};
+function createData(name, contact, bg) {
+  return { name, contact, bg };
 }
 
 const rows = [
-  createData("ABCD Hospital", 2021482, "MG Road", "Bangalore", "Karnataka", 800024),
-  createData("Lilawati Hospital", 213305, "Civil Lines", "", 4.2, 768021),
-  createData("Eclair", 262, 16.0, 24, 6.0, 123456),
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0,986542),
-
+  createData("Ranjan", 9199223344, "B+"),
+  createData("Suresh", 9877655431, "A+"),
+  createData("Ramesh", 7876526183, "A+"),
+  createData("Frozen", 9012311529, "B+"),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -68,11 +67,12 @@ const headCells = [
     label: "Name",
   },
   { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
-  { id: "address", numeric: true, disablePadding: false, label: "Address" },
-  { id: "district", numeric: true, disablePadding: false, label: "District" },
-  { id: "state", numeric: true, disablePadding: false, label: "State" },
-  { id: "Pincode", numeric: true, disablePadding: false, label: "Pincode" },
-  { id: "actions", label:"Actions",disableSorting: true}
+  {
+    id: "bg",
+    numeric: true,
+    disablePadding: false,
+    label: "Blood Group",
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -186,19 +186,14 @@ const EnhancedTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          List of all available Blood Banks
+          List of all sent Requets
         </Typography>
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Send Notification">
-          <IconButton aria-label="send">
-            <SendIcon
-              onClick={(e) => {
-                handleSend(e, data);
-              }}
-            />
-          </IconButton>
+        <Tooltip title="Expire Request">
+          <Button variant="contained">Expire</Button>
+          {/* </IconButton> */}
         </Tooltip>
       ) : null}
     </Toolbar>
@@ -329,7 +324,7 @@ export default function EnhancedTable() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.contact}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -347,11 +342,8 @@ export default function EnhancedTable() {
                         {row.name}
                       </TableCell>
                       <TableCell align="right">{row.contact}</TableCell>
-                      <TableCell align="right">{row.address}</TableCell>
-                      <TableCell align="right">{row.district}</TableCell>
-                      <TableCell align="right">{row.state}</TableCell>
-                      <TableCell align="right">{row.pincode}</TableCell>
-                      <TableCell><Button variant="contained">Buy</Button></TableCell>
+                      <TableCell align="right">{row.bg}</TableCell>
+                      {/* Has given Blood checkbox */}
                     </TableRow>
                   );
                 })}

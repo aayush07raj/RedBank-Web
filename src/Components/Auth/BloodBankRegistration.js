@@ -17,7 +17,8 @@ import bloodbank from "./images/bloodbank.jpg";
 import states from "./states.json";
 import Joi from "joi";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
-
+import axios from "axios";
+import logging from "../../redux/Actions/login";
 import { useSelector, useDispatch } from "react-redux";
 import registerBloodBank from "../../redux/Actions/registerBloodBank";
 
@@ -36,6 +37,7 @@ function BloodBankRegistration() {
     terms: false,
   });
 
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -116,9 +118,38 @@ function BloodBankRegistration() {
     setErrors({ errors: errors || {} });
     if (errors) return;
 
-    dispatch(registerBloodBank(data));
-    history.push("/home");
+    axios
+      .post("http://localhost:5000/login", {
+        email: data.email,
+        password: data.password,
+      })
+      .then(function (response) {
+        if (response.data.success) {
+          setIsLoggedIn(true);
+          console.log(isLoggedIn);
+          dispatch(logging(isLoggedIn));
+          history.push("/home");
+        } else {
+          console.log(response.data.error)
+          if (response.data.error.includes("email")) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              email: response.data.error,
+            }));
+          } else if (response.data.error.includes("password")) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              password: response.data.error,
+            }));
+          }
+        }
+      })
+      .catch(function (error) {
+        window.alert(error.message);
+      });
   };
+
+  
 
   const schema = {
     name: Joi.string().min(3).max(30).required(),
@@ -387,6 +418,7 @@ function BloodBankRegistration() {
                 }}
                 type="submit"
                 disabled={validate()}
+                // onClick={function(event){handleSubmit(); forAxios();}}
                 onClick={handleSubmit}
               >
                 {/* <Link to="/home">Sign up</Link> */}

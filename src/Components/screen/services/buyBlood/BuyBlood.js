@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Container,
   Grid,
+  Typography,
   makeStyles,
   Paper,
   FormControl,
@@ -23,6 +24,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
+  paper2: {
+    width: "100%",
+
+    flexDirection: "column",
+    margin: "auto",
+    padding: theme.spacing(4),
+  },
+  
   formControl: {
     marginTop: theme.spacing(3),
     minWidth: 250,
@@ -74,9 +83,16 @@ function FindDonors() {
   return (
     <>
       <Navbar />
+      <Paper square elevation={5} className={classes.paper2}>
+        <Typography variant="h4">Buy Blood</Typography>
+        {/* <Typography variant="h6">
+          Here you can view all the types of donations you have done since your
+          registration
+        </Typography> */}
+      </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">
-          <Grid item>
+          <Grid item >
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
                 <h2 style={{ marginTop: "10px" }} align="center">

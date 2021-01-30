@@ -99,8 +99,9 @@ export default function MenuAppBar() {
               <MenuItem onClick={handleClose}>
                 <Link to="/MyPurchases">My Purchases</Link>
               </MenuItem>
-              <MenuItem onClick={handleClose}>Active Donor Request</MenuItem>
-        
+              <MenuItem onClick={handleClose}>
+                 <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                 </MenuItem>
               <MenuItem onClick={handleClose}>
                 <Link to="/UpcomingDrive">Upcoming Drive</Link></MenuItem>
             </Menu>

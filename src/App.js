@@ -12,6 +12,7 @@ import BloodBankRegistration from "./Components/Auth/BloodBankRegistration";
 import Home from "./Components/screen/home";
 import Terms from "./Components/Auth/terms";
 import Test from "./Components/Auth/Test";
+import Profile from "./Components/screen/profile/index";
 
 //profile pages
 // import MainIndividual from "./Components/screen/profile/Individual/MainIndividual";
@@ -23,6 +24,7 @@ import UpcomingDrive from "./Components/screen/services/upcomingDrive/UpcomingDr
 import BuyBlood from "./Components/screen/services/buyBlood/BuyBlood";
 import MyCommitments from "./Components/screen/services/myCommitments/MyCommitments";
 import MyPurchases from "./Components/screen/services/myPurchases/MyPurchases";
+import ActiveDonorReq from "./Components/screen/services/activeDonorReq/ActiveDonorReq";
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -33,6 +35,7 @@ function App() {
       <Provider store={store}>
         <Switch>
           <Route exact path="/home" component={Home} />
+          <Route exact path="/profile" component={Profile}/>
           <Route exact path="/terms" component={Terms} />
           <Route exact path="/" component={Login} />
           <Route exact path="/ForgotPassword" component={ForgotPassword} />
@@ -60,7 +63,8 @@ function App() {
 
           {/* <Route exact path="/MainIndividual" component={MainIndividual} />
           <Route exact path="/MainHospital" component={MainHospital} /> */}
-
+          
+          <Route exact path="/ActiveDonorReq" component={ActiveDonorReq} />
           <Route exact path="/FindDonors" component={FindDonors} />
           <Route exact path="/UpcomingDrive" component={UpcomingDrive} />
           <Route exact path="/BuyBlood" component={BuyBlood} />

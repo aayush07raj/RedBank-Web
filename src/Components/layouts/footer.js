@@ -7,20 +7,6 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Logo from "./logo.svg";
 
-
-function Copyright() {
-    return (
-      <Typography variant="body2" color="textSecondary">
-        {'Copyright © '}
-        <Link color="inherit" href="https://material-ui.com/">
-          Your Website
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
