@@ -14,6 +14,7 @@ import {
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
+import Joi from "joi";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,82 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const headCells = [
-//   {
-//     id: "fullName",
-//     label: "Full Name",
-//   },
-//   {
-//     id: "email",
-//     label: "Email",
-//   },
-//   {
-//     id: "contact",
-//     label: "Contact",
-//   },
-//   {
-//     id: "address",
-//     label: "Address",
-//   },
-//   {
-//     id: "bg",
-//     label: "Blood Group",
-//   },
-// ];
-
 function FindDonors() {
-  // const records = [
-  //   {
-  //     Fullname: "A",
-  //     Email: "saditya@gmail.com",
-  //     Contact: "123456789",
-  //     Address: "asdasdadasd",
-  //     BloodGroup: "A+",
-  //   },
-  //   {
-  //     Fullname: "B",
-  //     Email: "saditya@gmail.com",
-  //     Contact: "123456789",
-  //     Address: "asdasdadasd",
-  //     BloodGroup: "A+",
-  //   },
-  //   {
-  //     Fullname: "Cr",
-  //     Email: "saditya@gmail.com",
-  //     Contact: "123456789",
-  //     Address: "asdasdadasd",
-  //     BloodGroup: "A+",
-  //   },
-  //   {
-  //     Fullname: "D",
-  //     Email: "saditya@gmail.com",
-  //     Contact: "123456789",
-  //     Address: "asdasdadasd",
-  //     BloodGroup: "A+",
-  //   },
-  //   {
-  //     Fullname: "E",
-  //     Email: "saditya@gmail.com",
-  //     Contact: "123456789",
-  //     Address: "asdasdadasd",
-  //     BloodGroup: "A+",
-  //   },
-  //   {
-  //     Fullname: "F",
-  //     Email: "saditya@gmail.com",
-  //     Contact: "123456789",
-  //     Address: "asdasdadasd",
-  //     BloodGroup: "A+",
-  //   },
-  //   {
-  //     Fullname: "G",
-  //     Email: "saditya@gmail.com",
-  //     Contact: "123456789",
-  //     Address: "asdasdadasd",
-  //     BloodGroup: "A+",
-  //   },
-  // ];
-
   const [data, setData] = useState({
     state: "",
     district: "",
@@ -119,22 +45,65 @@ function FindDonors() {
     bg: [],
   });
 
+  const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
   const classes = useStyles();
 
+  const schema = {
+    state: Joi.string().required(),
+    district: Joi.string().required(),
+    pincode: Joi.number()
+      .positive()
+      .min(6)
+      .message("Pincode must contain 6 digits")
+      .required(),
+    bg: Joi.required(),
+  };
+
   const handleChange = (e) => {
-    if (e.target.name === "state") {
+    const { name, value } = e.target;
+
+    if (name === "state") {
       setEnable(false);
       setSelectedStateIndex(
-        statesData.states.findIndex((item) => item.state === e.target.value)
+        statesData.states.findIndex((item) => item.state === value)
       );
     }
 
-    setData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }));
+    const allErrors = { ...errors };
+    const errorMsg = validateProperty(e.target);
+    if (errorMsg) {
+      allErrors[name] = errorMsg;
+    } else {
+      delete allErrors[name];
+    }
+    const updatedData = { ...data };
+    updatedData[name] = value;
+    setData(updatedData);
+    setErrors(allErrors);
+  };
+
+  const validateProperty = ({ name, value }) => {
+    const inputField = { [name]: value };
+    const fieldSchema = Joi.object({ [name]: schema[name] });
+    const { error } = fieldSchema.validate(inputField);
+    return error ? error.details[0].message : null;
+  };
+
+  const validate = () => {
+    const formSchema = Joi.object(schema);
+    const { error } = formSchema.validate(data, {
+      abortEarly: false,
+    });
+
+    if (!error) return null;
+
+    const allErrors = {};
+    for (let err of error.details) {
+      allErrors[err.path[0]] = err.message;
+    }
+    return allErrors;
   };
 
   const handleSubmit = (e) => {
@@ -161,6 +130,8 @@ function FindDonors() {
                     value={data.state}
                     onChange={handleChange}
                     label="Select your State"
+                    error={errors && errors.state ? true : false}
+                    helperText={errors && errors.state ? errors.state : null}
                   >
                     {statesData.states.map((item, id) => (
                       <MenuItem key={id} value={item.state}>
@@ -178,6 +149,10 @@ function FindDonors() {
                     value={data.district}
                     onChange={handleChange}
                     label="Select your District"
+                    error={errors && errors.district ? true : false}
+                    helperText={
+                      errors && errors.district ? errors.district : null
+                    }
                   >
                     {statesData.states[selectedStateIndex].districts.map(
                       (item, id) => (
@@ -197,17 +172,22 @@ function FindDonors() {
                   value={data.pincode}
                   variant="outlined"
                   onChange={handleChange}
-                  inputProps={{ maxLength: 10 }}
+                  inputProps={{ maxLength: 6 }}
+                  error={errors && errors.pincode ? true : false}
+                  helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select required Blood Groups</InputLabel>
                   <Select
+                    required
                     multiple
                     label="Select required Blood Groups"
                     name="bg"
                     onChange={handleChange}
                     value={data.bg}
+                    error={errors && errors.bg ? true : false}
+                    helperText={errors && errors.bg ? errors.bg : null}
                   >
                     <MenuItem value={"A+"}>A+</MenuItem>
                     <MenuItem value={"A-"}>A-</MenuItem>
@@ -224,6 +204,7 @@ function FindDonors() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
+                  disabled={validate() ? true : false}
                 >
                   Search
                 </Button>

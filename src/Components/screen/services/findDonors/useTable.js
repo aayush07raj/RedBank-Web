@@ -18,6 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import Button from '@material-ui/core/Button';
 
 import SendIcon from "@material-ui/icons/Send";
 
@@ -26,19 +27,13 @@ function createData(name, contact, address, email, bg) {
 }
 
 const rows = [
-  createData("Cupcak a", 304, 3.7, 67, 4.3),
-  createData("Cupcake a", 305, 3.5, 63, 4.2),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Honeycomb", 408, 3.2, 87, 6.5),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Jelly Bean", 375, 0.0, 94, 0.0),
-  createData("KitKat", 518, 26.0, 65, 7.0),
-  createData("Lollipop", 392, 0.2, 98, 0.0),
-  createData("Marshmallow", 318, 0, 81, 2.0),
-  createData("Nougat", 360, 19.0, 9, 37.0),
-  createData("Oreo", 437, 18.0, 63, 4.0),
+  createData("Batman", 7972922927, "Wayne Manor", "btswad@.com", "AB-"),
+  createData("Superman", 7972921127, "Metro City", "supwad@.com", "B-"),
+  createData("Ras-a-gul", 7971122927, "Wayne Manor", "btsad@.com", "A-"),
+  createData("Joker", 7972912927, "Arkham Asylum", "joke@joke.com", "B+"),
+  createData("Croc", 7972912117, "Arkham Asylum", "joke@joke.com", "B+"),
+  createData("Bane", 797291907, "Arkham Asylum", "joke@joke.com", "B+"),
+ 
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -113,6 +108,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
+            style={{  fontWeight: "bold" }}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
@@ -202,13 +198,7 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Send Notification">
-          <IconButton aria-label="send">
-            <SendIcon
-              onClick={(e) => {
-                handleSend(e, data);
-              }}
-            />
-          </IconButton>
+          <Button variant="contained">Send</Button>
         </Tooltip>
       ) : null}
     </Toolbar>

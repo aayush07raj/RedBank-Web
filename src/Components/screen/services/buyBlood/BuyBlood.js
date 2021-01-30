@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Container,
   Grid,
-  Typography,
   makeStyles,
   Paper,
   FormControl,
@@ -15,6 +14,7 @@ import {
 import { Navbar, Footer } from "../../../layouts/";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
+import Joi from "joi";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -24,14 +24,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  paper2: {
-    width: "100%",
-
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
-  },
-  
   formControl: {
     marginTop: theme.spacing(3),
     minWidth: 250,
@@ -45,9 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 function FindDonors() {
-
   const [data, setData] = useState({
     state: "",
     district: "",
@@ -57,22 +47,67 @@ function FindDonors() {
     units: "",
   });
 
+  const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
   const classes = useStyles();
 
+  const schema = {
+    state: Joi.string().required(),
+    district: Joi.string().required(),
+    pincode: Joi.number()
+      .positive()
+      .min(6)
+      .message("Pincode must contain 6 digits")
+      .required(),
+    bg: Joi.required(),
+    component: Joi.string().required(),
+    units: Joi.number().required(),
+  };
+
   const handleChange = (e) => {
-    if (e.target.name === "state") {
+    const { name, value } = e.target;
+
+    if (name === "state") {
       setEnable(false);
       setSelectedStateIndex(
-        statesData.states.findIndex((item) => item.state === e.target.value)
+        statesData.states.findIndex((item) => item.state === value)
       );
     }
 
-    setData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }));
+    const allErrors = { ...errors };
+    const errorMsg = validateProperty(e.target);
+    if (errorMsg) {
+      allErrors[name] = errorMsg;
+    } else {
+      delete allErrors[name];
+    }
+    const updatedData = { ...data };
+    updatedData[name] = value;
+    setData(updatedData);
+    setErrors(allErrors);
+  };
+
+  const validateProperty = ({ name, value }) => {
+    const inputField = { [name]: value };
+    const fieldSchema = Joi.object({ [name]: schema[name] });
+    const { error } = fieldSchema.validate(inputField);
+    return error ? error.details[0].message : null;
+  };
+
+  const validate = () => {
+    const formSchema = Joi.object(schema);
+    const { error } = formSchema.validate(data, {
+      abortEarly: false,
+    });
+
+    if (!error) return null;
+
+    const allErrors = {};
+    for (let err of error.details) {
+      allErrors[err.path[0]] = err.message;
+    }
+    return allErrors;
   };
 
   const handleSubmit = (e) => {
@@ -83,16 +118,9 @@ function FindDonors() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.paper2}>
-        <Typography variant="h4">Buy Blood</Typography>
-        {/* <Typography variant="h6">
-          Here you can view all the types of donations you have done since your
-          registration
-        </Typography> */}
-      </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">
-          <Grid item >
+          <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
                 <h2 style={{ marginTop: "10px" }} align="center">
@@ -106,8 +134,9 @@ function FindDonors() {
                     value={data.state}
                     onChange={handleChange}
                     label="Select your State"
+                    error={errors && errors.state ? true : false}
+                    helperText={errors && errors.state ? errors.state : null}
                   >
-                   
                     {statesData.states.map((item, id) => (
                       <MenuItem key={id} value={item.state}>
                         {item.state}
@@ -124,8 +153,11 @@ function FindDonors() {
                     value={data.district}
                     onChange={handleChange}
                     label="Select your District"
+                    error={errors && errors.district ? true : false}
+                    helperText={
+                      errors && errors.district ? errors.district : null
+                    }
                   >
-                    
                     {statesData.states[selectedStateIndex].districts.map(
                       (item, id) => (
                         <MenuItem key={id} value={item}>
@@ -144,16 +176,20 @@ function FindDonors() {
                   value={data.pincode}
                   variant="outlined"
                   onChange={handleChange}
-                  inputProps={{ maxLength: 10 }}
+                  inputProps={{ maxLength: 6 }}
+                  error={errors && errors.pincode ? true : false}
+                  helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select required Blood Groups</InputLabel>
+                  <InputLabel>Select required Blood Group</InputLabel>
                   <Select
-                    label="Select required Blood Groups"
+                    label="Select required Blood Group"
                     name="bg"
                     onChange={handleChange}
                     value={data.bg}
+                    error={errors && errors.bg ? true : false}
+                    helperText={errors && errors.bg ? errors.bg : null}
                   >
                     <MenuItem value={"A+"}>A+</MenuItem>
                     <MenuItem value={"A-"}>A-</MenuItem>
@@ -166,19 +202,23 @@ function FindDonors() {
                   </Select>
                 </FormControl>
 
-                 <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select Component</InputLabel>
                   <Select
                     label="Select Component"
                     name="component"
                     onChange={handleChange}
                     value={data.component}
+                    error={errors && errors.component ? true : false}
+                    helperText={
+                      errors && errors.component ? errors.component : null
+                    }
                   >
                     <MenuItem value={"Blood"}>Blood</MenuItem>
                     <MenuItem value={"Plasma"}>Plasma</MenuItem>
                     <MenuItem value={"Platelets"}>Platelets</MenuItem>
                   </Select>
-                </FormControl> 
+                </FormControl>
 
                 <TextField
                   className={classes.formControl}
@@ -188,12 +228,15 @@ function FindDonors() {
                   value={data.units}
                   variant="outlined"
                   onChange={handleChange}
-                  inputProps={{ maxLength: 10 }}
-                />           
+                  inputProps={{ maxLength: 4 }}
+                  error={errors && errors.units ? true : false}
+                  helperText={errors && errors.units ? errors.units : null}
+                />
                 <Button
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
+                  disabled={validate() ? true : false}
                 >
                   Search
                 </Button>
@@ -205,7 +248,7 @@ function FindDonors() {
           </Grid>
         </Grid>
       </Container>
-      <Footer/>
+      <Footer />
     </>
   );
 }

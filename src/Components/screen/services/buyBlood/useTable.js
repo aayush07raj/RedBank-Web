@@ -13,25 +13,74 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
+// import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 
 import SendIcon from "@material-ui/icons/Send";
 
-function createData(name, contact, address,  district,state, pincode) {
-  return { name, contact, address,  district,state, pincode};
+function createData(name, contact, address, district, state, pincode, price) {
+  return { name, contact, address, district, state, pincode, price };
 }
 
 const rows = [
-  createData("ABCD Hospital", 2021482, "MG Road", "Bangalore", "Karnataka", 800024),
-  createData("Lilawati Hospital", 213305, "Civil Lines", "", 4.2, 768021),
-  createData("Eclair", 262, 16.0, 24, 6.0, 123456),
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0,986542),
-
+  createData(
+    "ABCD Hospital",
+    1021482,
+    "MG Road",
+    "Bangalore",
+    "Karnataka",
+    80002, 
+    "900"
+  ),
+  createData(
+    "Acas Hospital",
+    2021482,
+    "NG Road",
+    "Cangalore",
+    "Larnataka",
+    80003,
+    "400"
+  ),
+  createData(
+    "AB Hospital",
+    3021482,
+    "OG Road",
+    "Dangalore",
+    "Marnataka",
+    80004,
+    "200"
+  ),
+  createData(
+    "mnop hospital",
+    4021482,
+    "PG Road",
+    "Eangalore",
+    "Narnataka",
+    80005,
+    "800"
+  ),
+  createData(
+    "AIIMS hospital",
+    4021482,
+    "PG Road",
+    "Eangalore",
+    "Narnataka",
+    80005,
+    "800"
+  ),
+  createData(
+    "QWR hospital",
+    4021482,
+    "PG Road",
+    "Eangalore",
+    "Narnataka",
+    80005,
+    "800"
+  ),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -64,27 +113,20 @@ const headCells = [
   {
     id: "name",
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: "Name",
   },
   { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
   { id: "address", numeric: true, disablePadding: false, label: "Address" },
   { id: "district", numeric: true, disablePadding: false, label: "District" },
   { id: "state", numeric: true, disablePadding: false, label: "State" },
-  { id: "Pincode", numeric: true, disablePadding: false, label: "Pincode" },
-  { id: "actions", label:"Actions",disableSorting: true}
+  { id: "pincode", numeric: true, disablePadding: false, label: "Pincode" },
+  { id: "price", numeric: true, disablePadding: false, label: "Price (Rs.)" },
+  { id: "actions", label: "Actions", disableSorting: true },
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    classes,
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -92,19 +134,11 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all desserts" }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "default"}
+            style={{ paddingLeft: "20px", fontWeight: "bold" }}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -160,53 +194,22 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, data } = props;
 
-  function handleSend(e, data) {
-    console.log(data);
-  }
-
   return (
     <Toolbar
       className={clsx(classes.root, {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          className={classes.title}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          List of all available Blood Banks
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Send Notification">
-          <IconButton aria-label="send">
-            <SendIcon
-              onClick={(e) => {
-                handleSend(e, data);
-              }}
-            />
-          </IconButton>
-        </Tooltip>
-      ) : null}
+      <Typography
+        className={classes.title}
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        List of all available Blood Banks
+      </Typography>
     </Toolbar>
   );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -248,35 +251,6 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.contact);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -298,7 +272,7 @@ export default function EnhancedTable() {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} data={selected} />
+        <EnhancedTableToolbar />
         <TableContainer>
           <Table
             className={classes.table}
@@ -308,42 +282,24 @@ export default function EnhancedTable() {
           >
             <EnhancedTableHead
               classes={classes}
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.contact);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.contact)}
                       role="checkbox"
-                      aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.name}
-                      selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
+                      <TableCell component="th" id={labelId} scope="row">
                         {row.name}
                       </TableCell>
                       <TableCell align="right">{row.contact}</TableCell>
@@ -351,7 +307,10 @@ export default function EnhancedTable() {
                       <TableCell align="right">{row.district}</TableCell>
                       <TableCell align="right">{row.state}</TableCell>
                       <TableCell align="right">{row.pincode}</TableCell>
-                      <TableCell><Button variant="contained">Buy</Button></TableCell>
+                      <TableCell align="right">{row.price}</TableCell>
+                      <TableCell>
+                        <Button variant="contained">Buy</Button>
+                      </TableCell>
                     </TableRow>
                   );
                 })}

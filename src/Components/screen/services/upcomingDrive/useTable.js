@@ -19,15 +19,19 @@ import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import SendIcon from "@material-ui/icons/Send";
+import Button from "@material-ui/core/Button";
 
 function createData(name, contact, date, time, address, state, district, pincode, bg) {
   return { name, contact, date, time, address, state, district, pincode, bg };
 }
 
 const rows = [
-  createData("John Doe",'1','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-  createData("Johnq Cena",'2','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-  createData("Johnq C1221ena",'2','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+  createData("John Doe",'9321764391','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+  createData("Martin Luther",'913213432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+  createData("Hitler",'9231234325','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+  createData("Gandhi",'9169312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+  createData("Sameer",'9179312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+  createData("Pope",'9119312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -101,6 +105,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
+            style={{  fontWeight: "bold" }}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
@@ -189,14 +194,8 @@ const EnhancedTableToolbar = (props) => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Send Notification">
-          <IconButton aria-label="send">
-            <SendIcon
-              onClick={(e) => {
-                handleSend(e, data);
-              }}
-            />
-          </IconButton>
+        <Tooltip title="Apply for Donation">
+          <Button variant="contained">Apply</Button>
         </Tooltip>
       ) : null}
     </Toolbar>

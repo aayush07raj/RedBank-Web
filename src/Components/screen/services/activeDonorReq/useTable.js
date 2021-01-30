@@ -27,9 +27,10 @@ function createData(name, contact, bg) {
 }
 
 const rows = [
-  createData("Ranjan", 9199223344, "B+"),
+  createData("Night King", 9199223344, "B+"),
   createData("Suresh", 9877655431, "A+"),
   createData("Ramesh", 7876526183, "A+"),
+  createData("Kim", 7876521111, "A+"),
   createData("Frozen", 9012311529, "B+"),
 ];
 
@@ -103,6 +104,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
+            style={{  fontWeight: "bold" }}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
