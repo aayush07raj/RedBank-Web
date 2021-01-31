@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
@@ -45,6 +45,10 @@ function UpcomingDrive() {
     pincode: "",
   });
 
+  const [driveList, setState] = useState([]);
+  useEffect(() => {
+  },[driveList])
+
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
@@ -59,7 +63,6 @@ function UpcomingDrive() {
       .message("Pincode must contain 6 digits")
       .required(),
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -108,7 +111,7 @@ function UpcomingDrive() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
+    // console.log(data);
   };
 
   const forAxios = () => {
@@ -116,8 +119,8 @@ function UpcomingDrive() {
       pincode:data.pincode
     })
     .then(function (response) {
-      console.log("working")
-      console.log(response)
+      setState(response.data.upcomingDrivesList)
+      // console.log(driveList)
     })
   }
 
@@ -199,7 +202,11 @@ function UpcomingDrive() {
             </form>
           </Grid>
           <Grid item xs={12} className={classes.tableContainer}>
-            <Table />
+            {driveList.length === 0 ? (
+              <h3 align="center">Results will be displayed here</h3>
+            ):(
+            <Table list={driveList} />
+            )}
           </Grid>
         </Grid>
       </Container>

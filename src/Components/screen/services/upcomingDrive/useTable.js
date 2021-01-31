@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
@@ -21,18 +21,18 @@ import Switch from "@material-ui/core/Switch";
 import SendIcon from "@material-ui/icons/Send";
 import Button from "@material-ui/core/Button";
 
-function createData(name, contact, date, time, address, state, district, pincode, bg) {
-  return { name, contact, date, time, address, state, district, pincode, bg };
-}
+// function createData(name, contact, date, time, address, state, district, pincode, bg) {
+//   return { name, contact, date, time, address, state, district, pincode, bg };
+// }
 
-const rows = [
-  createData("John Doe",'9321764391','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-  createData("Martin Luther",'913213432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-  createData("Hitler",'9231234325','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-  createData("Gandhi",'9169312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-  createData("Sameer",'9179312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-  createData("Pope",'9119312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-];
+// const rows = [
+//   createData("John Doe",'9321764391','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+//   createData("Martin Luther",'913213432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+//   createData("Hitler",'9231234325','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+//   createData("Gandhi",'9169312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+//   createData("Sameer",'9179312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+//   createData("Pope",'9119312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
+// ];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -230,7 +230,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable({list}) {
+  // console.log(props.list)
+  // const [list, setState] =useState(props.list);
+  var List = [];
+  list.map((item)=>{
+    List.push(item);
+  })
+  console.log(list)
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
@@ -247,7 +254,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.contact);
+      const newSelecteds = List.map((n) => n.contact);
       setSelected(newSelecteds);
       return;
     }
@@ -290,7 +297,7 @@ export default function EnhancedTable() {
   const isSelected = (contact) => selected.indexOf(contact) !== -1;
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -310,10 +317,10 @@ export default function EnhancedTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={List.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.contact);
@@ -365,7 +372,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={List.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
