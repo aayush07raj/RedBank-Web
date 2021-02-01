@@ -22,9 +22,14 @@ import Profile from "./Components/screen/profile/index";
 import FindDonors from "./Components/screen/services/findDonors/FindDonors";
 import UpcomingDrive from "./Components/screen/services/upcomingDrive/UpcomingDrive";
 import BuyBlood from "./Components/screen/services/buyBlood/BuyBlood";
+import Product from "./Components/screen/services/buyBlood/product";
 import MyCommitments from "./Components/screen/services/myCommitments/MyCommitments";
 import MyPurchases from "./Components/screen/services/myPurchases/MyPurchases";
 import ActiveDonorReq from "./Components/screen/services/activeDonorReq/ActiveDonorReq";
+import ConductDrive from "./Components/screen/services/conductDrive/conductDrive";
+import MyDrives from "./Components/screen/services/myDrives/myDrives";
+import DriveList from "./Components/screen/services/myDrives/driveList";
+import MyInventory from "./Components/screen/services/myInventory/myInventory";
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -68,8 +73,13 @@ function App() {
           <Route exact path="/FindDonors" component={FindDonors} />
           <Route exact path="/UpcomingDrive" component={UpcomingDrive} />
           <Route exact path="/BuyBlood" component={BuyBlood} />
+          <Route exact path="/BuyBlood/Product" component={Product}/>
           <Route exact path="/MyCommitments" component={MyCommitments} />
           <Route exact path="/MyPurchases" component={MyPurchases} />
+          <Route exact path="/ConductDrive" component={ConductDrive} />
+          <Route exact path="/MyDrives" component={MyDrives} />
+          <Route exact path="/MyDrives/DriveList" component={DriveList} />
+          <Route exact path="/MyInventory" component={MyInventory} />
         </Switch>
       </Provider>
     </>

@@ -103,7 +103,13 @@ export default function MenuAppBar() {
                  <Link to="/ActiveDonorReq">Active Donor Request</Link>
                  </MenuItem>
               <MenuItem onClick={handleClose}>
-                <Link to="/UpcomingDrive">Upcoming Drive</Link></MenuItem>
+                <Link to="/UpcomingDrive">Upcoming Drives</Link></MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/ConductDrive">Conduct Drive</Link></MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyDrives">My Drives</Link></MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyInventory">My Inventory</Link></MenuItem>    
             </Menu>
             <Button
               color="inherit"
