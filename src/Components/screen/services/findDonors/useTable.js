@@ -18,23 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import Button from '@material-ui/core/Button';
-
-import SendIcon from "@material-ui/icons/Send";
-
-function createData(name, contact, address, email, bg) {
-  return { name, contact, address, email, bg };
-}
-
-const rows = [
-  createData("Batman", 7972922927, "Wayne Manor", "btswad@.com", "AB-"),
-  createData("Superman", 7972921127, "Metro City", "supwad@.com", "B-"),
-  createData("Ras-a-gul", 7971122927, "Wayne Manor", "btsad@.com", "A-"),
-  createData("Joker", 7972912927, "Arkham Asylum", "joke@joke.com", "B+"),
-  createData("Croc", 7972912117, "Arkham Asylum", "joke@joke.com", "B+"),
-  createData("Bane", 797291907, "Arkham Asylum", "joke@joke.com", "B+"),
- 
-];
+import Button from "@material-ui/core/Button";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -70,7 +54,7 @@ const headCells = [
     label: "Name",
   },
   { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
-  { id: "address", numeric: true, disablePadding: false, label: "Address" },
+  { id: "addrr", numeric: true, disablePadding: false, label: "Address" },
   { id: "email", numeric: true, disablePadding: false, label: "Email" },
   {
     id: "bg",
@@ -108,8 +92,8 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            style={{  fontWeight: "bold" }}
-            align={headCell.numeric ? "right" : "left"}
+            style={{ fontWeight: "bold" }}
+            align="center"
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -233,7 +217,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable({ list }) {
+  var List = [];
+  list.map((item) => {
+    List.push(item);
+  });
+
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
@@ -250,7 +239,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.contact);
+      const newSelecteds = List.map((n) => n.contact);
       setSelected(newSelecteds);
       return;
     }
@@ -293,7 +282,7 @@ export default function EnhancedTable() {
   const isSelected = (contact) => selected.indexOf(contact) !== -1;
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -313,10 +302,10 @@ export default function EnhancedTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={List.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.contact);
@@ -342,14 +331,14 @@ export default function EnhancedTable() {
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
+                        align="center"
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.contact}</TableCell>
-                      <TableCell align="right">{row.address}</TableCell>
-                      <TableCell align="right">{row.email}</TableCell>
-                      <TableCell align="right">{row.bg}</TableCell>
+                      <TableCell align="center">{row.contact}</TableCell>
+                      <TableCell align="center">{row.addrr}</TableCell>
+                      <TableCell align="center">{row.email}</TableCell>
+                      <TableCell align="center">{row.bg}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -364,7 +353,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={List.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

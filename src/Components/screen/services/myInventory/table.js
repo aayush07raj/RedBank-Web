@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,6 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Button, ButtonGroup, Grid, TextField } from "@material-ui/core/";
+import axios from 'axios';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -37,11 +38,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CustomizedTables() {
+  const [data , setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/inventory")
+      .then((response) => {
+        if (response.data.success) {
+          console.log(response)
+          setData(response.data.inventoryData);
+        }
+      })
+      .catch();
+  }, []);
+
+  
+
   const classes = useStyles();
   const [status, setStatus] = useState(true);
 
   const handleEdit = () => {
     setStatus(false);
+    console.log(data)
   };
   const handleSave = () => {
     setStatus(true);
@@ -83,7 +101,7 @@ export default function CustomizedTables() {
                 rowspan={8}
                 align="center"
               >
-                Whole Blood
+                {data.component}
               </StyledTableCell>
               <StyledTableCell align="center">A+</StyledTableCell>
               <StyledTableCell align="center">

@@ -138,7 +138,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align="center"
             style={{ paddingLeft: "20px", fontWeight: "bold" }}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -309,12 +309,12 @@ export default function EnhancedTable() {
                       <TableCell component="th" id={labelId} scope="row">
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.contact}</TableCell>
-                      <TableCell align="right">{row.address}</TableCell>
-                      <TableCell align="right">{row.district}</TableCell>
-                      <TableCell align="right">{row.state}</TableCell>
-                      <TableCell align="right">{row.pincode}</TableCell>
-                      <TableCell align="right">{row.price}</TableCell>
+                      <TableCell align="center">{row.contact}</TableCell>
+                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="center">{row.district}</TableCell>
+                      <TableCell align="center">{row.state}</TableCell>
+                      <TableCell align="center">{row.pincode}</TableCell>
+                      <TableCell align="center">{row.price}</TableCell>
                       <TableCell>
                         <Button type="button" onClick={handleClick} variant="contained">Buy</Button>
                       </TableCell>

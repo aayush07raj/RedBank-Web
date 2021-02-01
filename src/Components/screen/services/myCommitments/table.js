@@ -14,67 +14,6 @@ import Paper from "@material-ui/core/Paper";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 
-function createData(name, calories, fat, carbs, protein, contact, amount) {
-  return { name, calories, fat, carbs, protein, contact, amount };
-}
-
-const rows = [
-  createData(
-    "Donation",
-    "ABC blood bank",
-    "22/11/1998",
-    "10:00 am",
-    "Yes",
-    "XYZ road, state",
-    129836473
-  ),
-  createData(
-    "Donation",
-    "ABC blood bank",
-    "22/11/1998",
-    "10:00 am",
-    "Yes",
-    "XYZ road, state",
-    129836473
-  ),
-  createData(
-    "Donation",
-    "ABC blood bank",
-    "22/11/1998",
-    "10:00 am",
-    "Yes",
-    "XYZ road, state",
-    129836473
-  ),
-  createData(
-    "Donation",
-    "ABC blood bank",
-    "22/11/1998",
-    "10:00 am",
-    "Yes",
-    "XYZ road, state",
-    129836473
-  ),
-  createData(
-    "Donation",
-    "ABC blood bank",
-    "22/11/1998",
-    "10:00 am",
-    "Yes",
-    "XYZ road, state",
-    129836473
-  ),
-  createData(
-    "Donation",
-    "ABC blood bank",
-    "22/11/1998",
-    "10:00 am",
-    "Yes",
-    "XYZ road, state",
-    129836473
-  ),
-];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -103,51 +42,62 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
+    id: "commitmentType",
     label: "Commitment type",
   },
   {
-    id: "calories",
-    numeric: true,
-    disablePadding: false,
-    label: "Recipient name",
+    id: "Id",
+    label: "Id",
   },
   {
-    id: "fat",
-    numeric: true,
-    disablePadding: false,
-    label: "Date of Commitment",
+    id: "recipient",
+    label: "Recipient",
   },
   {
-    id: "carbs",
-    numeric: true,
-    disablePadding: false,
-    label: "Time of Commitment",
+    id: "recipientType",
+    label: "Recipient Type",
   },
   {
-    id: "protein",
-    numeric: true,
-    disablePadding: false,
+    id: "commitmentDate",
+    label: "Coommitment Date",
+  },
+  {
+    id: "commitmentTime",
+    label: "Commitment Time",
+  },
+  {
+    id: "completed",
     label: "Completed",
   },
-  { id: "contact", numeric: true, disablePadding: false, label: "Address" },
   {
-    id: "amount",
-    numeric: true,
-    disablePadding: false,
-    label: "Contact",
+    id: "address",
+    label: "Address",
+  },
+  {
+    id: "district",
+    label: "District",
+  },
+  {
+    id: "state",
+    label: "State",
+  },
+  {
+    id: "pincode",
+    label: "Pincode",
+  },
+  {
+    id: "recipientContact",
+    label: "Recipient Contact",
   },
 ];
 
 const useHeaderStyles = makeStyles((theme) => ({
   head: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: "bold",
   },
   body: {
-    fontSize: 14,
+    fontSize: 16,
   },
 }));
 
@@ -164,7 +114,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align="center"
             sortDirection={orderBy === headCell.id ? order : false}
             className={headerClasses.head}
           >
@@ -222,10 +172,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable({ list }) {
+  var List = [];
+  list.map((item) => {
+    List.push(item);
+  });
+
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("Id");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -250,7 +205,7 @@ export default function EnhancedTable() {
   };
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -268,20 +223,27 @@ export default function EnhancedTable() {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
-                    <TableRow hover tabIndex={-1} key={row.name}>
-                      <TableCell component="th" id={index} scope="row">
-                        {row.name}
+                    <TableRow hover tabIndex={-1} key={row.commitmentType}>
+                      <TableCell id={index} align="center">
+                        {row.commitmentType}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
-                      <TableCell align="right">{row.contact}</TableCell>
-                      <TableCell align="right">{row.amount}</TableCell>
+                      <TableCell align="center">{row.Id}</TableCell>
+                      <TableCell align="center">{row.recipient}</TableCell>
+                      <TableCell align="center">{row.recipientType}</TableCell>
+                      <TableCell align="center">{row.commitmentDate}</TableCell>
+                      <TableCell align="center">{row.commitmentTime}</TableCell>
+                      <TableCell align="center">{row.compeleted}</TableCell>
+                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="center">{row.district}</TableCell>
+                      <TableCell align="center">{row.state}</TableCell>
+                      <TableCell align="center">{row.pincode}</TableCell>
+                      <TableCell align="center">
+                        {row.recipientContact}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -296,7 +258,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={List.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

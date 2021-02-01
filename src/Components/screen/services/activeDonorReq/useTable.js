@@ -105,7 +105,7 @@ function EnhancedTableHead(props) {
           <TableCell
             key={headCell.id}
             style={{  fontWeight: "bold" }}
-            align={headCell.numeric ? "right" : "left"}
+            align="center"
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -340,11 +340,12 @@ export default function EnhancedTable() {
                         id={labelId}
                         scope="row"
                         padding="none"
+                        align="center"
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.contact}</TableCell>
-                      <TableCell align="right">{row.bg}</TableCell>
+                      <TableCell align="center">{row.contact}</TableCell>
+                      <TableCell align="center">{row.bg}</TableCell>
                       {/* Has given Blood checkbox */}
                     </TableRow>
                   );

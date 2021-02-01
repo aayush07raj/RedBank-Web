@@ -47,15 +47,11 @@ function ConductDrive() {
     startDate: "",
     endTime: "",
     endDate: "",
-    message: ""    
+    message: "",
   });
 
-  const [errors, setErrors] = useState({});
-  const [enable, setEnable] = useState(true);
-  const [selectedStateIndex, setSelectedStateIndex] = useState(0);
-  const classes = useStyles();
-
   const schema = {
+    bg: Joi.required(),
     address: Joi.string().required(),
     state: Joi.string().required(),
     district: Joi.string().required(),
@@ -64,11 +60,38 @@ function ConductDrive() {
       .min(6)
       .message("Pincode must contain 6 digits")
       .required(),
-    startTime: Joi.string(),
-    startDate: Joi.string(),
-    endTime: Joi.string(),
-    endDate: Joi.string(),  
-    bg: Joi.required(),
+    startTime: Joi.string().required(),
+    startDate: Joi.string().required(),
+    endTime: Joi.string().required(),
+    endDate: Joi.string().required(),
+    message: Joi.required(),
+  };
+
+  const [errors, setErrors] = useState({});
+  const [enable, setEnable] = useState(true);
+  const [selectedStateIndex, setSelectedStateIndex] = useState(0);
+  const classes = useStyles();
+
+  const validateProperty = ({ name, value }) => {
+    const inputField = { [name]: value };
+    const fieldSchema = Joi.object({ [name]: schema[name] });
+    const { error } = fieldSchema.validate(inputField);
+    return error ? error.details[0].message : null;
+  };
+
+  const validate = () => {
+    const formSchema = Joi.object(schema);
+    const { error } = formSchema.validate(data, {
+      abortEarly: false,
+    });
+
+    if (!error) return null;
+
+    const allErrors = {};
+    for (let err of error.details) {
+      allErrors[err.path[0]] = err.message;
+    }
+    return allErrors;
   };
 
   const handleChange = (e) => {
@@ -94,30 +117,15 @@ function ConductDrive() {
     setErrors(allErrors);
   };
 
-  const validateProperty = ({ name, value }) => {
-    const inputField = { [name]: value };
-    const fieldSchema = Joi.object({ [name]: schema[name] });
-    const { error } = fieldSchema.validate(inputField);
-    return error ? error.details[0].message : null;
-  };
-
-  const validate = () => {
-    const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(data, {
-      abortEarly: false,
-    });
-
-    if (!error) return null;
-
-    const allErrors = {};
-    for (let err of error.details) {
-      allErrors[err.path[0]] = err.message;
-    }
-    return allErrors;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    const errors = validate();
+
+    setErrors({ errors: errors || {} });
+    if (errors) return;
+
+    window.alert("Notification sent");
+
     console.log(data);
   };
 
@@ -130,7 +138,7 @@ function ConductDrive() {
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
                 <h2 style={{ marginTop: "10px" }} align="center">
-                Conduct Drive
+                  Conduct Drive
                 </h2>
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select required Blood Groups</InputLabel>
@@ -141,7 +149,7 @@ function ConductDrive() {
                     name="bg"
                     onChange={handleChange}
                     value={data.bg}
-                    error={errors && errors.bg ? true : false}
+                    error={errors && errors.bg}
                     helperText={errors && errors.bg ? errors.bg : null}
                   >
                     <MenuItem value={"A+"}>A+</MenuItem>
@@ -163,7 +171,7 @@ function ConductDrive() {
                   variant="outlined"
                   onChange={handleChange}
                   inputProps={{ maxLength: 6 }}
-                  error={errors && errors.address ? true : false}
+                  error={errors && errors.address}
                   helperText={errors && errors.address ? errors.address : null}
                 />
                 <FormControl variant="outlined" className={classes.formControl}>
@@ -173,7 +181,7 @@ function ConductDrive() {
                     value={data.state}
                     onChange={handleChange}
                     label="Select your State"
-                    error={errors && errors.state ? true : false}
+                    error={errors && errors.state}
                     helperText={errors && errors.state ? errors.state : null}
                   >
                     {statesData.states.map((item, id) => (
@@ -192,7 +200,7 @@ function ConductDrive() {
                     value={data.district}
                     onChange={handleChange}
                     label="Select your District"
-                    error={errors && errors.district ? true : false}
+                    error={errors && errors.district}
                     helperText={
                       errors && errors.district ? errors.district : null
                     }
@@ -216,7 +224,7 @@ function ConductDrive() {
                   variant="outlined"
                   onChange={handleChange}
                   inputProps={{ maxLength: 6 }}
-                  error={errors && errors.pincode ? true : false}
+                  error={errors && errors.pincode}
                   helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
@@ -229,8 +237,10 @@ function ConductDrive() {
                   variant="outlined"
                   onChange={handleChange}
                   inputProps={{ maxLength: 6 }}
-                  error={errors && errors.startTime ? true : false}
-                  helperText={errors && errors.startTime ? errors.startTime : null}
+                  error={errors && errors.startTime}
+                  helperText={
+                    errors && errors.startTime ? errors.startTime : null
+                  }
                 />
                 <TextField
                   className={classes.formControl}
@@ -241,9 +251,9 @@ function ConductDrive() {
                   variant="outlined"
                   onChange={handleChange}
                   inputProps={{ maxLength: 6 }}
-                  error={errors && errors.endTime ? true : false}
+                  error={errors && errors.endTime}
                   helperText={errors && errors.endTime ? errors.endTime : null}
-                />                
+                />
                 <TextField
                   className={classes.formControl}
                   label="Start Date:"
@@ -253,8 +263,10 @@ function ConductDrive() {
                   variant="outlined"
                   onChange={handleChange}
                   inputProps={{ maxLength: 6 }}
-                  error={errors && errors.startDate ? true : false}
-                  helperText={errors && errors.startDate ? errors.startDate : null}
+                  error={errors && errors.startDate}
+                  helperText={
+                    errors && errors.startDate ? errors.startDate : null
+                  }
                 />
                 <TextField
                   className={classes.formControl}
@@ -265,16 +277,28 @@ function ConductDrive() {
                   variant="outlined"
                   onChange={handleChange}
                   inputProps={{ maxLength: 6 }}
-                  error={errors && errors.endDate ? true : false}
+                  error={errors && errors.endDate}
                   helperText={errors && errors.endDate ? errors.endDate : null}
                 />
-                
+
+                <TextField
+                  className={classes.formControl}
+                  label="Send a Message"
+                  multiline
+                  rows={7}
+                  name="message"
+                  value={data.message}
+                  onChange={handleChange}
+                  variant="outlined"
+                  error={errors && errors.message}
+                  helperText={errors && errors.message ? errors.message : null}
+                />
 
                 <Button
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
-                  disabled={validate() ? true : false}
+                  disabled={validate()}
                 >
                   Send Notification
                 </Button>

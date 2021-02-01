@@ -124,7 +124,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align="center"
             sortDirection={orderBy === headCell.id ? order : false}
             className={headerClasses.head}
           >
@@ -236,12 +236,12 @@ export default function EnhancedTable() {
                       <TableCell component="th" id={index} scope="row">
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
-                      <TableCell align="right">{row.contact}</TableCell>
-                      <TableCell align="right">{row.amount}</TableCell>
+                      <TableCell align="center">{row.calories}</TableCell>
+                      <TableCell align="center">{row.fat}</TableCell>
+                      <TableCell align="center">{row.carbs}</TableCell>
+                      <TableCell align="center">{row.protein}</TableCell>
+                      <TableCell align="center">{row.contact}</TableCell>
+                      <TableCell align="center">{row.amount}</TableCell>
                     </TableRow>
                   );
                 })}

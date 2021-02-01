@@ -106,7 +106,7 @@ function EnhancedTableHead(props) {
           <TableCell
             key={headCell.id}
             style={{  fontWeight: "bold" }}
-            align={headCell.numeric ? "right" : "left"}
+            align="center"
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -343,6 +343,7 @@ export default function EnhancedTable({list}) {
                         />
                       </TableCell>
                       <TableCell
+                        align="center"
                         component="th"
                         id={labelId}
                         scope="row"
@@ -350,14 +351,14 @@ export default function EnhancedTable({list}) {
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.contact}</TableCell>
-                      <TableCell align="right">{row.date}</TableCell>
-                      <TableCell align="right">{row.time}</TableCell>
-                      <TableCell align="right">{row.address}</TableCell>
-                      <TableCell align="right">{row.state}</TableCell>
-                      <TableCell align="right">{row.district}</TableCell>
-                      <TableCell align="right">{row.pincode}</TableCell>
-                      <TableCell align="right">{row.bg}</TableCell>
+                      <TableCell align="center">{row.contact}</TableCell>
+                      <TableCell align="center">{row.startDate} -- {row.endDate}</TableCell>
+                      <TableCell align="center">{row.startTime} -- {row.endTime}</TableCell>
+                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="center">{row.state}</TableCell>
+                      <TableCell align="center">{row.district}</TableCell>
+                      <TableCell align="center">{row.pincode}</TableCell>
+                      <TableCell align="center">{row.bloodGroupsInvited}</TableCell>
                     </TableRow>
                   );
                 })}

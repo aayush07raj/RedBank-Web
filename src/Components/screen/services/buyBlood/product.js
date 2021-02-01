@@ -50,7 +50,7 @@ function Product() {
       <Container maxWidth="lg">
         <Grid container alignContent="center" justify="center" className={classes.table}>
           <Grid item xs={12} style={{ }}>
-            <Paper square style={{ padding:"50px"}} >
+            <Paper align="center" square style={{ padding:"50px"}} >
               <Container className={classes.typo}>
               <Typography className={classes.typo} variant ="h6">
                   Blood Group Selected: 

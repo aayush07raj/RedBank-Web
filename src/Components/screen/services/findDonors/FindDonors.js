@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -15,6 +15,7 @@ import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
 import Joi from "joi";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,6 +49,12 @@ function FindDonors() {
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
+
+  const [donorsList, setList] = useState([]);
+  useEffect(() => {
+    // console.log(donorsList);
+  }, [donorsList]);
+
   const classes = useStyles();
 
   const schema = {
@@ -108,7 +115,19 @@ function FindDonors() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
+    const errors = validate();
+
+    setErrors({ errors: errors || {} });
+    if (errors) return;
+
+    axios
+      .get("http://localhost:5000/donorlist")
+      .then((response) => {
+        if (response.data.success) {
+          setList(response.data.list);
+        }
+      })
+      .catch();
   };
 
   return (
@@ -212,7 +231,11 @@ function FindDonors() {
             </form>
           </Grid>
           <Grid item xs={12} className={classes.tableContainer}>
-            <Table />
+            {donorsList.length === 0 ? (
+              <h3 align="center">Results will be displayed here</h3>
+            ) : (
+              <Table list={donorsList} />
+            )}
           </Grid>
         </Grid>
       </Container>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
@@ -7,6 +7,7 @@ import {
   Typography,
   Divider,
 } from "@material-ui/core";
+import axios from "axios";
 import { Navbar, Footer } from "../../../layouts";
 
 import Table from "./table";
@@ -24,8 +25,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FindDonors() {
+function MyCommitments() {
   const classes = useStyles();
+  const [commitmentsList, setList] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/commitments")
+      .then((response) => {
+        if (response.data.success) {
+          setList(response.data.commitmentsList);
+        }
+      })
+      .catch();
+  }, []);
 
   return (
     <>
@@ -41,7 +53,7 @@ function FindDonors() {
       <Container maxWidth="lg">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
-            <Table />
+            <Table list={commitmentsList} />
           </Grid>
         </Grid>
       </Container>
@@ -50,4 +62,4 @@ function FindDonors() {
   );
 }
 
-export default FindDonors;
+export default MyCommitments;
