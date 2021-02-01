@@ -1,4 +1,4 @@
-import { REGISTER_INDIVIDUAL } from "../Types/Types";
+import { REGISTER_INDIVIDUAL } from "../Types/registration";
 
 const initialState = {
   name: "",
@@ -15,7 +15,7 @@ const initialState = {
   terms: false,
 };
 
-const Reducer = (state = initialState, action) => {
+const registerIndividualReducer = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER_INDIVIDUAL: {
       console.log(action.payload);
@@ -27,4 +27,4 @@ const Reducer = (state = initialState, action) => {
   }
 };
 
-export default Reducer;
+export default registerIndividualReducer;

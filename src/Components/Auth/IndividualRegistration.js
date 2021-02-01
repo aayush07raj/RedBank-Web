@@ -17,6 +17,10 @@ import individual from "./images/individual.png";
 import states from "./states.json";
 import Joi from "joi";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
+import { useSelector, useDispatch } from "react-redux";
+import registerIndividual from "../../redux/Actions/registerIndividual";
+import axios from "axios";
+import logging from "../../redux/Actions/login";
 
 function IndividualRegistration() {
   const [data, setData] = useState({
@@ -33,6 +37,10 @@ function IndividualRegistration() {
     cPassword: "",
     terms: false,
   });
+
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
 
   const history = useHistory();
   const [errors, setErrors] = useState({});
@@ -109,8 +117,39 @@ function IndividualRegistration() {
     setErrors({ errors: errors || {} });
     if (errors) return;
 
-    console.log(data);
-    history.push("/home");
+
+    axios
+      .post("http://localhost:5000/login", {
+        email: data.email,
+        password: data.password,
+      })
+      .then(function (response) {
+        if (response.data.success) {
+          setIsLoggedIn(true);
+          console.log(isLoggedIn);
+          dispatch(logging(isLoggedIn));
+          history.push("/home");
+        } else {
+          console.log(response.data.error)
+          if (response.data.error.includes("email")) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              email: response.data.error,
+            }));
+          } else if (response.data.error.includes("password")) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              password: response.data.error,
+            }));
+          }
+        }
+      })
+      .catch(function (error) {
+        window.alert(error.message);
+      });
+
+    // dispatch(registerIndividual(data));
+    // history.push("/home");
   };
 
   const schema = {
@@ -336,9 +375,12 @@ function IndividualRegistration() {
                 }
                 label="Accept Terms and Conditions"
               />
-               <Link to="/terms" style={{ color: "#E94364", fontWeight: "bold" }}>
-               (Click here for terms and condition) 
-                </Link>
+              <Link
+                to="/terms"
+                style={{ color: "#E94364", fontWeight: "bold" }}
+              >
+                (Click here for terms and condition)
+              </Link>
 
               <Button
                 variant="contained"

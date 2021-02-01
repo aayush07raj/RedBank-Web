@@ -1,4 +1,4 @@
-import { REGISTER_INDIVIDUAL } from "../Types/Types";
+import { REGISTER_INDIVIDUAL } from "../Types/registration";
 
 const registerIndividual = (state) => {
   return {

@@ -1,5 +1,16 @@
 import React, { Fragment } from "react";
-import { makeStyles , AppBar, Toolbar, Typography, IconButton, MenuItem, Menu, Button, Badge, MenuIcon  } from "@material-ui/core/";
+import {
+  makeStyles,
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  MenuItem,
+  Menu,
+  Button,
+  Badge,
+  MenuIcon,
+} from "@material-ui/core/";
 import { Link } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
@@ -7,18 +18,17 @@ import Logo from "./logo.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
-  logo:{
-    height:40,
-  }
-  
+  logo: {
+    height: 40,
+  },
 }));
 
 export default function MenuAppBar() {
@@ -32,14 +42,18 @@ export default function MenuAppBar() {
     setAnchorEl(null);
   };
 
-  
   return (
     <Fragment className={classes.root}>
-      <AppBar position="static" style={{background: '#E94364'}}>
+      <AppBar position="static" style={{ background: "#E94364" }}>
         <Toolbar>
-        {/* <Avatar alt="Remy Sharp" src="./redbanklogo.svg" /> */}
-        <Typography to="/Home" component={Link} variant="h6" className={classes.title}>
-          <img src={Logo} alt="logo" className={classes.logo} />
+          {/* <Avatar alt="Remy Sharp" src="./redbanklogo.svg" /> */}
+          <Typography
+            to="/Home"
+            component={Link}
+            variant="h6"
+            className={classes.title}
+          >
+            <img src={Logo} alt="logo" className={classes.logo} />
           </Typography>
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 17 new notifications" color="inherit">
@@ -65,7 +79,6 @@ export default function MenuAppBar() {
               {" "}
               Services{" "}
             </Button>
-            
 
             <Menu
               id="simple-menu"
@@ -74,12 +87,29 @@ export default function MenuAppBar() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose} ><Link to="/about">Buy Blood</Link></MenuItem>
-              <MenuItem onClick={handleClose}>Find Donors</MenuItem>
-              <MenuItem onClick={handleClose}>Active Donor Request</MenuItem>
-              <MenuItem onClick={handleClose}>My Purchase</MenuItem>
-              <MenuItem onClick={handleClose}>My Commitments</MenuItem>
-              <MenuItem onClick={handleClose}>Upcoming Drives</MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/BuyBlood">Buy Blood</Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/FindDonors">Find Donors</Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyCommitments">My Commitments</Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyPurchases">My Purchases</Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                 <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                 </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/UpcomingDrive">Upcoming Drives</Link></MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/ConductDrive">Conduct Drive</Link></MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyDrives">My Drives</Link></MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyInventory">My Inventory</Link></MenuItem>    
             </Menu>
             <Button
               color="inherit"
@@ -97,7 +127,7 @@ export default function MenuAppBar() {
               // aria-haspopup="true"
               // onClick={handleMenu}
               color="inherit"
-              onClick={()=>{}}
+              onClick={() => {}}
               component={Link}
               to="/"
             >
@@ -114,6 +144,4 @@ export default function MenuAppBar() {
   );
 }
 
-
-// Logged Out 
-
+// Logged Out
