@@ -9,6 +9,8 @@ import {
   Select,
   MenuItem,
   TextField,
+  Divider,
+  Typography,
   Button,
 } from "@material-ui/core";
 import { Navbar, Footer } from "../../../layouts/";
@@ -23,6 +25,13 @@ const useStyles = makeStyles((theme) => ({
     width: "550px",
     display: "flex",
     flexDirection: "column",
+  },
+  papers: {
+    width: "100%",
+
+    flexDirection: "column",
+    margin: "auto",
+    padding: theme.spacing(4),
   },
   formControl: {
     marginTop: theme.spacing(3),
@@ -118,15 +127,19 @@ function FindDonors() {
   return (
     <>
       <Navbar />
+      <Paper square elevation={5} className={classes.papers}>
+        <Typography variant="h4">Buy Blood</Typography>
+        <Divider />
+        <Typography variant="h6">
+          Here you can search nearest blood bank and buy items as per your requirement. 
+          Fill the parameters and click on search.  
+        </Typography>
+      </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-                <h2 style={{ marginTop: "10px" }} align="center">
-                  Buy Blood
-                </h2>
-
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select your State</InputLabel>
                   <Select

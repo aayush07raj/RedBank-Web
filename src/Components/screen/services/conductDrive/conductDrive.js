@@ -5,6 +5,8 @@ import {
   makeStyles,
   Paper,
   FormControl,
+  Divider,
+  Typography,
   InputLabel,
   Select,
   MenuItem,
@@ -22,6 +24,13 @@ const useStyles = makeStyles((theme) => ({
     width: "650px",
     display: "flex",
     flexDirection: "column",
+  },
+  papers: {
+    width: "100%",
+
+    flexDirection: "column",
+    margin: "auto",
+    padding: theme.spacing(4),
   },
   formControl: {
     marginTop: theme.spacing(3),
@@ -132,14 +141,20 @@ function ConductDrive() {
   return (
     <>
       <Navbar />
+      <Paper square elevation={5} className={classes.papers}>
+        <Typography variant="h4">Conduct Blood Donation Drive</Typography>
+        <Divider />
+        <Typography variant="h6">
+          Here you can orgainze a Blood Donation drive and send notification to eligible donors.
+          They will recive all the necessary details filled here for the drive. 
+        </Typography>
+      </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-                <h2 style={{ marginTop: "10px" }} align="center">
-                  Conduct Drive
-                </h2>
+                
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select required Blood Groups</InputLabel>
                   <Select
