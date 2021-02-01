@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
@@ -8,6 +8,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import { Navbar, Footer } from "../../../layouts";
+import axios from "axios";
 
 import Table from "./useTable";
 
@@ -26,6 +27,17 @@ const useStyles = makeStyles((theme) => ({
 
 function FindDonors() {
   const classes = useStyles();
+  const [active , setList] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/donorlist")
+      .then((response) => {
+        if (response.data.success) {
+          setList(response.data.list);
+        }
+      })
+      .catch();
+  }, []);
 
   return (
     <>
@@ -40,7 +52,7 @@ function FindDonors() {
       <Container maxWidth="lg">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
-            <Table />
+            <Table list={active} />
           </Grid>
         </Grid>
       </Container>

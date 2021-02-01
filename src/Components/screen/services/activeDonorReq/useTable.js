@@ -77,6 +77,8 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
+  
+  
   const {
     classes,
     onSelectAllClick,
@@ -230,7 +232,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable({list}) {
+  var List = [];
+  list.map((item) => {
+    List.push(item);
+  });
+
+
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
@@ -247,7 +255,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.contact);
+      const newSelecteds = List.map((n) => n.contact);
       setSelected(newSelecteds);
       return;
     }
@@ -290,7 +298,7 @@ export default function EnhancedTable() {
   const isSelected = (contact) => selected.indexOf(contact) !== -1;
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -310,10 +318,10 @@ export default function EnhancedTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={List.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.contact);
@@ -361,7 +369,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={List.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
