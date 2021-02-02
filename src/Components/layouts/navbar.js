@@ -137,6 +137,9 @@ export default function MenuAppBar({ user }) {
                   <MenuItem onClick={handleClose}>
                     <Link to="/MyInventory">My Inventory</Link>
                   </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MySales">My Sales</Link>
+                  </MenuItem>
                 </>
               )}
             </Menu>

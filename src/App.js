@@ -14,6 +14,7 @@ import Terms from "./Components/Auth/terms";
 import Test from "./Components/Auth/Test";
 import Profile from "./Components/screen/profile/index";
 
+
 //profile pages
 // import MainIndividual from "./Components/screen/profile/Individual/MainIndividual";
 // import MainHospital from "./Components/screen/profile/Hospital/MainHospital";
@@ -29,6 +30,8 @@ import ActiveDonorReq from "./Components/screen/services/activeDonorReq/ActiveDo
 import ConductDrive from "./Components/screen/services/conductDrive/conductDrive";
 import MyDrives from "./Components/screen/services/myDrives/myDrives";
 import MyInventory from "./Components/screen/services/myInventory/myInventory";
+import MySales from "./Components/screen/services/mysales/mySales";
+
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -78,6 +81,7 @@ function App() {
           <Route exact path="/ConductDrive" component={ConductDrive} />
           <Route exact path="/MyDrives" component={MyDrives} />
           <Route exact path="/MyInventory" component={MyInventory} />
+          <Route exact path="/MySales" component={MySales}/>
         </Switch>
       </Provider>
     </>
