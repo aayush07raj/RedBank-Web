@@ -21,19 +21,6 @@ import Switch from "@material-ui/core/Switch";
 import SendIcon from "@material-ui/icons/Send";
 import Button from "@material-ui/core/Button";
 
-// function createData(name, contact, date, time, address, state, district, pincode, bg) {
-//   return { name, contact, date, time, address, state, district, pincode, bg };
-// }
-
-// const rows = [
-//   createData("John Doe",'9321764391','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Martin Luther",'913213432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Hitler",'9231234325','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Gandhi",'9169312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Sameer",'9179312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Pope",'9119312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-// ];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -94,7 +81,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-      <TableCell padding="checkbox">
+        <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -105,7 +92,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            style={{  fontWeight: "bold" }}
+            style={{ fontWeight: "bold" }}
             align="center"
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
@@ -230,14 +217,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({list}) {
+export default function EnhancedTable({ list }) {
   // console.log(props.list)
   // const [list, setState] =useState(props.list);
   var List = [];
-  list.map((item)=>{
+  list.map((item) => {
     List.push(item);
-  })
-  console.log(list)
+  });
+  console.log(list);
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
@@ -352,13 +339,19 @@ export default function EnhancedTable({list}) {
                         {row.name}
                       </TableCell>
                       <TableCell align="center">{row.contact}</TableCell>
-                      <TableCell align="center">{row.startDate} -- {row.endDate}</TableCell>
-                      <TableCell align="center">{row.startTime} -- {row.endTime}</TableCell>
+                      <TableCell align="center">
+                        {row.startDate} -- {row.endDate}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.startTime} -- {row.endTime}
+                      </TableCell>
                       <TableCell align="center">{row.address}</TableCell>
                       <TableCell align="center">{row.state}</TableCell>
                       <TableCell align="center">{row.district}</TableCell>
                       <TableCell align="center">{row.pincode}</TableCell>
-                      <TableCell align="center">{row.bloodGroupsInvited}</TableCell>
+                      <TableCell align="center">
+                        {row.bloodGroupsInvited}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

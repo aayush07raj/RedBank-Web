@@ -11,18 +11,9 @@ import Paper from '@material-ui/core/Paper';
 import {
     Container,
     Grid,
-    // makeStyles,
-    // Paper,
     Typography,
     Divider,
   } from "@material-ui/core";
-
-// const useStyles =makeStyles({
-//     table:{
-//         // margin: ThemeProvider.spacing(3),
-//         minWidth: 650,
-//     }, 
-// });
 
 
 const useStyles = makeStyles((theme) => ({

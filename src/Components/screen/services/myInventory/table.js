@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Button, ButtonGroup, Grid, TextField } from "@material-ui/core/";
-import axios from 'axios';
+import axios from "axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -21,6 +21,18 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+
+const rows = [
+  createData("Frozen yoghurt", 159, 159, 6.0, 6.0, 24, 24),
+  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+  createData("Eclair", 262, 16.0, 24, 6.0),
+  createData("Cupcake", 305, 3.7, 67, 4.3),
+  createData("Gingerbread", 356, 16.0, 49, 3.9),
+];
+
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 500,
@@ -29,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   root: {
-    height: "580px",
+    height: "640px",
     overflow: "auto",
     "& .MuiTextField-root": {
       width: 50,
@@ -38,33 +50,44 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CustomizedTables() {
-  const [data , setData] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/inventory")
       .then((response) => {
         if (response.data.success) {
-          console.log(response)
+          console.log(response);
           setData(response.data.inventoryData);
         }
       })
       .catch();
   }, []);
 
-  
+  console.log(data);
 
   const classes = useStyles();
   const [status, setStatus] = useState(true);
 
   const handleEdit = () => {
+    window.alert("start editing");
     setStatus(false);
-    console.log(data)
   };
   const handleSave = () => {
+    window.alert("changes successfully saved");
     setStatus(true);
   };
 
+  const handleChange = (e, idx, label, type) => {
+    const { name, value } = e.target;
+    const updatedData = { ...data };
+
+    updatedData[idx][label][type] = value;
+    setData(updatedData);
+
+    // if (name === "Bprice") updatedData[idx].blood.price = value;
+    // else if (name === "Bunits") updatedData[idx].blood.units = value;
+  };
   return (
     <>
       <Grid container justify="flex-end">
@@ -80,470 +103,86 @@ export default function CustomizedTables() {
       </Grid>
 
       <TableContainer component={Paper} className={classes.root}>
-        <Table
-          stickyHeader
-          className={classes.table}
-          aria-label="customized table"
-        >
+        <Table className={classes.table} stickyHeader>
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Component</StyledTableCell>
               <StyledTableCell align="center">Blood Group</StyledTableCell>
-              <StyledTableCell align="center">Price/Unit</StyledTableCell>
+              <StyledTableCell align="center" colspan={2}>
+                Whole Blood
+              </StyledTableCell>
+              <StyledTableCell align="center" colspan={2}>
+                Plasma
+              </StyledTableCell>
+              <StyledTableCell align="center" colspan={2}>
+                Platelets
+              </StyledTableCell>
+            </TableRow>
+            <TableRow>
+              <StyledTableCell align="center"></StyledTableCell>
+              <StyledTableCell align="center">Price/unit</StyledTableCell>
+              <StyledTableCell align="center">Units available</StyledTableCell>
+              <StyledTableCell align="center">Price/unit</StyledTableCell>
+              <StyledTableCell align="center">Units available</StyledTableCell>
+              <StyledTableCell align="center">Price/unit</StyledTableCell>
               <StyledTableCell align="center">Units available</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <StyledTableCell
-                component="th"
-                scope="row"
-                rowspan={8}
-                align="center"
-              >
-                {data.component}
-              </StyledTableCell>
-              <StyledTableCell align="center">A+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">A-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">B+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">B-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">O+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">O-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField value="1000" />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">AB+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField value="1000" />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">AB-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell
-                component="th"
-                scope="row"
-                rowspan={8}
-                align="center"
-              >
-                Plasma
-              </StyledTableCell>
-              <StyledTableCell align="center">A+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">A-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">B+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">B-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">O+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">O-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField value="1000" />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">AB+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField value="1000" />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">AB-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell
-                component="th"
-                scope="row"
-                rowspan={8}
-                align="center"
-              >
-                Platelets
-              </StyledTableCell>
-              <StyledTableCell align="center">A+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">A-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">B+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">B-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">O+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">O-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField value="1000" />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">AB+</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField value="1000" />
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center">AB-</StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  value="1000"
-                  inputProps={{
-                    readOnly: status,
-                  }}
-                />
-              </StyledTableCell>
-            </TableRow>
+            {data.map((row, idx) => (
+              <TableRow key={idx}>
+                <StyledTableCell align="center">
+                  {row.bloodGroup}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    value={row.blood.price}
+                    name="price"
+                    onChange={(e) => {
+                      handleChange(e, idx);
+                    }}
+                    inputProps={{ readOnly: status }}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    value={row.blood.units}
+                    name="units"
+                    onChange={(e) => {
+                      handleChange(e, idx, "blood", "units");
+                    }}
+                    inputProps={{ readOnly: status }}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    value={row.plasma.price}
+                    name="price"
+                    inputProps={{ readOnly: status }}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    value={row.plasma.units}
+                    name="units"
+                    inputProps={{ readOnly: status }}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    value={row.platelets.price}
+                    name="price"
+                    inputProps={{ readOnly: status }}
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    value={row.platelets.units}
+                    name="units"
+                    inputProps={{ readOnly: status }}
+                  />
+                </StyledTableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

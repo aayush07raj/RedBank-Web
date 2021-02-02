@@ -26,13 +26,6 @@ function createData(name, contact, bg) {
   return { name, contact, bg };
 }
 
-const rows = [
-  createData("Night King", 9199223344, "B+"),
-  createData("Suresh", 9877655431, "A+"),
-  createData("Ramesh", 7876526183, "A+"),
-  createData("Kim", 7876521111, "A+"),
-  createData("Frozen", 9012311529, "B+"),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {

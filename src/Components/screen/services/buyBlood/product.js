@@ -33,9 +33,13 @@ import {
     console.log("Working")
   }
 
-  
 
-function Product() {
+// function Product({ iota }) {
+  const Product = props => {
+    const {component,units,amount} = (props.location && props.location.iota)||{} ;
+    const price = props.location.price
+    console.log(component)
+
     const classes = useStyles();
     return(
     <>
@@ -56,13 +60,13 @@ function Product() {
                   Blood Group Selected: 
               </Typography>
               <Typography className={classes.typo}>
-                Component:
+                Component:{component}
               </Typography>
               <Typography className={classes.typo}>
-                Units Required:  
+                Units Required:{units}
               </Typography>
               <Typography className={classes.typo}>
-                Total Amount:
+                Total Amount:{price}
               </Typography>
               <Button className={classes.typo} type="button" onClick={handleClick} variant="contained">Buy</Button>
               </Container>

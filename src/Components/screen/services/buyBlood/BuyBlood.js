@@ -17,6 +17,7 @@ import { Navbar, Footer } from "../../../layouts/";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
 import Joi from "joi";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,6 +56,8 @@ function FindDonors() {
     component: [],
     units: "",
   });
+
+  const [ list, setList ] = useState([]);
 
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
@@ -122,6 +125,23 @@ function FindDonors() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(data);
+  };
+
+  const forAxios = (e) => {
+    e.preventDefault();
+    const errors = validate();
+
+    setErrors({ errors: errors || {} });
+    if (errors) return;
+
+    axios
+      .get("http://localhost:5000/buybloodlist")
+      .then((response) => {
+        if (response.data.success) {
+          setList(response.data.list);
+        }
+      })
+      .catch();
   };
 
   return (
@@ -250,6 +270,7 @@ function FindDonors() {
                   variant="contained"
                   className={classes.formControl}
                   disabled={validate() ? true : false}
+                  onClick={forAxios}
                 >
                   Search
                 </Button>
@@ -257,7 +278,11 @@ function FindDonors() {
             </form>
           </Grid>
           <Grid item xs={12} className={classes.tableContainer}>
-            <Table />
+          {list.length === 0 ? (
+              <h3 align="center">Results will be displayed here</h3>
+            ) : (
+              <Table list={list} component={data.component} units={data.units}  />
+            )}
           </Grid>
         </Grid>
       </Container>

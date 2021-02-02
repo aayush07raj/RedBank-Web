@@ -27,63 +27,6 @@ function createData(name, contact, address, district, state, pincode, price) {
   return { name, contact, address, district, state, pincode, price };
 }
 
-const rows = [
-  createData(
-    "ABCD Hospital",
-    1021482,
-    "MG Road",
-    "Bangalore",
-    "Karnataka",
-    80002, 
-    "900"
-  ),
-  createData(
-    "Acas Hospital",
-    2021482,
-    "NG Road",
-    "Cangalore",
-    "Larnataka",
-    80003,
-    "400"
-  ),
-  createData(
-    "AB Hospital",
-    3021482,
-    "OG Road",
-    "Dangalore",
-    "Marnataka",
-    80004,
-    "200"
-  ),
-  createData(
-    "mnop hospital",
-    4021482,
-    "PG Road",
-    "Eangalore",
-    "Narnataka",
-    80005,
-    "800"
-  ),
-  createData(
-    "AIIMS hospital",
-    4021482,
-    "PG Road",
-    "Eangalore",
-    "Narnataka",
-    80005,
-    "800"
-  ),
-  createData(
-    "QWR hospital",
-    4021482,
-    "PG Road",
-    "Eangalore",
-    "Narnataka",
-    80005,
-    "800"
-  ),
-];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -237,7 +180,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable({ list,component,units }) {
+  var List = [];
+  list.map((item)=>{
+    List.push(item);
+  })
+  console.log(List);
   const history = useHistory();
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -246,6 +194,7 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  // const [ buybtn , setOpenPopup ] = useState(null);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -266,15 +215,21 @@ export default function EnhancedTable() {
     setDense(event.target.checked);
   };
 
-  const handleClick = ()=> {
-    // console.log("object")
-    history.push("/BuyBlood/Product");
+  
+  const [iota, setBuybtn] = React.useState({component:component, units:units, amount:"220"});
+
+  const handleClick = (event,price)=> {
+    event.preventDefault();
+    history.push({
+      pathname: "/BuyBlood/Product",
+      iota, price
+    });
   }
 
   const isSelected = (contact) => selected.indexOf(contact) !== -1;
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -294,7 +249,7 @@ export default function EnhancedTable() {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
@@ -316,7 +271,9 @@ export default function EnhancedTable() {
                       <TableCell align="center">{row.pincode}</TableCell>
                       <TableCell align="center">{row.price}</TableCell>
                       <TableCell>
-                        <Button type="button" onClick={handleClick} variant="contained">Buy</Button>
+                        <Button onClick={(event)=>{
+                          handleClick(event,row.price)
+                        }} type="button" variant="contained">Buy</Button>
                       </TableCell>
                     </TableRow>
                   );
@@ -332,7 +289,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={List.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
