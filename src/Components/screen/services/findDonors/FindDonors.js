@@ -67,12 +67,9 @@ function FindDonors() {
   const classes = useStyles();
 
   const schema = {
-    state: Joi.string().required(),
-    district: Joi.string().required(),
-    pincode: Joi.number()
-      .positive()
-      .min(6)
-      .message("Pincode must contain 6 digits")
+    state: Joi.required(),
+    district: Joi.required(),
+    pincode: Joi
       .required(),
     bg: Joi.required(),
   };
@@ -210,11 +207,11 @@ function FindDonors() {
                 />
 
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select required Blood Groups</InputLabel>
+                  <InputLabel>Select required Blood Groups *</InputLabel>
                   <Select
                     required
                     multiple
-                    label="Select required Blood Groups"
+                    label="Select required Blood Groups *"
                     name="bg"
                     onChange={handleChange}
                     value={data.bg}

@@ -51,12 +51,14 @@ const opts = {
   },
 };
 
-function Home() {
+function Home(props) {
+  const user  = props.location.user
+  console.log(user);
   const classes = useStyles();
 
   return (
     <>
-    <Navbar/>
+    <Navbar user={user}/>
     
     <div className="Home">
       <Box className={classes.hero}>

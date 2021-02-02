@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import Logo from "./logo.svg";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +32,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuAppBar() {
+
+export default function MenuAppBar({user}) {
+  console.log(user);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -41,6 +44,7 @@ export default function MenuAppBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const loggedInState = useSelector((state) => state.loggedIn);
 
   return (
     <Fragment className={classes.root}>
@@ -86,8 +90,31 @@ export default function MenuAppBar() {
               keepMounted
               open={Boolean(anchorEl)}
               onClose={handleClose}
-            >
+            > 
+            {loggedInState.userType === 0 ? 
+            (
+              <>
+               <MenuItem onClick={handleClose}>
+                <Link to="/BuyBlood">Buy Blood</Link>
+              </MenuItem>
               <MenuItem onClick={handleClose}>
+                <Link to="/FindDonors">Find Donors</Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyCommitments">My Commitments</Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/MyPurchases">My Purchases</Link>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                 <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                 </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link to="/UpcomingDrive">Upcoming Drives</Link></MenuItem>
+                </>
+            ) : (
+              <>
+               <MenuItem onClick={handleClose}>
                 <Link to="/BuyBlood">Buy Blood</Link>
               </MenuItem>
               <MenuItem onClick={handleClose}>
@@ -109,7 +136,9 @@ export default function MenuAppBar() {
               <MenuItem onClick={handleClose}>
                 <Link to="/MyDrives">My Drives</Link></MenuItem>
               <MenuItem onClick={handleClose}>
-                <Link to="/MyInventory">My Inventory</Link></MenuItem>    
+                <Link to="/MyInventory">My Inventory</Link></MenuItem>
+                </>
+              )}
             </Menu>
             <Button
               color="inherit"

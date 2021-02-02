@@ -65,13 +65,9 @@ function FindDonors() {
   const classes = useStyles();
 
   const schema = {
-    state: Joi.string().required(),
-    district: Joi.string().required(),
-    pincode: Joi.number()
-      .positive()
-      .min(6)
-      .message("Pincode must contain 6 digits")
-      .required(),
+    state: Joi.required(),
+    district: Joi.required(),
+    pincode: Joi.required(),
     bg: Joi.required(),
     component: Joi.string().required(),
     units: Joi.number().required(),
@@ -215,7 +211,7 @@ function FindDonors() {
                 />
 
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select required Blood Group</InputLabel>
+                  <InputLabel>Select required Blood Group *</InputLabel>
                   <Select
                     label="Select required Blood Group"
                     name="bg"
@@ -236,7 +232,7 @@ function FindDonors() {
                 </FormControl>
 
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select Component</InputLabel>
+                  <InputLabel>Select Component *</InputLabel>
                   <Select
                     label="Select Component"
                     name="component"
@@ -255,7 +251,7 @@ function FindDonors() {
 
                 <TextField
                   className={classes.formControl}
-                  label="Required Units"
+                  label="Required Units *"
                   type="text"
                   name="units"
                   value={data.units}
