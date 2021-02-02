@@ -180,11 +180,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ list,component,units }) {
+export default function EnhancedTable({ list, component, units }) {
   var List = [];
-  list.map((item)=>{
+  list.map((item) => {
     List.push(item);
-  })
+  });
   console.log(List);
   const history = useHistory();
   const classes = useStyles();
@@ -192,7 +192,6 @@ export default function EnhancedTable({ list,component,units }) {
   const [orderBy, setOrderBy] = React.useState("contact");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   // const [ buybtn , setOpenPopup ] = useState(null);
 
@@ -211,20 +210,20 @@ export default function EnhancedTable({ list,component,units }) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
+  const [iota, setBuybtn] = React.useState({
+    component: component,
+    units: units,
+    amount: "220",
+  });
 
-  
-  const [iota, setBuybtn] = React.useState({component:component, units:units, amount:"220"});
-
-  const handleClick = (event,price)=> {
+  const handleClick = (event, price) => {
     event.preventDefault();
     history.push({
       pathname: "/BuyBlood/Product",
-      iota, price
+      iota,
+      price,
     });
-  }
+  };
 
   const isSelected = (contact) => selected.indexOf(contact) !== -1;
 
@@ -239,7 +238,7 @@ export default function EnhancedTable({ list,component,units }) {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            size="medium"
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -271,18 +270,19 @@ export default function EnhancedTable({ list,component,units }) {
                       <TableCell align="center">{row.pincode}</TableCell>
                       <TableCell align="center">{row.price}</TableCell>
                       <TableCell>
-                        <Button onClick={(event)=>{
-                          handleClick(event,row.price)
-                        }} type="button" variant="contained">Buy</Button>
+                        <Button
+                          onClick={(event) => {
+                            handleClick(event, row.price);
+                          }}
+                          type="button"
+                          variant="contained"
+                        >
+                          Buy
+                        </Button>
                       </TableCell>
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -296,10 +296,6 @@ export default function EnhancedTable({ list,component,units }) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }

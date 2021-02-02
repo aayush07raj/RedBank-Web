@@ -21,18 +21,6 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 159, 6.0, 6.0, 24, 24),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 500,
@@ -57,14 +45,11 @@ export default function CustomizedTables() {
       .get("http://localhost:5000/inventory")
       .then((response) => {
         if (response.data.success) {
-          console.log(response);
           setData(response.data.inventoryData);
         }
       })
       .catch();
   }, []);
-
-  console.log(data);
 
   const classes = useStyles();
   const [status, setStatus] = useState(true);
@@ -78,11 +63,13 @@ export default function CustomizedTables() {
     setStatus(true);
   };
 
-  const handleChange = (e, idx, label, type) => {
+  const handleChange = (e, idx, label) => {
     const { name, value } = e.target;
     const updatedData = { ...data };
 
-    updatedData[idx][label][type] = value;
+    console.log(updatedData[idx][label][name]);
+    updatedData[idx][label][name] = value;
+    console.log(updatedData[idx][label][name]);
     setData(updatedData);
 
     // if (name === "Bprice") updatedData[idx].blood.price = value;
@@ -138,7 +125,7 @@ export default function CustomizedTables() {
                     value={row.blood.price}
                     name="price"
                     onChange={(e) => {
-                      handleChange(e, idx);
+                      handleChange(e, idx, "blood");
                     }}
                     inputProps={{ readOnly: status }}
                   />
@@ -148,7 +135,7 @@ export default function CustomizedTables() {
                     value={row.blood.units}
                     name="units"
                     onChange={(e) => {
-                      handleChange(e, idx, "blood", "units");
+                      handleChange(e, idx, "blood");
                     }}
                     inputProps={{ readOnly: status }}
                   />
@@ -157,6 +144,9 @@ export default function CustomizedTables() {
                   <TextField
                     value={row.plasma.price}
                     name="price"
+                    onChange={(e) => {
+                      handleChange(e, idx, "plasma");
+                    }}
                     inputProps={{ readOnly: status }}
                   />
                 </StyledTableCell>
@@ -164,6 +154,9 @@ export default function CustomizedTables() {
                   <TextField
                     value={row.plasma.units}
                     name="units"
+                    onChange={(e) => {
+                      handleChange(e, idx, "plasma");
+                    }}
                     inputProps={{ readOnly: status }}
                   />
                 </StyledTableCell>
@@ -171,6 +164,9 @@ export default function CustomizedTables() {
                   <TextField
                     value={row.platelets.price}
                     name="price"
+                    onChange={(e) => {
+                      handleChange(e, idx, "platelets");
+                    }}
                     inputProps={{ readOnly: status }}
                   />
                 </StyledTableCell>
@@ -178,6 +174,9 @@ export default function CustomizedTables() {
                   <TextField
                     value={row.platelets.units}
                     name="units"
+                    onChange={(e) => {
+                      handleChange(e, idx, "platelets");
+                    }}
                     inputProps={{ readOnly: status }}
                   />
                 </StyledTableCell>

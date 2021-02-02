@@ -230,7 +230,6 @@ export default function EnhancedTable({ list }) {
   const [orderBy, setOrderBy] = React.useState("contact");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -241,7 +240,7 @@ export default function EnhancedTable({ list }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = List.map((n) => n.contact);
+      const newSelecteds = List.map((n) => n.driveId);
       setSelected(newSelecteds);
       return;
     }
@@ -277,10 +276,6 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (contact) => selected.indexOf(contact) !== -1;
 
   const emptyRows =
@@ -294,7 +289,7 @@ export default function EnhancedTable({ list }) {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            size="medium"
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -310,17 +305,17 @@ export default function EnhancedTable({ list }) {
               {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.contact);
+                  const isItemSelected = isSelected(row.driveId);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.contact)}
+                      onClick={(event) => handleClick(event, row.driveId)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.driveId}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -355,11 +350,6 @@ export default function EnhancedTable({ list }) {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -373,10 +363,6 @@ export default function EnhancedTable({ list }) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }

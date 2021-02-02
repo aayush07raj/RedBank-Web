@@ -55,8 +55,7 @@ function UpcomingDrive() {
   });
 
   const [driveList, setState] = useState([]);
-  useEffect(() => {
-  },[driveList])
+  useEffect(() => {}, [driveList]);
 
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
@@ -66,11 +65,7 @@ function UpcomingDrive() {
   const schema = {
     state: Joi.string().required(),
     district: Joi.string().required(),
-    pincode: Joi.number()
-      .positive()
-      .min(6)
-      .message("Pincode must contain 6 digits")
-      .required(),
+    pincode: Joi.required(),
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,7 +77,6 @@ function UpcomingDrive() {
       );
     }
 
-    
     const allErrors = { ...errors };
     const errorMsg = validateProperty(e.target);
     if (errorMsg) {
@@ -120,19 +114,15 @@ function UpcomingDrive() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(data);
+
+    axios
+      .post("http://localhost:5000/finddrives", {
+        pincode: data.pincode,
+      })
+      .then(function (response) {
+        setState(response.data.upcomingDrivesList);
+      });
   };
-
-  const forAxios = () => {
-    axios.post('http://localhost:5000/finddrives',{
-      pincode:data.pincode
-    })
-    .then(function (response) {
-      setState(response.data.upcomingDrivesList)
-      // console.log(driveList)
-    })
-  }
-
 
   return (
     <>
@@ -141,8 +131,8 @@ function UpcomingDrive() {
         <Typography variant="h4">Find Upcoming Drives</Typography>
         <Divider />
         <Typography variant="h6">
-          Here you can search upcoming blood donation drives. 
-          Fill the parameters and click on search.  
+          Here you can search upcoming blood donation drives. Fill the
+          parameters and click on search.
         </Typography>
       </Paper>
       <Container maxWidth="lg">
@@ -150,7 +140,6 @@ function UpcomingDrive() {
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select your State</InputLabel>
                   <Select
@@ -208,7 +197,7 @@ function UpcomingDrive() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
-                  onClick={forAxios}
+                  disabled={validate()}
                 >
                   Search
                 </Button>
@@ -218,8 +207,8 @@ function UpcomingDrive() {
           <Grid item xs={12} className={classes.tableContainer}>
             {driveList.length === 0 ? (
               <h3 align="center">Results will be displayed here</h3>
-            ):(
-            <Table list={driveList} />
+            ) : (
+              <Table list={driveList} />
             )}
           </Grid>
         </Grid>

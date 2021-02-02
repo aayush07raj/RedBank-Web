@@ -32,8 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-export default function MenuAppBar({user}) {
+export default function MenuAppBar({ user }) {
   console.log(user);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -90,53 +89,54 @@ export default function MenuAppBar({user}) {
               keepMounted
               open={Boolean(anchorEl)}
               onClose={handleClose}
-            > 
-            {loggedInState.userType === 0 ? 
-            (
-              <>
-               <MenuItem onClick={handleClose}>
-                <Link to="/BuyBlood">Buy Blood</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/FindDonors">Find Donors</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyCommitments">My Commitments</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyPurchases">My Purchases</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                 <Link to="/ActiveDonorReq">Active Donor Request</Link>
-                 </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/UpcomingDrive">Upcoming Drives</Link></MenuItem>
+            >
+              {loggedInState.userType === 0 ? (
+                <>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/BuyBlood">Buy Blood</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/FindDonors">Find Donors</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyCommitments">My Commitments</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyPurchases">My Purchases</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/UpcomingDrive">Upcoming Drives</Link>
+                  </MenuItem>
                 </>
-            ) : (
-              <>
-               <MenuItem onClick={handleClose}>
-                <Link to="/BuyBlood">Buy Blood</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/FindDonors">Find Donors</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyCommitments">My Commitments</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyPurchases">My Purchases</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                 <Link to="/ActiveDonorReq">Active Donor Request</Link>
-                 </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/UpcomingDrive">Upcoming Drives</Link></MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/ConductDrive">Conduct Drive</Link></MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyDrives">My Drives</Link></MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyInventory">My Inventory</Link></MenuItem>
+              ) : (
+                <>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/BuyBlood">Buy Blood</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/FindDonors">Find Donors</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyCommitments">My Commitments</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyPurchases">My Purchases</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/ConductDrive">Conduct Drive</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyDrives">My Drives</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyInventory">My Inventory</Link>
+                  </MenuItem>
                 </>
               )}
             </Menu>

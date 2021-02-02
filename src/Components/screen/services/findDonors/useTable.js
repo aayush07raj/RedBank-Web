@@ -154,6 +154,10 @@ const EnhancedTableToolbar = (props) => {
     console.log(data);
   }
 
+  const handleClick = () => {
+    window.alert("Notification sent.");
+  };
+
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -182,7 +186,9 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Send Notification">
-          <Button variant="contained">Send</Button>
+          <Button variant="contained" onClick={handleClick}>
+            Send
+          </Button>
         </Tooltip>
       ) : null}
     </Toolbar>
@@ -228,7 +234,6 @@ export default function EnhancedTable({ list }) {
   const [orderBy, setOrderBy] = React.useState("contact");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -275,10 +280,6 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (contact) => selected.indexOf(contact) !== -1;
 
   const emptyRows =
@@ -292,7 +293,7 @@ export default function EnhancedTable({ list }) {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            size="medium"
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -342,11 +343,6 @@ export default function EnhancedTable({ list }) {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -360,10 +356,6 @@ export default function EnhancedTable({ list }) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }

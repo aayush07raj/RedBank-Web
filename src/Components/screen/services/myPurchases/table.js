@@ -15,9 +15,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 
 function createData(name, date, bg, component, units, contact, amount) {
-  return { name,date, bg, component, units, contact, amount };
+  return { name, date, bg, component, units, contact, amount };
 }
-
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -167,16 +166,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable({ list }) {
-  var List =[]
-  list.map((item)=>{
-      List.push(item);
+  var List = [];
+  list.map((item) => {
+    List.push(item);
   });
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -194,10 +192,6 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
 
@@ -208,7 +202,7 @@ export default function EnhancedTable({ list }) {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            size="medium"
           >
             <EnhancedTableHead
               classes={classes}
@@ -222,7 +216,7 @@ export default function EnhancedTable({ list }) {
                 .map((row, index) => {
                   return (
                     <TableRow hover tabIndex={-1} key={row.name}>
-                      <TableCell component="th" id={index} scope="row">
+                      <TableCell id={index} align="center">
                         {row.name}
                       </TableCell>
                       <TableCell align="center">{row.date}</TableCell>
@@ -234,11 +228,6 @@ export default function EnhancedTable({ list }) {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -252,10 +241,6 @@ export default function EnhancedTable({ list }) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }

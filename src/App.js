@@ -28,7 +28,6 @@ import MyPurchases from "./Components/screen/services/myPurchases/MyPurchases";
 import ActiveDonorReq from "./Components/screen/services/activeDonorReq/ActiveDonorReq";
 import ConductDrive from "./Components/screen/services/conductDrive/conductDrive";
 import MyDrives from "./Components/screen/services/myDrives/myDrives";
-import DriveList from "./Components/screen/services/myDrives/driveList";
 import MyInventory from "./Components/screen/services/myInventory/myInventory";
 
 import { Provider } from "react-redux";
@@ -40,7 +39,7 @@ function App() {
       <Provider store={store}>
         <Switch>
           <Route exact path="/home" component={Home} />
-          <Route exact path="/profile" component={Profile}/>
+          <Route exact path="/profile" component={Profile} />
           <Route exact path="/terms" component={Terms} />
           <Route exact path="/" component={Login} />
           <Route exact path="/ForgotPassword" component={ForgotPassword} />
@@ -68,17 +67,16 @@ function App() {
 
           {/* <Route exact path="/MainIndividual" component={MainIndividual} />
           <Route exact path="/MainHospital" component={MainHospital} /> */}
-          
+
           <Route exact path="/ActiveDonorReq" component={ActiveDonorReq} />
           <Route exact path="/FindDonors" component={FindDonors} />
           <Route exact path="/UpcomingDrive" component={UpcomingDrive} />
           <Route exact path="/BuyBlood" component={BuyBlood} />
-          <Route exact path="/BuyBlood/Product" component={Product}/>
+          <Route exact path="/BuyBlood/Product" component={Product} />
           <Route exact path="/MyCommitments" component={MyCommitments} />
           <Route exact path="/MyPurchases" component={MyPurchases} />
           <Route exact path="/ConductDrive" component={ConductDrive} />
           <Route exact path="/MyDrives" component={MyDrives} />
-          <Route exact path="/MyDrives/DriveList" component={DriveList} />
           <Route exact path="/MyInventory" component={MyInventory} />
         </Switch>
       </Provider>

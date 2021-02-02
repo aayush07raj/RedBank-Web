@@ -18,14 +18,13 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 
 import SendIcon from "@material-ui/icons/Send";
 
 function createData(name, contact, bg) {
   return { name, contact, bg };
 }
-
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -70,8 +69,6 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  
-  
   const {
     classes,
     onSelectAllClick,
@@ -99,7 +96,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            style={{  fontWeight: "bold" }}
+            style={{ fontWeight: "bold" }}
             align="center"
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
@@ -190,7 +187,6 @@ const EnhancedTableToolbar = (props) => {
       {numSelected > 0 ? (
         <Tooltip title="Expire Request">
           <Button variant="contained">Expire</Button>
-          {/* </IconButton> */}
         </Tooltip>
       ) : null}
     </Toolbar>
@@ -225,19 +221,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({list}) {
+export default function EnhancedTable({ list }) {
   var List = [];
   list.map((item) => {
     List.push(item);
   });
-
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -284,10 +278,6 @@ export default function EnhancedTable({list}) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (contact) => selected.indexOf(contact) !== -1;
 
   const emptyRows =
@@ -301,7 +291,7 @@ export default function EnhancedTable({list}) {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            size="medium"
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -351,11 +341,6 @@ export default function EnhancedTable({list}) {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -369,10 +354,6 @@ export default function EnhancedTable({list}) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }
