@@ -76,10 +76,15 @@ function Row(props) {
                       <TableCell align="center">{item.donorName}</TableCell>
                       <TableCell align="center">{item.bloodGroup}</TableCell>
                       <TableCell align="center">
-                        <Checkbox
-                          checked={item.hasGivenBlood}
-                          inputProps={{ "aria-label": "primary checkbox" }}
-                        />
+                        {item.hasGivenBlood ? (
+                          <p>donoe</p>
+                        ):(
+                          <Button
+                          variant ="contained">
+                            Given ? 
+                         </Button>
+                        
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}

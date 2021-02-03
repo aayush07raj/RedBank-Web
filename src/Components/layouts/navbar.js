@@ -11,11 +11,12 @@ import {
   Badge,
   MenuIcon,
 } from "@material-ui/core/";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import Logo from "./logo.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import logging from "../../redux/Actions/login";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MenuAppBar({ user }) {
-  console.log(user);
+  const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -44,6 +46,13 @@ export default function MenuAppBar({ user }) {
     setAnchorEl(null);
   };
   const loggedInState = useSelector((state) => state.loggedIn);
+
+  const handleLogout = () => {
+    dispatch(logging({ isLoggedIn: false, userType: 0 }));
+    history.push("/");
+  };
+
+  console.log(loggedInState);
 
   return (
     <Fragment className={classes.root}>
@@ -159,11 +168,11 @@ export default function MenuAppBar({ user }) {
               // aria-haspopup="true"
               // onClick={handleMenu}
               color="inherit"
-              onClick={() => {}}
-              component={Link}
-              to="/"
+              onClick={handleLogout}
             >
-              <PowerSettingsNewIcon />
+              <PowerSettingsNewIcon  onClick={()=>{
+                window.alert("You are being logged out!")
+              }}/>
             </IconButton>
           </div>
           {/* <IconButton color="inherit">
