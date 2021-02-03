@@ -207,7 +207,7 @@ function FindDonors() {
                 />
 
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select required Blood Groups *</InputLabel>
+                  <InputLabel>Select required Blood Groups</InputLabel>
                   <Select
                     required
                     multiple

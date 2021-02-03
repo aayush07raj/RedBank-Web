@@ -180,7 +180,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ list, component, units }) {
+export default function EnhancedTable({ list,bg, component, units }) {
   var List = [];
   list.map((item) => {
     List.push(item);
@@ -211,6 +211,7 @@ export default function EnhancedTable({ list, component, units }) {
   };
 
   const [iota, setBuybtn] = React.useState({
+    bg: bg,
     component: component,
     units: units,
     amount: "220",

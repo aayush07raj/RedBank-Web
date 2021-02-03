@@ -37,7 +37,7 @@ const handleClick = () => {
 
 // function Product({ iota }) {
 const Product = (props) => {
-  const { component, units, amount } =
+  const {bg, component, units, amount } =
     (props.location && props.location.iota) || {};
   const price = props.location.price;
   console.log(component);
@@ -66,6 +66,9 @@ const Product = (props) => {
               <Container className={classes.typo}>
                 <Typography className={classes.typo} variant="h6">
                   Blood Group Selected:
+                </Typography>
+                <Typography className={classes.typo}>
+                  Blood Group: {bg}
                 </Typography>
                 <Typography className={classes.typo}>
                   Component:{component}

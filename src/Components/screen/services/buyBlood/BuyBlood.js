@@ -156,6 +156,58 @@ function FindDonors() {
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
+
+              <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>Select required Blood Group *</InputLabel>
+                  <Select
+                    label="Select required Blood Group"
+                    name="bg"
+                    onChange={handleChange}
+                    value={data.bg}
+                    error={errors && errors.bg ? true : false}
+                    helperText={errors && errors.bg ? errors.bg : null}
+                  >
+                    <MenuItem value={"A+"}>A+</MenuItem>
+                    <MenuItem value={"A-"}>A-</MenuItem>
+                    <MenuItem value={"B+"}>B+</MenuItem>
+                    <MenuItem value={"B-"}>B-</MenuItem>
+                    <MenuItem value={"AB+"}>AB+</MenuItem>
+                    <MenuItem value={"AB-"}>AB-</MenuItem>
+                    <MenuItem value={"O+"}>O+</MenuItem>
+                    <MenuItem value={"O-"}>O-</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>Select Component *</InputLabel>
+                  <Select
+                    label="Select Component"
+                    name="component"
+                    onChange={handleChange}
+                    value={data.component}
+                    error={errors && errors.component ? true : false}
+                    helperText={
+                      errors && errors.component ? errors.component : null
+                    }
+                  >
+                    <MenuItem value={"Blood"}>Blood</MenuItem>
+                    <MenuItem value={"Plasma"}>Plasma</MenuItem>
+                    <MenuItem value={"Platelets"}>Platelets</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <TextField
+                  className={classes.formControl}
+                  label="Required Units *"
+                  type="text"
+                  name="units"
+                  value={data.units}
+                  variant="outlined"
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 4 }}
+                  error={errors && errors.units ? true : false}
+                  helperText={errors && errors.units ? errors.units : null}
+                />
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select your State</InputLabel>
                   <Select
@@ -210,57 +262,7 @@ function FindDonors() {
                   helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select required Blood Group *</InputLabel>
-                  <Select
-                    label="Select required Blood Group"
-                    name="bg"
-                    onChange={handleChange}
-                    value={data.bg}
-                    error={errors && errors.bg ? true : false}
-                    helperText={errors && errors.bg ? errors.bg : null}
-                  >
-                    <MenuItem value={"A+"}>A+</MenuItem>
-                    <MenuItem value={"A-"}>A-</MenuItem>
-                    <MenuItem value={"B+"}>B+</MenuItem>
-                    <MenuItem value={"B-"}>B-</MenuItem>
-                    <MenuItem value={"AB+"}>AB+</MenuItem>
-                    <MenuItem value={"AB-"}>AB-</MenuItem>
-                    <MenuItem value={"O+"}>O+</MenuItem>
-                    <MenuItem value={"O-"}>O-</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select Component *</InputLabel>
-                  <Select
-                    label="Select Component"
-                    name="component"
-                    onChange={handleChange}
-                    value={data.component}
-                    error={errors && errors.component ? true : false}
-                    helperText={
-                      errors && errors.component ? errors.component : null
-                    }
-                  >
-                    <MenuItem value={"Blood"}>Blood</MenuItem>
-                    <MenuItem value={"Plasma"}>Plasma</MenuItem>
-                    <MenuItem value={"Platelets"}>Platelets</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <TextField
-                  className={classes.formControl}
-                  label="Required Units *"
-                  type="text"
-                  name="units"
-                  value={data.units}
-                  variant="outlined"
-                  onChange={handleChange}
-                  inputProps={{ maxLength: 4 }}
-                  error={errors && errors.units ? true : false}
-                  helperText={errors && errors.units ? errors.units : null}
-                />
+                
                 <Button
                   type="submit"
                   variant="contained"
@@ -277,7 +279,7 @@ function FindDonors() {
           {list.length === 0 ? (
               <h3 align="center">Results will be displayed here</h3>
             ) : (
-              <Table list={list} component={data.component} units={data.units}  />
+              <Table list={list} bg={data.bg} component={data.component} units={data.units}  />
             )}
           </Grid>
         </Grid>

@@ -70,7 +70,7 @@ export default function CustomizedTables() {
     console.log(updatedData[idx][label][name]);
     updatedData[idx][label][name] = value;
     console.log(updatedData[idx][label][name]);
-    setData(updatedData);
+    // setData(updatedData);
 
     // if (name === "Bprice") updatedData[idx].blood.price = value;
     // else if (name === "Bunits") updatedData[idx].blood.units = value;
