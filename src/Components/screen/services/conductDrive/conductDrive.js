@@ -147,6 +147,7 @@ function ConductDrive() {
         <Typography variant="h6">
           Here you can orgainze a Blood Donation drive and send notification to eligible donors.
           They will recive all the necessary details filled here for the drive. 
+          Fields with "*" are mandatory. 
         </Typography>
       </Paper>
       <Container maxWidth="lg">
@@ -156,7 +157,7 @@ function ConductDrive() {
               <Paper className={classes.paper} elevation={5}>
                 
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select required Blood Groups</InputLabel>
+                  <InputLabel>Select required Blood Groups *</InputLabel>
                   <Select
                     required
                     multiple
@@ -179,7 +180,7 @@ function ConductDrive() {
                 </FormControl>
                 <TextField
                   className={classes.formControl}
-                  label="Enter your Address"
+                  label="Enter your Address *"
                   type="text"
                   name="address"
                   value={data.address}
@@ -190,7 +191,7 @@ function ConductDrive() {
                   helperText={errors && errors.address ? errors.address : null}
                 />
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select your State</InputLabel>
+                  <InputLabel>Select your State *</InputLabel>
                   <Select
                     name="state"
                     value={data.state}
@@ -208,7 +209,7 @@ function ConductDrive() {
                 </FormControl>
 
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select your District</InputLabel>
+                  <InputLabel>Select your District *</InputLabel>
                   <Select
                     inputProps={{ readOnly: enable }}
                     name="district"
@@ -232,7 +233,7 @@ function ConductDrive() {
 
                 <TextField
                   className={classes.formControl}
-                  label="Enter your Pincode"
+                  label="Enter your Pincode *"
                   type="text"
                   name="pincode"
                   value={data.pincode}
@@ -245,7 +246,7 @@ function ConductDrive() {
 
                 <TextField
                   className={classes.formControl}
-                  label="Start Time:"
+                  label="Start Time *:"
                   type="text"
                   name="startTime"
                   value={data.startTime}
@@ -259,7 +260,7 @@ function ConductDrive() {
                 />
                 <TextField
                   className={classes.formControl}
-                  label="End Time:"
+                  label="End Time *:"
                   type="text"
                   name="endTime"
                   value={data.endTime}
@@ -271,7 +272,7 @@ function ConductDrive() {
                 />
                 <TextField
                   className={classes.formControl}
-                  label="Start Date:"
+                  label="Start Date *:"
                   type="text"
                   name="startDate"
                   value={data.startDate}
@@ -285,7 +286,7 @@ function ConductDrive() {
                 />
                 <TextField
                   className={classes.formControl}
-                  label="End Date:"
+                  label="End Date *:"
                   type="text"
                   name="endDate"
                   value={data.endDate}
