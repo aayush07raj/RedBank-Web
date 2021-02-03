@@ -9,13 +9,13 @@ import {
   CardMedia,
   Paper,
 } from "@material-ui/core/";
-import { Navbar, Footer } from "../layouts";
+import { Navbar, Footer } from "../../layouts";
 
 // import YouTube from 'react-youtube';
 
 const useStyles = makeStyles((theme) => ({
   hero: {
-    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://unblast.com/wp-content/uploads/2020/04/Female-Doctor-Vector-Illustration.jpg')`,
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),`,
     height: "600px",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
@@ -51,16 +51,18 @@ const opts = {
   },
 };
 
-function Home() {
+function Home(props) {
+  const user  = props.location.user
+  console.log(user);
   const classes = useStyles();
 
   return (
     <>
-    <Navbar />
+    <Navbar user={user}/>
     
     <div className="Home">
       <Box className={classes.hero}>
-        <Box>Red Bank</Box>
+        <Box>About Us</Box>
       </Box>
       <Container maxWidth="lg" className={classes.blogsContainer}>
         <Typography variant="h4" className={classes.blogTitle}>
