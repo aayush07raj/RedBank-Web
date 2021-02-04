@@ -69,6 +69,10 @@ const headCells = [
     id: "units",
     label: "Purchase Quantity",
   },
+  {
+    id: "bill",
+    label: "Bill",
+  },
 ];
 
 const useHeaderStyles = makeStyles((theme) => ({
@@ -154,10 +158,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable({ list }) {
   var List = [];
-  console.log(list)
+  console.log(list);
   list.map((item) => {
     List.push(item);
   });
+
+  console.log(List);
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -180,9 +186,6 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -203,16 +206,15 @@ export default function EnhancedTable({ list }) {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
-                    <TableRow hover tabIndex={-1} key={row.id}>
-                      <TableCell id={index} align="center">
-                        {row.id}
-                      </TableCell>
+                    <TableRow hover tabIndex={-1} key={index}>
+                      <TableCell align="center">{row.id}</TableCell>
                       <TableCell align="center">{row.buyer}</TableCell>
                       <TableCell align="center">{row.email}</TableCell>
                       <TableCell align="center">{row.contact}</TableCell>
                       <TableCell align="center">{row.bg}</TableCell>
                       <TableCell align="center">{row.component}</TableCell>
                       <TableCell align="center">{row.units}</TableCell>
+                      <TableCell align="center">{row.bill}</TableCell>
                     </TableRow>
                   );
                 })}

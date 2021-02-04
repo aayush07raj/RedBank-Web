@@ -58,6 +58,10 @@ const headCells = [
     label: "Recipient Type",
   },
   {
+    id: "recipientContact",
+    label: "Recipient Contact",
+  },
+  {
     id: "commitmentDate",
     label: "Coommitment Date",
   },
@@ -66,28 +70,12 @@ const headCells = [
     label: "Commitment Time",
   },
   {
-    id: "completed",
-    label: "Completed",
-  },
-  {
     id: "address",
     label: "Address",
   },
   {
-    id: "district",
-    label: "District",
-  },
-  {
-    id: "state",
-    label: "State",
-  },
-  {
-    id: "pincode",
-    label: "Pincode",
-  },
-  {
-    id: "recipientContact",
-    label: "Recipient Contact",
+    id: "completed",
+    label: "Completed",
   },
 ];
 
@@ -199,9 +187,6 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -222,23 +207,20 @@ export default function EnhancedTable({ list }) {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
-                    <TableRow hover tabIndex={-1} key={row.commitmentType}>
+                    <TableRow hover tabIndex={-1} key={row.Id}>
                       <TableCell id={index} align="center">
                         {row.commitmentType}
                       </TableCell>
                       <TableCell align="center">{row.Id}</TableCell>
                       <TableCell align="center">{row.recipient}</TableCell>
                       <TableCell align="center">{row.recipientType}</TableCell>
-                      <TableCell align="center">{row.commitmentDate}</TableCell>
-                      <TableCell align="center">{row.commitmentTime}</TableCell>
-                      <TableCell align="center">{row.compeleted}</TableCell>
-                      <TableCell align="center">{row.address}</TableCell>
-                      <TableCell align="center">{row.district}</TableCell>
-                      <TableCell align="center">{row.state}</TableCell>
-                      <TableCell align="center">{row.pincode}</TableCell>
                       <TableCell align="center">
                         {row.recipientContact}
                       </TableCell>
+                      <TableCell align="center">{row.commitmentDate}</TableCell>
+                      <TableCell align="center">{row.commitmentTime}</TableCell>
+                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="center">{row.compeleted}</TableCell>
                     </TableRow>
                   );
                 })}

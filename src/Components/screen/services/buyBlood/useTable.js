@@ -23,10 +23,6 @@ import { Link, useHistory } from "react-router-dom";
 
 import SendIcon from "@material-ui/icons/Send";
 
-function createData(name, contact, address, district, state, pincode, price) {
-  return { name, contact, address, district, state, pincode, price };
-}
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -62,11 +58,8 @@ const headCells = [
   },
   { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
   { id: "address", numeric: true, disablePadding: false, label: "Address" },
-  { id: "district", numeric: true, disablePadding: false, label: "District" },
-  { id: "state", numeric: true, disablePadding: false, label: "State" },
-  { id: "pincode", numeric: true, disablePadding: false, label: "Pincode" },
   { id: "price", numeric: true, disablePadding: false, label: "Price (Rs.)" },
-  { id: "actions", label: "Actions", disableSorting: true },
+  { id: "actions", label: "Actions", disableSorting: false },
 ];
 
 function EnhancedTableHead(props) {
@@ -180,7 +173,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ list,bg, component, units }) {
+export default function EnhancedTable({ list, bg, component, units }) {
   var List = [];
   list.map((item) => {
     List.push(item);
@@ -261,16 +254,18 @@ export default function EnhancedTable({ list,bg, component, units }) {
                       tabIndex={-1}
                       key={row.name}
                     >
-                      <TableCell component="th" id={labelId} scope="row">
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        align="center"
+                      >
                         {row.name}
                       </TableCell>
                       <TableCell align="center">{row.contact}</TableCell>
                       <TableCell align="center">{row.address}</TableCell>
-                      <TableCell align="center">{row.district}</TableCell>
-                      <TableCell align="center">{row.state}</TableCell>
-                      <TableCell align="center">{row.pincode}</TableCell>
                       <TableCell align="center">{row.price}</TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <Button
                           onClick={(event) => {
                             handleClick(event, row.price);
