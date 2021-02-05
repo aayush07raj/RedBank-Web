@@ -32,6 +32,8 @@ import ConductDrive from "./Components/screen/services/conductDrive/conductDrive
 import MyDrives from "./Components/screen/services/myDrives/myDrives";
 import MyInventory from "./Components/screen/services/myInventory/myInventory";
 import MySales from "./Components/screen/services/mysales/mySales";
+import MyInvites from "./Components/screen/services/myInvites/myInvites";
+
 
 
 import { Provider } from "react-redux";
@@ -84,6 +86,7 @@ function App() {
           <Route exact path="/MyDrives" component={MyDrives} />
           <Route exact path="/MyInventory" component={MyInventory} />
           <Route exact path="/MySales" component={MySales}/>
+          <Route exact path="/MyInvites" component={MyInvites}/>
         </Switch>
       </Provider>
     </>

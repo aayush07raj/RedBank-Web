@@ -134,6 +134,9 @@ export default function MenuAppBar({ user }) {
                   <MenuItem onClick={handleClose}>
                     <Link to="/UpcomingDrive">Upcoming Drives</Link>
                   </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyInvites">My Invites</Link>
+                  </MenuItem>
                 </>
               ) : (
                 <>
@@ -227,12 +230,7 @@ export default function MenuAppBar({ user }) {
                   Yes
               </Button>
             </DialogActions>
-            </Dialog>        
-            <IconButton
-              color="inherit"
-              onClick={handleLogout}
-            >
-            </IconButton>
+            </Dialog>    
           </div>
         </Toolbar>
       </AppBar>
