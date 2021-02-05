@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import clsx from "clsx";
-import { lighten, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -10,21 +9,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
-
-import SendIcon from "@material-ui/icons/Send";
-
-function createData(name, contact, bg) {
-  return { name, contact, bg };
-}
+import axios from "axios";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -56,27 +43,19 @@ const headCells = [
   {
     id: "name",
     numeric: false,
-    disablePadding: true,
     label: "Name",
   },
-  { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
+  { id: "contact", numeric: true, label: "Contact" },
   {
     id: "bg",
-    numeric: true,
-    disablePadding: false,
+    numeric: false,
     label: "Blood Group",
   },
-  { id: "actions", label: "Actions", disableSorting: true },
+  { id: "status", numeric: false, label: "Status", disableSorting: true },
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    classes,
-    order,
-    orderBy,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -89,7 +68,6 @@ function EnhancedTableHead(props) {
             key={headCell.id}
             style={{ fontWeight: "bold" }}
             align="center"
-            padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -119,27 +97,6 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === "light"
-      ? {
-          color: "theme.palette.secondary.main",
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: "1 1 100%",
-  },
-}));
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -164,16 +121,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ list }) {
-  var List = [];
-  list.map((item) => {
-    List.push(item);
-  });
+export default function EnhancedTable() {
+  const [active, setList] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/donorlist")
+      .then((response) => {
+        if (response.data.success) {
+          setList(response.data.list);
+        }
+      })
+      .catch();
+  }, []);
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -182,7 +145,6 @@ export default function EnhancedTable({ list }) {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -193,48 +155,37 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const isSelected = (contact) => selected.indexOf(contact) !== -1;
-
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
+  const handleSet = (e, idx) => {
+    if (window.confirm("Are you sure ?")) {
+      var updatedList = [...active];
+      updatedList[idx].status = true;
+      setList(updatedList);
+    }
+  };
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="medium"
-            aria-label="enhanced table"
-          >
+          <Table className={classes.table} size="medium">
             <EnhancedTableHead
               classes={classes}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={List.length}
             />
             <TableBody>
-              {stableSort(List, getComparator(order, orderBy))
+              {stableSort(active, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.contact);
                   const labelId = `enhanced-table-${index}`;
 
                   return (
-                    <TableRow
-                      hover
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.contact}
-                      selected={isItemSelected}
-                    >
+                    <TableRow hover tabIndex={-1} key={row.contact}>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
                         align="center"
                       >
                         {row.name}
@@ -242,14 +193,21 @@ export default function EnhancedTable({ list }) {
                       <TableCell align="center">{row.contact}</TableCell>
                       <TableCell align="center">{row.bg}</TableCell>
                       <TableCell align="center">
-                        <Button                           
+                        <Button
                           type="button"
                           variant="contained"
+                          disabled={active[index].status}
+                          onClick={(e) => {
+                            handleSet(e, index);
+                          }}
                         >
-                          Expire
+                          {active[index].status ? (
+                            <p>Given !</p>
+                          ) : (
+                            <p>Given ?</p>
+                          )}
                         </Button>
                       </TableCell>
-                      {/* Has given Blood checkbox */}
                     </TableRow>
                   );
                 })}
@@ -259,7 +217,7 @@ export default function EnhancedTable({ list }) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={List.length}
+          count={active.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

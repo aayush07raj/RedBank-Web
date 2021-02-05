@@ -263,7 +263,10 @@ export default function EnhancedTable({ list, bg, component, units }) {
                         {row.name}
                       </TableCell>
                       <TableCell align="center">{row.contact}</TableCell>
-                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="center">
+                        {row.address}, {row.district}, {row.state},{" "}
+                        {row.pincode}
+                      </TableCell>
                       <TableCell align="center">{row.price}</TableCell>
                       <TableCell align="center">
                         <Button

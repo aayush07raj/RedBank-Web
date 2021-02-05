@@ -219,7 +219,10 @@ export default function EnhancedTable({ list }) {
                       </TableCell>
                       <TableCell align="center">{row.commitmentDate}</TableCell>
                       <TableCell align="center">{row.commitmentTime}</TableCell>
-                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="center">
+                        {row.address}, {row.district}, {row.state},{" "}
+                        {row.pincode}
+                      </TableCell>
                       <TableCell align="center">{row.compeleted}</TableCell>
                     </TableRow>
                   );

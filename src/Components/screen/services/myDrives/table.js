@@ -1,10 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
 import { Button } from "@material-ui/core/";
-
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -15,21 +13,30 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Checkbox from "@material-ui/core/Checkbox";
+import axios from "axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.black,
+    fontWeight: "bold",
+    fontSize: 16,
   },
   body: {
     fontSize: 14,
   },
 }))(TableCell);
 
-function Row(props) {
-  const { row } = props;
+function Row({ row, state, index, setList }) {
   const [open, setOpen] = React.useState(false);
+
+  const handleClick = (idx) => {
+    if (window.confirm("Are you sure ?")) {
+      const updatedList = [...state];
+      updatedList[index].acceptedDonors[idx].hasGivenBlood = true;
+      setList(updatedList);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -51,7 +58,7 @@ function Row(props) {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ padding: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography
@@ -71,20 +78,26 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.acceptedDonors.map((item) => (
+                  {row.acceptedDonors.map((item, idx) => (
                     <TableRow key={item.donorId} align="center">
                       <TableCell align="center">{item.donorName}</TableCell>
                       <TableCell align="center">{item.bloodGroup}</TableCell>
                       <TableCell align="center">
-                        {item.hasGivenBlood ? (
-                          <p>donoe</p>
-                        ):(
-                          <Button
-                          variant ="contained">
-                            Given ? 
-                         </Button>
-                        
-                        )}
+                        <Button
+                          variant="contained"
+                          disabled={
+                            state[index].acceptedDonors[idx].hasGivenBlood
+                          }
+                          onClick={(e) => {
+                            handleClick(idx);
+                          }}
+                        >
+                          {state[index].acceptedDonors[idx].hasGivenBlood ? (
+                            <p>Given !</p>
+                          ) : (
+                            <p>Given ?</p>
+                          )}
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -98,15 +111,30 @@ function Row(props) {
   );
 }
 
-export default function CollapsibleTable({ list }) {
-  var List = [];
-  list.map((item) => {
-    List.push(item);
-  });
-  console.log(List);
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3),
+  },
+}));
+
+export default function CollapsibleTable() {
+  const [drivesList, setList] = useState([]);
+  const classes = useStyles();
+
+  useEffect(() => {
+    axios
+      .post("http://localhost:5000/finddrives", {
+        pincode: "111112",
+      })
+      .then((response) => {
+        if (response.data.success) {
+          setList(response.data.upcomingDrivesList);
+        }
+      });
+  }, []);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={classes.root}>
       <Table>
         <TableHead>
           <TableRow>
@@ -125,8 +153,14 @@ export default function CollapsibleTable({ list }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {List.map((row) => (
-            <Row key={row.startDate} row={row} />
+          {drivesList.map((row, idx) => (
+            <Row
+              key={row.startDate}
+              row={row}
+              state={drivesList}
+              index={idx}
+              setList={setList}
+            />
           ))}
         </TableBody>
       </Table>

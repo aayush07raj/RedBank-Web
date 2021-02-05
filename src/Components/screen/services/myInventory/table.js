@@ -12,12 +12,13 @@ import axios from "axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.black,
     fontSize: "18px",
+    fontWeight: "bold",
   },
   body: {
-    fontSize: 14,
+    fontSize: 18,
   },
 }))(TableCell);
 
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   root: {
-    height: "640px",
+    height: "630px",
     overflow: "auto",
     "& .MuiTextField-root": {
       width: 50,
@@ -38,7 +39,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CustomizedTables() {
+  const classes = useStyles();
+  const [readOnly, setStatus] = useState(true);
   const [data, setData] = useState([]);
+  const regex = /^[0-9]*$/;
 
   useEffect(() => {
     axios
@@ -51,8 +55,7 @@ export default function CustomizedTables() {
       .catch();
   }, []);
 
-  const classes = useStyles();
-  const [status, setStatus] = useState(true);
+  console.log(data);
 
   const handleEdit = () => {
     window.alert("start editing");
@@ -63,127 +66,87 @@ export default function CustomizedTables() {
     setStatus(true);
   };
 
-  const handleChange = (e, idx, label) => {
-    const { name, value } = e.target;
-    const updatedData = { ...data };
-
-    console.log(updatedData[idx][label][name]);
-    updatedData[idx][label][name] = value;
-    console.log(updatedData[idx][label][name]);
-    // setData(updatedData);
-
-    // if (name === "Bprice") updatedData[idx].blood.price = value;
-    // else if (name === "Bunits") updatedData[idx].blood.units = value;
+  const handleChange = (e, idx, idx2, type) => {
+    const { value } = e.target;
+    const updatedData = [...data];
+    updatedData[idx].data[idx2][type] = value;
+    setData(updatedData);
   };
+
   return (
     <>
       <Grid container justify="flex-end">
-        <ButtonGroup
-          color="secondary"
-          aria-label="outlined secondary button group"
-          className={classes.buttonGroup}
-          size="large"
-        >
-          <Button onClick={handleEdit}>Edit</Button>
-          <Button onClick={handleSave}>Save</Button>
+        <ButtonGroup color="secondary" className={classes.buttonGroup}>
+          {readOnly ? (
+            <Button onClick={handleEdit}>Edit</Button>
+          ) : (
+            <ButtonGroup color="secondary">
+              <Button onClick={handleSave}>Save</Button>
+              <Button>Cancel</Button>
+            </ButtonGroup>
+          )}
         </ButtonGroup>
       </Grid>
 
       <TableContainer component={Paper} className={classes.root}>
-        <Table className={classes.table} stickyHeader>
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center">Blood Group</StyledTableCell>
-              <StyledTableCell align="center" colspan={2}>
-                Whole Blood
-              </StyledTableCell>
-              <StyledTableCell align="center" colspan={2}>
-                Plasma
-              </StyledTableCell>
-              <StyledTableCell align="center" colspan={2}>
-                Platelets
-              </StyledTableCell>
-            </TableRow>
-            <TableRow>
-              <StyledTableCell align="center"></StyledTableCell>
-              <StyledTableCell align="center">Price/unit</StyledTableCell>
-              <StyledTableCell align="center">Units available</StyledTableCell>
-              <StyledTableCell align="center">Price/unit</StyledTableCell>
-              <StyledTableCell align="center">Units available</StyledTableCell>
-              <StyledTableCell align="center">Price/unit</StyledTableCell>
-              <StyledTableCell align="center">Units available</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row, idx) => (
+        {data.map((item, idx) => (
+          <Table className={classes.table}>
+            <TableHead>
               <TableRow key={idx}>
-                <StyledTableCell align="center">
-                  {row.bloodGroup}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <TextField
-                    value={row.blood.price}
-                    name="price"
-                    onChange={(e) => {
-                      handleChange(e, idx, "blood");
-                    }}
-                    inputProps={{ readOnly: status }}
-                  />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <TextField
-                    value={row.blood.units}
-                    name="units"
-                    onChange={(e) => {
-                      handleChange(e, idx, "blood");
-                    }}
-                    inputProps={{ readOnly: status }}
-                  />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <TextField
-                    value={row.plasma.price}
-                    name="price"
-                    onChange={(e) => {
-                      handleChange(e, idx, "plasma");
-                    }}
-                    inputProps={{ readOnly: status }}
-                  />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <TextField
-                    value={row.plasma.units}
-                    name="units"
-                    onChange={(e) => {
-                      handleChange(e, idx, "plasma");
-                    }}
-                    inputProps={{ readOnly: status }}
-                  />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <TextField
-                    value={row.platelets.price}
-                    name="price"
-                    onChange={(e) => {
-                      handleChange(e, idx, "platelets");
-                    }}
-                    inputProps={{ readOnly: status }}
-                  />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <TextField
-                    value={row.platelets.units}
-                    name="units"
-                    onChange={(e) => {
-                      handleChange(e, idx, "platelets");
-                    }}
-                    inputProps={{ readOnly: status }}
-                  />
+                <StyledTableCell align="center" colspan={3}>
+                  {item.comp}
                 </StyledTableCell>
               </TableRow>
+            </TableHead>
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center">Blood Group</StyledTableCell>
+                <StyledTableCell align="center">
+                  Units Available (Ltr)
+                </StyledTableCell>
+                <StyledTableCell align="center">Price (Rs)</StyledTableCell>
+              </TableRow>
+            </TableHead>
+
+            {item.data.map((val, idx2) => (
+              <TableBody>
+                <TableRow key={idx2}>
+                  <StyledTableCell align="center">{val.group}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {readOnly ? (
+                      val.units
+                    ) : (
+                      <TextField
+                        name={`units${idx2}`}
+                        value={val.units}
+                        onChange={(e) => {
+                          if (regex.test(e.target.value)) {
+                            handleChange(e, idx, idx2, "units");
+                          }
+                        }}
+                      />
+                    )}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {readOnly ? (
+                      val.price
+                    ) : (
+                      <TextField
+                        name="price"
+                        value={val.price}
+                        onChange={(e) => {
+                          if (regex.test(e.target.value)) {
+                            handleChange(e, idx, idx2, "price");
+                          }
+                        }}
+                      />
+                    )}
+                  </StyledTableCell>
+                </TableRow>
+              </TableBody>
             ))}
-          </TableBody>
-        </Table>
+          </Table>
+        ))}
       </TableContainer>
     </>
   );

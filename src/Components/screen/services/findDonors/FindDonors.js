@@ -65,12 +65,12 @@ function FindDonors() {
   }, [donorsList]);
 
   const classes = useStyles();
+  const regex = /^[0-9]*$/;
 
   const schema = {
     state: Joi.required(),
     district: Joi.required(),
-    pincode: Joi
-      .required(),
+    pincode: Joi.required(),
     bg: Joi.required(),
   };
 
@@ -143,8 +143,8 @@ function FindDonors() {
         <Typography variant="h4">Find Donor</Typography>
         <Divider />
         <Typography variant="h6">
-          Here you can search any inidividual for blood donation.
-          Fill the parameters and click on search.  
+          Here you can search any inidividual for blood donation. Fill the
+          parameters and click on search.
         </Typography>
       </Paper>
       <Container maxWidth="lg">
@@ -200,7 +200,11 @@ function FindDonors() {
                   name="pincode"
                   value={data.pincode}
                   variant="outlined"
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    if (regex.test(e.target.value)) {
+                      handleChange(e);
+                    }
+                  }}
                   inputProps={{ maxLength: 6 }}
                   error={errors && errors.pincode ? true : false}
                   helperText={errors && errors.pincode ? errors.pincode : null}

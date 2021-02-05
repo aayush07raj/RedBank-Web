@@ -17,6 +17,11 @@ import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import Logo from "./logo.svg";
 import { useDispatch, useSelector } from "react-redux";
 import logging from "../../redux/Actions/login";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +56,16 @@ export default function MenuAppBar({ user }) {
   const handleLogout = () => {
     dispatch(logging({ isLoggedIn: false, userType: 0 }));
     history.push("/");
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClosed = () => {
+    setOpen(false);
   };
 
   console.log(loggedInState);
@@ -192,28 +207,35 @@ export default function MenuAppBar({ user }) {
             >
               Profile{" "}
             </Button>
-
+            <IconButton color ="inherit" onClick={handleClickOpen}>
+                  <PowerSettingsNewIcon/>
+            </IconButton>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+            <DialogTitle id="alert-dialog-title">{"Are You Sure, you want to logout?"}</DialogTitle>
+              <DialogContent>
+              </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClosed} color="primary">
+                  No
+              </Button>
+              <Button onClick={handleLogout} color="primary" autoFocus>
+                  Yes
+              </Button>
+            </DialogActions>
+            </Dialog>        
             <IconButton
-              // aria-label="account of current user"
-              // aria-controls="menu-appbar"
-              // aria-haspopup="true"
-              // onClick={handleMenu}
               color="inherit"
               onClick={handleLogout}
             >
-              <PowerSettingsNewIcon  onClick={()=>{
-                window.alert("You are being logged out!")
-              }}/>
             </IconButton>
           </div>
-          {/* <IconButton color="inherit">
-            <MoreIcon />
-          </IconButton> */}
         </Toolbar>
       </AppBar>
-      {/* {mobileMenu} */}
     </Fragment>
   );
 }
-
-// Logged Out

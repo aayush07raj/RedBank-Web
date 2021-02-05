@@ -57,12 +57,13 @@ function FindDonors() {
     units: "",
   });
 
-  const [ list, setList ] = useState([]);
+  const [list, setList] = useState([]);
 
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
   const classes = useStyles();
+  const regex = /^[0-9]*$/;
 
   const schema = {
     state: Joi.required(),
@@ -147,8 +148,8 @@ function FindDonors() {
         <Typography variant="h4">Buy Blood</Typography>
         <Divider />
         <Typography variant="h6">
-          Here you can search nearest blood bank and buy items as per your requirement. 
-          Fill the parameters and click on search.  
+          Here you can search nearest blood bank and buy items as per your
+          requirement. Fill the parameters and click on search.
         </Typography>
       </Paper>
       <Container maxWidth="lg">
@@ -156,8 +157,7 @@ function FindDonors() {
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-
-              <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select required Blood Group *</InputLabel>
                   <Select
                     label="Select required Blood Group"
@@ -256,13 +256,16 @@ function FindDonors() {
                   name="pincode"
                   value={data.pincode}
                   variant="outlined"
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    if (regex.test(e.target.value)) {
+                      handleChange(e);
+                    }
+                  }}
                   inputProps={{ maxLength: 6 }}
                   error={errors && errors.pincode ? true : false}
                   helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
-                
                 <Button
                   type="submit"
                   variant="contained"
@@ -276,10 +279,15 @@ function FindDonors() {
             </form>
           </Grid>
           <Grid item xs={12} className={classes.tableContainer}>
-          {list.length === 0 ? (
+            {list.length === 0 ? (
               <h3 align="center">Results will be displayed here</h3>
             ) : (
-              <Table list={list} bg={data.bg} component={data.component} units={data.units}  />
+              <Table
+                list={list}
+                bg={data.bg}
+                component={data.component}
+                units={data.units}
+              />
             )}
           </Grid>
         </Grid>
