@@ -16,6 +16,11 @@ import {
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Joi from "joi";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -126,15 +131,22 @@ function ConductDrive() {
     setErrors(allErrors);
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClosed = () => {
+    setOpen(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
 
     setErrors({ errors: errors || {} });
     if (errors) return;
-
-    window.alert("Notification sent");
-
     console.log(data);
   };
 
@@ -315,9 +327,28 @@ function ConductDrive() {
                   variant="contained"
                   className={classes.formControl}
                   disabled={validate()}
+                  onClick={handleClickOpen}
                 >
                   Send Notification
                 </Button>
+                <Dialog
+              open={open}
+              onClose={handleClosed}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+            <DialogTitle id="alert-dialog-title">{"Are You Sure, you want to logout?"}</DialogTitle>
+              <DialogContent>
+              </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClosed} color="primary">
+                  No
+              </Button>
+              <Button  color="primary" autoFocus>
+                  Yes
+              </Button>
+            </DialogActions>
+            </Dialog>
               </Paper>
             </form>
           </Grid>

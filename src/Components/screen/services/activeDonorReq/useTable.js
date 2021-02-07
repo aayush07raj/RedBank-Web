@@ -199,6 +199,7 @@ export default function EnhancedTable() {
                           disabled={active[index].status}
                           onClick={(e) => {
                             handleSet(e, index);
+                            
                           }}
                         >
                           {active[index].status ? (

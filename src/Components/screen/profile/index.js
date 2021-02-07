@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from "@material-ui/core";
 import SideMenu from "./sideMenu";
 import Profile from "./profile";
-import { Navbar } from "../../layouts";
+import { Navbar, Footer } from "../../layouts";
 
 const useStyles = makeStyles({
     appMain: {
@@ -20,6 +20,7 @@ const useStyles = makeStyles({
         <div className={classes.appMain}>
           <Profile />
         </div>
+        <Footer/>
       </>
     );
   }

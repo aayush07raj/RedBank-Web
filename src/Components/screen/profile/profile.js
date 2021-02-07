@@ -22,7 +22,9 @@ function Profile() {
         subtitle="Here you can view as well as edit your profile details. Some fields ( Name, Email, License number ) kept uneditable due to security purposes "
       />
       <Paper className={classes.paperStyle} elevation={5}>
-        {loggedInState.userType === 0 ? <ProfileForm /> : <OrgForm />}
+        {loggedInState.userType === 0 ? <ProfileForm /> : <>
+          {loggedInState.userType === 1 ? <OrgForm /> : <OrgForm />}
+          </>}
       </Paper>
     </>
   );

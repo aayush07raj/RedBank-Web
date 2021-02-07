@@ -19,6 +19,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -158,6 +163,16 @@ const EnhancedTableToolbar = (props) => {
     window.alert("Notification sent.");
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClosed = () => {
+    setOpen(false);
+  };
+
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -185,11 +200,33 @@ const EnhancedTableToolbar = (props) => {
       )}
 
       {numSelected > 0 ? (
+        <>
         <Tooltip title="Send Notification">
-          <Button variant="contained" onClick={handleClick}>
+          <Button variant="contained" onClick={handleClickOpen}>
             Send
           </Button>
+              
         </Tooltip>
+        <Dialog
+        open={open}
+        onClose={handleClosed}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+      <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
+      <DialogActions>
+        <Button onClick={handleClosed} color="primary">
+            No
+        </Button>
+        <Button onClick={()=>{
+          window.alert("Notification Sent")
+          handleClosed();
+        }} color="primary" autoFocus>
+            Yes
+        </Button>
+      </DialogActions>
+      </Dialog>
+      </>
       ) : null}
     </Toolbar>
   );
@@ -228,6 +265,7 @@ export default function EnhancedTable({ list }) {
   list.map((item) => {
     List.push(item);
   });
+
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");

@@ -53,7 +53,7 @@ function MyPurchase() {
         </Typography>
       </Paper>
       <Container maxWidth="lg">
-        <Grid container justify="center" className={classes.table}>
+        <Grid container justify="center" className={classes.table} >
           <Grid item xs={12}>
             <Table list={purchase} />
           </Grid>

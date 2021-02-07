@@ -12,6 +12,7 @@ import {
   Button,
 } from "@material-ui/core/";
 import { Navbar, Footer } from "../../layouts";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   hero: {
@@ -45,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Home(props) {
 
+  
+
   const [message, addMsg] = useState({
     subject:"",
     msg:""
@@ -60,6 +63,11 @@ function Home(props) {
   }
 
   const handleClick =(e)=>{
+    axios.post("http://localhost:5000/about",{
+      message
+    }).then((response)=>{
+      console.log(response);
+    })
     e.preventDefault();
     console.log(message)
     window.alert("Your message has been Submiited!")
