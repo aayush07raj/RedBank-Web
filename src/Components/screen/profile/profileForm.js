@@ -5,12 +5,14 @@ import {
   makeStyles,
   Button,
   ButtonGroup,
+  Typography,
 } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import {Card, CardActionArea, CardContent, CardActions, CardMedia} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,110 +91,44 @@ function ProfileForm() {
     <>
       <form className={classes.root}>
         <Grid container>
-          <Grid item xs={6}>
-            <TextField
-              variant="outlined"
-              label="Full name"
-              name="name"
-              value={values.name}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: true,
-              }}
-            />
+          <Grid container justify="center" spacing={8}>
+              <Grid item xs={8} sm={3}>
+              <CardMedia image="https://avatarfiles.alphacoders.com/164/thumb-164819.png" style={{ margin: "40px", height:150, width: 150}} component="img"/>
+              </Grid>
+              <Grid item xs={8} sm={5}>
+              <CardContent>
+                <Typography style={{padding:"20px"}}variant="h4">
+                  Name: {values.name}
+                </Typography>
+                <Typography variant="h6" style={{ paddingLeft: "20px"}}>
+                  
+                  User ID: #F132GH
+                </Typography>
+              </CardContent>
+              <CardActions style={{marginLeft:"30px",marginTop:"5px"}} >
+                <Button  variant="outlined" color="secondary">
+                  Active Donor
+                </Button>
+              </CardActions>
+              </Grid>
+            </Grid>
             
-            <TextField
-              variant="outlined"
-              label="Email"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="Address"
-              name="address"
-              value={values.address}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-             
-            <TextField
-              variant="outlined"
-              label="State"
-              name="state"
-              value={values.state}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="Password"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
-              type="password"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <div className={classes.div1}>
-              <Button onClick={handlePasswordChange}>
-                change your password ?
-              </Button>
-            </div>
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              variant="outlined"
-              label="Phone number"
-              name="phone"
-              value={values.phone}
-              onChange={handleChange}
-              type="number"
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="Blood Group"
-              name="Blood Group"
-              value={values.bg}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="District"
-              name="district"
-              value={values.district}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="Pincode"
-              name="pincode"
-              value={values.pincode}
-              onChange={handleChange}
-              type="number"
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-            <div className={classes.div1}>
+            <Grid container justify="center" spacing={8}>
+              <Grid item xs={8} sm={2}>
+              <Typography> Donation Made: 6</Typography>
+              </Grid>
+              <Grid item xs={8} sm={2}>
+              <Typography>Commitment Made: 4</Typography>
+              </Grid>
+              <Grid item xs={8} sm={2}>
+              <Typography>Drive Attended: 7</Typography>
+              </Grid>
+            </Grid>
+
+            <Grid container style={{marginTop:"10px"}} justify="center" spacing={4}>
+              <Grid align="center" item xs={8} sm={4}>
+              <Typography variant="h4">About</Typography>
+              <div style={{ marginTop:"20px"}} className={classes.div1}>
               <ButtonGroup
                 variant="contained"
                 aria-label="contained primary button group"
@@ -226,7 +162,39 @@ function ProfileForm() {
                 </Button>
               </DialogActions>
             </Dialog>
-          </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid container style={{marginTop:"20px"}} justify="center" spacing={8}>
+            <Grid item xs={4} sm={2}>
+              <Typography variant="h6"> Email: </Typography>
+              <Typography variant="h6"> D.O.B:</Typography>
+              <Typography variant="h6"> Address:</Typography>
+              <Typography variant="h6"> District:</Typography>
+              <Typography variant="h6"> State:</Typography>
+              <Typography variant="h6"> Pincode:</Typography>
+              <Typography variant="h6"> Phone:</Typography>
+              
+            </Grid>
+            <Grid item xs={4} sm={4}>
+                <Typography  variant="h6">{values.email}</Typography>
+                <Typography  variant="h6">{values.dob}</Typography>
+                <Typography  variant="h6">{values.address}</Typography>
+                <Typography  variant="h6">{values.district}</Typography>
+                <Typography  variant="h6">{values.state}</Typography>
+                <Typography  variant="h6">{values.pincode}</Typography>
+                <Typography  variant="h6">{values.phone}</Typography>
+            </Grid>
+            </Grid>
+            <Grid container style={{marginTop:"20px"}} justify="center" spacing={8}>
+              <Grid align="center" item xs={8} sm={4}>
+              <div className={classes.div1}>
+              <Button onClick={handlePasswordChange}>
+                change your password ?
+              </Button>
+            </div>
+              </Grid>
+            </Grid>
         </Grid>
       </form>
     </>

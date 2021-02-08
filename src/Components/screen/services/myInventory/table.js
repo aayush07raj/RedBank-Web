@@ -82,7 +82,6 @@ export default function CustomizedTables() {
           ) : (
             <ButtonGroup color="secondary">
               <Button onClick={handleSave}>Save</Button>
-              <Button>Cancel</Button>
             </ButtonGroup>
           )}
         </ButtonGroup>
