@@ -16,11 +16,12 @@ import {
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Joi from "joi";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -147,7 +148,14 @@ function ConductDrive() {
 
     setErrors({ errors: errors || {} });
     if (errors) return;
-    console.log(data);
+
+    axios.post("http://localhost:5000/orgdrive").then((response) => {
+      if (response.data.success) {
+        window.alert(
+          "Drive has been initiated, check My Drives sections for more details"
+        );
+      }
+    });
   };
 
   return (
@@ -157,9 +165,9 @@ function ConductDrive() {
         <Typography variant="h4">Conduct Blood Donation Drive</Typography>
         <Divider />
         <Typography variant="h6">
-          Here you can orgainze a Blood Donation drive and send notification to eligible donors.
-          They will recive all the necessary details filled here for the drive. 
-          Fields with "*" are mandatory. 
+          Here you can orgainze a Blood Donation drive and send notification to
+          eligible donors. They will recive all the necessary details filled
+          here for the drive. Fields with "*" are mandatory.
         </Typography>
       </Paper>
       <Container maxWidth="lg">
@@ -167,7 +175,6 @@ function ConductDrive() {
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-                
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select required Blood Groups *</InputLabel>
                   <Select
@@ -332,23 +339,24 @@ function ConductDrive() {
                   Send Notification
                 </Button>
                 <Dialog
-              open={open}
-              onClose={handleClosed}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-            <DialogTitle id="alert-dialog-title">{"Are You Sure, you want to logout?"}</DialogTitle>
-              <DialogContent>
-              </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClosed} color="primary">
-                  No
-              </Button>
-              <Button  color="primary" autoFocus>
-                  Yes
-              </Button>
-            </DialogActions>
-            </Dialog>
+                  open={open}
+                  onClose={handleClosed}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {"Are You Sure, you want to logout?"}
+                  </DialogTitle>
+                  <DialogContent></DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClosed} color="primary">
+                      No
+                    </Button>
+                    <Button color="primary" autoFocus>
+                      Yes
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </Paper>
             </form>
           </Grid>

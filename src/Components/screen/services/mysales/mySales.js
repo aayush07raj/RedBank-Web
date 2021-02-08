@@ -34,8 +34,6 @@ function MySales() {
       .then((response) => {
         if (response.data.success) {
           setList(response.data.salesData);
-          console.log(response.data.salesData);
-        // console.log(response);
         }
       })
       .catch();

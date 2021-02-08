@@ -68,13 +68,13 @@ const headCells = [
     label: "Contact",
   },
   {
-    id:"accept",
-    label:""
+    id: "accept",
+    label: "",
   },
   {
-    id:"ignore",
-    label:""
-  }
+    id: "ignore",
+    label: "",
+  },
 ];
 
 const useHeaderStyles = makeStyles((theme) => ({
@@ -163,38 +163,31 @@ export default function EnhancedTable({ list }) {
   list.map((item) => {
     List.push(item);
   });
-  console.log(List);
+  console.log(list);
 
-  const acceptAxios=(e)=>{
-    axios
-    .put("http://localhost:5000/invites",{
+  const acceptAxios = (e) => {
+    axios.put("http://localhost:5000/invites", {}).then((response) => {
+      console.log(response);
+    });
+  };
 
-    })
-    .then((response)=>{
-      console.log(response)
-    })
-  }
-
-
-  list.map((item)=>{
-    let  obj ={}
-    if(item.driveId){
+  list.map((item) => {
+    let obj = {};
+    if (item.driveId) {
       obj = {
         driveId: item.driveId,
-        status: item.status
-      }
-    }else{
+        status: item.status,
+      };
+    } else {
       obj = {
         donationId: item.donationId,
-        status: item.status
-      }
+        status: item.status,
+      };
     }
-    axios.put("http://localhost:5000/invites",{obj})
-      .then((response)=>{
-          console.log(response)
-      })
-  })
-
+    axios.put("http://localhost:5000/invites", { obj }).then((response) => {
+      console.log(response);
+    });
+  });
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -245,14 +238,13 @@ export default function EnhancedTable({ list }) {
                       <TableCell align="center">{row.inviteDate}</TableCell>
                       <TableCell align="center">{row.inviteTime}</TableCell>
                       <TableCell align="center">
-                        {row.address}, 
-                        {row.district}, {
-                        row.state}, {" "}
-                        {row.pincode}
+                        {row.address},{row.district},{row.state},{row.pincode}
                       </TableCell>
-                      <TableCell align="center">{row.recipientContact}</TableCell>
                       <TableCell align="center">
-                      <Button
+                        {row.recipientContact}
+                      </TableCell>
+                      <TableCell align="center">
+                        <Button
                           type="button"
                           variant="contained"
                           onClick={acceptAxios}
@@ -261,7 +253,7 @@ export default function EnhancedTable({ list }) {
                         </Button>
                       </TableCell>
                       <TableCell align="center">
-                      <Button
+                        <Button
                           type="button"
                           variant="contained"
                           onClick={(event) => {

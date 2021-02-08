@@ -9,11 +9,12 @@ import {
   Button,
   Divider,
 } from "@material-ui/core";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,10 +35,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
-
-
 const handleClick = () => {
   window.alert(
     "Purchased confirmed. You can check the details in the My Purchases section of your services"
@@ -46,21 +43,20 @@ const handleClick = () => {
 
 // function Product({ iota }) {
 const Product = (props) => {
-  const {bg, component, units, amount } =
+  const { bg, component, units, amount } =
     (props.location && props.location.iota) || {};
   const price = props.location.price;
-  console.log(component);
+  const history = useHistory();
 
-  
-const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
-const handleClickOpen = () => {
-  setOpen(true);
-};
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-const handleClosed = () => {
-  setOpen(false);
-};
+  const handleClosed = () => {
+    setOpen(false);
+  };
 
   const classes = useStyles();
   return (
@@ -85,18 +81,15 @@ const handleClosed = () => {
             <Paper align="center" square style={{ padding: "50px" }}>
               <Container className={classes.typo}>
                 <Typography className={classes.typo} variant="h6">
-                  Blood Group Selected:
-                </Typography>
-                <Typography className={classes.typo}>
                   Blood Group: {bg}
                 </Typography>
-                <Typography className={classes.typo}>
+                <Typography className={classes.typo} variant="h6">
                   Component:{component}
                 </Typography>
-                <Typography className={classes.typo}>
+                <Typography className={classes.typo} variant="h6">
                   Units Required:{units}
                 </Typography>
-                <Typography className={classes.typo}>
+                <Typography className={classes.typo} variant="h6">
                   Total Amount:{price}
                 </Typography>
                 <Button
@@ -108,26 +101,34 @@ const handleClosed = () => {
                   Buy
                 </Button>
                 <Dialog
-              open={open}
-              onClose={handleClosed}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-            <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
-              <DialogContent>
-              </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClosed} color="primary">
-                  No
-              </Button>
-              <Button color="primary" onClick={(()=>{
-                window.alert("Your Invoice is updated in My Purchases Page")
-                handleClosed()
-              })} autoFocus>
-                  Yes
-              </Button>
-            </DialogActions>
-            </Dialog>   
+                  open={open}
+                  onClose={handleClosed}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {"Are You Sure?"}
+                  </DialogTitle>
+                  <DialogContent></DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClosed} color="primary">
+                      No
+                    </Button>
+                    <Button
+                      color="primary"
+                      onClick={() => {
+                        window.alert(
+                          "Your Invoice is updated in My Purchases Page"
+                        );
+                        handleClosed();
+                        history.push("/home");
+                      }}
+                      autoFocus
+                    >
+                      Yes
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </Container>
             </Paper>
           </Grid>

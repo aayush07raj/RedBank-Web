@@ -207,13 +207,15 @@ export default function EnhancedTable({ list }) {
                 .map((row, index) => {
                   return (
                     <TableRow hover tabIndex={-1} key={index}>
-                      <TableCell align="center">{row.id}</TableCell>
-                      <TableCell align="center">{row.buyer}</TableCell>
-                      <TableCell align="center">{row.email}</TableCell>
-                      <TableCell align="center">{row.contact}</TableCell>
-                      <TableCell align="center">{row.bg}</TableCell>
-                      <TableCell align="center">{row.component}</TableCell>
-                      <TableCell align="center">{row.units}</TableCell>
+                      <TableCell align="center">{row.saleId}</TableCell>
+                      <TableCell align="center">{row.buyerName}</TableCell>
+                      <TableCell align="center">{row.buyerEmail}</TableCell>
+                      <TableCell align="center">{row.buyerContact}</TableCell>
+                      <TableCell align="center">{row.purchasedGroup}</TableCell>
+                      <TableCell align="center">
+                        {row.purchasedComponent}
+                      </TableCell>
+                      <TableCell align="center">{row.purchasedQty}</TableCell>
                       <TableCell align="center">{row.bill}</TableCell>
                     </TableRow>
                   );

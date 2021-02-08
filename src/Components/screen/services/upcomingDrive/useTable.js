@@ -20,11 +20,12 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import SendIcon from "@material-ui/icons/Send";
 import Button from "@material-ui/core/Button";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { useHistory } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -63,9 +64,6 @@ const headCells = [
   { id: "date", numeric: true, disablePadding: false, label: "Date" },
   { id: "time", numeric: true, disablePadding: false, label: "Time" },
   { id: "address", numeric: true, disablePadding: false, label: "Address" },
-  { id: "state", numeric: true, disablePadding: false, label: "State" },
-  { id: "district", numeric: true, disablePadding: false, label: "District" },
-  { id: "pincode", numeric: true, disablePadding: false, label: "Pincode" },
   { id: "bg", numeric: true, disablePadding: false, label: "Blood Group" },
 ];
 
@@ -154,8 +152,8 @@ const useToolbarStyles = makeStyles((theme) => ({
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, data } = props;
+  const history = useHistory();
 
-  
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -165,10 +163,6 @@ const EnhancedTableToolbar = (props) => {
   const handleClosed = () => {
     setOpen(false);
   };
-
-  function handleSend(e, data) {
-    console.log(data);
-  }
 
   return (
     <Toolbar
@@ -198,30 +192,36 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <>
-        <Tooltip title="Apply for Donation" onClick={handleClickOpen}>
-          <Button variant="contained">Apply</Button>
-        </Tooltip>
-        <Dialog
-              open={open}
-              onClose={handleClosed}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
+          <Tooltip title="Apply for Donation" onClick={handleClickOpen}>
+            <Button variant="contained">Apply</Button>
+          </Tooltip>
+          <Dialog
+            open={open}
+            onClose={handleClosed}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
             <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
-              <DialogContent>
-              </DialogContent>
+            <DialogContent></DialogContent>
             <DialogActions>
               <Button onClick={handleClosed} color="primary">
-                  No
+                No
               </Button>
-              <Button onClick={()=>{
-                window.alert("Applied! you can see this and other commitments in My Commitments")
-                handleClosed();
-              }} color="primary" autoFocus>
-                  Yes
+              <Button
+                onClick={() => {
+                  window.alert(
+                    "Applied! you can see this and other commitments in My Commitments"
+                  );
+                  history.push("/home");
+                  handleClosed();
+                }}
+                color="primary"
+                autoFocus
+              >
+                Yes
               </Button>
             </DialogActions>
-            </Dialog>
+          </Dialog>
         </>
       ) : null}
     </Toolbar>
@@ -370,19 +370,19 @@ export default function EnhancedTable({ list }) {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.orgName}
                       </TableCell>
-                      <TableCell align="center">{row.contact}</TableCell>
+                      <TableCell align="center">{row.orgContact}</TableCell>
                       <TableCell align="center">
                         {row.startDate} -- {row.endDate}
                       </TableCell>
                       <TableCell align="center">
                         {row.startTime} -- {row.endTime}
                       </TableCell>
-                      <TableCell align="center">{row.address}</TableCell>
-                      <TableCell align="center">{row.state}</TableCell>
-                      <TableCell align="center">{row.district}</TableCell>
-                      <TableCell align="center">{row.pincode}</TableCell>
+                      <TableCell align="center">
+                        {row.address}, {row.district}, {row.state},{" "}
+                        {row.pincode}
+                      </TableCell>
                       <TableCell align="center">
                         {row.bloodGroupsInvited}
                       </TableCell>

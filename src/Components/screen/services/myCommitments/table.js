@@ -50,10 +50,6 @@ const headCells = [
     label: "Id",
   },
   {
-    id: "recipient",
-    label: "Recipient",
-  },
-  {
     id: "recipientType",
     label: "Recipient Type",
   },
@@ -75,7 +71,7 @@ const headCells = [
   },
   {
     id: "completed",
-    label: "Completed",
+    label: "status",
   },
 ];
 
@@ -211,11 +207,12 @@ export default function EnhancedTable({ list }) {
                       <TableCell id={index} align="center">
                         {row.commitmentType}
                       </TableCell>
-                      <TableCell align="center">{row.Id}</TableCell>
-                      <TableCell align="center">{row.recipient}</TableCell>
+                      <TableCell align="center">
+                        {row.driveId ? row.driveId : row.donationId}
+                      </TableCell>
                       <TableCell align="center">{row.recipientType}</TableCell>
                       <TableCell align="center">
-                        {row.recipientContact}
+                        {row.recipientContact}, {row.recipientEmail}
                       </TableCell>
                       <TableCell align="center">{row.commitmentDate}</TableCell>
                       <TableCell align="center">{row.commitmentTime}</TableCell>
@@ -223,7 +220,9 @@ export default function EnhancedTable({ list }) {
                         {row.address}, {row.district}, {row.state},{" "}
                         {row.pincode}
                       </TableCell>
-                      <TableCell align="center">{row.compeleted}</TableCell>
+                      <TableCell align="center">
+                        {row.compeleted ? <p>Complete</p> : <p>Incomplete</p>}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
