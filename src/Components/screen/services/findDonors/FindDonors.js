@@ -8,6 +8,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Divider,
+  Typography,
   TextField,
   Button,
 } from "@material-ui/core";
@@ -24,6 +26,13 @@ const useStyles = makeStyles((theme) => ({
     width: "550px",
     display: "flex",
     flexDirection: "column",
+  },
+  papers: {
+    width: "100%",
+
+    flexDirection: "column",
+    margin: "auto",
+    padding: theme.spacing(4),
   },
   formControl: {
     marginTop: theme.spacing(3),
@@ -56,15 +65,12 @@ function FindDonors() {
   }, [donorsList]);
 
   const classes = useStyles();
+  const regex = /^[0-9]*$/;
 
   const schema = {
-    state: Joi.string().required(),
-    district: Joi.string().required(),
-    pincode: Joi.number()
-      .positive()
-      .min(6)
-      .message("Pincode must contain 6 digits")
-      .required(),
+    state: Joi.required(),
+    district: Joi.required(),
+    pincode: Joi.required(),
     bg: Joi.required(),
   };
 
@@ -133,15 +139,19 @@ function FindDonors() {
   return (
     <>
       <Navbar />
+      <Paper square elevation={5} className={classes.papers}>
+        <Typography variant="h4">Find Donor</Typography>
+        <Divider />
+        <Typography variant="h6">
+          Here you can search any inidividual for blood donation. Fill the
+          parameters and click on search.
+        </Typography>
+      </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-                <h2 style={{ marginTop: "10px" }} align="center">
-                  Find Donors
-                </h2>
-
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select your State</InputLabel>
                   <Select
@@ -190,7 +200,11 @@ function FindDonors() {
                   name="pincode"
                   value={data.pincode}
                   variant="outlined"
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    if (regex.test(e.target.value)) {
+                      handleChange(e);
+                    }
+                  }}
                   inputProps={{ maxLength: 6 }}
                   error={errors && errors.pincode ? true : false}
                   helperText={errors && errors.pincode ? errors.pincode : null}
@@ -201,7 +215,7 @@ function FindDonors() {
                   <Select
                     required
                     multiple
-                    label="Select required Blood Groups"
+                    label="Select required Blood Groups *"
                     name="bg"
                     onChange={handleChange}
                     value={data.bg}

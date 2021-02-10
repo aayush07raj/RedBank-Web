@@ -20,19 +20,12 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import SendIcon from "@material-ui/icons/Send";
 import Button from "@material-ui/core/Button";
-
-// function createData(name, contact, date, time, address, state, district, pincode, bg) {
-//   return { name, contact, date, time, address, state, district, pincode, bg };
-// }
-
-// const rows = [
-//   createData("John Doe",'9321764391','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Martin Luther",'913213432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Hitler",'9231234325','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Gandhi",'9169312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Sameer",'9179312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-//   createData("Pope",'9119312432','30 Jan', '(8am to 9 pm)', 'MG Col', 'Tamil Nadu','xzs','892122','A+'),
-// ];
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { useHistory } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -71,9 +64,6 @@ const headCells = [
   { id: "date", numeric: true, disablePadding: false, label: "Date" },
   { id: "time", numeric: true, disablePadding: false, label: "Time" },
   { id: "address", numeric: true, disablePadding: false, label: "Address" },
-  { id: "state", numeric: true, disablePadding: false, label: "State" },
-  { id: "district", numeric: true, disablePadding: false, label: "District" },
-  { id: "pincode", numeric: true, disablePadding: false, label: "Pincode" },
   { id: "bg", numeric: true, disablePadding: false, label: "Blood Group" },
 ];
 
@@ -94,7 +84,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-      <TableCell padding="checkbox">
+        <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -105,7 +95,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            style={{  fontWeight: "bold" }}
+            style={{ fontWeight: "bold" }}
             align="center"
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
@@ -162,10 +152,17 @@ const useToolbarStyles = makeStyles((theme) => ({
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, data } = props;
+  const history = useHistory();
 
-  function handleSend(e, data) {
-    console.log(data);
-  }
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClosed = () => {
+    setOpen(false);
+  };
 
   return (
     <Toolbar
@@ -194,9 +191,38 @@ const EnhancedTableToolbar = (props) => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Apply for Donation">
-          <Button variant="contained">Apply</Button>
-        </Tooltip>
+        <>
+          <Tooltip title="Apply for Donation" onClick={handleClickOpen}>
+            <Button variant="contained">Apply</Button>
+          </Tooltip>
+          <Dialog
+            open={open}
+            onClose={handleClosed}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
+            <DialogContent></DialogContent>
+            <DialogActions>
+              <Button onClick={handleClosed} color="primary">
+                No
+              </Button>
+              <Button
+                onClick={() => {
+                  window.alert(
+                    "Applied! you can see this and other commitments in My Commitments"
+                  );
+                  history.push("/home");
+                  handleClosed();
+                }}
+                color="primary"
+                autoFocus
+              >
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
       ) : null}
     </Toolbar>
   );
@@ -230,20 +256,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({list}) {
+export default function EnhancedTable({ list }) {
   // console.log(props.list)
   // const [list, setState] =useState(props.list);
   var List = [];
-  list.map((item)=>{
+  list.map((item) => {
     List.push(item);
-  })
-  console.log(list)
+  });
+  console.log(list);
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -254,7 +279,7 @@ export default function EnhancedTable({list}) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = List.map((n) => n.contact);
+      const newSelecteds = List.map((n) => n.driveId);
       setSelected(newSelecteds);
       return;
     }
@@ -290,10 +315,6 @@ export default function EnhancedTable({list}) {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
   const isSelected = (contact) => selected.indexOf(contact) !== -1;
 
   const emptyRows =
@@ -307,7 +328,7 @@ export default function EnhancedTable({list}) {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            size="medium"
             aria-label="enhanced table"
           >
             <EnhancedTableHead
@@ -323,17 +344,17 @@ export default function EnhancedTable({list}) {
               {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.contact);
+                  const isItemSelected = isSelected(row.driveId);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.contact)}
+                      onClick={(event) => handleClick(event, row.driveId)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.driveId}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -349,24 +370,25 @@ export default function EnhancedTable({list}) {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.orgName}
                       </TableCell>
-                      <TableCell align="center">{row.contact}</TableCell>
-                      <TableCell align="center">{row.startDate} -- {row.endDate}</TableCell>
-                      <TableCell align="center">{row.startTime} -- {row.endTime}</TableCell>
-                      <TableCell align="center">{row.address}</TableCell>
-                      <TableCell align="center">{row.state}</TableCell>
-                      <TableCell align="center">{row.district}</TableCell>
-                      <TableCell align="center">{row.pincode}</TableCell>
-                      <TableCell align="center">{row.bloodGroupsInvited}</TableCell>
+                      <TableCell align="center">{row.orgContact}</TableCell>
+                      <TableCell align="center">
+                        {row.startDate} -- {row.endDate}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.startTime} -- {row.endTime}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.address}, {row.district}, {row.state},{" "}
+                        {row.pincode}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.bloodGroupsInvited}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -380,10 +402,6 @@ export default function EnhancedTable({list}) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }

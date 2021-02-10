@@ -1,8 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Grid, Paper, Typography, Divider } from "@material-ui/core";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { Grid, Paper, Typography, Divider, Button } from "@material-ui/core";
 
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
+
 function Options() {
   const paperStyle = {
     display: "flex",
@@ -11,6 +12,22 @@ function Options() {
     padding: "30px",
   };
   const margin = { marginTop: "20px" };
+
+  const history = useHistory();
+
+  const handleSet = (e, name) => {
+    var type = "";
+    if (name === "individual") {
+      type = "0";
+      history.push({ pathname: "/IndividualRegistration", type });
+    } else if (name === "bloodbank") {
+      type = "1";
+      history.push({ pathname: "/BloodBankRegistration", type });
+    } else {
+      type = "2";
+      history.push({ pathname: "/HospitalRegistration", type });
+    }
+  };
 
   return (
     <>
@@ -25,13 +42,31 @@ function Options() {
             <Grid align="center">
               <h2 style={{ marginTop: "15px" }}>Which type of user are you?</h2>
               <Typography style={margin}>
-                <Link to="/IndividualRegistration">Individual</Link>
+                <Button
+                  onClick={(e) => {
+                    handleSet(e, "individual");
+                  }}
+                >
+                  Individual
+                </Button>
               </Typography>
               <Typography style={margin}>
-                <Link to="/BloodBankRegistration">Blood Bank</Link>
+                <Button
+                  onClick={(e) => {
+                    handleSet(e, "bloodbank");
+                  }}
+                >
+                  Blood-Bank
+                </Button>
               </Typography>
               <Typography style={margin}>
-                <Link to="/HospitalRegistration">Hospital/Clinic</Link>
+                <Button
+                  onClick={(e) => {
+                    handleSet(e, "hospital");
+                  }}
+                >
+                  Hospital
+                </Button>
               </Typography>
               <Divider style={margin} />
               <Typography style={margin}>

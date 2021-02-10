@@ -5,22 +5,26 @@ import {
   makeStyles,
   Button,
   ButtonGroup,
+  Typography,
+  Container,
 } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardActions,
+  CardMedia,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiFormControl-root": {
-      width: "80%",
-      margin: theme.spacing(1),
-    },
-  },
-  div1: {
-    margin: theme.spacing(1),
+  container: {
+    marginTop: theme.spacing(1),
+    padding: theme.spacing(3),
   },
 }));
 
@@ -42,25 +46,6 @@ function ProfileForm() {
   const [values, setValues] = useState(initialValues);
   const [enableReadOnly, setEdit] = useState(true);
 
-  const [open, setOpen] = React.useState(false);
-  const [inputPassword, setPassword] = React.useState("");
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValues({
-      ...values,
-      [name]: value,
-    });
-  };
-
   const handleEdit = () => {
     window.alert("You can start editing !");
     setEdit(false);
@@ -72,163 +57,86 @@ function ProfileForm() {
     console.log(values);
   };
 
-  const handlePasswordChange = () => {
-    var currPassword = window.prompt("Please enter current Password :");
-
-    if (currPassword === values.password) {
-      handleClickOpen();
-    } else {
-      window.alert("wrong password");
-    }
-  };
-
-  const handleInputPassword = (e) => {
-    setPassword(e.taget.value);
-  };
   return (
     <>
-      <form className={classes.root}>
-        <Grid container>
-          <Grid item xs={6}>
-            <TextField
-              variant="outlined"
-              label="Full name"
-              name="name"
-              value={values.name}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: true,
-              }}
+      <Grid container>
+        <Grid container align="center" className={classes.container}>
+          <Grid item xs={12} sm={5}>
+            <CardMedia
+              image="https://avatarfiles.alphacoders.com/164/thumb-164819.png"
+              style={{ height: 150, width: 150 }}
+              component="img"
             />
-            
-            <TextField
-              variant="outlined"
-              label="Email"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="Address"
-              name="address"
-              value={values.address}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-             
-            <TextField
-              variant="outlined"
-              label="State"
-              name="state"
-              value={values.state}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="Password"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
-              type="password"
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <div className={classes.div1}>
-              <Button onClick={handlePasswordChange}>
-                change your password ?
-              </Button>
-            </div>
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              variant="outlined"
-              label="Phone number"
-              name="phone"
-              value={values.phone}
-              onChange={handleChange}
-              type="number"
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="Blood Group"
-              name="Blood Group"
-              value={values.bg}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="District"
-              name="district"
-              value={values.district}
-              onChange={handleChange}
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-            <TextField
-              variant="outlined"
-              label="Pincode"
-              name="pincode"
-              value={values.pincode}
-              onChange={handleChange}
-              type="number"
-              InputProps={{
-                readOnly: enableReadOnly,
-              }}
-            />
-            <div className={classes.div1}>
-              <ButtonGroup
-                variant="contained"
-                aria-label="contained primary button group"
-              >
-                <Button color="secondary" onClick={handleEdit}>
-                  Edit
-                </Button>
-                <Button onClick={handleSave}>Save</Button>
-              </ButtonGroup>
-            </div>
-
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                {"Reset Password"}
-              </DialogTitle>
-              <DialogContent>
-                <TextField
-                  label="enter new password"
-                  value={inputPassword}
-                  onchange={handleInputPassword}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose} color="primary" autoFocus>
-                  Change
-                </Button>
-              </DialogActions>
-            </Dialog>
+          <Grid item xs={12} sm={5}>
+            <CardContent>
+              <Typography variant="h6">Username : {values.name}</Typography>
+              <Typography variant="h6">User Id : #F132GH</Typography>
+            </CardContent>
+            <CardActions>
+              <Button variant="outlined" color="secondary" size="small">
+                Active Donor
+              </Button>
+            </CardActions>
           </Grid>
         </Grid>
-      </form>
+
+        <Grid container align="center" className={classes.container}>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h5">
+              {" "}
+              Donation Made: <span style={{ color: "#e94394" }}> 6</span>
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h5">
+              Commitment Made: <span style={{ color: "blue" }}> 6</span>
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h5">
+              Drive Attended: <span style={{ color: "green" }}> 6</span>
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={8} sm={12} align="center">
+          <Typography variant="h4">About</Typography>
+        </Grid>
+
+        <Grid container className={classes.container} align="center">
+          <Grid item xs={12} sm={12}>
+            <Typography variant="h5">Email : {values.email}</Typography>
+            <Typography variant="h5">Phone : {values.phone}</Typography>
+            <Typography variant="h5">Date of Birth : {values.dob}</Typography>
+            <Typography variant="h5">Blood Group : {values.bg}</Typography>
+            <Typography variant="h5">Address : {values.address}</Typography>
+            <Typography variant="h5">State : {values.state}</Typography>
+            <Typography variant="h5">District : {values.disrtict}</Typography>
+            <Typography variant="h5">Pincode : {values.pincode}</Typography>
+          </Grid>
+        </Grid>
+
+        <Grid align="center" item xs={12}>
+          <ButtonGroup
+            variant="contained"
+            aria-label="contained primary button group"
+            size="small"
+          >
+            {enableReadOnly ? (
+              <Button color="secondary" onClick={handleEdit}>
+                Edit profile
+              </Button>
+            ) : (
+              <Button color="secondary" onClick={handleSave}>
+                Save Changes
+              </Button>
+            )}
+
+            <Button>Change your password</Button>
+          </ButtonGroup>
+        </Grid>
+      </Grid>
     </>
   );
 }

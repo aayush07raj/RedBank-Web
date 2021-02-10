@@ -5,6 +5,8 @@ import {
   makeStyles,
   Paper,
   FormControl,
+  Divider,
+  Typography,
   InputLabel,
   Select,
   MenuItem,
@@ -14,6 +16,12 @@ import {
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Joi from "joi";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -22,6 +30,13 @@ const useStyles = makeStyles((theme) => ({
     width: "650px",
     display: "flex",
     flexDirection: "column",
+  },
+  papers: {
+    width: "100%",
+
+    flexDirection: "column",
+    margin: "auto",
+    padding: theme.spacing(4),
   },
   formControl: {
     marginTop: theme.spacing(3),
@@ -117,6 +132,16 @@ function ConductDrive() {
     setErrors(allErrors);
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClosed = () => {
+    setOpen(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
@@ -124,24 +149,34 @@ function ConductDrive() {
     setErrors({ errors: errors || {} });
     if (errors) return;
 
-    window.alert("Notification sent");
-
-    console.log(data);
+    axios.post("http://localhost:5000/orgdrive").then((response) => {
+      if (response.data.success) {
+        window.alert(
+          "Drive has been initiated, check My Drives sections for more details"
+        );
+      }
+    });
   };
 
   return (
     <>
       <Navbar />
+      <Paper square elevation={5} className={classes.papers}>
+        <Typography variant="h4">Conduct Blood Donation Drive</Typography>
+        <Divider />
+        <Typography variant="h6">
+          Here you can orgainze a Blood Donation drive and send notification to
+          eligible donors. They will recive all the necessary details filled
+          here for the drive. Fields with "*" are mandatory.
+        </Typography>
+      </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-                <h2 style={{ marginTop: "10px" }} align="center">
-                  Conduct Drive
-                </h2>
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select required Blood Groups</InputLabel>
+                  <InputLabel>Select required Blood Groups *</InputLabel>
                   <Select
                     required
                     multiple
@@ -164,7 +199,7 @@ function ConductDrive() {
                 </FormControl>
                 <TextField
                   className={classes.formControl}
-                  label="Enter your Address"
+                  label="Enter your Address *"
                   type="text"
                   name="address"
                   value={data.address}
@@ -175,7 +210,7 @@ function ConductDrive() {
                   helperText={errors && errors.address ? errors.address : null}
                 />
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select your State</InputLabel>
+                  <InputLabel>Select your State *</InputLabel>
                   <Select
                     name="state"
                     value={data.state}
@@ -193,7 +228,7 @@ function ConductDrive() {
                 </FormControl>
 
                 <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select your District</InputLabel>
+                  <InputLabel>Select your District *</InputLabel>
                   <Select
                     inputProps={{ readOnly: enable }}
                     name="district"
@@ -217,7 +252,7 @@ function ConductDrive() {
 
                 <TextField
                   className={classes.formControl}
-                  label="Enter your Pincode"
+                  label="Enter your Pincode *"
                   type="text"
                   name="pincode"
                   value={data.pincode}
@@ -230,7 +265,7 @@ function ConductDrive() {
 
                 <TextField
                   className={classes.formControl}
-                  label="Start Time:"
+                  label="Start Time *:"
                   type="text"
                   name="startTime"
                   value={data.startTime}
@@ -244,7 +279,7 @@ function ConductDrive() {
                 />
                 <TextField
                   className={classes.formControl}
-                  label="End Time:"
+                  label="End Time *:"
                   type="text"
                   name="endTime"
                   value={data.endTime}
@@ -256,7 +291,7 @@ function ConductDrive() {
                 />
                 <TextField
                   className={classes.formControl}
-                  label="Start Date:"
+                  label="Start Date *:"
                   type="text"
                   name="startDate"
                   value={data.startDate}
@@ -270,7 +305,7 @@ function ConductDrive() {
                 />
                 <TextField
                   className={classes.formControl}
-                  label="End Date:"
+                  label="End Date *:"
                   type="text"
                   name="endDate"
                   value={data.endDate}
@@ -299,9 +334,29 @@ function ConductDrive() {
                   variant="contained"
                   className={classes.formControl}
                   disabled={validate()}
+                  onClick={handleClickOpen}
                 >
                   Send Notification
                 </Button>
+                <Dialog
+                  open={open}
+                  onClose={handleClosed}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {"Are You Sure, you want to logout?"}
+                  </DialogTitle>
+                  <DialogContent></DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClosed} color="primary">
+                      No
+                    </Button>
+                    <Button color="primary" autoFocus>
+                      Yes
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </Paper>
             </form>
           </Grid>

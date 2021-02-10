@@ -27,20 +27,6 @@ const useStyles = makeStyles((theme) => ({
 
 function MyBloodDonationDrives() {
   const classes = useStyles();
-  const [drivesList, setList] = useState([]);
-
-  useEffect(() => {
-    axios
-      .post("http://localhost:5000/finddrives", {
-        pincode: "111112",
-      })
-      .then((response) => {
-        if (response.data.success) {
-          setList(response.data.upcomingDrivesList);
-          //   console.log(drivesList);
-        }
-      });
-  }, []);
 
   return (
     <>
@@ -56,7 +42,7 @@ function MyBloodDonationDrives() {
       <Container maxWidth="lg">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
-            <Table list={drivesList} />
+            <Table />
           </Grid>
         </Grid>
       </Container>

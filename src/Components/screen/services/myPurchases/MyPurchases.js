@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MyPurchase() {
-  const [purchase , setList] = useState([]);
+  const [purchase, setList] = useState([]);
   useEffect(() => {
     axios
       .get("http://localhost:5000/purchase")

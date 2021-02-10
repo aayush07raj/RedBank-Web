@@ -11,10 +11,17 @@ import {
   Badge,
   MenuIcon,
 } from "@material-ui/core/";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import Logo from "./logo.svg";
+import { useDispatch, useSelector } from "react-redux";
+import logging from "../../redux/Actions/login";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuAppBar() {
+export default function MenuAppBar({ user }) {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -40,6 +49,23 @@ export default function MenuAppBar() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const loggedInState = useSelector((state) => state.loggedIn);
+
+  const handleLogout = () => {
+    dispatch(logging({ isLoggedIn: false, userType: 0 }));
+    localStorage.removeItem("JWTtoken");
+    history.push("/");
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClosed = () => {
+    setOpen(false);
   };
 
   return (
@@ -61,13 +87,7 @@ export default function MenuAppBar() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <Button
-              color="inherit"
-              component={Link}
-              to="/about"
-              // style={{ padding: 5 }}
-              variant="h7"
-            >
+            <Button color="inherit" component={Link} to="/About" variant="h7">
               About{" "}
             </Button>
             <Button
@@ -87,29 +107,98 @@ export default function MenuAppBar() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>
-                <Link to="/BuyBlood">Buy Blood</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/FindDonors">Find Donors</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyCommitments">My Commitments</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyPurchases">My Purchases</Link>
-              </MenuItem>
-              <MenuItem onClick={handleClose}>
-                 <Link to="/ActiveDonorReq">Active Donor Request</Link>
-                 </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/UpcomingDrive">Upcoming Drives</Link></MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/ConductDrive">Conduct Drive</Link></MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyDrives">My Drives</Link></MenuItem>
-              <MenuItem onClick={handleClose}>
-                <Link to="/MyInventory">My Inventory</Link></MenuItem>    
+              {loggedInState.userType === 0 ? (
+                <>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/BuyBlood">Buy Blood</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/FindDonors">Find Donors</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyCommitments">My Commitments</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyPurchases">My Purchases</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/UpcomingDrive">Upcoming Drives</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to="/MyInvites">My Invites</Link>
+                  </MenuItem>
+                </>
+              ) : (
+                <>
+                  {loggedInState.userType === 1 ? (
+                    <>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/BuyBlood">Buy Blood</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/FindDonors">Find Donors</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyCommitments">My Commitments</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyPurchases">My Purchases</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/ConductDrive">Conduct Drive</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyDrives">My Drives</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyInventory">My Inventory</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MySales">My Sales</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyAnalytics">My Analytics</Link>
+                      </MenuItem>
+                    </>
+                  ) : (
+                    <>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/BuyBlood">Buy Blood</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/FindDonors">Find Donors</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyCommitments">My Commitments</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyPurchases">My Purchases</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/ConductDrive">Conduct Drive</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyDrives">My Drives</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyInventory">My Inventory</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to="/MyAnalytics">My Analytics</Link>
+                      </MenuItem>
+                    </>
+                  )}
+                </>
+              )}
             </Menu>
             <Button
               color="inherit"
@@ -120,28 +209,31 @@ export default function MenuAppBar() {
             >
               Profile{" "}
             </Button>
-
-            <IconButton
-              // aria-label="account of current user"
-              // aria-controls="menu-appbar"
-              // aria-haspopup="true"
-              // onClick={handleMenu}
-              color="inherit"
-              onClick={() => {}}
-              component={Link}
-              to="/"
-            >
+            <IconButton color="inherit" onClick={handleClickOpen}>
               <PowerSettingsNewIcon />
             </IconButton>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Are You Sure, you want to logout?"}
+              </DialogTitle>
+              <DialogContent></DialogContent>
+              <DialogActions>
+                <Button onClick={handleClosed} color="primary">
+                  No
+                </Button>
+                <Button onClick={handleLogout} color="primary" autoFocus>
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
-          {/* <IconButton color="inherit">
-            <MoreIcon />
-          </IconButton> */}
         </Toolbar>
       </AppBar>
-      {/* {mobileMenu} */}
     </Fragment>
   );
 }
-
-// Logged Out

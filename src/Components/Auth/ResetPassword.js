@@ -32,11 +32,12 @@ function ResetPassword() {
     if (error) return;
 
     axios
-      .post("http://localhost:5000/resetpwd", {
+      .put("http://localhost:5000/resetpwd", {
         password: password,
       })
       .then((response) => {
         if (response.data.success) {
+          window.alert("Password changed succesfully")
           history.push("/Login");
         }
       });

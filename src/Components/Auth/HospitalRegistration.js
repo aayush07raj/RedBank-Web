@@ -23,7 +23,7 @@ import logging from "../../redux/Actions/login";
 import { useSelector, useDispatch } from "react-redux";
 import registerHospital from "../../redux/Actions/registerHospital";
 
-function BloodBankRegistration() {
+function BloodBankRegistration(props) {
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -126,12 +126,12 @@ function BloodBankRegistration() {
       })
       .then(function (response) {
         if (response.data.success) {
-          setIsLoggedIn(true);
-          console.log(isLoggedIn);
-          dispatch(logging(isLoggedIn));
+          dispatch(
+            logging({ isLoggedIn: true, userType: props.location.type })
+          );
           history.push("/home");
         } else {
-          console.log(response.data.error)
+          console.log(response.data.error);
           if (response.data.error.includes("email")) {
             setErrors((prevErrors) => ({
               ...prevErrors,

@@ -22,7 +22,7 @@ import logging from "../../redux/Actions/login";
 import { useSelector, useDispatch } from "react-redux";
 import registerBloodBank from "../../redux/Actions/registerBloodBank";
 
-function BloodBankRegistration() {
+function BloodBankRegistration(props) {
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -37,7 +37,6 @@ function BloodBankRegistration() {
     terms: false,
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -125,12 +124,12 @@ function BloodBankRegistration() {
       })
       .then(function (response) {
         if (response.data.success) {
-          setIsLoggedIn(true);
-          console.log(isLoggedIn);
-          dispatch(logging(isLoggedIn));
+          dispatch(
+            logging({ isLoggedIn: true, userType: props.location.type })
+          );
           history.push("/home");
         } else {
-          console.log(response.data.error)
+          console.log(response.data.error);
           if (response.data.error.includes("email")) {
             setErrors((prevErrors) => ({
               ...prevErrors,
@@ -148,8 +147,6 @@ function BloodBankRegistration() {
         window.alert(error.message);
       });
   };
-
-  
 
   const schema = {
     name: Joi.string().min(3).max(30).required(),

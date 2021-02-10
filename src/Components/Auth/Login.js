@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import login from "./images/login.png";
 import avatar from "./images/avatar.png";
@@ -13,14 +13,17 @@ import logging from "../../redux/Actions/login";
 function Login() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
 
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+
   const [errors, setErrors] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [loggedInState, setLoggedInState] = useState({
+    isLoggedIn: false,
+    userType: "",
+  });
 
   const paperStyle = {
     display: "flex",
@@ -42,6 +45,10 @@ function Login() {
       .required(),
   };
 
+  useEffect(() => {
+    dispatch(logging(loggedInState));
+  }, [loggedInState]);
+
   const handleClick = (e) => {
     e.preventDefault();
     const errors = validate();
@@ -56,12 +63,14 @@ function Login() {
       })
       .then(function (response) {
         if (response.data.success) {
-          setIsLoggedIn(true);
-          console.log(isLoggedIn);
-          dispatch(logging(isLoggedIn));
+          console.log(response.data.userToken);
+          const newState = { ...loggedInState };
+          newState.isLoggedIn = true;
+          newState.userType = response.data.userType;
+          localStorage.setItem("JWTtoken", response.data.userToken);
+          setLoggedInState(newState);
           history.push("/home");
         } else {
-          console.log(response.data.error)
           if (response.data.error.includes("email")) {
             setErrors((prevErrors) => ({
               ...prevErrors,

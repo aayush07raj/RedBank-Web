@@ -22,7 +22,7 @@ import registerIndividual from "../../redux/Actions/registerIndividual";
 import axios from "axios";
 import logging from "../../redux/Actions/login";
 
-function IndividualRegistration() {
+function IndividualRegistration(props) {
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -38,13 +38,10 @@ function IndividualRegistration() {
     terms: false,
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
   const history = useHistory();
   const [errors, setErrors] = useState({});
-
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
@@ -81,7 +78,6 @@ function IndividualRegistration() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "state") {
       setEnable(false);
       setSelectedStateIndex(
@@ -113,10 +109,8 @@ function IndividualRegistration() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
-
     setErrors({ errors: errors || {} });
     if (errors) return;
-
 
     axios
       .post("http://localhost:5000/login", {
@@ -125,12 +119,12 @@ function IndividualRegistration() {
       })
       .then(function (response) {
         if (response.data.success) {
-          setIsLoggedIn(true);
-          console.log(isLoggedIn);
-          dispatch(logging(isLoggedIn));
+          dispatch(
+            logging({ isLoggedIn: true, userType: props.location.type })
+          );
           history.push("/home");
         } else {
-          console.log(response.data.error)
+          console.log(response.data.error);
           if (response.data.error.includes("email")) {
             setErrors((prevErrors) => ({
               ...prevErrors,
