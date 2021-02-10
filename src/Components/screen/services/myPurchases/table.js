@@ -46,17 +46,18 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Name of Blood Bank",
-  },
-  {
     id: "date",
     numeric: true,
     disablePadding: false,
     label: "Date of purchase",
   },
+  {
+    id: "name",
+    numeric: false,
+    disablePadding: true,
+    label: "Name of Blood Bank",
+  },
+
   {
     id: "bg",
     numeric: true,
@@ -216,10 +217,8 @@ export default function EnhancedTable({ list }) {
                 .map((row, index) => {
                   return (
                     <TableRow hover tabIndex={-1} key={row.name}>
-                      <TableCell id={index} align="center">
-                        {row.name}
-                      </TableCell>
                       <TableCell align="center">{row.date}</TableCell>
+                      <TableCell align="center">{row.name}</TableCell>
                       <TableCell align="center">{row.bg}</TableCell>
                       <TableCell align="center">{row.component}</TableCell>
                       <TableCell align="center">{row.units}</TableCell>

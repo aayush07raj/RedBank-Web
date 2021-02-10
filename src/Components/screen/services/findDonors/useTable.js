@@ -14,16 +14,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -58,9 +53,9 @@ const headCells = [
     disablePadding: true,
     label: "Name",
   },
-  { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
+
   { id: "addrr", numeric: true, disablePadding: false, label: "Address" },
-  { id: "email", numeric: true, disablePadding: false, label: "Email" },
+
   {
     id: "bg",
     numeric: true,
@@ -201,32 +196,35 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <>
-        <Tooltip title="Send Notification">
-          <Button variant="contained" onClick={handleClickOpen}>
-            Send
-          </Button>
-              
-        </Tooltip>
-        <Dialog
-        open={open}
-        onClose={handleClosed}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-      <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
-      <DialogActions>
-        <Button onClick={handleClosed} color="primary">
-            No
-        </Button>
-        <Button onClick={()=>{
-          window.alert("Notification Sent")
-          handleClosed();
-        }} color="primary" autoFocus>
-            Yes
-        </Button>
-      </DialogActions>
-      </Dialog>
-      </>
+          <Tooltip title="Send Notification">
+            <Button variant="contained" onClick={handleClickOpen}>
+              Send
+            </Button>
+          </Tooltip>
+          <Dialog
+            open={open}
+            onClose={handleClosed}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
+            <DialogActions>
+              <Button onClick={handleClosed} color="primary">
+                No
+              </Button>
+              <Button
+                onClick={() => {
+                  window.alert("Notification Sent");
+                  handleClosed();
+                }}
+                color="primary"
+                autoFocus
+              >
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
       ) : null}
     </Toolbar>
   );
@@ -266,7 +264,6 @@ export default function EnhancedTable({ list }) {
     List.push(item);
   });
 
-
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
@@ -282,7 +279,7 @@ export default function EnhancedTable({ list }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = List.map((n) => n.contact);
+      const newSelecteds = List.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -347,17 +344,17 @@ export default function EnhancedTable({ list }) {
               {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.contact);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.contact)}
+                      onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -366,17 +363,8 @@ export default function EnhancedTable({ list }) {
                           inputProps={{ "aria-labelledby": labelId }}
                         />
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        align="center"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="center">{row.contact}</TableCell>
+                      <TableCell align="center">{row.name}</TableCell>
                       <TableCell align="center">{row.addrr}</TableCell>
-                      <TableCell align="center">{row.email}</TableCell>
                       <TableCell align="center">{row.bg}</TableCell>
                     </TableRow>
                   );

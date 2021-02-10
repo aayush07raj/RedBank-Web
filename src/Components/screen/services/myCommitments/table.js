@@ -42,6 +42,10 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: "commitmentDate",
+    label: "Date and Time",
+  },
+  {
     id: "commitmentType",
     label: "Commitment type",
   },
@@ -57,14 +61,7 @@ const headCells = [
     id: "recipientContact",
     label: "Recipient Contact",
   },
-  {
-    id: "commitmentDate",
-    label: "Coommitment Date",
-  },
-  {
-    id: "commitmentTime",
-    label: "Commitment Time",
-  },
+
   {
     id: "address",
     label: "Address",
@@ -204,6 +201,9 @@ export default function EnhancedTable({ list }) {
                 .map((row, index) => {
                   return (
                     <TableRow hover tabIndex={-1} key={row.Id}>
+                      <TableCell align="center">
+                        {row.commitmentTime} on {row.commitmentDate}
+                      </TableCell>
                       <TableCell id={index} align="center">
                         {row.commitmentType}
                       </TableCell>
@@ -214,8 +214,7 @@ export default function EnhancedTable({ list }) {
                       <TableCell align="center">
                         {row.recipientContact}, {row.recipientEmail}
                       </TableCell>
-                      <TableCell align="center">{row.commitmentDate}</TableCell>
-                      <TableCell align="center">{row.commitmentTime}</TableCell>
+
                       <TableCell align="center">
                         {row.address}, {row.district}, {row.state},{" "}
                         {row.pincode}

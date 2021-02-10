@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MyPurchase() {
-  const [purchase , setList] = useState([]);
+  const [purchase, setList] = useState([]);
   useEffect(() => {
     axios
       .get("http://localhost:5000/purchase")
@@ -53,7 +53,7 @@ function MyPurchase() {
         </Typography>
       </Paper>
       <Container maxWidth="lg">
-        <Grid container justify="center" className={classes.table} >
+        <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
             <Table list={purchase} />
           </Grid>

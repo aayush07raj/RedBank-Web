@@ -1,26 +1,23 @@
-import React from 'react';
-import { makeStyles } from "@material-ui/core";
+import React from "react";
+import { makeStyles, Container } from "@material-ui/core";
 import Profile from "./profile";
 import { Navbar, Footer } from "../../layouts";
+import PageHeader from "./pageHeader";
 
-const useStyles = makeStyles({
-    appMain: {
-      width: "100%",
-    },
-  });
-  
-  function App() {
-    const classes = useStyles();
-    return (
-      <>
-        <Navbar/>
-        <div className={classes.appMain}>
-          <Profile />
-        </div>
-        <Footer/>
-      </>
-    );
-  }
-  
-  export default App;
-  
+function App() {
+  return (
+    <>
+      <Navbar />
+      <PageHeader
+        title="My Profile"
+        subtitle="Here you can view as well as edit your profile details. Some fields ( Name, Email, License number ) kept uneditable due to security purposes "
+      />
+      <Container maxWidth="md">
+        <Profile />
+      </Container>
+      <Footer />
+    </>
+  );
+}
+
+export default App;

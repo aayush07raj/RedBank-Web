@@ -63,13 +63,14 @@ function Login() {
       })
       .then(function (response) {
         if (response.data.success) {
+          console.log(response.data.userToken);
           const newState = { ...loggedInState };
           newState.isLoggedIn = true;
           newState.userType = response.data.userType;
+          localStorage.setItem("JWTtoken", response.data.userToken);
           setLoggedInState(newState);
           history.push("/home");
         } else {
-          console.log(response.data.error);
           if (response.data.error.includes("email")) {
             setErrors((prevErrors) => ({
               ...prevErrors,

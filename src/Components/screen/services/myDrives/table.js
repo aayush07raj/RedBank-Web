@@ -66,20 +66,19 @@ export default function CollapsibleTable() {
       .post("http://localhost:5000/donorList", { driveId })
       .then((response) => {
         if (response.data.success) {
+          console.log(response);
           setDonors(response.data.acceptedDonors);
         }
       });
   };
 
-  // const handleCancel = (driveId) => {
-  //   axios
-  //     .post("http://localhost:5000/canceldrive", { driveId })
-  //     .then((response) => {
-  //       if (response.data.success) {
-  //         setDonors(response.data.acceptedDonors);
-  //       }
-  //     });
-  // };
+  const handleCancel = (idx) => {
+    if (window.confirm("Are you sure ?")) {
+      const updatedList = [...drivesList];
+      updatedList[idx].cancel = true;
+      setList(updatedList);
+    }
+  };
 
   useEffect(() => {
     if (acceptedDonors.length !== 0) {
@@ -106,6 +105,7 @@ export default function CollapsibleTable() {
               Blood Groups Invited
             </StyledTableCell>
             <StyledTableCell align="center">Donors List</StyledTableCell>
+            <StyledTableCell align="center">Status</StyledTableCell>
             <StyledTableCell align="center">Cancel drive</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -133,15 +133,33 @@ export default function CollapsibleTable() {
                   View list
                 </Button>
               </TableCell>
+              <TableCell alogn="center">
+                {drivesList[idx].cancel ? (
+                  <p>Canceled</p>
+                ) : new Date(row.endDate).getTime() <= new Date().getTime() ? (
+                  <p>Completed</p>
+                ) : new Date(row.startDate).getTime() >=
+                  new Date().getTime() ? (
+                  <p> Upcoming</p>
+                ) : (
+                  <p> Active </p>
+                )}
+              </TableCell>
               <TableCell align="center">
-                <Button
-                  size="small"
-                  // onClick={(e) => {
-                  //   handleCancel(row.driveId);
-                  // }}
-                >
-                  Cancel
-                </Button>
+                {new Date(row.endDate).getTime() <= new Date().getTime() ? (
+                  <p>N/A</p>
+                ) : (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    onClick={(e) => {
+                      handleCancel(idx);
+                    }}
+                    disabled={drivesList[idx].cancel}
+                  >
+                    {drivesList[idx].cancel ? <p>Canceled</p> : <p>Cancel</p>}
+                  </Button>
+                )}
               </TableCell>
             </TableRow>
           ))}

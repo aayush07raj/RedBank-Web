@@ -24,8 +24,6 @@ import { useSelector, useDispatch } from "react-redux";
 import registerHospital from "../../redux/Actions/registerHospital";
 
 function BloodBankRegistration(props) {
-  console.log(props.location.type);
-
   const [data, setData] = useState({
     name: "",
     email: "",

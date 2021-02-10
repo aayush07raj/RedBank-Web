@@ -44,6 +44,11 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: "inviteDate",
+    label: "Date and Time",
+  },
+
+  {
     id: "inviteType",
     label: "Type",
   },
@@ -51,14 +56,7 @@ const headCells = [
     id: "recipientName",
     label: "Name",
   },
-  {
-    id: "inviteDate",
-    label: "Date",
-  },
-  {
-    id: "inviteTime",
-    label: "Time",
-  },
+
   {
     id: "address",
     label: "Address",
@@ -231,12 +229,14 @@ export default function EnhancedTable({ list }) {
                 .map((row, index) => {
                   return (
                     <TableRow hover tabIndex={-1} key={row.Id}>
-                      <TableCell id={index} align="center">
-                        {row.inviteType}
+                      <TableCell align="center">
+                        {row.inviteTime}
+                        on {row.inviteDate}
                       </TableCell>
+
+                      <TableCell align="center">{row.inviteType}</TableCell>
                       <TableCell align="center">{row.recipientName}</TableCell>
-                      <TableCell align="center">{row.inviteDate}</TableCell>
-                      <TableCell align="center">{row.inviteTime}</TableCell>
+
                       <TableCell align="center">
                         {row.address},{row.district},{row.state},{row.pincode}
                       </TableCell>

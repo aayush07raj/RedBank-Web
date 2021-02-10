@@ -23,7 +23,6 @@ import axios from "axios";
 import logging from "../../redux/Actions/login";
 
 function IndividualRegistration(props) {
-  console.log(props.location.type);
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -41,10 +40,8 @@ function IndividualRegistration(props) {
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
   const history = useHistory();
   const [errors, setErrors] = useState({});
-
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
@@ -81,7 +78,6 @@ function IndividualRegistration(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "state") {
       setEnable(false);
       setSelectedStateIndex(
@@ -113,7 +109,6 @@ function IndividualRegistration(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
-
     setErrors({ errors: errors || {} });
     if (errors) return;
 

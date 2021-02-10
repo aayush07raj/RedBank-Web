@@ -33,60 +33,67 @@ import MyDrives from "./Components/screen/services/myDrives/myDrives";
 import MyInventory from "./Components/screen/services/myInventory/myInventory";
 import MySales from "./Components/screen/services/mysales/mySales";
 import MyInvites from "./Components/screen/services/myInvites/myInvites";
-// import Error from "";
-
+import AcceptedDonors from "./Components/screen/services/myDrives/acceptedDonors";
+import MyAnalytics from "./Components/screen/services/myanalytics/MyAnalytics";
+import NotFound from "./Components/screen/NotFound";
 
 function App() {
-  const loggedIn = useSelector(state => state.loggedIn);
+  const loggedIn = useSelector((state) => state.loggedIn);
   return (
     <>
-        <Switch>
-          {loggedIn.isLoggedIn ? (<>
-          {/* <Route component={Error}/> */}
-          <Route exact path="/" component={Home} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/profile" component={Profile} />
-          <Route exact path="/About" component={About}/>
-          <Route exact path="/ActiveDonorReq" component={ActiveDonorReq} />
-          <Route exact path="/FindDonors" component={FindDonors} />
-          <Route exact path="/UpcomingDrive" component={UpcomingDrive} />
-          <Route exact path="/BuyBlood" component={BuyBlood} />
-          <Route exact path="/BuyBlood/Product" component={Product} />
-          <Route exact path="/MyCommitments" component={MyCommitments} />
-          <Route exact path="/MyPurchases" component={MyPurchases} />
-          <Route exact path="/ConductDrive" component={ConductDrive} />
-          <Route exact path="/MyDrives" component={MyDrives} />
-          <Route exact path="/MyInventory" component={MyInventory} />
-          <Route exact path="/MySales" component={MySales}/>
-          <Route exact path="/MyInvites" component={MyInvites}/>
-          <Route exact path="/Test" component={Test} />
-          </>): (<>
-          <Route exact path="/" component={Login} />
-          <Route
-            exact
-            path="/BloodBankRegistration"
-            component={BloodBankRegistration}
-          />
-          <Route exact path="/Login" component={Login} />
-          <Route exact path="/terms" component={Terms} />
-          
-          <Route exact path="/ForgotPassword" component={ForgotPassword} />
-          <Route exact path="/VerifyCode" component={VerifyCode} />
-          <Route exact path="/ResetPassword" component={ResetPassword} />
-          <Route exact path="/Options" component={Options} />
-          <Route
-            exact
-            path="/IndividualRegistration"
-            component={IndividualRegistration}
-          />
-          <Route
-            exact
-            path="/HospitalRegistration"
-            component={HospitalRegistration}
-          />
-          
-          </>)}          
-        </Switch>
+      <Switch>
+        {loggedIn.isLoggedIn ? (
+          <>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/About" component={About} />
+            <Route exact path="/ActiveDonorReq" component={ActiveDonorReq} />
+            <Route exact path="/FindDonors" component={FindDonors} />
+            <Route exact path="/UpcomingDrive" component={UpcomingDrive} />
+            <Route exact path="/BuyBlood" component={BuyBlood} />
+            <Route exact path="/BuyBlood/Product" component={Product} />
+            <Route exact path="/MyCommitments" component={MyCommitments} />
+            <Route exact path="/MyPurchases" component={MyPurchases} />
+            <Route exact path="/ConductDrive" component={ConductDrive} />
+            <Route exact path="/MyDrives" component={MyDrives} />
+            <Route exact path="/MyInventory" component={MyInventory} />
+            <Route exact path="/MySales" component={MySales} />
+            <Route exact path="/MyInvites" component={MyInvites} />
+            <Route exact path="/AcceptedDonors" component={AcceptedDonors} />
+            <Route exact path="/Test" component={Test} />
+            <Route exact path="/MyAnalytics" component={MyAnalytics} />
+            {/* <Route component={NotFound} /> */}
+          </>
+        ) : (
+          <>
+            <Route exact path="/" component={Login} />
+            <Route
+              exact
+              path="/BloodBankRegistration"
+              component={BloodBankRegistration}
+            />
+            <Route exact path="/Login" component={Login} />
+            <Route exact path="/terms" component={Terms} />
+
+            <Route exact path="/ForgotPassword" component={ForgotPassword} />
+            <Route exact path="/VerifyCode" component={VerifyCode} />
+            <Route exact path="/ResetPassword" component={ResetPassword} />
+            <Route exact path="/Options" component={Options} />
+            <Route
+              exact
+              path="/IndividualRegistration"
+              component={IndividualRegistration}
+            />
+            <Route
+              exact
+              path="/HospitalRegistration"
+              component={HospitalRegistration}
+            />
+            {/* <Route component={NotFound} /> */}
+          </>
+        )}
+      </Switch>
     </>
   );
 }

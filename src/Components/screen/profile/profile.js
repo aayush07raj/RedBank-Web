@@ -1,7 +1,6 @@
 import React from "react";
 import ProfileForm from "./profileForm";
 import OrgForm from "./orgForm";
-import PageHeader from "./pageHeader";
 import { makeStyles, Paper } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
@@ -17,12 +16,8 @@ function Profile() {
   const loggedInState = useSelector((state) => state.loggedIn);
   return (
     <>
-      <PageHeader
-        title="My Profile"
-        subtitle="Here you can view as well as edit your profile details. Some fields ( Name, Email, License number ) kept uneditable due to security purposes "
-      />
       <Paper className={classes.paperStyle} elevation={5}>
-        <ProfileForm/>
+        <ProfileForm />
         {/* {loggedInState.userType === 0 ? <ProfileForm /> : <>
           {loggedInState.userType === 1 ? <OrgForm /> : <OrgForm />}
           </>} */}

@@ -1,16 +1,16 @@
 import React from "react";
-import { Pie } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 
-function PieChart() {
+function LineChart(props) {
   return (
     <>
-      <Pie
+      <Line
         data={{
-          labels: ["Blood", "Plasma", "Platelets"],
+          labels: ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],
           datasets: [
             {
-              label: "Number of Customers Added",
-              data: [20, 40, 50],
+              label: "units available",
+              data: [40, 100, 50, 500, 125, 700, 350, 700],
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
                 "rgba(54, 162, 235, 0.2)",
@@ -25,6 +25,14 @@ function PieChart() {
             },
           ],
         }}
+        options={{
+          title: {
+            display: true,
+            text: props.title,
+            fontSize: 20,
+            fontColor: "black",
+          },
+        }}
         height={400}
         width={600}
       />
@@ -32,4 +40,4 @@ function PieChart() {
   );
 }
 
-export default PieChart;
+export default LineChart;
