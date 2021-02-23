@@ -1,181 +1,213 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import login from "./images/login.png";
-import avatar from "./images/avatar.png";
-import { Grid, Paper, TextField, Button, Typography } from "@material-ui/core";
-import LoggedOutNavbar from "../layouts/loggedoutNavbar";
-import Joi from "joi";
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Grid,
+  makeStyles,
+  Paper,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Divider,
+  Typography,
+  TextField,
+  Button,
+} from "@material-ui/core";
+import { Navbar, Footer } from "../layouts";
+import statesData from "../Auth/states.json";
+import Table from "../screen/services/findDonors/useTable";
 import axios from "axios";
 
-function Login() {
-  const history = useHistory();
-
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({});
-
-  const paperStyle = {
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    padding: theme.spacing(5),
+    width: "550px",
     display: "flex",
-    width: 380,
     flexDirection: "column",
-    padding: "30px",
-  };
+  },
+  papers: {
+    width: "100%",
 
-  const margin = { marginTop: "20px" };
+    flexDirection: "column",
+    margin: "auto",
+    padding: theme.spacing(4),
+  },
+  formControl: {
+    marginTop: theme.spacing(3),
+    minWidth: 250,
+  },
+  tableContainer: {
+    marginTop: theme.spacing(9),
+    marginBottom: theme.spacing(3),
+  },
+  tables: {
+    padding: theme.spacing(3),
+  },
+}));
 
-  const schema = {
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "in"] },
-    }),
-    password: Joi.string()
-      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-      .message("Enter a stronger password")
-      .required(),
-  };
+function FindDonors() {
+  const [data, setData] = useState({
+    address: "",
+    state: "",
+    district: "",
+    pincode: null,
+    bg: "",
+  });
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    const errors = validate();
+  const [enable, setEnable] = useState(true);
+  const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
-    setErrors({ errors: errors || {} });
-    if (errors) return;
-
-    // axios
-    //   .post("http://localhost:5000/login", {
-    //     email: state.data.email,
-    //     password: state.data.password,
-    //   })
-    //   .then((response) => {
-    //     console.log(state);
-    //     console.log(response);
-    //     setState(!state.isLoggedIn);
-    //   });
-
-    // history.push("/home");
-    console.log(data);
-  };
-
-  const validateProperty = ({ name, value }) => {
-    const inputField = { [name]: value };
-    const fieldSchema = Joi.object({ [name]: schema[name] });
-    const { error } = fieldSchema.validate(inputField);
-    return error ? error.details[0].message : null;
-  };
-
-  const validate = () => {
-    const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(data, {
-      abortEarly: false,
-    });
-
-    if (!error) return null;
-
-    const allErrors = {};
-    for (let err of error.details) {
-      allErrors[err.path[0]] = err.message;
-    }
-    return allErrors;
-  };
+  const [donorsList, setList] = useState([]);
+  const classes = useStyles();
+  const regex = /^[0-9]*$/;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    const allErrors = { ...errors };
-    const errorMsg = validateProperty(e.target);
-    if (errorMsg) {
-      allErrors[name] = errorMsg;
-    } else {
-      delete allErrors[name];
+    if (name === "state") {
+      setEnable(false);
+      setSelectedStateIndex(
+        statesData.states.findIndex((item) => item.state === value)
+      );
     }
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
-    setErrors(allErrors);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(data);
+    axios
+      .get("http://localhost:5000/donorlist")
+      .then((response) => {
+        if (response.data.success) {
+          setList(response.data.list);
+        }
+      })
+      .catch();
   };
 
   return (
     <>
-      <LoggedOutNavbar />
+      <Navbar />
+      <Paper square elevation={5} className={classes.papers}>
+        <Typography variant="h4">Find Donor</Typography>
+        <Divider />
+        <Typography variant="h6">
+          Here you can search any inidividual for blood donation. Fill the
+          parameters and click on search.
+        </Typography>
+      </Paper>
+      <Container maxWidth="lg">
+        <Grid container justify="center">
+          <Grid item>
+            <form onSubmit={handleSubmit}>
+              <Paper className={classes.paper} elevation={5}>
+                <TextField
+                  className={classes.formControl}
+                  label="Enter your address"
+                  type="text"
+                  name="address"
+                  value={data.address}
+                  variant="outlined"
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                />
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>Select required State</InputLabel>
+                  <Select
+                    required
+                    name="state"
+                    value={data.state}
+                    onChange={handleChange}
+                    label="Select required State"
+                  >
+                    {statesData.states.map((item, id) => (
+                      <MenuItem key={id} value={item.state}>
+                        {item.state}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
-      <Grid
-        container
-        style={{ marginTop: "100px", backgroundColor: "#E94364" }}
-      >
-        <Grid item xs={6} container justify="center" alignItems="center">
-          <img src={login} alt="#" />
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>Select required District</InputLabel>
+                  <Select
+                    required
+                    inputProps={{ readOnly: enable }}
+                    name="district"
+                    value={data.district}
+                    onChange={handleChange}
+                    label="Select required District"
+                  >
+                    {statesData.states[selectedStateIndex].districts.map(
+                      (item, id) => (
+                        <MenuItem key={id} value={item}>
+                          {item}
+                        </MenuItem>
+                      )
+                    )}
+                  </Select>
+                </FormControl>
+
+                <TextField
+                  className={classes.formControl}
+                  label="Enter required Pincode"
+                  type="number"
+                  name="pincode"
+                  value={data.pincode}
+                  variant="outlined"
+                  onChange={(e) => {
+                    if (regex.test(e.target.value)) {
+                      handleChange(e);
+                    }
+                  }}
+                />
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>Select required Blood Group</InputLabel>
+                  <Select
+                    required
+                    label="Select required Blood Groups *"
+                    name="bg"
+                    onChange={handleChange}
+                    value={data.bg}
+                  >
+                    <MenuItem value={"A+"}>A+</MenuItem>
+                    <MenuItem value={"A-"}>A-</MenuItem>
+                    <MenuItem value={"B+"}>B+</MenuItem>
+                    <MenuItem value={"B-"}>B-</MenuItem>
+                    <MenuItem value={"AB+"}>AB+</MenuItem>
+                    <MenuItem value={"AB-"}>AB-</MenuItem>
+                    <MenuItem value={"O+"}>O+</MenuItem>
+                    <MenuItem value={"O-"}>O-</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className={classes.formControl}
+                >
+                  Search
+                </Button>
+              </Paper>
+            </form>
+          </Grid>
+          <Grid item xs={12} className={classes.tableContainer}>
+            {donorsList.length === 0 ? (
+              <h3 align="center">Results will be displayed here</h3>
+            ) : (
+              <Table list={donorsList} />
+            )}
+          </Grid>
         </Grid>
-
-        <Grid item xs={6} container justify="center" alignItems="center">
-          <Paper style={paperStyle} elevation={5}>
-            <Grid align="center">
-              <img alt="" src={avatar} width="80px" />
-              <h2 style={{ marginTop: "10px" }}>Sign In</h2>
-            </Grid>
-
-            <TextField
-              label="Email"
-              placeholder="Enter your email"
-              type="email"
-              fullWidth
-              required
-              variant="outlined"
-              style={margin}
-              name="email"
-              value={data.email}
-              onChange={handleChange}
-              error={errors && errors.email}
-              helperText={errors && errors.email ? errors.email : null}
-            />
-
-            <TextField
-              label="Password"
-              placeholder="Enter your password"
-              type="password"
-              fullWidth
-              required
-              variant="outlined"
-              style={margin}
-              name="password"
-              value={data.password}
-              onChange={handleChange}
-              error={errors && errors.password}
-              helperText={errors && errors.password ? errors.password : null}
-            />
-
-            <Typography style={margin}>
-              <Link to="/ForgotPassword">Forgot password</Link>
-            </Typography>
-
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              style={{ marginTop: "20px", backgroundColor: "#E94364" }}
-              onClick={handleClick}
-              disabled={validate() ? true : false}
-            >
-              Login
-            </Button>
-
-            <Grid align="center">
-              <Typography style={margin}>
-                <p>
-                  New user ? <Link to="/Options">Sign up</Link>
-                </p>
-              </Typography>
-              <h3 style={margin}>OR</h3>
-              <Typography style={margin}>
-                <Link to="/Options">Sign in with google account</Link>
-              </Typography>
-            </Grid>
-          </Paper>
-        </Grid>
-      </Grid>
+      </Container>
+      <Footer />
     </>
   );
 }
 
-export default Login;
+export default FindDonors;

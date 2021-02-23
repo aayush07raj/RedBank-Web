@@ -19,6 +19,8 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -48,20 +50,19 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: "userid",
+    numeric: false,
+    disablePadding: true,
+    label: "User Id",
+  },
+  {
     id: "name",
     numeric: false,
     disablePadding: true,
     label: "Name",
   },
 
-  { id: "addrr", numeric: true, disablePadding: false, label: "Address" },
-
-  {
-    id: "bg",
-    numeric: true,
-    disablePadding: false,
-    label: "Blood Group",
-  },
+  { id: "address", numeric: true, disablePadding: false, label: "Address" },
 ];
 
 function EnhancedTableHead(props) {
@@ -148,10 +149,37 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, data } = props;
+  const { numSelected, data, formData } = props;
+  const loggedInState = useSelector((state) => state.loggedIn);
+  const reqBody = {};
 
-  function handleSend(e, data) {
-    console.log(data);
+  function handleSend() {
+    // add form data to axios call
+    // data -> array of selected ids
+    // formData -> form data
+    reqBody.address = formData.address;
+    reqBody.state = formData.state;
+    reqBody.district = formData.district;
+    reqBody.pincode = formData.pincode;
+    reqBody.address = formData.address;
+    reqBody.bloodGroup = formData.bloodGroup;
+    reqBody.idList = data;
+
+    console.log(formData);
+
+    axios
+      .post("http://localhost:8080/finddonors/sendnotification", reqBody, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
+      .then((response) => {
+        // if (response.data.success) {
+        // console.log(response);
+        // }
+        console.log("works");
+      })
+      .catch();
   }
 
   const handleClick = () => {
@@ -215,7 +243,9 @@ const EnhancedTableToolbar = (props) => {
               <Button
                 onClick={() => {
                   window.alert("Notification Sent");
+                  handleSend();
                   handleClosed();
+                  // make a axios call for second find donors api
                 }}
                 color="primary"
                 autoFocus
@@ -258,7 +288,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ list }) {
+export default function EnhancedTable({ list, formData }) {
   var List = [];
   list.map((item) => {
     List.push(item);
@@ -279,7 +309,7 @@ export default function EnhancedTable({ list }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = List.map((n) => n.id);
+      const newSelecteds = List.map((n) => n.userId);
       setSelected(newSelecteds);
       return;
     }
@@ -315,7 +345,7 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const isSelected = (contact) => selected.indexOf(contact) !== -1;
+  const isSelected = (userId) => selected.indexOf(userId) !== -1;
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
@@ -323,7 +353,11 @@ export default function EnhancedTable({ list }) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} data={selected} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          data={selected}
+          formData={formData}
+        />
         <TableContainer>
           <Table
             className={classes.table}
@@ -344,17 +378,17 @@ export default function EnhancedTable({ list }) {
               {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
+                  const isItemSelected = isSelected(row.userId);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
+                      onClick={(event) => handleClick(event, row.userId)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.id}
+                      key={row.userId}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -363,9 +397,12 @@ export default function EnhancedTable({ list }) {
                           inputProps={{ "aria-labelledby": labelId }}
                         />
                       </TableCell>
+                      <TableCell align="center">{row.userId}</TableCell>
                       <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.addrr}</TableCell>
-                      <TableCell align="center">{row.bg}</TableCell>
+                      <TableCell align="center">
+                        {row.address}, {row.district}, {row.state},{" "}
+                        {row.pincode}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

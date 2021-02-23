@@ -61,7 +61,6 @@ function App() {
             <Route exact path="/MySales" component={MySales} />
             <Route exact path="/MyInvites" component={MyInvites} />
             <Route exact path="/AcceptedDonors" component={AcceptedDonors} />
-            <Route exact path="/Test" component={Test} />
             <Route exact path="/MyAnalytics" component={MyAnalytics} />
             {/* <Route component={NotFound} /> */}
           </>
@@ -90,6 +89,7 @@ function App() {
               path="/HospitalRegistration"
               component={HospitalRegistration}
             />
+            <Route exact path="/Test" component={Test} />
             {/* <Route component={NotFound} /> */}
           </>
         )}

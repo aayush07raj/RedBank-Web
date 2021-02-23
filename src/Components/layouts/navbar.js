@@ -107,7 +107,7 @@ export default function MenuAppBar({ user }) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              {loggedInState.userType === 0 ? (
+              {loggedInState.userType === 1 ? (
                 <>
                   <MenuItem onClick={handleClose}>
                     <Link to="/BuyBlood">Buy Blood</Link>
@@ -133,7 +133,7 @@ export default function MenuAppBar({ user }) {
                 </>
               ) : (
                 <>
-                  {loggedInState.userType === 1 ? (
+                  {loggedInState.userType === 2 ? (
                     <>
                       <MenuItem onClick={handleClose}>
                         <Link to="/BuyBlood">Buy Blood</Link>

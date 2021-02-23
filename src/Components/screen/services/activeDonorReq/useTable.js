@@ -202,7 +202,7 @@ export default function EnhancedTable() {
                           }}
                         >
                           {active[index].status ? (
-                            <p>Donated</p>
+                            <p style={{ color: "green" }}>Donated</p>
                           ) : (
                             <p>Given ?</p>
                           )}

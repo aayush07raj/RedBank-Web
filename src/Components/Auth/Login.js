@@ -13,16 +13,10 @@ import logging from "../../redux/Actions/login";
 function Login() {
   const history = useHistory();
   const dispatch = useDispatch();
-
+  const [errors, setErrors] = useState({});
   const [data, setData] = useState({
     email: "",
     password: "",
-  });
-
-  const [errors, setErrors] = useState({});
-  const [loggedInState, setLoggedInState] = useState({
-    isLoggedIn: false,
-    userType: "",
   });
 
   const paperStyle = {
@@ -45,10 +39,6 @@ function Login() {
       .required(),
   };
 
-  useEffect(() => {
-    dispatch(logging(loggedInState));
-  }, [loggedInState]);
-
   const handleClick = (e) => {
     e.preventDefault();
     const errors = validate();
@@ -57,32 +47,30 @@ function Login() {
     if (errors) return;
 
     axios
-      .post("http://localhost:5000/login", {
+      .post("http://localhost:8080/authenticate", {
         email: data.email,
         password: data.password,
       })
       .then(function (response) {
-        if (response.data.success) {
-          console.log(response.data.userToken);
-          const newState = { ...loggedInState };
-          newState.isLoggedIn = true;
-          newState.userType = response.data.userType;
-          localStorage.setItem("JWTtoken", response.data.userToken);
-          setLoggedInState(newState);
-          history.push("/home");
-        } else {
-          if (response.data.error.includes("email")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              email: response.data.error,
-            }));
-          } else if (response.data.error.includes("password")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              password: response.data.error,
-            }));
-          }
+        // console.log(response);
+        // if (response.data.success) {
+        dispatch(
+          logging({
+            isLoggedIn: true,
+            userType: response.data.userType,
+            userToken: response.data.userToken,
+            userId: response.data.userId,
+          })
+        );
+        history.push("/home");
+        // } else {
+        if (response.data.error == "Email is already taken") {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            email: response.data.error,
+          }));
         }
+        // }
       })
       .catch(function (error) {
         window.alert(error.message);
@@ -135,11 +123,25 @@ function Login() {
         container
         style={{ marginTop: "100px", backgroundColor: "#E94364" }}
       >
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={false}
+          sm={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <img src={login} alt="#" />
         </Grid>
 
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <Paper style={paperStyle} elevation={5}>
             <Grid align="center">
               <img alt="" src={avatar} width="80px" />

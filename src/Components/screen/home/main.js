@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 function Main() {
   const classes = useStyles();
   const loggedInState = useSelector((state) => state.loggedIn);
+  console.log(loggedInState);
 
   return (
     <>
@@ -51,7 +52,7 @@ function Main() {
               <Typography variant="h4">Services provided</Typography>
             </Grid>
 
-            {loggedInState.userType === 0 ? (
+            {loggedInState.userType === 1 ? (
               <>
                 {IndividualServices.map((item, idx) => (
                   <Grid item xs={12} sm={6} md={3}>
@@ -67,7 +68,7 @@ function Main() {
               </>
             ) : (
               <>
-                {loggedInState.userType === 1 ? (
+                {loggedInState.userType === 2 ? (
                   <>
                     {BankServices.map((item, idx) => (
                       <Grid item xs={12} sm={6} md={3}>

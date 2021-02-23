@@ -13,6 +13,7 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
+import DateFnsUtils from "@date-io/date-fns";
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Joi from "joi";
@@ -22,6 +23,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -65,8 +67,20 @@ function ConductDrive() {
     message: "",
   });
 
+  const reqBody = {
+    bloodGroups: [],
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    startTimeStamp: "",
+    endTimeStamp: "",
+    message: "",
+  };
+  const loggedInState = useSelector((state) => state.loggedIn);
+
   const schema = {
-    bg: Joi.required(),
+    bg: Joi.array().items(Joi.string()).required(),
     address: Joi.string().required(),
     state: Joi.string().required(),
     district: Joi.string().required(),
@@ -76,9 +90,9 @@ function ConductDrive() {
       .message("Pincode must contain 6 digits")
       .required(),
     startTime: Joi.string().required(),
-    startDate: Joi.string().required(),
+    startDate: Joi.date().greater("now").message("Invalid date").required(),
     endTime: Joi.string().required(),
-    endDate: Joi.string().required(),
+    endDate: Joi.date().greater("now").message("Invalid date").required(),
     message: Joi.required(),
   };
 
@@ -146,16 +160,35 @@ function ConductDrive() {
     e.preventDefault();
     const errors = validate();
 
+    reqBody.bloodGroups = data.bg;
+    reqBody.address = data.address;
+    reqBody.state = data.state;
+    reqBody.district = data.district;
+    reqBody.pincode = data.pincode;
+    reqBody.startTimeStamp = data.startDate + "T" + data.startTime + ":00.00";
+    reqBody.endTimeStamp = data.endDate + "T" + data.endTime + ":00.00";
+    reqBody.message = data.message;
+
+    console.log(reqBody);
+
     setErrors({ errors: errors || {} });
     if (errors) return;
 
-    axios.post("http://localhost:5000/orgdrive").then((response) => {
-      if (response.data.success) {
+    console.log("Bearer" + " " + loggedInState.userToken);
+
+    axios
+      .post("http://localhost:8080/conductadrive/savedrivedetails", reqBody, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
+      .then((response) => {
+        // if (response.data.success) {
         window.alert(
           "Drive has been initiated, check My Drives sections for more details"
         );
-      }
-    });
+        // }
+      });
   };
 
   return (
@@ -205,7 +238,6 @@ function ConductDrive() {
                   value={data.address}
                   variant="outlined"
                   onChange={handleChange}
-                  inputProps={{ maxLength: 6 }}
                   error={errors && errors.address}
                   helperText={errors && errors.address ? errors.address : null}
                 />
@@ -263,36 +295,11 @@ function ConductDrive() {
                   helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
+                <InputLabel style={{ marginTop: "20px" }}>
+                  Start Date *
+                </InputLabel>
                 <TextField
-                  className={classes.formControl}
-                  label="Start Time *:"
-                  type="text"
-                  name="startTime"
-                  value={data.startTime}
-                  variant="outlined"
-                  onChange={handleChange}
-                  inputProps={{ maxLength: 6 }}
-                  error={errors && errors.startTime}
-                  helperText={
-                    errors && errors.startTime ? errors.startTime : null
-                  }
-                />
-                <TextField
-                  className={classes.formControl}
-                  label="End Time *:"
-                  type="text"
-                  name="endTime"
-                  value={data.endTime}
-                  variant="outlined"
-                  onChange={handleChange}
-                  inputProps={{ maxLength: 6 }}
-                  error={errors && errors.endTime}
-                  helperText={errors && errors.endTime ? errors.endTime : null}
-                />
-                <TextField
-                  className={classes.formControl}
-                  label="Start Date *:"
-                  type="text"
+                  type="date"
                   name="startDate"
                   value={data.startDate}
                   variant="outlined"
@@ -303,10 +310,12 @@ function ConductDrive() {
                     errors && errors.startDate ? errors.startDate : null
                   }
                 />
+
+                <InputLabel style={{ marginTop: "20px" }}>
+                  End Date *
+                </InputLabel>
                 <TextField
-                  className={classes.formControl}
-                  label="End Date *:"
-                  type="text"
+                  type="date"
                   name="endDate"
                   value={data.endDate}
                   variant="outlined"
@@ -314,6 +323,36 @@ function ConductDrive() {
                   inputProps={{ maxLength: 6 }}
                   error={errors && errors.endDate}
                   helperText={errors && errors.endDate ? errors.endDate : null}
+                />
+
+                <InputLabel style={{ marginTop: "20px" }}>
+                  Start Time *
+                </InputLabel>
+                <TextField
+                  type="time"
+                  name="startTime"
+                  value={data.startTime}
+                  variant="outlined"
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 6 }}
+                  error={errors && errors.startTime}
+                  helperText={
+                    errors && errors.startTime ? errors.startTime : null
+                  }
+                />
+
+                <InputLabel style={{ marginTop: "20px" }}>
+                  End Time *
+                </InputLabel>
+                <TextField
+                  type="time"
+                  name="endTime"
+                  value={data.endTime}
+                  variant="outlined"
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 6 }}
+                  error={errors && errors.endTime}
+                  helperText={errors && errors.endTime ? errors.endTime : null}
                 />
 
                 <TextField
@@ -334,7 +373,6 @@ function ConductDrive() {
                   variant="contained"
                   className={classes.formControl}
                   disabled={validate()}
-                  onClick={handleClickOpen}
                 >
                   Send Notification
                 </Button>
@@ -359,9 +397,6 @@ function ConductDrive() {
                 </Dialog>
               </Paper>
             </form>
-          </Grid>
-          <Grid item xs={12} className={classes.tableContainer}>
-            {/* <Table /> */}
           </Grid>
         </Grid>
       </Container>

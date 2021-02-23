@@ -57,19 +57,30 @@ export default function CollapsibleTable() {
   }, []);
 
   const handleClick = (driveId) => {
-    // {
-    //   headers: {
-    //     Authorization: loggedState.userToken;
-    //   }
-    // }
     axios
       .post("http://localhost:5000/donorList", { driveId })
       .then((response) => {
         if (response.data.success) {
-          console.log(response);
           setDonors(response.data.acceptedDonors);
         }
       });
+
+    //  axios
+    //    .post(
+    //      "http://localhost:5000/donorList",
+    //      { driveId },
+    //      {
+    //        headers: {
+    //          Authorization: loggedState.userToken,
+    //        },
+    //      }
+    //    )
+    //    .then((response) => {
+    //      if (response.data.success) {
+    //        console.log(response);
+    //        setDonors(response.data.acceptedDonors);
+    //      }
+    //    });
   };
 
   const handleCancel = (idx) => {
@@ -96,10 +107,8 @@ export default function CollapsibleTable() {
         <TableHead>
           <TableRow>
             <StyledTableCell align="center">Drive Id</StyledTableCell>
-            <StyledTableCell align="center">Start Date</StyledTableCell>
-            <StyledTableCell align="center">Start Time</StyledTableCell>
-            <StyledTableCell align="center">End Date</StyledTableCell>
-            <StyledTableCell align="center">End Time</StyledTableCell>
+            <StyledTableCell align="center">Date</StyledTableCell>
+            <StyledTableCell align="center">Time</StyledTableCell>
             <StyledTableCell align="center">Address</StyledTableCell>
             <StyledTableCell align="center">
               Blood Groups Invited
@@ -113,15 +122,15 @@ export default function CollapsibleTable() {
           {drivesList.map((row, idx) => (
             <TableRow key={idx}>
               <TableCell align="center">{row.driveId}</TableCell>
-              <TableCell align="center">{row.startDate}</TableCell>
-              <TableCell align="center">{row.startTime}</TableCell>
-              <TableCell align="center">{row.endDate}</TableCell>
-              <TableCell align="center">{row.endTime}</TableCell>
-
+              <TableCell align="center">
+                {row.startDate} - {row.endDate}
+              </TableCell>
+              <TableCell align="center">
+                {row.startTime} - {row.endTime}
+              </TableCell>
               <TableCell align="center">
                 {row.address}, {row.district}, {row.state}, {row.pincode}
               </TableCell>
-
               <TableCell align="center">{row.bloodGroupsInvited}</TableCell>
               <TableCell align="center">
                 <Button
@@ -133,16 +142,16 @@ export default function CollapsibleTable() {
                   View list
                 </Button>
               </TableCell>
-              <TableCell alogn="center">
+              <TableCell align="center">
                 {drivesList[idx].cancel ? (
-                  <p>Canceled</p>
+                  <p style={{ color: "red" }}>Canceled</p>
                 ) : new Date(row.endDate).getTime() <= new Date().getTime() ? (
-                  <p>Completed</p>
+                  <p style={{ color: "grey" }}>Completed</p>
                 ) : new Date(row.startDate).getTime() >=
                   new Date().getTime() ? (
-                  <p> Upcoming</p>
+                  <p style={{ color: "#007CFF" }}> Upcoming</p>
                 ) : (
-                  <p> Active </p>
+                  <p style={{ color: "green" }}> Active </p>
                 )}
               </TableCell>
               <TableCell align="center">

@@ -38,8 +38,20 @@ function IndividualRegistration(props) {
     terms: false,
   });
 
+  const reqBody = {
+    name: "",
+    email: "",
+    dob: "",
+    phone: "",
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    bloodGroup: "",
+    password: "",
+  };
+
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
   const history = useHistory();
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
@@ -112,28 +124,37 @@ function IndividualRegistration(props) {
     setErrors({ errors: errors || {} });
     if (errors) return;
 
+    // making a request object to send to the backend
+    reqBody.name = data.name;
+    reqBody.email = data.email;
+    reqBody.dob = new Date(data.dob).toLocaleDateString();
+    reqBody.phone = data.phone;
+    reqBody.address = data.address;
+    reqBody.state = data.state;
+    reqBody.district = data.district;
+    reqBody.pincode = data.pincode;
+    reqBody.bloodGroup = data.bg;
+    reqBody.password = data.password;
+
     axios
-      .post("http://localhost:5000/login", {
-        email: data.email,
-        password: data.password,
-      })
+      .post("http://localhost:8080/registerind", reqBody)
       .then(function (response) {
-        if (response.data.success) {
+        if (response.headers.success) {
           dispatch(
-            logging({ isLoggedIn: true, userType: props.location.type })
+            logging({
+              isLoggedIn: true,
+              userType: props.location.type,
+              userToken: response.data.userToken,
+              userId: response.data.userId,
+            })
           );
           history.push("/home");
         } else {
-          console.log(response.data.error);
-          if (response.data.error.includes("email")) {
+          console.log(response.headers.error);
+          if (response.headers.error == "Email is already taken") {
             setErrors((prevErrors) => ({
               ...prevErrors,
-              email: response.data.error,
-            }));
-          } else if (response.data.error.includes("password")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              password: response.data.error,
+              email: response.headers.error,
             }));
           }
         }
@@ -141,9 +162,6 @@ function IndividualRegistration(props) {
       .catch(function (error) {
         window.alert(error.message);
       });
-
-    // dispatch(registerIndividual(data));
-    // history.push("/home");
   };
 
   const schema = {

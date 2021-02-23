@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 function FindDonors() {
   const classes = useStyles();
-  const [active , setList] = useState([]);
+  const [active, setList] = useState([]);
   useEffect(() => {
     axios
       .get("http://localhost:5000/donorlist")

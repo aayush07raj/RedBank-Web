@@ -37,6 +37,18 @@ function BloodBankRegistration(props) {
     terms: false,
   });
 
+  const reqBody = {
+    name: "",
+    email: "",
+    licenseNumber: "",
+    phone: [""],
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    password: "",
+  };
+
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -113,32 +125,40 @@ function BloodBankRegistration(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
-
     setErrors({ errors: errors || {} });
     if (errors) return;
 
+    // making a request object to send to the backend
+    reqBody.name = data.name;
+    reqBody.email = data.email;
+    reqBody.licenseNumber = data.license;
+    reqBody.phone = data.phone;
+    reqBody.address = data.address;
+    reqBody.state = data.state;
+    reqBody.district = data.district;
+    reqBody.pincode = data.pincode;
+    reqBody.password = data.password;
+
     axios
-      .post("http://localhost:5000/login", {
-        email: data.email,
-        password: data.password,
-      })
+      .post("http://localhost:8080/registerbb", reqBody)
       .then(function (response) {
-        if (response.data.success) {
+        console.log(response);
+        if (response.headers.success) {
+          console.log("works");
           dispatch(
-            logging({ isLoggedIn: true, userType: props.location.type })
+            logging({
+              isLoggedIn: true,
+              userType: props.location.type,
+              userToken: response.data.userToken,
+              userId: response.data.userId,
+            })
           );
           history.push("/home");
         } else {
-          console.log(response.data.error);
-          if (response.data.error.includes("email")) {
+          if (response.headers.error == "Email is already taken") {
             setErrors((prevErrors) => ({
               ...prevErrors,
-              email: response.data.error,
-            }));
-          } else if (response.data.error.includes("password")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              password: response.data.error,
+              email: response.headers.error,
             }));
           }
         }
