@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 //services
 import FindDonors from "./Components/screen/services/findDonors/FindDonors";
+import InviteesList from "./Components/screen/services/activeDonorReq/inviteesList";
 import UpcomingDrive from "./Components/screen/services/upcomingDrive/UpcomingDrive";
 import BuyBlood from "./Components/screen/services/buyBlood/BuyBlood";
 import Product from "./Components/screen/services/buyBlood/product";
@@ -57,11 +58,12 @@ function App() {
             <Route exact path="/MyPurchases" component={MyPurchases} />
             <Route exact path="/ConductDrive" component={ConductDrive} />
             <Route exact path="/MyDrives" component={MyDrives} />
+            <Route exact path="/AcceptedDonors" component={AcceptedDonors} />
             <Route exact path="/MyInventory" component={MyInventory} />
             <Route exact path="/MySales" component={MySales} />
             <Route exact path="/MyInvites" component={MyInvites} />
-            <Route exact path="/AcceptedDonors" component={AcceptedDonors} />
             <Route exact path="/MyAnalytics" component={MyAnalytics} />
+            <Route exact path="/inviteesList" component={InviteesList} />
             {/* <Route component={NotFound} /> */}
           </>
         ) : (

@@ -42,36 +42,58 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "id",
-    label: "Sale ID",
+    id: "dateOfTransaction",
+    numeric: true,
+    disablePadding: false,
+    label: "Date of Transaction",
   },
   {
-    id: "buyer",
-    label: "Buyer",
+    id: "salesId",
+    numeric: false,
+    disablePadding: false,
+    label: "Purchase Id",
   },
   {
-    id: "email",
-    label: "Buyer Email",
+    id: "purchasedComponent",
+    numeric: false,
+    disablePadding: false,
+    label: "Component Sold",
   },
   {
-    id: "contact",
+    id: "purchasedGroup",
+    numeric: false,
+    disablePadding: false,
+    label: "Blood Group Sold",
+  },
+  {
+    id: "purchasedQuantity",
+    numeric: true,
+    disablePadding: false,
+    label: "Units Sold",
+  },
+  {
+    id: "buyerName",
+    numeric: false,
+    disablePadding: false,
+    label: "Buyer Name",
+  },
+  {
+    id: "buyerContact",
+    numeric: false,
+    disablePadding: false,
     label: "Buyer Contact",
   },
   {
-    id: "bg",
-    label: "Purchased Blood Group",
+    id: "buyerEmail",
+    numeric: false,
+    disablePadding: false,
+    label: "Buyer Email",
   },
   {
-    id: "component",
-    label: "Purchased Component",
-  },
-  {
-    id: "units",
-    label: "Purchase Quantity",
-  },
-  {
-    id: "bill",
-    label: "Bill",
+    id: "amount",
+    numeric: true,
+    disablePadding: false,
+    label: "Amount Paid (Rs)",
   },
 ];
 
@@ -158,12 +180,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable({ list }) {
   var List = [];
-  console.log(list);
+
   list.map((item) => {
     List.push(item);
   });
-
-  console.log(List);
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -207,16 +227,23 @@ export default function EnhancedTable({ list }) {
                 .map((row, index) => {
                   return (
                     <TableRow hover tabIndex={-1} key={index}>
-                      <TableCell align="center">{row.saleId}</TableCell>
-                      <TableCell align="center">{row.buyerName}</TableCell>
-                      <TableCell align="center">{row.buyerEmail}</TableCell>
-                      <TableCell align="center">{row.buyerContact}</TableCell>
-                      <TableCell align="center">{row.purchasedGroup}</TableCell>
+                      <TableCell align="center">
+                        {row.dateOfTransaction.split("T")[0]}
+                      </TableCell>
+                      <TableCell align="center">{row.salesId}</TableCell>
                       <TableCell align="center">
                         {row.purchasedComponent}
                       </TableCell>
-                      <TableCell align="center">{row.purchasedQty}</TableCell>
-                      <TableCell align="center">{row.bill}</TableCell>
+                      <TableCell align="center">{row.purchasedGroup}</TableCell>
+                      <TableCell align="center">
+                        {row.purchasedQuantity}
+                      </TableCell>
+                      <TableCell align="center">{row.buyerName}</TableCell>
+                      <TableCell align="center">{row.buyerContact}</TableCell>
+                      <TableCell align="center">{row.buyerEmail}</TableCell>
+                      <TableCell align="center">
+                        {row.pricePerUnit * row.purchasedQuantity}{" "}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

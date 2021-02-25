@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { lighten, makeStyles } from "@material-ui/core/styles";
@@ -15,6 +15,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import { Modal, TextField } from "@material-ui/core";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import { useSelector } from "react-redux";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -44,34 +47,44 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "inviteDate",
-    label: "Date and Time",
+    id: "inviteTimestamp",
+    label: "Invite Made on",
   },
-
   {
     id: "inviteType",
     label: "Type",
   },
   {
-    id: "recipientName",
-    label: "Name",
+    id: "inviteId",
+    label: "Id",
   },
-
+  {
+    id: "date",
+    label: "Date",
+  },
+  {
+    id: "time",
+    label: "Time",
+  },
   {
     id: "address",
     label: "Address",
   },
   {
-    id: "recipientContact",
-    label: "Contact",
+    id: "inviterName",
+    label: "Inviter Name",
+  },
+  {
+    id: "inviterContact",
+    label: "Inviter Contact",
+  },
+  {
+    id: "inviterEmail",
+    label: "Inviter Email",
   },
   {
     id: "accept",
-    label: "",
-  },
-  {
-    id: "ignore",
-    label: "",
+    label: "Status",
   },
 ];
 
@@ -156,42 +169,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ list }) {
-  var List = [];
-  list.map((item) => {
-    List.push(item);
-  });
-  console.log(list);
-
-  const acceptAxios = (e) => {
-    axios.put("http://localhost:5000/invites", {}).then((response) => {
-      console.log(response);
-    });
-  };
-
-  list.map((item) => {
-    let obj = {};
-    if (item.driveId) {
-      obj = {
-        driveId: item.driveId,
-        status: item.status,
-      };
-    } else {
-      obj = {
-        donationId: item.donationId,
-        status: item.status,
-      };
-    }
-    axios.put("http://localhost:5000/invites", { obj }).then((response) => {
-      console.log(response);
-    });
-  });
-
+export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("Id");
+  const [orderBy, setOrderBy] = React.useState("inviteType");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [Message, setRejectionMessage] = useState("");
+
+  const loggedInState = useSelector((state) => state.loggedIn);
+  const [List, setList] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/invites/fetchinvites", {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
+      .then((response) => {
+        // if (response.data.success) {
+        console.log(response);
+        setList(response.data);
+        // }
+      })
+      .catch();
+  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -208,15 +211,139 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
+  const handleAccept = (index) => {
+    // axios call
+
+    if (List[index].inviteType === "drive") {
+      axios
+        .put(
+          "http://localhost:8080/invites/inviteresponse",
+          {
+            eventId: List[index].driveId,
+            eventType: List[index].inviteType,
+            acceptance: 1,
+            rejectionMesaage: "",
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
+        .then((response) => {
+          // if (response.data.success) {
+          console.log(response);
+          window.alert("accepted");
+          setList((prevList) => {
+            const newList = [...prevList];
+            newList[index].status = 1;
+
+            return newList;
+          });
+          // }
+        })
+        .catch();
+    } else {
+      axios
+        .put(
+          "http://localhost:8080/invites/inviteresponse",
+          {
+            eventId: List[index].donationId,
+            eventType: List[index].inviteType,
+            acceptance: 1,
+            rejectionMesaage: "",
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
+        .then((response) => {
+          // if (response.data.success) {
+          console.log(response);
+          window.alert("accepted");
+          setList((prevList) => {
+            const newList = [...prevList];
+            newList[index].status = 1;
+            return newList;
+          });
+          // }
+        })
+        .catch();
+    }
+  };
+
+  const handleReject = (index) => {
+    let rejectionMessage = window.prompt(
+      "Please submit your reason of rejection"
+    );
+
+    setRejectionMessage(rejectionMessage);
+    // axios call
+
+    if (List[index].inviteType === "drive") {
+      axios
+        .put(
+          "http://localhost:8080/invites/inviteresponse",
+          {
+            eventId: List[index].driveId,
+            eventType: List[index].inviteType,
+            acceptance: 0,
+            rejectionMesaage: Message,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
+        .then((response) => {
+          // if (response.data.success) {
+          console.log(response);
+          setList((prevList) => {
+            const newList = [...prevList];
+            newList[index].status = 0;
+            return newList;
+          });
+          // }
+        })
+        .catch();
+    } else {
+      axios
+        .put(
+          "http://localhost:8080/invites/inviteresponse",
+          {
+            eventId: List[index].donationId,
+            eventType: List[index].inviteType,
+            acceptance: 0,
+            rejectionMesaage: Message,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
+        .then((response) => {
+          // if (response.data.success) {
+          console.log(response);
+          setList((prevList) => {
+            const newList = [...prevList];
+            newList[index].status = 0;
+            return newList;
+          });
+          // }
+        })
+        .catch();
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="medium"
-          >
+          <Table className={classes.table} size="medium">
             <EnhancedTableHead
               classes={classes}
               order={order}
@@ -228,41 +355,76 @@ export default function EnhancedTable({ list }) {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
-                    <TableRow hover tabIndex={-1} key={row.Id}>
+                    <TableRow hover tabIndex={-1} key={index}>
                       <TableCell align="center">
-                        {row.inviteTime}
-                        on {row.inviteDate}
+                        {row.inviteTimestamp.split("T")[0]}
                       </TableCell>
 
                       <TableCell align="center">{row.inviteType}</TableCell>
-                      <TableCell align="center">{row.recipientName}</TableCell>
+                      <TableCell align="center">
+                        {row.inviteType === "drive"
+                          ? row.driveId
+                          : row.donationId}
+                      </TableCell>
 
+                      <TableCell align="center">
+                        {row.inviteType === "drive" ? (
+                          <p>
+                            {row.startTimestamp.split("T")[0]} to{" "}
+                            {row.endTimestamp.split("T")[0]}
+                          </p>
+                        ) : (
+                          <p>N/A</p>
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.inviteType === "drive" ? (
+                          <p>
+                            {row.startTimestamp.split("T")[1].split(":")[0]} :
+                            {row.startTimestamp.split("T")[1].split(":")[1]} to{" "}
+                            {row.endTimestamp.split("T")[1].split(":")[0]} :
+                            {row.endTimestamp.split("T")[1].split(":")[1]}
+                          </p>
+                        ) : (
+                          <p>N/A</p>
+                        )}
+                      </TableCell>
                       <TableCell align="center">
                         {row.address},{row.district},{row.state},{row.pincode}
                       </TableCell>
+                      <TableCell align="center">{row.recipientName}</TableCell>
                       <TableCell align="center">
                         {row.recipientContact}
                       </TableCell>
+                      <TableCell align="center">{row.recipientEmail}</TableCell>
                       <TableCell align="center">
-                        <Button
-                          type="button"
-                          variant="contained"
-                          onClick={acceptAxios}
-                        >
-                          Accept
-                        </Button>
+                        {List[index].status !== 2 ? (
+                          List[index].status === 1 ? (
+                            <p>Accepted</p>
+                          ) : List[index].status === 0 ? (
+                            <p>Rejected</p>
+                          ) : null
+                        ) : (
+                          <ButtonGroup variant="text">
+                            <Button
+                              type="button"
+                              variant="contained"
+                              onClick={(e) => handleAccept(index)}
+                            >
+                              Accept
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="contained"
+                              onClick={(e) => handleReject(index)}
+                              color="secondary"
+                            >
+                              Ignore
+                            </Button>
+                          </ButtonGroup>
+                        )}
                       </TableCell>
-                      <TableCell align="center">
-                        <Button
-                          type="button"
-                          variant="contained"
-                          onClick={(event) => {
-                            acceptAxios(event, row.ID);
-                          }}
-                        >
-                          Ignore
-                        </Button>
-                      </TableCell>
+                      <TableCell align="center"></TableCell>
                     </TableRow>
                   );
                 })}

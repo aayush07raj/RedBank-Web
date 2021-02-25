@@ -9,9 +9,6 @@ import {
 } from "@material-ui/core";
 import { Navbar, Footer } from "../../../layouts";
 import axios from "axios";
-import { useSelector } from "react-redux";
-
-import Table from "./table";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,42 +23,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MyPurchase() {
-  const [purchase, setList] = useState([]);
-  const loggedInState = useSelector((state) => state.loggedIn);
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/transactions/fetchpurchaseslist", {
-        headers: {
-          Authorization: "Bearer " + loggedInState.userToken,
-        },
-      })
-      .then((response) => {
-        // if (response.data.success) {
-        console.log(response);
-        setList(response.data);
-        // }
-      })
-      .catch();
-  }, []);
-
+function FindDonors() {
   const classes = useStyles();
 
   return (
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">My Purchases</Typography>
+        <Typography variant="h4">Invitees List</Typography>
         <Divider />
         <Typography variant="h6">
-          Here you can view all the purchases you have done since your
-          registration
+          list of the Invitees of the selected Request
         </Typography>
       </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
-            <Table list={purchase} />
+            {/* <Table /> */}
           </Grid>
         </Grid>
       </Container>
@@ -70,4 +48,4 @@ function MyPurchase() {
   );
 }
 
-export default MyPurchase;
+export default FindDonors;

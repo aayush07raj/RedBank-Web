@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Collapse from "@material-ui/core/Collapse";
 import { Button, Container } from "@material-ui/core/";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,6 +9,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core/";
 import { Navbar, Footer } from "../../../layouts";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -36,15 +35,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AcceptedDonors(props) {
-  const { acceptedDonors, setDonors } = props.location;
+  const { donorsList, setDonors, drivesList } = props.location;
   const classes = useStyles();
+  const loggedInState = useSelector((state) => state.loggedIn);
 
-  console.log(acceptedDonors);
+  console.log(props.location);
 
   const handleClick = (idx) => {
-    var updatedList = [...acceptedDonors];
-    updatedList[idx].hasGivenBlood = true;
-    setDonors(updatedList);
+    if (window.confirm("Are you sure ?")) {
+      axios
+        .put(
+          "http://localhost:8080/mydrives/drivedonorverification",
+          {
+            driveId: drivesList[idx].driveId,
+            userId: donorsList[idx].userId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          var updatedList = [...donorsList];
+          updatedList[idx].donationStatus = false;
+          setDonors(updatedList);
+        });
+    }
   };
 
   return (
@@ -62,22 +80,22 @@ export default function AcceptedDonors(props) {
                 <StyledTableCell align="center">Donor Name</StyledTableCell>
                 <StyledTableCell align="center">Blood Group</StyledTableCell>
                 <StyledTableCell align="center">
-                  Has Given Blood
+                  Donation Status
                 </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {acceptedDonors.map((row, idx) => (
+              {donorsList.map((row, idx) => (
                 <TableRow key={idx}>
-                  <TableCell align="center">{row.donorId}</TableCell>
-                  <TableCell align="center">{row.donorName}</TableCell>
+                  <TableCell align="center">{row.userId}</TableCell>
+                  <TableCell align="center">{row.name}</TableCell>
                   <TableCell align="center">{row.bloodGroup}</TableCell>
                   <TableCell align="center">
                     <Button
-                      disabled={acceptedDonors[idx].hasGivenBlood}
+                      disabled={donorsList[idx].donationStatus}
                       variant="contained"
                       color="secondary"
-                      onClick={handleClick(idx)}
+                      onClick={(e) => handleClick(idx)}
                     >
                       Given ?
                     </Button>

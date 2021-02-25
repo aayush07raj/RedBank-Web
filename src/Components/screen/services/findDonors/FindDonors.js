@@ -16,7 +16,6 @@ import {
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
-import Joi from "joi";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -65,25 +64,18 @@ function FindDonors() {
     address: "",
   };
   const loggedInState = useSelector((state) => state.loggedIn);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    state: "",
+    district: "",
+    bloodGroup: "",
+    address: "",
+  });
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
-
   const [donorsList, setList] = useState([]);
-  useEffect(() => {
-    // console.log(donorsList);
-  }, [donorsList]);
 
   const classes = useStyles();
   const regex = /^[0-9]*$/;
-
-  // const schema = {
-  //   state: Joi.required(),
-  //   district: Joi.required(),
-  //   pincode: Joi.required(),
-  //   bloodGroup: Joi.required(),
-  //   address: Joi.required(),
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,54 +86,41 @@ function FindDonors() {
         statesData.states.findIndex((item) => item.state === value)
       );
     }
-
-    // const allErrors = { ...errors };
-    // const errorMsg = validateProperty(e.target);
-    // if (errorMsg) {
-    //   allErrors[name] = errorMsg;
-    // } else {
-    //   delete allErrors[name];
-    // }
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
-    // setErrors(allErrors);
   };
 
-  // const validateProperty = ({ name, value }) => {
-  //   const inputField = { [name]: value };
-  //   const fieldSchema = Joi.object({ [name]: schema[name] });
-  //   const { error } = fieldSchema.validate(inputField);
-  //   return error ? error.details[0].address : null;
-  // };
+  const validate = () => {
+    const errors = {};
 
-  // const validate = () => {
-  //   const formSchema = Joi.object(schema);
-  //   const { error } = formSchema.validate(data, {
-  //     abortEarly: false,
-  //   });
+    if (data.address.trim() === "") {
+      errors.address = "Venue is compulsory";
+    }
+    if (data.state === "") {
+      errors.state = "State cannot be empty";
+    }
+    if (data.district === "") {
+      errors.district = "District cannot be empty";
+    }
 
-  //   if (!error) return null;
-
-  //   const allErrors = {};
-  //   for (let err of error.details) {
-  //     allErrors[err.path[0]] = err.address;
-  //   }
-  //   return allErrors;
-  // };
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // console.log("asdasd");
     // const errors = validate();
-    // setErrors({ errors: errors || {} });
+    // console.log(errors);
+    // setErrors(errors);
     // if (errors) return;
 
+    console.log("works");
     reqBody.state = data.state;
     reqBody.district = data.district;
     reqBody.pincode = data.pincode;
     reqBody.bloodGroup = data.bloodGroup;
     reqBody.address = data.address;
-
     axios
       .post("http://localhost:8080/finddonors/donorslist", reqBody, {
         headers: {
@@ -151,7 +130,6 @@ function FindDonors() {
       .then((response) => {
         // if (response.data.success) {
         setList(response.data);
-        // console.log(response);
         // }
       })
       .catch();
@@ -171,12 +149,11 @@ function FindDonors() {
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
-            <form onSubmit={handleSubmit}>
+            <form>
               <Paper className={classes.paper} elevation={5}>
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select required State</InputLabel>
                   <Select
-                    required
                     name="state"
                     value={data.state}
                     onChange={handleChange}
@@ -195,7 +172,6 @@ function FindDonors() {
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select required District</InputLabel>
                   <Select
-                    required
                     inputProps={{ readOnly: enable }}
                     name="district"
                     value={data.district}
@@ -229,14 +205,13 @@ function FindDonors() {
                     }
                   }}
                   inputProps={{ maxLength: 6 }}
-                  error={errors && errors.pincode ? true : false}
-                  helperText={errors && errors.pincode ? errors.pincode : null}
+                  // error={errors && errors.pincode ? true : false}
+                  // helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select required Blood Group</InputLabel>
                   <Select
-                    required
                     label="Select required Blood Groups *"
                     name="bloodGroup"
                     onChange={handleChange}
@@ -274,7 +249,7 @@ function FindDonors() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
-                  // disabled={validate() ? true : false}
+                  onSubmit={(e) => handleSubmit()}
                 >
                   Search
                 </Button>

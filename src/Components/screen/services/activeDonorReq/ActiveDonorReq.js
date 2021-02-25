@@ -27,23 +27,12 @@ const useStyles = makeStyles((theme) => ({
 
 function FindDonors() {
   const classes = useStyles();
-  const [active, setList] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/donorlist")
-      .then((response) => {
-        if (response.data.success) {
-          setList(response.data.list);
-        }
-      })
-      .catch();
-  }, []);
 
   return (
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">Active Donor Request</Typography>
+        <Typography variant="h4">My Donation Request</Typography>
         <Divider />
         <Typography variant="h6">
           Here you can view all your sent request for donors
@@ -52,7 +41,7 @@ function FindDonors() {
       <Container maxWidth="lg">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
-            <Table list={active} />
+            <Table />
           </Grid>
         </Grid>
       </Container>

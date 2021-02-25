@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { Navbar, Footer } from "../../../layouts";
+import { useDispatch, useSelector } from "react-redux";
 
 import Table from "./table";
 
@@ -28,13 +29,19 @@ const useStyles = makeStyles((theme) => ({
 function MyCommitments() {
   const classes = useStyles();
   const [commitmentsList, setList] = useState([]);
+  const loggedInState = useSelector((state) => state.loggedIn);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/commitments")
+      .get("http://localhost:8080/commitment", {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
       .then((response) => {
-        if (response.data.success) {
-          setList(response.data.commitmentsList);
-        }
+        // if (response.data.success) {
+        console.log(response);
+        setList(response.data);
+        // }
       })
       .catch();
   }, []);

@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { Navbar, Footer } from "../../../layouts";
+import { useSelector } from "react-redux";
 
 import Table from "./table";
 
@@ -27,17 +28,6 @@ const useStyles = makeStyles((theme) => ({
 
 function MyInvites() {
   const classes = useStyles();
-  const [invitesList, setList] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/invites")
-      .then((response) => {
-        if (response.data.success) {
-          setList(response.data.invitesList);
-        }
-      })
-      .catch();
-  }, []);
 
   return (
     <>
@@ -46,13 +36,14 @@ function MyInvites() {
         <Typography variant="h4">My Invites</Typography>
         <Divider />
         <Typography variant="h6">
-          Here you can view all incoming invitation to you for donation drives and individua requests
+          Here you can view all incoming invitation to you for donation drives
+          and individual requests
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
-            <Table list={invitesList} />
+            <Table />
           </Grid>
         </Grid>
       </Container>

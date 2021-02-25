@@ -169,12 +169,8 @@ function ConductDrive() {
     reqBody.endTimeStamp = data.endDate + "T" + data.endTime + ":00.00";
     reqBody.message = data.message;
 
-    console.log(reqBody);
-
     setErrors({ errors: errors || {} });
     if (errors) return;
-
-    console.log("Bearer" + " " + loggedInState.userToken);
 
     axios
       .post("http://localhost:8080/conductadrive/savedrivedetails", reqBody, {

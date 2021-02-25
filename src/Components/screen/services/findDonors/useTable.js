@@ -182,10 +182,6 @@ const EnhancedTableToolbar = (props) => {
       .catch();
   }
 
-  const handleClick = () => {
-    window.alert("Notification sent.");
-  };
-
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {

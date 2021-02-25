@@ -18,6 +18,7 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import BloodTable from "./bloodCompatibilityTable";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   hero: {
@@ -53,32 +54,57 @@ const useStyles = makeStyles((theme) => ({
 function Home(props) {
   const [message, addMsg] = useState({
     subject: "",
-    msg: "",
+    message: "",
   });
+  const [errors, setError] = useState({
+    subject: "",
+    message: "",
+  });
+  const loggedInState = useSelector((state) => state.loggedIn);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedData = { ...message };
     updatedData[name] = value;
     addMsg(updatedData);
-    console.log(message.subject);
+  };
+
+  const validate = () => {
+    const errors = {};
+
+    if (message.subject === "") {
+      errors.subject = "Subject cannot be empty";
+    } else if (message.message === "") {
+      errors.message = "Message cannot be empty";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
   };
 
   const handleClick = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/contact", {
-        message,
-      })
-      .then((response) => {
-        if (response.data.success) {
-          window.alert("Your message has been Submiited!");
-        }
-      });
+    console.log(message);
+    const errors = validate();
+    console.log(errors);
+    setError(errors);
+    if (errors) return;
+
+    // axios
+    //   .post("http://localhost:8080/contactus/addmessage", message, {
+    //     headers: {
+    //       Authorization: "Bearer " + loggedInState.userToken,
+    //     },
+    //   })
+    //   .then((response) => {
+    //     if (response.data.success) {
+    //       console.log(response);
+    //       window.alert("Your message has been Submiited!");
+    //     }
+    //   });
   };
 
   const user = props.location.user;
-  console.log(user);
+
   const classes = useStyles();
   const paperStyle = {
     display: "flex",
@@ -122,31 +148,33 @@ function Home(props) {
             <Grid xs={2}></Grid>
             <Grid xs={5} container justify="center" alignItems="center">
               <Paper style={paperStyle} elevation={5}>
-                {/* <Card> */}
                 <Typography>Contact Us</Typography>
                 <TextField
                   style={{ marginTop: "10px" }}
                   className={classes.formControl}
                   label="Subject:"
                   type="text"
-                  onChange={(e) =>
-                    addMsg({ ...message, subject: e.target.value })
-                  }
+                  onChange={handleChange}
+                  name="subject"
                   value={message.subject}
                   variant="outlined"
-                  inputProps={{ maxLength: 15 }}
+                  inputProps={{ maxLength: 20 }}
+                  error={errors && errors.subject ? true : false}
+                  helperText={errors && errors.subject ? errors.subject : null}
                 />
                 <TextField
                   style={{ marginTop: "10px" }}
                   className={classes.formControl}
                   label="Send a Message"
                   multiline
+                  type="text"
                   onChange={handleChange}
                   rows={7}
-                  onChange={(e) => addMsg({ ...message, msg: e.target.value })}
-                  value={message.msg}
                   name="message"
+                  value={message.message}
                   variant="outlined"
+                  error={errors && errors.message ? true : false}
+                  helperText={errors && errors.message ? errors.message : null}
                 />
                 <Button style={{ marginTop: "10px" }} onClick={handleClick}>
                   Submit

@@ -122,7 +122,7 @@ export default function MenuAppBar({ user }) {
                     <Link to="/MyPurchases">My Purchases</Link>
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
-                    <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                    <Link to="/ActiveDonorReq">My Donation Requests</Link>
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
                     <Link to="/UpcomingDrive">Upcoming Drives</Link>
@@ -133,7 +133,7 @@ export default function MenuAppBar({ user }) {
                 </>
               ) : (
                 <>
-                  {loggedInState.userType === 2 ? (
+                  {loggedInState.userType === 3 ? (
                     <>
                       <MenuItem onClick={handleClose}>
                         <Link to="/BuyBlood">Buy Blood</Link>
@@ -148,7 +148,7 @@ export default function MenuAppBar({ user }) {
                         <Link to="/MyPurchases">My Purchases</Link>
                       </MenuItem>
                       <MenuItem onClick={handleClose}>
-                        <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                        <Link to="/ActiveDonorReq">My Donation Requests</Link>
                       </MenuItem>
                       <MenuItem onClick={handleClose}>
                         <Link to="/ConductDrive">Conduct Drive</Link>
@@ -181,7 +181,7 @@ export default function MenuAppBar({ user }) {
                         <Link to="/MyPurchases">My Purchases</Link>
                       </MenuItem>
                       <MenuItem onClick={handleClose}>
-                        <Link to="/ActiveDonorReq">Active Donor Request</Link>
+                        <Link to="/ActiveDonorReq">My Donation Requests</Link>
                       </MenuItem>
                       <MenuItem onClick={handleClose}>
                         <Link to="/ConductDrive">Conduct Drive</Link>

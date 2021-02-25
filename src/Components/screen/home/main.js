@@ -68,7 +68,7 @@ function Main() {
               </>
             ) : (
               <>
-                {loggedInState.userType === 2 ? (
+                {loggedInState.userType === 3 ? (
                   <>
                     {BankServices.map((item, idx) => (
                       <Grid item xs={12} sm={6} md={3}>

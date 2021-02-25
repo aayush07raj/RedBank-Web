@@ -18,6 +18,7 @@ import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
 import Joi from "joi";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,8 +56,8 @@ function UpcomingDrive() {
   });
 
   const [driveList, setState] = useState([]);
-  useEffect(() => {}, [driveList]);
 
+  const loggedInState = useSelector((state) => state.loggedIn);
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
@@ -116,11 +117,14 @@ function UpcomingDrive() {
     e.preventDefault();
 
     axios
-      .post("http://localhost:5000/finddrives", {
-        pincode: data.pincode,
+      .post("http://localhost:8080/upcomingdrives/fetchdriveslist", data, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
       })
       .then(function (response) {
-        setState(response.data.upcomingDrivesList);
+        console.log(response);
+        setState(response.data);
       });
   };
 

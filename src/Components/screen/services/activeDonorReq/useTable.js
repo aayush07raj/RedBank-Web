@@ -12,6 +12,8 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -41,17 +43,56 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "name",
+    id: "donationId",
     numeric: false,
-    label: "Name",
+    label: "Request Id",
+    disablePadding: false,
   },
-  { id: "contact", numeric: true, label: "Contact" },
   {
-    id: "bg",
+    id: "bloodGroup",
     numeric: false,
-    label: "Blood Group",
+    label: "blood group invited",
+    disablePadding: false,
   },
-  { id: "status", numeric: false, label: "Status", disableSorting: true },
+  {
+    id: "address",
+    numeric: false,
+    label: "Selected location",
+    disablePadding: false,
+  },
+  {
+    id: "venue",
+    numeric: false,
+    label: "Venue",
+    disablePadding: false,
+  },
+  {
+    id: "requestTime",
+    numeric: false,
+    label: "Request Time",
+    disablePadding: false,
+  },
+  {
+    id: "donors",
+    numeric: false,
+    disableSorting: true,
+    label: "Invited Donors",
+    disablePadding: false,
+  },
+  {
+    id: "status",
+    numeric: false,
+    label: "Status of Request",
+    disableSorting: false,
+    disablePadding: false,
+  },
+  {
+    id: "expire",
+    numeric: false,
+    label: "Expire Request?",
+    disableSorting: false,
+    disablePadding: false,
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -122,21 +163,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable() {
+  const loggedInState = useSelector((state) => state.loggedIn);
   const [active, setList] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/donorlist")
+      .get("http://localhost:8080/donationrequests/fetchrequests", {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
       .then((response) => {
-        if (response.data.success) {
-          setList(response.data.list);
-        }
+        // if (response.data.success) {
+        setList(response.data);
+        console.log(response);
+        // }
       })
       .catch();
   }, []);
 
+  const history = useHistory();
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("contact");
+  const [orderBy, setOrderBy] = React.useState("donationId");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -155,12 +203,36 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
-  const handleSet = (e, idx) => {
+  const handleExpire = (e, idx) => {
     if (window.confirm("Are you sure ?")) {
       var updatedList = [...active];
-      updatedList[idx].status = true;
+      updatedList[idx].status = false;
       setList(updatedList);
+
+      axios
+        .put(
+          "http://localhost:8080/donationrequests/expirerequest",
+          {
+            donationId: active[idx].donationId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
+        .then((response) => {
+          // if (response.data.success) {
+          console.log(response);
+          // }
+        })
+        .catch();
     }
+  };
+
+  const handleView = (e, idx) => {
+    console.log(active[idx].donationId);
+    history.push("/inviteesList");
   };
 
   return (
@@ -181,31 +253,43 @@ export default function EnhancedTable() {
                   const labelId = `enhanced-table-${index}`;
 
                   return (
-                    <TableRow hover tabIndex={-1} key={row.contact}>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        align="center"
-                      >
-                        {row.name}
+                    <TableRow hover key={index}>
+                      <TableCell align="center">{row.donationId}</TableCell>
+                      <TableCell align="center">
+                        {row.bloodGroup ? row.bloodGroup : <p>NA</p>}
                       </TableCell>
-                      <TableCell align="center">{row.contact}</TableCell>
-                      <TableCell align="center">{row.bg}</TableCell>
+                      <TableCell align="center">
+                        {row.district}, {row.state}, {row.pincode}
+                      </TableCell>
+                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="center">
+                        {row.requestTime.split("T")[0]} at{"   "}
+                        {row.requestTime.split("T")[1].split(":")[0]} :
+                        {row.requestTime.split("T")[1].split(":")[1]}
+                      </TableCell>
+                      <TableCell align="center">
+                        <Button
+                          onClick={(e) => {
+                            handleView(e, index);
+                          }}
+                        >
+                          View List
+                        </Button>
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.status ? <p>Active</p> : <p>Expired</p>}
+                      </TableCell>
+
                       <TableCell align="center">
                         <Button
                           type="button"
                           variant="contained"
-                          disabled={active[index].status}
+                          disabled={!active[index].status}
                           onClick={(e) => {
-                            handleSet(e, index);
+                            handleExpire(e, index);
                           }}
                         >
-                          {active[index].status ? (
-                            <p style={{ color: "green" }}>Donated</p>
-                          ) : (
-                            <p>Given ?</p>
-                          )}
+                          Expire
                         </Button>
                       </TableCell>
                     </TableRow>

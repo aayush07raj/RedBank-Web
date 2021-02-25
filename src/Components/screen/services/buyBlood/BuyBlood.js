@@ -18,6 +18,7 @@ import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
 import Joi from "joi";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,13 +53,13 @@ function FindDonors() {
     state: "",
     district: "",
     pincode: "",
-    bg: [],
-    component: [],
+    bg: "",
+    component: "",
     units: "",
   });
 
   const [list, setList] = useState([]);
-
+  const loggedInState = useSelector((state) => state.loggedIn);
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
@@ -132,11 +133,27 @@ function FindDonors() {
     if (errors) return;
 
     axios
-      .get("http://localhost:5000/buybloodlist")
-      .then((response) => {
-        if (response.data.success) {
-          setList(response.data.list);
+      .post(
+        "http://localhost:8080/buyblood/findbb",
+        {
+          bloodGroup: data.bg,
+          component: data.component,
+          reqUnits: data.units,
+          state: data.state,
+          district: data.district,
+          pincode: data.pincode,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
         }
+      )
+      .then((response) => {
+        // if (response.data.success) {
+        console.log(response);
+        setList(response.data);
+        // }
       })
       .catch();
   };
