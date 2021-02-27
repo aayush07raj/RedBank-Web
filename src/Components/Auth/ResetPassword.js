@@ -5,7 +5,8 @@ import resetPwd from "./images/resetPwd.png";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import axios from "axios";
 
-function ResetPassword() {
+function ResetPassword(props) {
+  const { recoveryEmail } = props.location;
   const history = useHistory();
   const paperStyle = {
     display: "flex",
@@ -29,6 +30,19 @@ function ResetPassword() {
     const errors = validate();
     setError(errors);
     if (errors) return;
+
+    axios
+      .put("http://localhost:8080/profile/resetpassword", {
+        userEmail: recoveryEmail,
+        newPassword: password,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          history.push("/login");
+          window.alert("Password successfully changed");
+        }
+      });
   };
 
   const validate = () => {

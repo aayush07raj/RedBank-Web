@@ -37,7 +37,10 @@ function VerifyCode(props) {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
-          history.push("/ResetPassword");
+          history.push({
+            pathname: "/ResetPassword",
+            recoveryEmail,
+          });
         } else {
           setError("Invalid Otp");
         }
