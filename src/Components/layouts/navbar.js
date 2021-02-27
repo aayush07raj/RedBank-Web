@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import {
   makeStyles,
   AppBar,
@@ -10,18 +10,21 @@ import {
   Button,
   Badge,
   MenuIcon,
+  Divider,
 } from "@material-ui/core/";
 import { Link, useHistory } from "react-router-dom";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import Logo from "./logo.svg";
 import { useDispatch, useSelector } from "react-redux";
-import logging from "../../redux/Actions/login";
+import { loggingOut } from "../../redux/Actions/login";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Cookies from "universal-cookie";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,26 +39,27 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     height: 40,
   },
+  menu: {
+    height: "400px",
+    overflow: "auto",
+  },
 }));
 
 export default function MenuAppBar({ user }) {
+  const loggedInState = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
+  const [notificationsList, setNotifications] = React.useState([]);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl2, setAnchorEL2] = React.useState(null);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-  const loggedInState = useSelector((state) => state.loggedIn);
-
-  const handleLogout = () => {
-    dispatch(logging({ isLoggedIn: false, userType: 0 }));
-    localStorage.removeItem("JWTtoken");
-    history.push("/");
   };
 
   const [open, setOpen] = React.useState(false);
@@ -67,6 +71,47 @@ export default function MenuAppBar({ user }) {
   const handleClosed = () => {
     setOpen(false);
   };
+
+  const handleLogout = async () => {
+    const cookies = new Cookies();
+    dispatch(loggingOut());
+    cookies.remove("Auth", { path: "/" });
+    history.push("/");
+  };
+
+  const handleClick2 = (event) => {
+    axios
+      .get(`http://localhost:8080/notifications`, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
+      .then((response) => {
+        if (response.data[0]) {
+          setNotifications(response.data.reverse());
+        }
+      });
+    setAnchorEL2(event.currentTarget);
+  };
+
+  const handleClose2 = () => {
+    setAnchorEL2(null);
+  };
+
+  //calling every 10 seconds
+  // setInterval(() => {
+  //   axios
+  //     .get(`http://localhost:8080/notifications`, {
+  //       headers: {
+  //         Authorization: "Bearer " + loggedInState.userToken,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       if (response.data[0]) {
+  //         setNotifications(response.data.reverse());
+  //       }
+  //     });
+  // }, 60000);
 
   return (
     <Fragment className={classes.root}>
@@ -82,22 +127,66 @@ export default function MenuAppBar({ user }) {
             <img src={Logo} alt="logo" className={classes.logo} />
           </Typography>
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
+            <IconButton onClick={handleClick2} color="inherit">
+              <Badge color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <Button color="inherit" component={Link} to="/About" variant="h7">
-              About{" "}
-            </Button>
-            <Button
-              onClick={handleMenu}
-              color="inherit"
-              // style={{ padding: 5 }}
-              variant="h7"
+            <Menu
+              id="simple-menu 2"
+              anchorEl={anchorEl2}
+              keepMounted
+              open={Boolean(anchorEl2)}
+              onClose={handleClose2}
+              className={classes.menu}
             >
-              {" "}
-              Services{" "}
+              {notificationsList.length === 0 ? (
+                <MenuItem
+                  onClick={handleClose2}
+                  style={{
+                    width: "300px",
+                    fontSize: "13px",
+                  }}
+                >
+                  <div
+                    style={{
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    <p>No new notifications</p>
+                  </div>
+                </MenuItem>
+              ) : (
+                notificationsList.map((val, idx) => (
+                  <>
+                    <MenuItem
+                      onClick={handleClose2}
+                      style={{
+                        width: "300px",
+                        fontSize: "12px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          whiteSpace: "normal",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        <p> {val.message}</p>
+                      </div>
+                    </MenuItem>
+                    <Divider />
+                  </>
+                ))
+              )}
+            </Menu>
+
+            <Button color="inherit" component={Link} to="/About" variant="h7">
+              About
+            </Button>
+            <Button onClick={handleMenu} color="inherit" variant="h7">
+              Services
             </Button>
 
             <Menu

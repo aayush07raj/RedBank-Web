@@ -18,10 +18,10 @@ function Options() {
   const handleSet = (e, name) => {
     var type = "";
     if (name === "individual") {
-      type = "0";
+      type = "1";
       history.push({ pathname: "/IndividualRegistration", type });
     } else if (name === "bloodbank") {
-      type = "1";
+      type = "3";
       history.push({ pathname: "/BloodBankRegistration", type });
     } else {
       type = "2";

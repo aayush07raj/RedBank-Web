@@ -54,7 +54,7 @@ const Product = (props) => {
     setOpen(false);
   };
 
-  const handleClick = () => {
+  const handleSubmit = () => {
     axios
       .post(
         "http://localhost:8080/buyblood/confirmbuy",
@@ -142,7 +142,7 @@ const Product = (props) => {
                     <Button
                       color="primary"
                       onClick={(e) => {
-                        handleClick();
+                        handleSubmit();
                       }}
                       autoFocus
                     >

@@ -1,10 +1,14 @@
-import { LOGGING_IN } from "../Types/login";
+import { LOGGING_IN, LOGGING_OUT } from "../Types/login";
 
-const loggingIn = (state) => {
+export const logging = (state) => {
   return {
     type: LOGGING_IN,
     payload: state,
   };
 };
 
-export default loggingIn;
+export const loggingOut = () => {
+  return {
+    type: LOGGING_OUT,
+  };
+};

@@ -10,6 +10,7 @@ import {
   TextField,
   Paper,
   Button,
+  Divider,
 } from "@material-ui/core/";
 import { Navbar, Footer } from "../../layouts";
 import axios from "axios";
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   blogsContainer: {
     paddingTop: theme.spacing(3),
-    marginTop: theme.spacing(5),
+    marginTop: theme.spacing(3),
   },
   blogTitle: {
     fontWeight: 800,
@@ -89,22 +90,21 @@ function Home(props) {
     setError(errors);
     if (errors) return;
 
-    // axios
-    //   .post("http://localhost:8080/contactus/addmessage", message, {
-    //     headers: {
-    //       Authorization: "Bearer " + loggedInState.userToken,
-    //     },
-    //   })
-    //   .then((response) => {
-    //     if (response.data.success) {
-    //       console.log(response);
-    //       window.alert("Your message has been Submiited!");
-    //     }
-    //   });
+    axios
+      .post("http://localhost:8080/contactus/addmessage", message, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
+      .then((response) => {
+        if (response.data.success) {
+          console.log(response);
+          window.alert("Your message has been Submiited!");
+        }
+      });
   };
 
   const user = props.location.user;
-
   const classes = useStyles();
   const paperStyle = {
     display: "flex",
@@ -121,34 +121,51 @@ function Home(props) {
         <Box className={classes.hero}>
           <Box>About Us</Box>
         </Box>
-        <Container maxWidth="lg" className={classes.blogsContainer}></Container>
         <Container maxWidth="lg" className={classes.blogsContainer}>
-          <Grid container>
-            <Grid xs={5}>
-              <Card>
-                <Typography>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged. It was popularised in the 1960s with
-                  the release of Letraset sheets containing Lorem Ipsum
-                  passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum The
-                  leap into electronic typesetting, remaining essentially
-                  unchanged. It was popularised in the 1960s with the release of
-                  Letraset sheets containing Lorem Ipsum passages, and more
-                  recently with desktop publishing software like Aldus PageMaker
-                  including versions of Lorem Ipsum
-                </Typography>
-              </Card>
+          <Grid container justify="center" spacing={10}>
+            <Grid item xs={12} align="center">
+              <Typography variant="h4">About our Portal</Typography>
+              <Divider />
             </Grid>
-            <Grid xs={2}></Grid>
-            <Grid xs={5} container justify="center" alignItems="center">
+            <Grid item xs={12}>
+              <Typography
+                variant="h5"
+                align="center"
+                style={{ padding: "10px" }}
+              >
+                "Rakt daan, Mahadaan", You might've heard this slogan a number
+                of times in your life, and you even might've thought "Maybe I
+                can donate blood too and that way, I'll save a life". At the
+                same time, someone in a hospital within your walking distance is
+                in urgent need of blood with your blood group the hospital
+                forgot to restock that particular blood group. You can save that
+                patient's life, but you don't know that the patient exists or is
+                in need of blood. The hospital could've restocked the blood, but
+                they didn't know they were out of stock. Clearly, there's a gap.
+                We intend to bridge that with{" "}
+                <p
+                  style={{
+                    fontFamily: "Montserrat-Regular",
+                    color: "red",
+                    fontSize: "30px",
+                  }}
+                >
+                  RedBank
+                </p>
+                . {"\n\n\n"}
+                RedBank serves as a Typographylatform to bridge the gap between
+                the blood donors and recipients and to reduce the efforts
+                required to find the right type of blood group. with redBank ,
+                hospitlas can easily view and manage their inventory, blood
+                banks can sell blood to other users and any user can nake a
+                request to all the active donors who are willing to donate their
+                blood to save a life.
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} align="center">
               <Paper style={paperStyle} elevation={5}>
-                <Typography>Contact Us</Typography>
+                <Typography variant="h5">Feel free to contact us </Typography>
                 <TextField
                   style={{ marginTop: "10px" }}
                   className={classes.formControl}
@@ -177,7 +194,7 @@ function Home(props) {
                   helperText={errors && errors.message ? errors.message : null}
                 />
                 <Button style={{ marginTop: "10px" }} onClick={handleClick}>
-                  Submit
+                  Submit feedback
                 </Button>
               </Paper>
             </Grid>
@@ -185,10 +202,11 @@ function Home(props) {
               container
               className={classes.blogsContainer}
               justify="center"
-              spacing={8}
+              spacing={10}
             >
               <Grid item xs={12} align="center">
                 <Typography variant="h4">Learn more about donation</Typography>
+                <Divider />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography

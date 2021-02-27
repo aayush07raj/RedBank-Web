@@ -57,7 +57,7 @@ function MyCommitments() {
           registration
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
             <Table list={commitmentsList} />

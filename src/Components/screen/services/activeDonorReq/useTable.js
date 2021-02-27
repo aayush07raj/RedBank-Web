@@ -43,6 +43,12 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
+    id: "requestTime",
+    numeric: false,
+    label: "Request Time",
+    disablePadding: false,
+  },
+  {
     id: "donationId",
     numeric: false,
     label: "Request Id",
@@ -66,12 +72,7 @@ const headCells = [
     label: "Venue",
     disablePadding: false,
   },
-  {
-    id: "requestTime",
-    numeric: false,
-    label: "Request Time",
-    disablePadding: false,
-  },
+
   {
     id: "donors",
     numeric: false,
@@ -165,6 +166,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable() {
   const loggedInState = useSelector((state) => state.loggedIn);
   const [active, setList] = useState([]);
+  const [donorsList, setDonors] = useState([]);
   useEffect(() => {
     axios
       .get("http://localhost:8080/donationrequests/fetchrequests", {
@@ -184,7 +186,7 @@ export default function EnhancedTable() {
   const history = useHistory();
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("donationId");
+  const [orderBy, setOrderBy] = React.useState("requestTime");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -230,16 +232,41 @@ export default function EnhancedTable() {
     }
   };
 
-  const handleView = (e, idx) => {
-    console.log(active[idx].donationId);
-    history.push("/inviteesList");
+  const handleView = (idx) => {
+    // history.push("/inviteesList");
+    axios
+      .get(
+        `http://localhost:8080/donationrequests/fetchdonationdonorlist/${active[idx].donationId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        if (response.data[0]) {
+          setDonors(response.data);
+        }
+      });
   };
+
+  useEffect(() => {
+    if (donorsList.length !== 0) {
+      history.push({
+        pathname: "/inviteesList",
+        donorsList,
+        active,
+        setDonors,
+      });
+    }
+  }, [donorsList]);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <TableContainer>
-          <Table className={classes.table} size="medium">
+          <Table className={classes.table}>
             <EnhancedTableHead
               classes={classes}
               order={order}
@@ -250,10 +277,13 @@ export default function EnhancedTable() {
               {stableSort(active, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const labelId = `enhanced-table-${index}`;
-
                   return (
                     <TableRow hover key={index}>
+                      <TableCell align="center">
+                        {row.requestTime.split("T")[0]} at{"   "}
+                        {row.requestTime.split("T")[1].split(":")[0]} :
+                        {row.requestTime.split("T")[1].split(":")[1]}
+                      </TableCell>
                       <TableCell align="center">{row.donationId}</TableCell>
                       <TableCell align="center">
                         {row.bloodGroup ? row.bloodGroup : <p>NA</p>}
@@ -262,15 +292,11 @@ export default function EnhancedTable() {
                         {row.district}, {row.state}, {row.pincode}
                       </TableCell>
                       <TableCell align="center">{row.address}</TableCell>
-                      <TableCell align="center">
-                        {row.requestTime.split("T")[0]} at{"   "}
-                        {row.requestTime.split("T")[1].split(":")[0]} :
-                        {row.requestTime.split("T")[1].split(":")[1]}
-                      </TableCell>
+
                       <TableCell align="center">
                         <Button
                           onClick={(e) => {
-                            handleView(e, index);
+                            handleView(index);
                           }}
                         >
                           View List

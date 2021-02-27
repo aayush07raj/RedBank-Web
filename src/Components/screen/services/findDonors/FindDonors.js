@@ -12,10 +12,12 @@ import {
   Typography,
   TextField,
   Button,
+  FormHelperText,
 } from "@material-ui/core";
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
+import Joi from "joi";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -56,30 +58,17 @@ function FindDonors() {
     address: "",
   });
 
-  const reqBody = {
-    state: "",
-    district: "",
-    pincode: "",
-    bloodGroup: "",
-    address: "",
-  };
+  const reqBody = {};
   const loggedInState = useSelector((state) => state.loggedIn);
-  const [errors, setErrors] = useState({
-    state: "",
-    district: "",
-    bloodGroup: "",
-    address: "",
-  });
+  const [errors, setError] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
   const [donorsList, setList] = useState([]);
-
   const classes = useStyles();
   const regex = /^[0-9]*$/;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "state") {
       setEnable(false);
       setSelectedStateIndex(
@@ -91,11 +80,15 @@ function FindDonors() {
     setData(updatedData);
   };
 
+  // submission and validation
   const validate = () => {
     const errors = {};
 
     if (data.address.trim() === "") {
-      errors.address = "Venue is compulsory";
+      errors.address = "Address cannot be empty";
+    }
+    if (data.bloodGroup === "") {
+      errors.bloodGroup = "Blood Group cannot be empty";
     }
     if (data.state === "") {
       errors.state = "State cannot be empty";
@@ -109,18 +102,17 @@ function FindDonors() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("asdasd");
-    // const errors = validate();
-    // console.log(errors);
-    // setErrors(errors);
-    // if (errors) return;
+    const errors = validate();
+    console.log(errors);
+    setError(errors);
+    if (errors) return;
 
-    console.log("works");
     reqBody.state = data.state;
     reqBody.district = data.district;
     reqBody.pincode = data.pincode;
     reqBody.bloodGroup = data.bloodGroup;
     reqBody.address = data.address;
+
     axios
       .post("http://localhost:8080/finddonors/donorslist", reqBody, {
         headers: {
@@ -128,9 +120,8 @@ function FindDonors() {
         },
       })
       .then((response) => {
-        // if (response.data.success) {
+        console.log(response.data);
         setList(response.data);
-        // }
       })
       .catch();
   };
@@ -149,38 +140,43 @@ function FindDonors() {
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
-            <form>
+            <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.state ? true : false}
+                >
                   <InputLabel>Select required State</InputLabel>
                   <Select
-                    name="state"
-                    value={data.state}
-                    onChange={handleChange}
                     label="Select required State"
-                    error={errors && errors.state ? true : false}
-                    helperText={errors && errors.state ? errors.state : null}
+                    name="state"
+                    onChange={handleChange}
+                    value={data.state}
                   >
                     {statesData.states.map((item, id) => (
-                      <MenuItem key={id} value={item.state}>
+                      <MenuItem value={item.state} key={id}>
                         {item.state}
                       </MenuItem>
                     ))}
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.state ? errors.state : null}
+                  </FormHelperText>
                 </FormControl>
 
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.district ? true : false}
+                >
                   <InputLabel>Select required District</InputLabel>
                   <Select
+                    label="Select required District"
                     inputProps={{ readOnly: enable }}
                     name="district"
                     value={data.district}
                     onChange={handleChange}
-                    label="Select required District"
-                    error={errors && errors.district ? true : false}
-                    helperText={
-                      errors && errors.district ? errors.district : null
-                    }
                   >
                     {statesData.states[selectedStateIndex].districts.map(
                       (item, id) => (
@@ -190,6 +186,9 @@ function FindDonors() {
                       )
                     )}
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.district ? errors.district : null}
+                  </FormHelperText>
                 </FormControl>
 
                 <TextField
@@ -205,14 +204,18 @@ function FindDonors() {
                     }
                   }}
                   inputProps={{ maxLength: 6 }}
-                  // error={errors && errors.pincode ? true : false}
-                  // helperText={errors && errors.pincode ? errors.pincode : null}
+                  error={errors && errors.pincode ? true : false}
+                  helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.bloodGroup ? true : false}
+                >
                   <InputLabel>Select required Blood Group</InputLabel>
                   <Select
-                    label="Select required Blood Groups *"
+                    label="Select required Blood Group"
                     name="bloodGroup"
                     onChange={handleChange}
                     value={data.bloodGroup}
@@ -230,6 +233,9 @@ function FindDonors() {
                     <MenuItem value={"O+"}>O+</MenuItem>
                     <MenuItem value={"O-"}>O-</MenuItem>
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.bloodGroup ? errors.bloodGroup : null}
+                  </FormHelperText>
                 </FormControl>
 
                 <TextField
@@ -249,7 +255,6 @@ function FindDonors() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
-                  onSubmit={(e) => handleSubmit()}
                 >
                   Search
                 </Button>

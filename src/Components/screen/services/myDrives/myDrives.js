@@ -39,7 +39,7 @@ function MyBloodDonationDrives() {
           which are yet to happen in the near future.
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
             <Table />

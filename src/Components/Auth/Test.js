@@ -53,9 +53,7 @@ function BloodBankRegistration(props) {
     terms: "",
   });
 
-  const [maxLimit, setMaxLimit] = useState("Add a phone number");
   const [enable, setEnable] = useState(true);
-  const [visibility, setVisibility] = useState("visible");
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
   const paperStyle = {
@@ -107,7 +105,6 @@ function BloodBankRegistration(props) {
 
   const handleDelete = () => {
     if (data.phone.length > 1) {
-      setVisibility("visible");
       setData((prevState) => {
         const newState = { ...prevState };
         newState.phone.pop();
@@ -161,7 +158,7 @@ function BloodBankRegistration(props) {
     if (!data.terms) {
       errors.terms = "Please accept our terms and conditions";
     }
-    if (data.phone.includes("")) {
+    if (data.phone.length === 0) {
       errors.phone = "Phone number is empty somewhere";
     }
 
@@ -259,15 +256,10 @@ function BloodBankRegistration(props) {
               <div>
                 <ButtonGroup variant="text" color="default" align="center">
                   {data.phone.length < 5 ? (
-                    <Button onClick={handleAdd}>{maxLimit}</Button>
+                    <Button onClick={handleAdd}>Add a phone number</Button>
                   ) : null}
                   {data.phone.length === 1 ? null : (
-                    <Button
-                      onClick={handleDelete}
-                      style={{ visibility: `${visibility}` }}
-                    >
-                      Delete phone number
-                    </Button>
+                    <Button onClick={handleDelete}>Delete phone number</Button>
                   )}
                 </ButtonGroup>
               </div>

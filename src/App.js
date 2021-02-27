@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 
 import Login from "./Components/Auth/Login";
@@ -37,9 +37,21 @@ import MyInvites from "./Components/screen/services/myInvites/myInvites";
 import AcceptedDonors from "./Components/screen/services/myDrives/acceptedDonors";
 import MyAnalytics from "./Components/screen/services/myanalytics/MyAnalytics";
 import NotFound from "./Components/screen/NotFound";
+import { logging } from "./redux/Actions/login";
+import Cookies from "universal-cookie";
 
 function App() {
   const loggedIn = useSelector((state) => state.loggedIn);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const cookies = new Cookies();
+    const authObj = cookies.get("Auth");
+    if (authObj) {
+      dispatch(logging(authObj));
+    }
+  }, [dispatch]);
+
   return (
     <>
       <Switch>

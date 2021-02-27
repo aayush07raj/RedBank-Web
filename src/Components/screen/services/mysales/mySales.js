@@ -56,7 +56,7 @@ function MySales() {
           Here you can view all the sale you have done and details about it
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
             <Table list={sale} />

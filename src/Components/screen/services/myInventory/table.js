@@ -106,7 +106,6 @@ export default function CustomizedTables() {
   const handleChange = (idx, e) => {
     const { value, name } = e.target;
     const updatedData = [...data];
-    // updatedData[idx].data[idx2][type] = value;
     updatedData[idx][name] = value;
     setData(updatedData);
   };
@@ -152,7 +151,9 @@ export default function CustomizedTables() {
                         name="aNegUnits"
                         value={row.aNegUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -168,7 +169,9 @@ export default function CustomizedTables() {
                         name="aPosUnits"
                         value={row.aPosUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -184,7 +187,9 @@ export default function CustomizedTables() {
                         name="abNegUnits"
                         value={row.abNegUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -200,7 +205,9 @@ export default function CustomizedTables() {
                         name="abPosUnits"
                         value={row.abPosUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -216,7 +223,9 @@ export default function CustomizedTables() {
                         name="bNegUnits"
                         value={row.bNegUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -232,7 +241,9 @@ export default function CustomizedTables() {
                         name="bPosUnits"
                         value={row.bPosUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -248,7 +259,9 @@ export default function CustomizedTables() {
                         name="oNegUnits"
                         value={row.oNegUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -264,7 +277,9 @@ export default function CustomizedTables() {
                         name="oPosUnits"
                         value={row.oPosUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -306,7 +321,9 @@ export default function CustomizedTables() {
                         name="aNegUnits"
                         value={row.aNegUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -320,7 +337,9 @@ export default function CustomizedTables() {
                         name="aNegPrice"
                         value={row.aNegPrice}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -336,7 +355,9 @@ export default function CustomizedTables() {
                         name="aPosUnits"
                         value={row.aPosUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -349,7 +370,9 @@ export default function CustomizedTables() {
                         name="aPosPrice"
                         value={row.aPosPrice}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -365,20 +388,24 @@ export default function CustomizedTables() {
                         name="abNegUnits"
                         value={row.abNegUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     {readOnly ? (
-                      row.abNegUnits
+                      row.abNegPrice
                     ) : (
                       <TextField
-                        name="abNegUnits"
-                        value={row.abNegUnits}
+                        name="abNegPrice"
+                        value={row.abNegPrice}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -394,7 +421,9 @@ export default function CustomizedTables() {
                         name="abPosUnits"
                         value={row.abPosUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -407,7 +436,9 @@ export default function CustomizedTables() {
                         name="abPosPrice"
                         value={row.abPosPrice}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -423,7 +454,9 @@ export default function CustomizedTables() {
                         name="bNegUnits"
                         value={row.bNegUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -436,7 +469,9 @@ export default function CustomizedTables() {
                         name="bNegPrice"
                         value={row.bNegPrice}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -452,7 +487,9 @@ export default function CustomizedTables() {
                         name="bPosUnits"
                         value={row.bPosUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -465,7 +502,9 @@ export default function CustomizedTables() {
                         name="bPosPrice"
                         value={row.bPosPrice}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -481,7 +520,9 @@ export default function CustomizedTables() {
                         name="oNegUnits"
                         value={row.oNegUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -494,7 +535,9 @@ export default function CustomizedTables() {
                         name="oNegPrice"
                         value={row.oNegPrice}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -510,7 +553,9 @@ export default function CustomizedTables() {
                         name="oPosUnits"
                         value={row.oPosUnits}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}
@@ -523,7 +568,9 @@ export default function CustomizedTables() {
                         name="oPosPrice"
                         value={row.oPosPrice}
                         onChange={(e) => {
-                          handleChange(idx, e);
+                          if (regex.test(e.target.value)) {
+                            handleChange(idx, e);
+                          }
                         }}
                       />
                     )}

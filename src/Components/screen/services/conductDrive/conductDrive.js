@@ -12,6 +12,7 @@ import {
   MenuItem,
   TextField,
   Button,
+  FormHelperText,
 } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import { Navbar, Footer } from "../../../layouts";
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ConductDrive() {
   const [data, setData] = useState({
-    bg: [],
+    bloodGroups: [],
     address: "",
     state: "",
     district: "",
@@ -77,51 +78,15 @@ function ConductDrive() {
     endTimeStamp: "",
     message: "",
   };
+
+  const regex = /^[0-9]*$/;
+
   const loggedInState = useSelector((state) => state.loggedIn);
-
-  const schema = {
-    bg: Joi.array().items(Joi.string()).required(),
-    address: Joi.string().required(),
-    state: Joi.string().required(),
-    district: Joi.string().required(),
-    pincode: Joi.number()
-      .positive()
-      .min(6)
-      .message("Pincode must contain 6 digits")
-      .required(),
-    startTime: Joi.string().required(),
-    startDate: Joi.date().greater("now").message("Invalid date").required(),
-    endTime: Joi.string().required(),
-    endDate: Joi.date().greater("now").message("Invalid date").required(),
-    message: Joi.required(),
-  };
-
-  const [errors, setErrors] = useState({});
+  const [errors, setError] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
+  const [open, setOpen] = React.useState(false);
   const classes = useStyles();
-
-  const validateProperty = ({ name, value }) => {
-    const inputField = { [name]: value };
-    const fieldSchema = Joi.object({ [name]: schema[name] });
-    const { error } = fieldSchema.validate(inputField);
-    return error ? error.details[0].message : null;
-  };
-
-  const validate = () => {
-    const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(data, {
-      abortEarly: false,
-    });
-
-    if (!error) return null;
-
-    const allErrors = {};
-    for (let err of error.details) {
-      allErrors[err.path[0]] = err.message;
-    }
-    return allErrors;
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -132,21 +97,10 @@ function ConductDrive() {
         statesData.states.findIndex((item) => item.state === value)
       );
     }
-
-    const allErrors = { ...errors };
-    const errorMsg = validateProperty(e.target);
-    if (errorMsg) {
-      allErrors[name] = errorMsg;
-    } else {
-      delete allErrors[name];
-    }
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
-    setErrors(allErrors);
   };
-
-  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -156,11 +110,52 @@ function ConductDrive() {
     setOpen(false);
   };
 
+  const validate = () => {
+    const errors = {};
+    const currDate = new Date();
+
+    if (data.address.trim() === "") {
+      errors.address = "Address cannot be empty";
+    }
+    if (data.bloodGroups.length === 0) {
+      errors.bloodGroups = "Blood Group cannot be empty";
+    }
+    if (data.state === "") {
+      errors.state = "State cannot be empty";
+    }
+    if (data.district === "") {
+      errors.district = "District cannot be empty";
+    }
+    if (data.pincode === "") {
+      errors.pincode = "Pincode cannot be empty";
+    }
+    if (data.startTime === "") {
+      errors.startTime = "Start Time cannot be empty";
+    }
+    if (data.endTime === "" || data.endTime < data.startTime) {
+      errors.endTime = "End Time cannot be less than start time";
+    }
+    if (data.startDate === "" || new Date(data.startDate) < currDate) {
+      errors.startDate = "Invalid Date";
+    }
+    if (
+      data.endDate === "" ||
+      new Date(data.endDate) < new Date(data.startDate)
+    ) {
+      errors.endDate = "End Date cannot be less than Start Date";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
+    console.log(errors);
+    setError(errors);
+    if (errors) return;
 
-    reqBody.bloodGroups = data.bg;
+    reqBody.bloodGroups = data.bloodGroups;
     reqBody.address = data.address;
     reqBody.state = data.state;
     reqBody.district = data.district;
@@ -168,9 +163,6 @@ function ConductDrive() {
     reqBody.startTimeStamp = data.startDate + "T" + data.startTime + ":00.00";
     reqBody.endTimeStamp = data.endDate + "T" + data.endTime + ":00.00";
     reqBody.message = data.message;
-
-    setErrors({ errors: errors || {} });
-    if (errors) return;
 
     axios
       .post("http://localhost:8080/conductadrive/savedrivedetails", reqBody, {
@@ -204,17 +196,22 @@ function ConductDrive() {
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select required Blood Groups *</InputLabel>
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.bloodGroups ? true : false}
+                >
+                  <InputLabel>Select required Blood Group</InputLabel>
                   <Select
-                    required
                     multiple
-                    label="Select required Blood Groups"
-                    name="bg"
+                    label="Select required Blood Group"
+                    name="bloodGroups"
                     onChange={handleChange}
-                    value={data.bg}
-                    error={errors && errors.bg}
-                    helperText={errors && errors.bg ? errors.bg : null}
+                    value={data.bloodGroups}
+                    error={errors && errors.bloodGroups ? true : false}
+                    helperText={
+                      errors && errors.bloodGroups ? errors.bloodGroups : null
+                    }
                   >
                     <MenuItem value={"A+"}>A+</MenuItem>
                     <MenuItem value={"A-"}>A-</MenuItem>
@@ -225,10 +222,14 @@ function ConductDrive() {
                     <MenuItem value={"O+"}>O+</MenuItem>
                     <MenuItem value={"O-"}>O-</MenuItem>
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.bloodGroups ? errors.bloodGroups : null}
+                  </FormHelperText>
                 </FormControl>
+
                 <TextField
                   className={classes.formControl}
-                  label="Enter your Address *"
+                  label="Enter your Address"
                   type="text"
                   name="address"
                   value={data.address}
@@ -237,36 +238,41 @@ function ConductDrive() {
                   error={errors && errors.address}
                   helperText={errors && errors.address ? errors.address : null}
                 />
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select your State *</InputLabel>
+                <FormControl
+                  variant="outlined"
+                  style={{ marginTop: "20px" }}
+                  error={errors && errors.state ? true : false}
+                >
+                  <InputLabel>Select required State</InputLabel>
                   <Select
+                    label="Select required State"
                     name="state"
-                    value={data.state}
                     onChange={handleChange}
-                    label="Select your State"
-                    error={errors && errors.state}
-                    helperText={errors && errors.state ? errors.state : null}
+                    value={data.state}
                   >
                     {statesData.states.map((item, id) => (
-                      <MenuItem key={id} value={item.state}>
+                      <MenuItem value={item.state} key={id}>
                         {item.state}
                       </MenuItem>
                     ))}
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.state ? errors.state : null}
+                  </FormHelperText>
                 </FormControl>
 
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select your District *</InputLabel>
+                <FormControl
+                  variant="outlined"
+                  style={{ marginTop: "20px" }}
+                  error={errors && errors.district ? true : false}
+                >
+                  <InputLabel>Select required District</InputLabel>
                   <Select
+                    label="Select required District"
                     inputProps={{ readOnly: enable }}
                     name="district"
                     value={data.district}
                     onChange={handleChange}
-                    label="Select your District"
-                    error={errors && errors.district}
-                    helperText={
-                      errors && errors.district ? errors.district : null
-                    }
                   >
                     {statesData.states[selectedStateIndex].districts.map(
                       (item, id) => (
@@ -276,23 +282,33 @@ function ConductDrive() {
                       )
                     )}
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.district ? errors.district : null}
+                  </FormHelperText>
                 </FormControl>
 
                 <TextField
-                  className={classes.formControl}
-                  label="Enter your Pincode *"
+                  style={{ marginTop: "20px" }}
+                  label="Enter required Pincode"
                   type="text"
                   name="pincode"
                   value={data.pincode}
                   variant="outlined"
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    if (regex.test(e.target.value)) {
+                      handleChange(e);
+                    }
+                  }}
                   inputProps={{ maxLength: 6 }}
-                  error={errors && errors.pincode}
+                  error={errors && errors.pincode ? true : false}
                   helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
-                <InputLabel style={{ marginTop: "20px" }}>
-                  Start Date *
+                <InputLabel
+                  style={{ marginTop: "20px" }}
+                  error={errors && errors.startDate}
+                >
+                  Start Date
                 </InputLabel>
                 <TextField
                   type="date"
@@ -307,8 +323,11 @@ function ConductDrive() {
                   }
                 />
 
-                <InputLabel style={{ marginTop: "20px" }}>
-                  End Date *
+                <InputLabel
+                  style={{ marginTop: "20px" }}
+                  error={errors && errors.endDate}
+                >
+                  End Date
                 </InputLabel>
                 <TextField
                   type="date"
@@ -321,8 +340,11 @@ function ConductDrive() {
                   helperText={errors && errors.endDate ? errors.endDate : null}
                 />
 
-                <InputLabel style={{ marginTop: "20px" }}>
-                  Start Time *
+                <InputLabel
+                  style={{ marginTop: "20px" }}
+                  error={errors && errors.startTime}
+                >
+                  Start Time
                 </InputLabel>
                 <TextField
                   type="time"
@@ -337,8 +359,11 @@ function ConductDrive() {
                   }
                 />
 
-                <InputLabel style={{ marginTop: "20px" }}>
-                  End Time *
+                <InputLabel
+                  style={{ marginTop: "20px" }}
+                  error={errors && errors.endTime}
+                >
+                  End Time
                 </InputLabel>
                 <TextField
                   type="time"
@@ -368,7 +393,6 @@ function ConductDrive() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
-                  disabled={validate()}
                 >
                   Send Notification
                 </Button>
