@@ -41,18 +41,20 @@ function ForgotPassword() {
     if (error) return;
 
     axios
-      .post("http://localhost:5000/forgotpassword", {
-        recoveryEmail: recoveryEmail,
+      .post("http://localhost:8080/email/sendotp", {
+        userEmail: recoveryEmail,
       })
       .then((response) => {
+        console.log(response);
         if (response.data.success) {
-          history.push("/VerifyCode");
+          history.push({
+            pathname: "/VerifyCode",
+            recoveryEmail,
+          });
         } else {
-          setError(response.data.error);
+          setError("Sorry, email doesn't exist");
         }
       });
-
-    console.log("submitted");
   };
 
   return (

@@ -6,7 +6,8 @@ import { Grid, Paper, TextField, Button } from "@material-ui/core";
 
 import axios from "axios";
 
-function VerifyCode() {
+function VerifyCode(props) {
+  const { recoveryEmail } = props.location;
   const paperStyle = {
     display: "flex",
     width: 380,
@@ -29,13 +30,17 @@ function VerifyCode() {
     if (error) return;
 
     axios
-      .post("http://localhost:5000/otp", {
+      .post("http://localhost:8080/email/verifyotp", {
+        userEmail: recoveryEmail,
         otp: otp,
       })
       .then((response) => {
+        console.log(response);
         if (response.data.success) {
           history.push("/ResetPassword");
-        } else setError(response.data.error);
+        } else {
+          setError("Invalid Otp");
+        }
       });
   };
 
