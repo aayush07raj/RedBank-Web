@@ -12,49 +12,49 @@ const IndividualServices = [
     image: buyImg,
     name: "Buy Blood",
     description:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+      "You can buy from any BloodBank, You can search for bloodbanks here.",
     page: "BuyBlood",
   },
   {
     image: findDonorImg,
     name: "Find Donors",
     description:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+      "You can request any active donor for a donation. You can search for donor in this service",
     page: "FindDonors",
   },
   {
     image: commitmentImg,
     name: "My Commitments",
     description:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+      "All your commitments like donation made, drives attended will be shown in this service.",
     page: "MyCommitments",
   },
   {
     image: saleImg,
     name: "My Purchases",
     description:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+      "All your order can be seen in this service page, with all details",
     page: "MyPurchases",
   },
   {
     image: sentRequestImg,
     name: "Sent Request",
     description:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+      "All your sent request to other donor are shown here with the status of the donation",
     page: "ActiveDonorReq",
   },
   {
     image: upcomingDriveImg,
     name: "Upcoming Drives",
     description:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+      "If you want to donate, use this service to see any upcoming drives in your location and apply for it.",
     page: "ActiveDonorReq",
   },
   {
     image: invitesImg,
     name: "My Invites",
     description:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+      "If anyone requests you for a donation or a drive, then you can accept or ignore that request in this service",
     page: "MyInvites",
   },
 ];

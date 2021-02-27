@@ -25,6 +25,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -87,6 +88,7 @@ function ConductDrive() {
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
+  const history = useHistory();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -175,6 +177,7 @@ function ConductDrive() {
         window.alert(
           "Drive has been initiated, check My Drives sections for more details"
         );
+        history.push("/home");
         // }
       });
   };

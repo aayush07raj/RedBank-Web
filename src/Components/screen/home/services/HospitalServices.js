@@ -13,35 +13,35 @@ const HospitalServices = [
       image: buyImg,
       name: "Buy Blood",
       description:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+        "LYou can buy from any BloodBank, You can search for bloodbanks here.",
       page: "BuyBlood",
     },
     {
       image: findDonorImg,
       name: "Find Donors",
       description:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+        "You can request any active donor for a donation. You can search for donor in this service",
       page: "FindDonors",
     },
     {
       image: commitmentImg,
       name: "My Commitments",
       description:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+        "All your commitments like donation made, drives attended will be shown in this service.",
       page: "MyCommitments",
     },
     {
       image: saleImg,
       name: "My Purchases",
       description:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+        "All your order can be seen in this service page, with all details",
       page: "MyPurchases",
     },
     {
       image: sentRequestImg,
       name: "Sent Request",
       description:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+        "All your sent request to other donor are shown here with the status of the donation",
       page: "ActiveDonorReq",
     },
     
@@ -49,21 +49,21 @@ const HospitalServices = [
       image: saleImg,
       name: "My Inventory",
       description:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+        "You can see your current stock and edit them, so that others user can reach you if they need it.",
       page: "MyInventory",
     },
     {
       image: saleImg,
       name: "Conduct a Drive",
       description:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+        "If you want to restock your inventory you can conduct a blood donation drive from this service.",
       page: "ConductDrive",
     },
     {
       image: saleImg,
       name: "My Drives",
       description:
-        "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
+        "All your drives are shown here, you can see the list of donors in that particular drive.",
       page: "MyDrives",
     },
   ];
