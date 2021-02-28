@@ -70,11 +70,6 @@ export default function MenuAppBar({ user }) {
   };
 
 
-
-
-// New Changes
-
-
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
@@ -465,9 +460,13 @@ export default function MenuAppBar({ user }) {
                     </Button> 
                     </MenuItem>
                     <MenuItem onClick={handleClose3}>
-                    <IconButton color="inherit" onClick={handleClickOpen}>
-                      <PowerSettingsNewIcon />
-                    </IconButton>
+                    <Button
+                      color="inherit"
+                      onClick={handleClickOpen}
+                      variant="h7"
+                    >
+                      Logout
+                    </Button> 
                     </MenuItem>
                   </MenuList>
                 </ClickAwayListener>

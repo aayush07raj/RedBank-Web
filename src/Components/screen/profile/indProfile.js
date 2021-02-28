@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function BbProfile() {
+function IndProfile() {
   const [initialValues ,setInitialValues]= useState({
     name: "",
     userId:"",
@@ -141,62 +141,75 @@ function BbProfile() {
         setInitialValues(response.data);
         console.log(response.data)
 
-        // if(response.data.lastDonationDate && response.data.donorStatus === 2){
-        //   const lastDonationDate = fulldata.lastDonationDate
-        // }
-
+        if (
+          initialValues.lastDonationDate &&
+          initialValues.donorStatus === 2
+        ) {
+          const lastDonationDate = initialValues.lastDonationDate;
+    
+          const eligible =
+            (new Date().getTime() -new Date(lastDonationDate.split('T')[0]).getTime()) /
+              (1000 * 60 * 60 * 24) > 56;
+          if (eligible) {
+            console.log("if working")
+            setInitialValues(prevState => ({...prevState,donorStatus:0}))
+            console.log('Changing donor status to: ' + eligible);
+          }
+        }
       })
       .catch();
       anotherAxios();
-      donorFunction();
-      
   }, []);
+  
+  useEffect( ()=>{
+    axios
+    .put("http://localhost:8080/profile/donorstatus", { donorStatus:initialValues.donorStatus }, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
+      .then((response) => {
+        setInitialValues(prevState => ({...prevState,donorStatus: response.data.donorStatus}));
+        console.log(response);
+        console.log(response.data);
+        console.log("works");
+      })
+      .catch();
+      console.log("after pressing donor status is ", initialValues.donorStatus);
 
 
-  const donorFunction = () =>{
-    console.log("donorfunction")
-    if (
-      fulldata.lastDonationDate &&
-      fulldata.donorStatus === 0
-    ) {
-      const lastDonationDate = fulldata.lastDonationDate;
+   } , [ initialValues.donorStatus ] )
 
-      const eligible =
-        (new Date().getTime() -
-          new Date(lastDonationDate.split('T')[0]).getTime()) /
-          (1000 * 60 * 60 * 24) >
-        56;
-      if (eligible) {
-        console.log("if working")
-        setfulldata.donorStatus(0);
-        console.log('Changing donor status to: ' + eligible);
-      }
-    }
-  }
+      // const [beDonor, setStatus] = useState(0);
 
-      // const [beDonor, setStatus] = useState();
-      
       // const handleStatus = (e) =>{
-      //   if(beDonor === 1){
-      //     setStatus(0);
-      //   }else if(beDonor === 0){
-      //     setStatus(1);
+      //   if(fulldata.donorStatus === 1){
+      //     setInitialValues( prevState => {
+      //       const newState = { ...prevState };
+      //       newState.donorStatus = 0;
+      //       return newState
+      //     })
+      //   }else if(fulldata.donorStatus === 0){
+      //     setInitialValues( prevState => {
+      //       const newState = { ...prevState };
+      //       newState.donorStatus = 1;
+      //       return newState
+      //     })
       //   }else{
       //     console.log("status = 3")
       //   }
-      //   axios
-      //   .put("http://localhost:8080/profile/donorstatus", { donorStatus:beDonor }, {
-      //       headers: {
-      //         Authorization: "Bearer " + loggedInState.userToken,
-      //       },
-      //     })
-      //     .then((response) => {
-      //       console.log(response.data);
-      //       console.log("works");
-      //     })
-      //     .catch();
-      //     console.log("after pressing donor status is ", beDonor);
+        
       // }
+
+      const handleStatus= async(status)=>{
+          const newStatus = await axios
+          .put("http://localhost:8080/profile/donorstatus", { donorStatus: status}, {
+              headers: {
+                Authorization: "Bearer " + loggedInState.userToken,
+              },
+            });
+            setInitialValues(prevState => ({...prevState,donorStatus:newStatus.data.donorStatus}))
+      }
 
 
 
@@ -341,22 +354,22 @@ function BbProfile() {
               <Typography variant="h6">Bank name : {initialValues.name}</Typography>
               <Typography variant="h6">User Id : #F132GH</Typography>
             </CardContent>
-            {/* <CardActions>
-              {beDonor === 0 ?(
-               <Button variant="outlined" size="small" onClick={(e)=>{
-                  handleStatus(e);
+            <CardActions>
+
+              {initialValues.donorStatus === 0 ? (
+                <Button variant="outlined" size="small" onClick={(e)=>{
+                  handleStatus(1);
                 }}> Active Donor Status</Button>
-              ):(
+              ):initialValues.donorStatus === 1?(
                 <Button variant="outlined" color="secondary" size="small" onClick={(e)=>{
-                  handleStatus(e);
+                  handleStatus(0);
                 }}>Active Donor Status</Button>
+              ):(
+                <Button variant="outlined"  size="small" disabled={true}>Not Eligible</Button>
               )}
-              :(
-                <Button variant="outlined"  size="small" onClick={(e)=>{
-                  handleStatus(e);
-                }}>Active Donor Status</Button>
-              )}
-            </CardActions> */}
+
+
+            </CardActions>
           </Grid>
         </Grid>
 
@@ -564,4 +577,4 @@ function BbProfile() {
     </>
   );
 }
-export default BbProfile;
+export default IndProfile;
