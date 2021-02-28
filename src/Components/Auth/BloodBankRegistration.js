@@ -133,7 +133,7 @@ function BloodBankRegistration(props) {
   // submission and validation
   const validate = () => {
     const strongRegex = new RegExp(
-      "^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})"
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
     );
     const errors = {};
 
@@ -224,7 +224,7 @@ function BloodBankRegistration(props) {
       .post("http://localhost:8080/registerbb", reqBody)
       .then(function (response) {
         console.log(response);
-        if (response.headers.success) {
+        // if (response.headers.success) {
           console.log("works");
           dispatch(
             logging({
@@ -244,15 +244,16 @@ function BloodBankRegistration(props) {
             },
             { path: "/" }
           );
+          console.log("should work")
           history.push("/home");
-        } else {
-          if (response.headers.error == "Email is already taken") {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              email: response.headers.error,
-            }));
-          }
-        }
+        // } else {
+        //   if (response.headers.error === "Email is already taken") {
+        //     setErrors((prevErrors) => ({
+        //       ...prevErrors,
+        //       email: response.headers.error,
+        //     }));
+        //   }
+        // }
       })
       .catch(function (error) {
         window.alert(error.message);
