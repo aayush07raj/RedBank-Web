@@ -136,11 +136,11 @@ const Product = (props) => {
                   </DialogTitle>
                   <DialogContent></DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClosed} color="primary">
+                    <Button onClick={handleClosed} color="inherit">
                       No
                     </Button>
                     <Button
-                      color="primary"
+                      color="inherit"
                       onClick={(e) => {
                         handleSubmit();
                       }}

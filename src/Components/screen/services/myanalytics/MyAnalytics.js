@@ -11,6 +11,7 @@ import axios from "axios";
 import { Navbar, Footer } from "../../../layouts";
 import BarChart from "./barChart";
 import LineChart from "./lineChart";
+import {useSelector} from "react-redux"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,6 +27,35 @@ const useStyles = makeStyles((theme) => ({
 
 function MyAnalytics() {
   const classes = useStyles();
+  const loggedInState = useSelector((state) => state.loggedIn);
+
+  useEffect(() => {
+    axios
+    .get(`http://localhost:8080/salesanalytics/fetchall/${2020}`,{
+      headers:{
+        Authorization: "Bearer " + loggedInState.userToken,
+      },
+    })
+    .then((response)=>{
+      console.log(response.data)
+      forMonths();
+    })
+    return () => {
+     
+    }
+  },[] );
+
+  const forMonths = () =>{
+    axios
+    .get(`http://localhost:8080/salesanalytics/fetchcurrentmonth/${1}`,{
+      headers:{
+        Authorization: "Bearer " + loggedInState.userToken,
+      },
+    })
+    .then((response)=>{
+      console.log(response.data)
+    })
+  }
 
   return (
     <>

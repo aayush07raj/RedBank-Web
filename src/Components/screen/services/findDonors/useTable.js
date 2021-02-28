@@ -233,7 +233,7 @@ const EnhancedTableToolbar = (props) => {
           >
             <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
             <DialogActions>
-              <Button onClick={handleClosed} color="primary">
+              <Button onClick={handleClosed} color="inherit">
                 No
               </Button>
               <Button
@@ -243,7 +243,7 @@ const EnhancedTableToolbar = (props) => {
                   handleClosed();
                   // make a axios call for second find donors api
                 }}
-                color="primary"
+                color="inherit"
                 autoFocus
               >
                 Yes

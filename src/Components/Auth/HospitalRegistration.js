@@ -17,7 +17,6 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import hospital from "./images/hospital.jpg";
 import states from "./states.json";
-import Joi from "joi";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import axios from "axios";
 import { logging } from "../../redux/Actions/login";

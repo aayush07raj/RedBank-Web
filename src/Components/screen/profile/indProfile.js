@@ -44,6 +44,7 @@ function BbProfile() {
     name: "",
     userId:"",
     donorStatus:0,
+    lastDonationDate:null
   });
   const loggedInState = useSelector((state) => state.loggedIn);
 
@@ -138,10 +139,67 @@ function BbProfile() {
       })
       .then((response) => {
         setInitialValues(response.data);
+        console.log(response.data)
+
+        // if(response.data.lastDonationDate && response.data.donorStatus === 2){
+        //   const lastDonationDate = fulldata.lastDonationDate
+        // }
+
       })
       .catch();
       anotherAxios();
+      donorFunction();
+      
   }, []);
+
+
+  const donorFunction = () =>{
+    console.log("donorfunction")
+    if (
+      fulldata.lastDonationDate &&
+      fulldata.donorStatus === 0
+    ) {
+      const lastDonationDate = fulldata.lastDonationDate;
+
+      const eligible =
+        (new Date().getTime() -
+          new Date(lastDonationDate.split('T')[0]).getTime()) /
+          (1000 * 60 * 60 * 24) >
+        56;
+      if (eligible) {
+        console.log("if working")
+        setfulldata.donorStatus(0);
+        console.log('Changing donor status to: ' + eligible);
+      }
+    }
+  }
+
+      // const [beDonor, setStatus] = useState();
+      
+      // const handleStatus = (e) =>{
+      //   if(beDonor === 1){
+      //     setStatus(0);
+      //   }else if(beDonor === 0){
+      //     setStatus(1);
+      //   }else{
+      //     console.log("status = 3")
+      //   }
+      //   axios
+      //   .put("http://localhost:8080/profile/donorstatus", { donorStatus:beDonor }, {
+      //       headers: {
+      //         Authorization: "Bearer " + loggedInState.userToken,
+      //       },
+      //     })
+      //     .then((response) => {
+      //       console.log(response.data);
+      //       console.log("works");
+      //     })
+      //     .catch();
+      //     console.log("after pressing donor status is ", beDonor);
+      // }
+
+
+
 
   const anotherAxios = ()=>{
     axios
@@ -283,8 +341,22 @@ function BbProfile() {
               <Typography variant="h6">Bank name : {initialValues.name}</Typography>
               <Typography variant="h6">User Id : #F132GH</Typography>
             </CardContent>
-            <CardActions>
-            </CardActions>
+            {/* <CardActions>
+              {beDonor === 0 ?(
+               <Button variant="outlined" size="small" onClick={(e)=>{
+                  handleStatus(e);
+                }}> Active Donor Status</Button>
+              ):(
+                <Button variant="outlined" color="secondary" size="small" onClick={(e)=>{
+                  handleStatus(e);
+                }}>Active Donor Status</Button>
+              )}
+              :(
+                <Button variant="outlined"  size="small" onClick={(e)=>{
+                  handleStatus(e);
+                }}>Active Donor Status</Button>
+              )}
+            </CardActions> */}
           </Grid>
         </Grid>
 

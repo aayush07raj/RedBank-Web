@@ -25,6 +25,13 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Grow from "@material-ui/core/Grow";
+// import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
+  space: {
     flexGrow: 1,
   },
   logo: {
@@ -52,25 +59,79 @@ export default function MenuAppBar({ user }) {
   const classes = useStyles();
   const [notificationsList, setNotifications] = React.useState([]);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [anchorEl2, setAnchorEL2] = React.useState(null);
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const [open, setOpen] = React.useState(false);
+  const [open4, setOpen4] = React.useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpen4(true);
   };
 
-  const handleClosed = () => {
+  const handleClose4 = () => {
+    setOpen4(false);
+  };
+
+
+
+
+// New Changes
+
+
+  const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const anchorRef2 = React.useRef(null);
+  const anchorRef3 = React.useRef(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+  const handleToggle2 = () => {
+    setOpen2((prevOpen) => !prevOpen);
+  };
+  const handleToggle3 = () => {
+    setOpen3((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
     setOpen(false);
   };
+  const handleClose2 = (event) => {
+    if (anchorRef2.current && anchorRef2.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen2(false);
+  };
+  const handleClose3 = (event) => {
+    if (anchorRef3.current && anchorRef3.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen3(false);
+  };
+
+  function handleListKeyDown(event) {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      setOpen(false);
+    }
+  }
+  function handleListKeyDown2(event) {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      setOpen2(false);
+    }
+  }
+  function handleListKeyDown3(event) {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      setOpen3(false);
+    }
+  }
 
   const handleLogout = async () => {
     const cookies = new Cookies();
@@ -80,6 +141,7 @@ export default function MenuAppBar({ user }) {
   };
 
   const handleClick2 = (event) => {
+    setOpen((prevOpen) => !prevOpen);
     axios
       .get(`http://localhost:8080/notifications`, {
         headers: {
@@ -91,58 +153,55 @@ export default function MenuAppBar({ user }) {
           setNotifications(response.data.reverse());
         }
       });
-    setAnchorEL2(event.currentTarget);
+      setOpen(event.currentTarget);
   };
 
-  const handleClose2 = () => {
-    setAnchorEL2(null);
-  };
-
-  //calling every 10 seconds
-  // setInterval(() => {
-  //   axios
-  //     .get(`http://localhost:8080/notifications`, {
-  //       headers: {
-  //         Authorization: "Bearer " + loggedInState.userToken,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       if (response.data[0]) {
-  //         setNotifications(response.data.reverse());
-  //       }
-  //     });
-  // }, 60000);
 
   return (
     <Fragment className={classes.root}>
       <AppBar position="static" style={{ background: "#E94364" }}>
         <Toolbar>
-          {/* <Avatar alt="Remy Sharp" src="./redbanklogo.svg" /> */}
           <Typography
             to="/Home"
             component={Link}
             variant="h6"
-            className={classes.title}
           >
             <img src={Logo} alt="logo" className={classes.logo} />
           </Typography>
+          <Typography className={classes.space}></Typography>
           <div className={classes.sectionDesktop}>
-            <IconButton onClick={handleClick2} color="inherit">
+            
+            
+            <IconButton ref={anchorRef} onClick={handleClick2} color="inherit">
               <Badge color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <Menu
-              id="simple-menu 2"
-              anchorEl={anchorEl2}
-              keepMounted
-              open={Boolean(anchorEl2)}
-              onClose={handleClose2}
-              className={classes.menu}
+
+            <Popper
+          open={open}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          transition
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === "bottom" ? "center top" : "center bottom"
+              }}
             >
-              {notificationsList.length === 0 ? (
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id="menu-list-grow"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    {notificationsList.length === 0 ? (
                 <MenuItem
-                  onClick={handleClose2}
+                  onClick={handleClose}
                   style={{
                     width: "300px",
                     fontSize: "13px",
@@ -161,7 +220,7 @@ export default function MenuAppBar({ user }) {
                 notificationsList.map((val, idx) => (
                   <>
                     <MenuItem
-                      onClick={handleClose2}
+                      onClick={handleClose}
                       style={{
                         width: "300px",
                         fontSize: "12px",
@@ -180,130 +239,246 @@ export default function MenuAppBar({ user }) {
                   </>
                 ))
               )}
-            </Menu>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+            
 
             <Button color="inherit" component={Link} to="/About" variant="h7">
               About
             </Button>
-            <Button onClick={handleMenu} color="inherit" variant="h7">
-              Services
+            <Button
+              ref={anchorRef2}
+              onClick={handleToggle2}
+              color="inherit"
+            >
+              Service
             </Button>
 
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
+            <Popper
+          open={open2}
+          anchorEl={anchorRef2.current}
+          role={undefined}
+          transition
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === "bottom" ? "center top" : "center bottom"
+              }}
             >
-              {loggedInState.userType === 1 ? (
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose2}>
+                  <MenuList
+                    autoFocusItem={open2}
+                    id="menu-list-grow"
+                    onKeyDown={handleListKeyDown2}
+                  >
+                    {loggedInState.userType === 1 ? (
                 <>
-                  <MenuItem onClick={handleClose}>
-                    <Link to="/BuyBlood">Buy Blood</Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link to="/FindDonors">Find Donors</Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link to="/MyCommitments">My Commitments</Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link to="/MyPurchases">My Purchases</Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link to="/ActiveDonorReq">My Donation Requests</Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link to="/UpcomingDrive">Upcoming Drives</Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link to="/MyInvites">My Invites</Link>
+                  <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/BuyBlood" variant="h7">
+                      Buy Blood
+                      </Button>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/FindDonors" variant="h7">
+                      Find Donors
+                      </Button>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyCommitments" variant="h7">
+                      My Commitments
+                      </Button>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyPurchases" variant="h7">
+                      My Purchases
+                      </Button>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/ActiveDonorReq" variant="h7">
+                      My Donation Requests
+                          </Button>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/UpcomingDrive" variant="h7">
+                      Upcoming Drives
+                          </Button>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyInvites" variant="h7">
+                      My Invites
+                      </Button>
                   </MenuItem>
                 </>
               ) : (
                 <>
                   {loggedInState.userType === 3 ? (
                     <>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/BuyBlood">Buy Blood</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/BuyBlood" variant="h7">
+                      Buy Blood
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/FindDonors">Find Donors</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/FindDonors" variant="h7">
+                      Find Donors
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyCommitments">My Commitments</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyCommitments" variant="h7">
+                      My Commitments
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyPurchases">My Purchases</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyPurchases" variant="h7">
+                      My Purchases
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/ActiveDonorReq">My Donation Requests</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/ActiveDonorReq" variant="h7">
+                      My Donation Requests
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/ConductDrive">Conduct Drive</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/ConductDrive" variant="h7">
+                      ConductDrive
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyDrives">My Drives</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyDrives" variant="h7">
+                      My Drives
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyInventory">My Inventory</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyInventory" variant="h7">
+                      My Inventory
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MySales">My Sales</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyAnalytics" variant="h7">
+                      My Analytics
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyAnalytics">My Analytics</Link>
-                      </MenuItem>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MySales" variant="h7">
+                      My Sales
+                      </Button>
+                      </MenuItem>                     
                     </>
                   ) : (
                     <>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/BuyBlood">Buy Blood</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/BuyBlood" variant="h7">
+                      Buy Blood
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/FindDonors">Find Donors</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/FindDonors" variant="h7">
+                      Find Donors
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyCommitments">My Commitments</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyCommitments" variant="h7">
+                      My Commitments
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyPurchases">My Purchases</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyPurchases" variant="h7">
+                      My Purchases
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/ActiveDonorReq">My Donation Requests</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/ActiveDonorReq" variant="h7">
+                      My Donation Requests
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/ConductDrive">Conduct Drive</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/ConductDrive" variant="h7">
+                      ConductDrive
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyDrives">My Drives</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyDrives" variant="h7">
+                      My Drives
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyInventory">My Inventory</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyInventory" variant="h7">
+                      My Inventory
+                      </Button>
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>
-                        <Link to="/MyAnalytics">My Analytics</Link>
+                      <MenuItem onClick={handleClose2}>
+                      <Button onClick={handleClose2} color="inherit" component={Link} to="/MyAnalytics" variant="h7">
+                      My Analytics
+                      </Button>
                       </MenuItem>
                     </>
                   )}
                 </>
               )}
-            </Menu>
-            <Button
-              color="inherit"
-              component={Link}
-              to="/profile"
-              // style={{ padding: 5 }}
-              variant="h7"
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+           <IconButton ref={anchorRef3}
+              onClick={handleToggle3} color="inherit" >
+                <AccountCircleIcon />
+              </IconButton>
+            <Popper
+          open={open3}
+          anchorEl={anchorRef3.current}
+          role={undefined}
+          transition
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === "bottom" ? "center top" : "center bottom"
+              }}
             >
-              Profile{" "}
-            </Button>
-            <IconButton color="inherit" onClick={handleClickOpen}>
-              <PowerSettingsNewIcon />
-            </IconButton>
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose3}>
+                  <MenuList
+                    autoFocusItem={open3}
+                    id="menu-list-grow"
+                    onKeyDown={handleListKeyDown3}
+                  >
+                    <MenuItem onClick={handleClose3}>
+                    <Button
+                      color="inherit"
+                      component={Link}
+                      to="/profile"
+                      variant="h7"
+                    >
+                      Profile
+                    </Button> 
+                    </MenuItem>
+                    <MenuItem onClick={handleClose3}>
+                    <IconButton color="inherit" onClick={handleClickOpen}>
+                      <PowerSettingsNewIcon />
+                    </IconButton>
+                    </MenuItem>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+
             <Dialog
-              open={open}
-              onClose={handleClose}
+              open={open4}
+              onClose={handleClose4}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
@@ -312,10 +487,10 @@ export default function MenuAppBar({ user }) {
               </DialogTitle>
               <DialogContent></DialogContent>
               <DialogActions>
-                <Button onClick={handleClosed} color="primary">
+                <Button onClick={handleClose4} color="inherit">
                   No
                 </Button>
-                <Button onClick={handleLogout} color="primary" autoFocus>
+                <Button onClick={handleLogout} color="inherit" autoFocus>
                   Yes
                 </Button>
               </DialogActions>

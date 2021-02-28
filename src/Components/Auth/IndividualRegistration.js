@@ -16,7 +16,6 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import individual from "./images/individual.png";
 import states from "./states.json";
-import Joi from "joi";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import { useSelector, useDispatch } from "react-redux";
 import registerIndividual from "../../redux/Actions/registerIndividual";

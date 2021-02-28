@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
 import { Route, Redirect } from "react-router-dom";
 
+import { useSelector, useDispatch } from "react-redux";
 import { logging } from "./redux/Actions/login";
 import Cookies from "universal-cookie";
-import { useSelector, useDispatch } from "react-redux";
 
 export const ProtectedRoute = ({ component: Component, ...rest}) => {
   const loggedIn = useSelector((state) => state.loggedIn);
@@ -23,7 +23,7 @@ export const ProtectedRoute = ({ component: Component, ...rest}) => {
             <Route
             {...rest}
             render={props =>{
-                if(loggedIn.isLoggedIn){
+                if(loggedIn.isLoggedIn && props.authObj){
                     return <Component {...props}/>
                 }
                 else{
