@@ -255,7 +255,7 @@ export default function MenuAppBar({ user }) {
               onClick={handleToggle2}
               color="inherit"
             >
-              Service
+              Services
             </Button>
 
             <Popper
