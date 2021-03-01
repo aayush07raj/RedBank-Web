@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FindDonors() {
+function MyDonationReq() {
   const classes = useStyles();
 
   return (
@@ -45,10 +45,10 @@ function FindDonors() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height:"90px" }}></Container>
+      <Container style={{ height:"220px" }}></Container>
       <Footer />
     </>
   );
 }
 
-export default FindDonors;
+export default MyDonationReq;

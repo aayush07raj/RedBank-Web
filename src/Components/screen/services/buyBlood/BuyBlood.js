@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FindDonors() {
+function BuyBlood() {
   const [data, setData] = useState({
     state: "",
     district: "",
@@ -305,4 +305,4 @@ function FindDonors() {
   );
 }
 
-export default FindDonors;
+export default BuyBlood;

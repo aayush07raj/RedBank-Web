@@ -11,6 +11,7 @@ import { Typography } from "@material-ui/core/";
 import { Navbar, Footer } from "../../../layouts";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import React from "react";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -35,11 +36,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AcceptedDonors(props) {
-  const { donorsList, setDonors, drivesList } = props.location;
+  const { donorsList, setDonors, driveId } = props.location;
+  const [newDonorsList, setNewDonorsList] = React.useState([...donorsList]);
   const classes = useStyles();
   const loggedInState = useSelector((state) => state.loggedIn);
-
-  console.log(props.location);
 
   const handleClick = (idx) => {
     if (window.confirm("Are you sure ?")) {
@@ -47,8 +47,8 @@ export default function AcceptedDonors(props) {
         .put(
           "http://localhost:8080/mydrives/drivedonorverification",
           {
-            driveId: drivesList[idx].driveId,
-            userId: donorsList[idx].userId,
+            driveId: driveId,
+            userId: newDonorsList[idx].userId,
           },
           {
             headers: {
@@ -58,9 +58,9 @@ export default function AcceptedDonors(props) {
         )
         .then((response) => {
           console.log(response);
-          var updatedList = [...donorsList];
-          updatedList[idx].donationStatus = false;
-          setDonors(updatedList);
+          var updatedList = [...newDonorsList];
+          updatedList[idx].donationStatus = true;
+          setNewDonorsList(updatedList);
         });
     }
   };
@@ -85,20 +85,28 @@ export default function AcceptedDonors(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {donorsList.map((row, idx) => (
+              {newDonorsList.map((row, idx) => (
                 <TableRow key={idx}>
                   <TableCell align="center">{row.userId}</TableCell>
                   <TableCell align="center">{row.name}</TableCell>
                   <TableCell align="center">{row.bloodGroup}</TableCell>
                   <TableCell align="center">
-                    <Button
-                      disabled={donorsList[idx].donationStatus}
-                      variant="contained"
-                      color="secondary"
-                      onClick={(e) => handleClick(idx)}
-                    >
-                      Given ?
-                    </Button>
+                  {row.acceptance === 2 ? (
+                          <p style={{ fontWeight: "bold" }}>Pending</p>
+                        ) : row.acceptance === 0 ? (
+                          <p style={{ fontWeight: "bold", color: "red" }}>
+                            Rejected
+                          </p>
+                        ) : (
+                          <Button
+                            disabled={newDonorsList[idx].donationStatus}
+                            variant="contained"
+                            color="secondary"
+                            onClick={(e) => handleClick(idx)}
+                          >
+                            Given ?
+                          </Button>
+                        )}
                   </TableCell>
                 </TableRow>
               ))}

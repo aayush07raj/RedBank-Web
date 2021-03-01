@@ -22,13 +22,13 @@ import { useSelector, useDispatch } from "react-redux";
 
 //services
 import FindDonors from "./Components/screen/services/findDonors/FindDonors";
-import InviteesList from "./Components/screen/services/activeDonorReq/inviteesList";
+import InviteesList from "./Components/screen/services/MyDonationReq/inviteesList";
 import UpcomingDrive from "./Components/screen/services/upcomingDrive/UpcomingDrive";
 import BuyBlood from "./Components/screen/services/buyBlood/BuyBlood";
 import Product from "./Components/screen/services/buyBlood/product";
 import MyCommitments from "./Components/screen/services/myCommitments/MyCommitments";
 import MyPurchases from "./Components/screen/services/myPurchases/MyPurchases";
-import ActiveDonorReq from "./Components/screen/services/activeDonorReq/ActiveDonorReq";
+import MyDonationReq from "./Components/screen/services/MyDonationReq/MyDonationReq";
 import ConductDrive from "./Components/screen/services/conductDrive/conductDrive";
 import MyDrives from "./Components/screen/services/myDrives/myDrives";
 import MyInventory from "./Components/screen/services/myInventory/myInventory";
@@ -61,7 +61,7 @@ function App() {
             <Route exact path="/home" component={Home} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/About" component={About} />
-            <Route exact path="/ActiveDonorReq" component={ActiveDonorReq} />
+            <Route exact path="/MyDonationReq" component={MyDonationReq} />
             <Route exact path="/FindDonors" component={FindDonors} />
             <Route exact path="/UpcomingDrive" component={UpcomingDrive} />
             <Route exact path="/BuyBlood" component={BuyBlood} />

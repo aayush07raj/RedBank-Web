@@ -32,10 +32,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FindDonors(props) {
+function InviteesList(props) {
   const classes = useStyles();
-  const { donorsList, setDonors, active } = props.location;
+  const { donorsList, setDonors, donationId } = props.location;
   const loggedInState = useSelector((state) => state.loggedIn);
+  const [newDonorsList, setNewDonorsList] = useState([...donorsList]);
 
   const handleClick = (idx) => {
     if (window.confirm("Are you sure ?")) {
@@ -43,8 +44,8 @@ function FindDonors(props) {
         .put(
           "http://localhost:8080/donationrequests/donationdonorverification",
           {
-            donationId: active[idx].donationId,
-            userId: donorsList[idx].userId,
+            donationId: donationId,
+            userId: newDonorsList[idx].userId,
           },
           {
             headers: {
@@ -54,9 +55,11 @@ function FindDonors(props) {
         )
         .then((response) => {
           console.log(response);
-          var updatedList = [...donorsList];
-          updatedList[idx].donationStatus = true;
-          setDonors(updatedList);
+          setNewDonorsList((prevState) => {
+            var updatedList = [...prevState];
+            updatedList[idx].donationStatus = true;
+            return updatedList;
+          });
         });
     }
   };
@@ -85,20 +88,28 @@ function FindDonors(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {donorsList.map((row, idx) => (
+                  {newDonorsList.map((row, idx) => (
                     <TableRow key={idx}>
                       <TableCell align="center">{row.userId}</TableCell>
                       <TableCell align="center">{row.name}</TableCell>
                       <TableCell align="center">{row.bloodGroup}</TableCell>
                       <TableCell align="center">
-                        <Button
-                          disabled={donorsList[idx].donationStatus}
-                          variant="contained"
-                          color="secondary"
-                          onClick={(e) => handleClick(idx)}
-                        >
-                          Given ?
-                        </Button>
+                      {row.acceptance === 2 ? (
+                          <p style={{ fontWeight: "bold" }}>Pending</p>
+                        ) : row.acceptance === 0 ? (
+                          <p style={{ fontWeight: "bold", color: "red" }}>
+                            Rejected
+                          </p>
+                        ) : (
+                          <Button
+                            disabled={newDonorsList[idx].donationStatus}
+                            variant="contained"
+                            color="secondary"
+                            onClick={(e) => handleClick(idx)}
+                          >
+                            Given ?
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -113,4 +124,4 @@ function FindDonors(props) {
   );
 }
 
-export default FindDonors;
+export default InviteesList;

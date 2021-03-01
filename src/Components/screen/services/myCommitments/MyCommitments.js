@@ -64,7 +64,7 @@ function MyCommitments() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height:"200px" }}></Container>
+      <Container style={{ height:"220px" }}></Container>
       <Footer  />
     </>
   );

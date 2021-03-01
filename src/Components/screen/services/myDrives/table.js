@@ -37,6 +37,7 @@ export default function CollapsibleTable() {
   const history = useHistory();
   const [drivesList, setList] = useState([]);
   const [donorsList, setDonors] = useState([]);
+  const [driveId, setDriveId] = useState("");
   const loggedInState = useSelector((state) => state.loggedIn);
 
   useEffect(() => {
@@ -65,12 +66,11 @@ export default function CollapsibleTable() {
       })
       .then((response) => {
         if (response.data[0]) {
+          setDriveId(driveId);
           setDonors(response.data);
         }
       });
   };
-
-  // console.log(donorsList);
 
   const handleCancel = (idx, driveId) => {
     if (window.confirm("Are you sure ?")) {
@@ -102,7 +102,7 @@ export default function CollapsibleTable() {
       history.push({
         pathname: "/acceptedDonors",
         donorsList,
-        drivesList,
+        driveId,
         setDonors,
       });
     }

@@ -167,6 +167,8 @@ export default function EnhancedTable() {
   const loggedInState = useSelector((state) => state.loggedIn);
   const [active, setList] = useState([]);
   const [donorsList, setDonors] = useState([]);
+  const [donationId, setDonationId] = useState("");
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/donationrequests/fetchrequests", {
@@ -246,7 +248,10 @@ export default function EnhancedTable() {
       .then((response) => {
         console.log(response);
         if (response.data[0]) {
+          setDonationId(active[idx].donationId);
           setDonors(response.data);
+        } else {
+          window.alert("Sorry, no list to be shown");
         }
       });
   };
@@ -256,7 +261,7 @@ export default function EnhancedTable() {
       history.push({
         pathname: "/inviteesList",
         donorsList,
-        active,
+        donationId,
         setDonors,
       });
     }

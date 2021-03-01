@@ -5,9 +5,8 @@ import { Navbar, Footer } from "../../layouts";
 import ServiceCard from "./serviceCard";
 import { useDispatch, useSelector } from "react-redux";
 import logging from "../../../redux/Actions/login";
-import IndividualServices from "./services/indiServices";
-import BankServices from "./services/BankServices";
-import HospitalServices from "./services/HospitalServices";
+import {BankServices, IndividualServices ,HospitalServices }from "./services/Services";
+
 
 const useStyles = makeStyles((theme) => ({
   hero: {
