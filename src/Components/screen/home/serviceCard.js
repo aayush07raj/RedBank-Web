@@ -14,16 +14,18 @@ import {
   Divider,
 } from "@material-ui/core/";
 import { useHistory } from "react-router-dom";
+import ForwardIcon from "@material-ui/icons/Forward";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
+    height: 350,
   },
 }));
 
 function ServiceCard({ img, name, descp, page }) {
   const classes = useStyles();
-  console.log(img)
+  console.log(img);
   const history = useHistory();
 
   const handleClick = () => {
@@ -36,13 +38,9 @@ function ServiceCard({ img, name, descp, page }) {
     <>
       <Card className={classes.root}>
         <CardActionArea>
-          <CardMedia
-            component="img"
-            image={img}
-            height="150"
-          />
+          <CardMedia component="img" image={img} height="150" />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography gutterBottom variant="h6" component="h2">
               {name}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
@@ -51,8 +49,13 @@ function ServiceCard({ img, name, descp, page }) {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="secondary" onClick={handleClick}>
-            Click
+          <Button
+            size="small"
+            color="secondary"
+            onClick={handleClick}
+            endIcon={<ForwardIcon />}
+          >
+            Click here
           </Button>
         </CardActions>
       </Card>

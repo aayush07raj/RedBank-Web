@@ -1,200 +1,196 @@
-import saleImg from "./images/mySales.jpg"
-import buyImg from "./images/buyBlood.png"
-import findDonorImg from "./images/findDonor.jpg"
-import commitmentImg from "./images/commitments.png"
-import invitesImg from "./images/invites.png"
-import sentRequestImg from "./images/sentRequests.jpg"
-import upcomingDriveImg from "./images/upcomingDrives.jpg"
+import saleImg from "./images/mySales.jpg";
+import buyImg from "./images/buyBlood.png";
+import findDonorImg from "./images/findDonor.jpg";
+import commitmentImg from "./images/commitments.png";
+import invitesImg from "./images/invites.png";
+import sentRequestImg from "./images/sentRequests.jpg";
+import upcomingDriveImg from "./images/upcomingDrives.jpg";
 import myanalytics from "./images/myanalytics.png";
 import ConductDrive from "./images/drives.png";
 import Purchases from "./images/purchases.jpg";
 import mydrives from "./images/drives2.png";
 
-
-
 export const BankServices = [
-    {
-      image: buyImg,
-      name: "Buy Blood",
-      description:
-        "LYou can buy from any BloodBank, You can search for bloodbanks here.",
-      page: "BuyBlood",
-    },
-    {
-      image: findDonorImg,
-      name: "Find Donors",
-      description:
-        "You can request any active donor for a donation. You can search for donor in this service",
-      page: "FindDonors",
-    },
-    {
-      image: ConductDrive,
-      name: "Conduct a Drive",
-      description:
-        "If you want to restock your inventory you can conduct a blood donation drive from this service.",
-      page: "ConductDrive",
-    },
-    {
-      image: mydrives,
-      name: "My Drives",
-      description:
-        "All your drives are shown here, you can see the list of donors in that particular drive.",
-      page: "MyDrives",
-    },
-    {
-      image: commitmentImg,
-      name: "My Commitments",
-      description:
-        "All your commitments like donation made, drives attended will be shown in this service.",
-      page: "MyCommitments",
-    },
-    {
-      image: Purchases,
-      name: "My Purchases",
-      description:
-        "All your order can be seen in this service page, with all details",
-      page: "MyPurchases",
-    },
-    {
-      image: sentRequestImg,
-      name: "My Donation Request",
-      description:
-        "All your sent request to other donor are shown here with the status of the donation",
-      page: "MyDonationReq",
-    },
-    
-    {
-      image: saleImg,
-      name: "My Inventory",
-      description:
-        "You can see your current stock and edit them, so that others user can reach you if they need it.",
-      page: "MyInventory",
-    },
-    {
-      image: saleImg,
-      name: "My Sales",
-      description:
-        "All the analytics data will be shown of all the sale you have done, in this service page.",
-      page: "MySales",
-    },
-    {
-      image: myanalytics,
-      name: "My Analytics",
-      description:
-        "Visual Respresntation of the analytics data will be shown of all the sale you have done, in this service page.",
-      page: "MyAnalytics",
-    },
-  ];
+  {
+    image: buyImg,
+    name: "Buy Blood",
+    description:
+      "Buy blood from available blood banks at your own convenience, from your desired location",
+    page: "BuyBlood",
+  },
+  {
+    image: findDonorImg,
+    name: "Find Donors",
+    description:
+      "Search for available donors near you in case of emergencies. Donors will be notified immediately",
+    page: "FindDonors",
+  },
+  {
+    image: ConductDrive,
+    name: "Conduct a Drive",
+    description:
+      "Find people who share a passion to save lives by donating blood and invite them for a donation drive",
+    page: "ConductDrive",
+  },
+  {
+    image: mydrives,
+    name: "My Drives",
+    description:
+      "View a list of donation drives organized by you and the list of invited donors",
+    page: "MyDrives",
+  },
+  {
+    image: commitmentImg,
+    name: "My Commitments",
+    description:
+      "Every commitment that you have made via RedBank services is listed here.",
+    page: "MyCommitments",
+  },
+  {
+    image: Purchases,
+    name: "My Purchases",
+    description:
+      "View a list of invoices corresponding to each purchase that you have made through RedBank.",
+    page: "MyPurchases",
+  },
+  {
+    image: sentRequestImg,
+    name: "My Donation Requests",
+    description:
+      "View a list of donation requests made by you via RedBank and the list of the invited donors",
+    page: "MyDonationReq",
+  },
 
+  {
+    image: saleImg,
+    name: "My Inventory",
+    description:
+      "Manage your stock of blood and other components from within the RedBank website, hassle free. ",
+    page: "MyInventory",
+  },
+  {
+    image: saleImg,
+    name: "My Sales",
+    description: "View a list of sales made by you via the RedBank services. ",
+    page: "MySales",
+  },
+  {
+    image: myanalytics,
+    name: "My Analytics",
+    description:
+      "Analyze your inventory and past sales of the blood bank with visual graphical representations.",
+    page: "MyAnalytics",
+  },
+];
 
-  export const IndividualServices = [
-    {
-      image: buyImg,
-      name: "Buy Blood",
-      description:
-        "You can buy from any BloodBank, You can search for bloodbanks here.",
-      page: "BuyBlood",
-    },
-    {
-      image: findDonorImg,
-      name: "Find Donors",
-      description:
-        "You can request any active donor for a donation. You can search for donor in this service",
-      page: "FindDonors",
-    },
-    {
-      image: upcomingDriveImg,
-      name: "Upcoming Drives",
-      description:
-        "If you want to donate, use this service to see any upcoming drives in your location and apply for it.",
-      page: "ActiveDonorReq",
-    },
-    {
-      image: sentRequestImg,
-      name: "My Donation Request",
-      description:
-        "All your sent request to other donor are shown here with the status of the donation",
-      page: "MyDonationReq",
-    },
-    {
-      image: invitesImg,
-      name: "My Invites",
-      description:
-        "If anyone requests you for a donation or a drive, then you can accept or ignore that request in this service",
-      page: "MyInvites",
-    },
-    {
-      image: commitmentImg,
-      name: "My Commitments",
-      description:
-        "All your commitments like donation made, drives attended will be shown in this service.",
-      page: "MyCommitments",
-    },
-    {
-      image: Purchases,
-      name: "My Purchases",
-      description:
-        "All your order can be seen in this service page, with all details",
-      page: "MyPurchases",
-    },
-  ];
+export const IndividualServices = [
+  {
+    image: buyImg,
+    name: "Buy Blood",
+    description:
+      "Buy blood from available blood banks at your own convenience, from your desired location",
+    page: "BuyBlood",
+  },
+  {
+    image: findDonorImg,
+    name: "Find Donors",
+    description:
+      "Search for available donors near you in case of emergencies. Donors will be notified immediately",
+    page: "FindDonors",
+  },
+  {
+    image: upcomingDriveImg,
+    name: "Upcoming Drives",
+    description:
+      "Find a list of drives at your desired location that you can register for, to save a life.",
+    page: "ActiveDonorReq",
+  },
+  {
+    image: sentRequestImg,
+    name: "My Donation Request",
+    description:
+      "View a list of donation requests made by you via RedBank and the list of the invited donors",
+    page: "MyDonationReq",
+  },
+  {
+    image: invitesImg,
+    name: "My Invites",
+    description:
+      "Shows the details of all the events where you are invited to.",
+    page: "MyInvites",
+  },
+  {
+    image: commitmentImg,
+    name: "My Commitments",
+    description:
+      "Every commitment that you have made via RedBank services is listed here.",
+    page: "MyCommitments",
+  },
+  {
+    image: Purchases,
+    name: "My Purchases",
+    description:
+      "View a list of invoices corresponding to each purchase that you have made through RedBank.",
+    page: "MyPurchases",
+  },
+];
 
-  export const HospitalServices = [
-    {
-      image: buyImg,
-      name: "Buy Blood",
-      description:
-        "LYou can buy from any BloodBank, You can search for bloodbanks here.",
-      page: "BuyBlood",
-    },
-    {
-      image: findDonorImg,
-      name: "Find Donors",
-      description:
-        "You can request any active donor for a donation. You can search for donor in this service",
-      page: "FindDonors",
-    },
-    {
-      image: ConductDrive,
-      name: "Conduct a Drive",
-      description:
-        "If you want to restock your inventory you can conduct a blood donation drive from this service.",
-      page: "ConductDrive",
-    },
-    {
-      image: mydrives,
-      name: "My Drives",
-      description:
-        "All your drives are shown here, you can see the list of donors in that particular drive.",
-      page: "MyDrives",
-    },
-    {
-      image: commitmentImg,
-      name: "My Commitments",
-      description:
-        "All your commitments like donation made, drives attended will be shown in this service.",
-      page: "MyCommitments",
-    },
-    {
-      image: Purchases,
-      name: "My Purchases",
-      description:
-        "All your order can be seen in this service page, with all details",
-      page: "MyPurchases",
-    },
-    {
-      image: sentRequestImg,
-      name: "My Donation Request",
-      description:
-        "All your sent request to other donor are shown here with the status of the donation",
-      page: "MyDonationReq",
-    },
-    
-    {
-      image: saleImg,
-      name: "My Inventory",
-      description:
-        "You can see your current stock and edit them, so that others user can reach you if they need it.",
-      page: "MyInventory",
-    },
-  ];
+export const HospitalServices = [
+  {
+    image: buyImg,
+    name: "Buy Blood",
+    description:
+      "Buy blood from available blood banks at your own convenience, from your desired location",
+    page: "BuyBlood",
+  },
+  {
+    image: findDonorImg,
+    name: "Find Donors",
+    description:
+      "Search for available donors near you in case of emergencies. Donors will be notified immediately",
+    page: "FindDonors",
+  },
+  {
+    image: ConductDrive,
+    name: "Conduct a Drive",
+    description:
+      "Find people who share a passion to save lives by donating blood and invite them for a donation drive.",
+    page: "ConductDrive",
+  },
+  {
+    image: mydrives,
+    name: "My Drives",
+    description:
+      "View a list of donation drives organized by you and the list of invited donors",
+    page: "MyDrives",
+  },
+  {
+    image: commitmentImg,
+    name: "My Commitments",
+    description:
+      "Every commitment that you have made via RedBank services is listed here.",
+    page: "MyCommitments",
+  },
+  {
+    image: Purchases,
+    name: "My Purchases",
+    description:
+      "View a list of invoices corresponding to each purchase that you have made through RedBank.",
+    page: "MyPurchases",
+  },
+  {
+    image: sentRequestImg,
+    name: "My Donation Request",
+    description:
+      "View a list of donation requests made by you via RedBank and the list of the invited donors",
+    page: "MyDonationReq",
+  },
+
+  {
+    image: saleImg,
+    name: "My Inventory",
+    description:
+      "Manage your stock of blood and other components from within the RedBank website, hassle free. ",
+    page: "MyInventory",
+  },
+];

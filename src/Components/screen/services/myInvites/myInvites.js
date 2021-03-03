@@ -14,6 +14,9 @@ import { useSelector } from "react-redux";
 import Table from "./table";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
 
@@ -33,9 +36,11 @@ function MyInvites() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">My Invites</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          My Invites
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can view all incoming invitation to you for donation drives
           and individual requests
         </Typography>
@@ -47,7 +52,7 @@ function MyInvites() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height:"90px" }}></Container>
+      <Container style={{ height: "90px" }}></Container>
       <Footer />
     </>
   );

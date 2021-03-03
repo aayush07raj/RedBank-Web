@@ -21,6 +21,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -51,18 +52,16 @@ function stableSort(array, comparator) {
 const headCells = [
   {
     id: "userid",
-    numeric: false,
-    disablePadding: true,
     label: "User Id",
   },
   {
     id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Name",
+    label: "Name of Donor",
   },
-
-  { id: "address", numeric: true, disablePadding: false, label: "Address" },
+  {
+    id: "address",
+    label: "Address of Donor",
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -94,8 +93,7 @@ function EnhancedTableHead(props) {
           <TableCell
             key={headCell.id}
             style={{ fontWeight: "bold" }}
-            align="center"
-            padding={headCell.disablePadding ? "none" : "default"}
+            align="left"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -152,11 +150,9 @@ const EnhancedTableToolbar = (props) => {
   const { numSelected, data, formData } = props;
   const loggedInState = useSelector((state) => state.loggedIn);
   const reqBody = {};
+  const history = useHistory();
 
   function handleSend() {
-    // add form data to axios call
-    // data -> array of selected ids
-    // formData -> form data
     reqBody.address = formData.address;
     reqBody.state = formData.state;
     reqBody.district = formData.district;
@@ -177,6 +173,7 @@ const EnhancedTableToolbar = (props) => {
         // if (response.data.success) {
         // console.log(response);
         // }
+        history.push("/home");
         console.log("works");
       })
       .catch();
@@ -238,10 +235,11 @@ const EnhancedTableToolbar = (props) => {
               </Button>
               <Button
                 onClick={() => {
-                  window.alert("Notification Sent");
+                  window.alert(
+                    "Notification sent successfully. Check 'My Donation Request' section for more info"
+                  );
                   handleSend();
                   handleClosed();
-                  // make a axios call for second find donors api
                 }}
                 color="inherit"
                 autoFocus
@@ -267,6 +265,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: "100%",
     marginBottom: theme.spacing(2),
+    padding: theme.spacing(3),
   },
   table: {
     minWidth: 750,
@@ -295,7 +294,7 @@ export default function EnhancedTable({ list, formData }) {
   const [orderBy, setOrderBy] = React.useState("contact");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -355,12 +354,7 @@ export default function EnhancedTable({ list, formData }) {
           formData={formData}
         />
         <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="medium"
-            aria-label="enhanced table"
-          >
+          <Table className={classes.table} size="medium">
             <EnhancedTableHead
               classes={classes}
               numSelected={selected.length}
@@ -393,11 +387,10 @@ export default function EnhancedTable({ list, formData }) {
                           inputProps={{ "aria-labelledby": labelId }}
                         />
                       </TableCell>
-                      <TableCell align="center">{row.userId}</TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">
-                        {row.address}, {row.district}, {row.state},{" "}
-                        {row.pincode}
+                      <TableCell align="left">{row.userId}</TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">
+                        {row.address}, {row.district}, {row.state},{row.pincode}
                       </TableCell>
                     </TableRow>
                   );
@@ -406,7 +399,7 @@ export default function EnhancedTable({ list, formData }) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[15, 20, 25]}
           component="div"
           count={List.length}
           rowsPerPage={rowsPerPage}

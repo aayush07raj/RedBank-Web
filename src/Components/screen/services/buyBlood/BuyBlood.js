@@ -22,6 +22,9 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     marginTop: theme.spacing(8),
     padding: theme.spacing(5),
@@ -31,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
   papers: {
     width: "100%",
-
     flexDirection: "column",
     margin: "auto",
     padding: theme.spacing(4),
@@ -67,7 +69,6 @@ function BuyBlood() {
   const classes = useStyles();
   const regex = /^[0-9]*$/;
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -78,27 +79,25 @@ function BuyBlood() {
       );
     }
 
-    
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
   };
 
-
   const validate = () => {
-    const errors= {}
+    const errors = {};
 
-    if(data.bg.trim() === ""){
-      errors.bg = "Bloood Group cannot be empty"
+    if (data.bg.trim() === "") {
+      errors.bg = "Bloood Group cannot be empty";
     }
-    if(data.component.trim() === ""){
-      errors.component = "Component cannot be empty"
+    if (data.component.trim() === "") {
+      errors.component = "Component cannot be empty";
     }
-    if(data.units.trim() === ""){
-      errors.units = "Units cannot be empty"
+    if (data.units.trim() === "") {
+      errors.units = "Units cannot be empty";
     }
-    if(data.component.trim() === ""){
-      errors.component = "Component cannot be empty"
+    if (data.component.trim() === "") {
+      errors.component = "Component cannot be empty";
     }
     return Object.keys(errors).length === 0 ? null : errors;
   };
@@ -128,10 +127,12 @@ function BuyBlood() {
         }
       )
       .then((response) => {
-        // if (response.data.success) {
-        console.log(response);
-        setList(response.data);
-        // }
+        if (response.data.length != 0) {
+          console.log(response);
+          setList(response.data);
+        } else {
+          window.alert("No blood banks available in the selected location");
+        }
       })
       .catch();
   };
@@ -140,9 +141,11 @@ function BuyBlood() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4">Buy Blood</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          Buy Blood
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can search nearest blood bank and buy items as per your
           requirement. Fill the parameters and click on search.
         </Typography>
@@ -150,9 +153,9 @@ function BuyBlood() {
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
-            <form >
+            <form>
               <Paper className={classes.paper} elevation={5}>
-              <FormControl
+                <FormControl
                   variant="outlined"
                   className={classes.formControl}
                   error={errors && errors.bg ? true : false}
@@ -164,9 +167,7 @@ function BuyBlood() {
                     onChange={handleChange}
                     value={data.bg}
                     error={errors && errors.bg ? true : false}
-                    helperText={
-                      errors && errors.bg ? errors.bg : null
-                    }
+                    helperText={errors && errors.bg ? errors.bg : null}
                   >
                     <MenuItem value={"A+"}>A+</MenuItem>
                     <MenuItem value={"A-"}>A-</MenuItem>
@@ -182,8 +183,10 @@ function BuyBlood() {
                   </FormHelperText>
                 </FormControl>
 
-                <FormControl variant="outlined" className={classes.formControl}
-                error={errors && errors.component ? true : false}
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.component ? true : false}
                 >
                   <InputLabel>Select Component *</InputLabel>
                   <Select
@@ -286,6 +289,7 @@ function BuyBlood() {
               </Paper>
             </form>
           </Grid>
+
           <Grid item xs={12} className={classes.tableContainer}>
             {list.length === 0 ? (
               <h3 align="center">Results will be displayed here</h3>

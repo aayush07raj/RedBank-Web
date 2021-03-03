@@ -77,6 +77,9 @@ const Product = (props) => {
         if (response.data.success) {
           console.log(response);
           handleClosed();
+          window.alert(
+            " Check 'My Purchases' section for more info about the transaction "
+          );
           history.push("/home");
         }
       })

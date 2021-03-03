@@ -22,19 +22,21 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
+  papers: {
+    width: "100%",
+    flexDirection: "column",
+    margin: "auto",
+    padding: theme.spacing(4),
+  },
+  form: {
     marginTop: theme.spacing(8),
     padding: theme.spacing(5),
     width: "550px",
     display: "flex",
     flexDirection: "column",
-  },
-  papers: {
-    width: "100%",
-
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
   },
   formControl: {
     marginTop: theme.spacing(3),
@@ -103,7 +105,6 @@ function FindDonors() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
-    console.log(errors);
     setError(errors);
     if (errors) return;
 
@@ -120,8 +121,12 @@ function FindDonors() {
         },
       })
       .then((response) => {
-        console.log(response.data);
-        setList(response.data);
+        if (response.data.length != 0) {
+          console.log(response);
+          setList(response.data);
+        } else {
+          window.alert("No donors available in the selected location");
+        }
       })
       .catch();
   };
@@ -130,9 +135,11 @@ function FindDonors() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4">Find Donor</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          Find Donor
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can search any inidividual for blood donation. Fill the
           parameters and click on search.
         </Typography>
@@ -141,7 +148,7 @@ function FindDonors() {
         <Grid container justify="center">
           <Grid item>
             <form onSubmit={handleSubmit}>
-              <Paper className={classes.paper} elevation={5}>
+              <Paper className={classes.form} elevation={5}>
                 <FormControl
                   variant="outlined"
                   className={classes.formControl}
@@ -261,7 +268,7 @@ function FindDonors() {
               </Paper>
             </form>
           </Grid>
-          <Grid item xs={12} className={classes.tableContainer}>
+          <Grid item xs={8} className={classes.tableContainer}>
             {donorsList.length === 0 ? (
               <h3 align="center">Results will be displayed here</h3>
             ) : (

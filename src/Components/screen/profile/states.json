@@ -1,12 +1,7 @@
 
 {  
     "states":[ 
-      {  
-         "state":"All",
-         "districts":[  
-            "All"            
-         ]
-      },
+
        {  
           "state":"Andhra Pradesh",
           "districts":[  

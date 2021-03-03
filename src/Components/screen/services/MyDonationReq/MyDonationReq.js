@@ -13,6 +13,9 @@ import axios from "axios";
 import Table from "./useTable";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
 
@@ -32,9 +35,11 @@ function MyDonationReq() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">My Donation Request</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          My Donation Request
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can view all your sent request for donors
         </Typography>
       </Paper>
@@ -45,7 +50,7 @@ function MyDonationReq() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height:"220px" }}></Container>
+      <Container style={{ height: "220px" }}></Container>
       <Footer />
     </>
   );

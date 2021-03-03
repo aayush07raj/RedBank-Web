@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Box, Container, Grid } from "@material-ui/core/";
 import { Navbar, Footer } from "../../layouts";
 import ServiceCard from "./serviceCard";
 import { useDispatch, useSelector } from "react-redux";
 import logging from "../../../redux/Actions/login";
-import {BankServices, IndividualServices ,HospitalServices }from "./services/Services";
-
+import {
+  BankServices,
+  IndividualServices,
+  HospitalServices,
+} from "./services/Services";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   hero: {
@@ -35,7 +39,29 @@ const useStyles = makeStyles((theme) => ({
 function Main() {
   const classes = useStyles();
   const loggedInState = useSelector((state) => state.loggedIn);
-  console.log(loggedInState);
+
+  const [notify, setNotify] = React.useState("");
+  const [name, setName] = React.useState("");
+
+  useEffect(() => {
+    if (loggedInState.userType === 1) {
+      axios
+        .get("http://localhost:8080/profile/fetchuserprofile", {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        })
+        .then((response) => {
+          setName(response.data.name);
+          if (response.data.donorStatus === 2) {
+            setNotify("not eligible");
+          } else {
+            setNotify("eligible");
+          }
+        })
+        .catch();
+    }
+  }, []);
 
   return (
     <>
@@ -48,7 +74,10 @@ function Main() {
         <Container maxWidth="lg" className={classes.blogsContainer}>
           <Grid container spacing={8} justify="flex-start">
             <Grid item xs={12} align="center">
-              <Typography variant="h4">Services provided</Typography>
+              <Typography variant="h6" className={classes.space}>
+                Hello {name}, you are {notify} to donate blood
+              </Typography>
+              <Typography variant="h4">Services provided by us</Typography>
             </Grid>
 
             {loggedInState.userType === 1 ? (

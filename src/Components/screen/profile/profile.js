@@ -19,10 +19,11 @@ function Profile() {
   return (
     <>
       <Paper className={classes.paperStyle} elevation={5}>
-        {/* <IndProfile/> */}
-        {loggedInState.userType === 1 ? <IndProfile /> : <>
-          {loggedInState.userType === 2 ? <HosProfile /> : <BbProfile />}
-          </>}
+        {loggedInState.userType === 1 ? (
+          <IndProfile />
+        ) : (
+          <>{loggedInState.userType === 2 ? <HosProfile /> : <BbProfile />}</>
+        )}
       </Paper>
     </>
   );

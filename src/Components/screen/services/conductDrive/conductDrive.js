@@ -28,6 +28,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     marginTop: theme.spacing(8),
     padding: theme.spacing(5),
@@ -186,9 +189,11 @@ function ConductDrive() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4">Conduct Blood Donation Drive</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          Conduct Blood Donation Drive
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can orgainze a Blood Donation drive and send notification to
           eligible donors. They will recive all the necessary details filled
           here for the drive. Fields with "*" are mandatory.

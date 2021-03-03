@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   TextField,
@@ -29,7 +29,7 @@ import {
 import axios from "axios";
 import states from "./states.json";
 import { useForm } from "./useForm";
-import {useSelector} from "react-redux"
+import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,46 +40,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function IndProfile() {
-  const [initialValues ,setInitialValues]= useState({
+  const [initialValues, setInitialValues] = useState({
     name: "",
-    userId:"",
-    donorStatus:0,
-    lastDonationDate:null
+    userId: "",
+    donorStatus: 0,
+    lastDonationDate: null,
   });
   const loggedInState = useSelector((state) => state.loggedIn);
 
-  const[fulldata, setfulldata]= useState({
+  const [fulldata, setfulldata] = useState({
     email: "",
     phone: "",
-    bloodGroup:"",
-    dob:"",
+    bloodGroup: "",
+    dob: "",
     address: "",
     state: "",
     district: "",
     pincode: "",
-    donationMade:"",
-    drivesMade:"",
-    commitmentMade:""
+    donationMade: "",
+    drivesMade: "",
+    commitmentMade: "",
   });
 
   const [errors, setError] = useState({
-    phone:"",
-    bloodGroup:"",
-    dob:"",
-    address:"",
-    state:"",
-    district:"",
-    pincode:"",
-    password:"",
-    cpassword:""
+    phone: "",
+    bloodGroup: "",
+    dob: "",
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    password: "",
+    cpassword: "",
   });
 
   const validate = () => {
     const errors = {};
-    
-      if (fulldata.bloodGroup === "") {
-        errors.bloodGroup = "Blood Group cannot be empty";
-      }
+
+    if (fulldata.bloodGroup === "") {
+      errors.bloodGroup = "Blood Group cannot be empty";
+    }
 
     if (fulldata.address.trim() === "") {
       errors.address = "Address cannot be empty";
@@ -93,14 +93,14 @@ function IndProfile() {
     if (!/^[1-9][0-9]{5}$/.test(fulldata.pincode.trim())) {
       errors.pincode = "Invalid pincode format";
     }
-    if(!/^\d{10}$/.test(fulldata.phone.trim())){
-        errors.phone = "Invalid Phone number";
-      }
+    if (!/^\d{10}$/.test(fulldata.phone.trim())) {
+      errors.phone = "Invalid Phone number";
+    }
 
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
-  const validatePass =() =>{
+  const validatePass = () => {
     const strongRegex = new RegExp(
       "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
     );
@@ -112,23 +112,22 @@ function IndProfile() {
       errors.cpassword = "Password is either empty or Passwords do not match";
     }
     return Object.keys(errors).length === 0 ? null : errors;
-  }
+  };
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-      if (name === "state") {
-        setEnable(false);
-        setSelectedStateIndex(
-          states.states.findIndex((item) => item.state === value)
-        );
-      }
-      const updatedData = { ...fulldata };
-      updatedData[name] = value;
-      setfulldata(updatedData);  
+    if (name === "state") {
+      setEnable(false);
+      setSelectedStateIndex(
+        states.states.findIndex((item) => item.state === value)
+      );
+    }
+    const updatedData = { ...fulldata };
+    updatedData[name] = value;
+    setfulldata(updatedData);
   };
-
 
   useEffect(() => {
     axios
@@ -139,82 +138,68 @@ function IndProfile() {
       })
       .then((response) => {
         setInitialValues(response.data);
-        console.log(response.data)
+        console.log(response.data);
 
-        if (
-          initialValues.lastDonationDate &&
-          initialValues.donorStatus === 2
-        ) {
+        if (initialValues.lastDonationDate && initialValues.donorStatus === 2) {
           const lastDonationDate = initialValues.lastDonationDate;
-    
+
           const eligible =
-            (new Date().getTime() -new Date(lastDonationDate.split('T')[0]).getTime()) /
-              (1000 * 60 * 60 * 24) > 56;
+            (new Date().getTime() -
+              new Date(lastDonationDate.split("T")[0]).getTime()) /
+              (1000 * 60 * 60 * 24) >
+            56;
           if (eligible) {
-            console.log("if working")
-            setInitialValues(prevState => ({...prevState,donorStatus:0}))
-            console.log('Changing donor status to: ' + eligible);
+            console.log("if working");
+            setInitialValues((prevState) => ({ ...prevState, donorStatus: 0 }));
+            console.log("Changing donor status to: " + eligible);
           }
         }
       })
       .catch();
-      anotherAxios();
+    anotherAxios();
   }, []);
-  
-  useEffect( ()=>{
+
+  useEffect(() => {
     axios
-    .put("http://localhost:8080/profile/donorstatus", { donorStatus:initialValues.donorStatus }, {
-        headers: {
-          Authorization: "Bearer " + loggedInState.userToken,
-        },
-      })
+      .put(
+        "http://localhost:8080/profile/donorstatus",
+        { donorStatus: initialValues.donorStatus },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
       .then((response) => {
-        setInitialValues(prevState => ({...prevState,donorStatus: response.data.donorStatus}));
+        setInitialValues((prevState) => ({
+          ...prevState,
+          donorStatus: response.data.donorStatus,
+        }));
         console.log(response);
         console.log(response.data);
         console.log("works");
       })
       .catch();
-      console.log("after pressing donor status is ", initialValues.donorStatus);
+    console.log("after pressing donor status is ", initialValues.donorStatus);
+  }, [initialValues.donorStatus]);
 
-
-   } , [ initialValues.donorStatus ] )
-
-      // const [beDonor, setStatus] = useState(0);
-
-      // const handleStatus = (e) =>{
-      //   if(fulldata.donorStatus === 1){
-      //     setInitialValues( prevState => {
-      //       const newState = { ...prevState };
-      //       newState.donorStatus = 0;
-      //       return newState
-      //     })
-      //   }else if(fulldata.donorStatus === 0){
-      //     setInitialValues( prevState => {
-      //       const newState = { ...prevState };
-      //       newState.donorStatus = 1;
-      //       return newState
-      //     })
-      //   }else{
-      //     console.log("status = 3")
-      //   }
-        
-      // }
-
-      const handleStatus= async(status)=>{
-          const newStatus = await axios
-          .put("http://localhost:8080/profile/donorstatus", { donorStatus: status}, {
-              headers: {
-                Authorization: "Bearer " + loggedInState.userToken,
-              },
-            });
-            setInitialValues(prevState => ({...prevState,donorStatus:newStatus.data.donorStatus}))
+  const handleStatus = async (status) => {
+    const newStatus = await axios.put(
+      "http://localhost:8080/profile/donorstatus",
+      { donorStatus: status },
+      {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
       }
+    );
+    setInitialValues((prevState) => ({
+      ...prevState,
+      donorStatus: newStatus.data.donorStatus,
+    }));
+  };
 
-
-
-
-  const anotherAxios = ()=>{
+  const anotherAxios = () => {
     axios
       .get("http://localhost:8080/profile/fetchuserdata", {
         headers: {
@@ -226,7 +211,7 @@ function IndProfile() {
         console.log(response.data);
       })
       .catch();
-  }
+  };
   const margin = { marginTop: "15px" };
 
   const classes = useStyles();
@@ -235,7 +220,6 @@ function IndProfile() {
   const [enableReadOnly, setEdit] = useState(true);
 
   const history = useHistory();
-  
 
   const handleEdit = () => {
     window.alert("You can start editing !");
@@ -249,95 +233,100 @@ function IndProfile() {
     console.log(errors);
     setError(errors);
     if (errors) return;
-    if(errors){
-      return
+    if (errors) {
+      return;
     }
     axios
-    .put("http://localhost:8080/profile/updateindprofile", fulldata, {
-          headers: {
-            Authorization: "Bearer " + loggedInState.userToken,
-          },
-        })
-        .then((response) => {
-          window.alert("Changes have been saved !");
-          setEdit(true);
-        })
-        .catch();
-    
-  };
-
-  
-  const [verify, setVerify] = useState(true); 
-  const [pass, checkPass] = useForm({
-    password:"",
-  })
-
-  const verifyPassword = ()=>{
-    console.log(pass.password)
-  axios
-      .post("http://localhost:8080/profile/verifycurrentpassword", {
-        currentPassword:pass.password
-      }, {
+      .put("http://localhost:8080/profile/updateindprofile", fulldata, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
       })
       .then((response) => {
+        window.alert("Changes have been saved !");
+        setEdit(true);
+      })
+      .catch();
+  };
+
+  const [verify, setVerify] = useState(true);
+  const [pass, checkPass] = useForm({
+    password: "",
+  });
+
+  const verifyPassword = () => {
+    console.log(pass.password);
+    axios
+      .post(
+        "http://localhost:8080/profile/verifycurrentpassword",
+        {
+          currentPassword: pass.password,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
         console.log(response);
-        if(response.data.success){
+        if (response.data.success) {
           console.log("working");
           handleClickOpen();
         }
         console.log("works");
       })
       .catch();
-  }
+  };
 
   // Modal for Change Password
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () =>{
+  const handleClickOpen = () => {
     setOpen(true);
-  }
+  };
 
   const handleClose = () => {
     setOpen(false);
   };
 
   // Change passsword state
-  const[newPass, changePass] = useForm({
-    password:"",
-    cpassword:""
-  })
+  const [newPass, changePass] = useForm({
+    password: "",
+    cpassword: "",
+  });
 
-
-  const changePassword = (e)=>{
+  const changePassword = (e) => {
     const errors = validatePass();
     setError(errors);
 
-    if(errors){
-      return
+    if (errors) {
+      return;
     }
-      axios
-        .put("http://localhost:8080/profile/changepassword", {
-          newPassword:newPass.password}, {
+    axios
+      .put(
+        "http://localhost:8080/profile/changepassword",
+        {
+          newPassword: newPass.password,
+        },
+        {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
           },
-        })
-        .then((response) => {
-          if (response.data.success) {
+        }
+      )
+      .then((response) => {
+        if (response.data.success) {
           console.log(response.data);
           window.alert("New Password successfully saved");
           history.push({
             pathname: "/home",
           });
-          }
-        })
-        .catch();
-     
-  }
- 
+        }
+      })
+      .catch();
+  };
+
   return (
     <>
       <Grid container>
@@ -351,24 +340,39 @@ function IndProfile() {
           </Grid>
           <Grid item xs={12} sm={5}>
             <CardContent>
-              <Typography variant="h6">Bank name : {initialValues.name}</Typography>
+              <Typography variant="h6">
+                Bank name : {initialValues.name}
+              </Typography>
               <Typography variant="h6">User Id : #F132GH</Typography>
             </CardContent>
             <CardActions>
-
               {initialValues.donorStatus === 0 ? (
-                <Button variant="outlined" size="small" onClick={(e)=>{
-                  handleStatus(1);
-                }}> Active Donor Status</Button>
-              ):initialValues.donorStatus === 1?(
-                <Button variant="outlined" color="secondary" size="small" onClick={(e)=>{
-                  handleStatus(0);
-                }}>Active Donor Status</Button>
-              ):(
-                <Button variant="outlined"  size="small" disabled={true}>Not Eligible</Button>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={(e) => {
+                    handleStatus(1);
+                  }}
+                >
+                  {" "}
+                  Active Donor Status
+                </Button>
+              ) : initialValues.donorStatus === 1 ? (
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  onClick={(e) => {
+                    handleStatus(0);
+                  }}
+                >
+                  Active Donor Status
+                </Button>
+              ) : (
+                <Button variant="outlined" size="small" disabled={true}>
+                  Not Eligible
+                </Button>
               )}
-
-
             </CardActions>
           </Grid>
         </Grid>
@@ -377,17 +381,23 @@ function IndProfile() {
           <Grid item xs={12} sm={4}>
             <Typography variant="h5">
               {" "}
-              Commitment Made: <span style={{ color: "#e94394" }}> {fulldata.commitmentMade}</span>
+              Commitment Made:{" "}
+              <span style={{ color: "#e94394" }}>
+                {" "}
+                {fulldata.commitmentMade}
+              </span>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
             <Typography variant="h5">
-              Donation Made: <span style={{ color: "blue" }}> {fulldata.donationMade}</span>
+              Donation Made:{" "}
+              <span style={{ color: "blue" }}> {fulldata.donationMade}</span>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
             <Typography variant="h5">
-              Request Made: <span style={{ color: "green" }}> {fulldata.requestMade}</span>
+              Request Made:{" "}
+              <span style={{ color: "green" }}> {fulldata.requestMade}</span>
             </Typography>
           </Grid>
         </Grid>
@@ -398,27 +408,36 @@ function IndProfile() {
 
         <Grid container className={classes.container} align="center">
           <Grid item xs={12} sm={12}>
-            <Typography variant="h5">Email : {fulldata.email}
+            <Typography variant="h5">Email : {fulldata.email}</Typography>
+            <Typography variant="h5">
+              Date of Birth : {fulldata.dob.split("T")[0]}
             </Typography>
-            <Typography variant="h5">Date of Birth : {fulldata.dob.split("T")[0]}
-            </Typography>
-            
-              <Typography  style={{ margin: "10px" }}  variant="h5">Phone :{enableReadOnly ? (<label>{fulldata.phone}</label>):
-              ( <TextField
+
+            <Typography style={{ margin: "10px" }} variant="h5">
+              Phone :
+              {enableReadOnly ? (
+                <label>{fulldata.phone}</label>
+              ) : (
+                <TextField
                   name="phone"
                   value={fulldata.phone}
-                  onChange={handleChange} 
+                  onChange={handleChange}
                   inputProps={{
                     maxLength: 10,
                   }}
                   error={errors && errors.phone ? true : false}
                   helperText={errors && errors.phone ? errors.phone : null}
-                  />)} 
-              </Typography>
-            
-            <Typography style={{ margin: "10px" }} variant="h5">Blood Group : {enableReadOnly?(<label>{fulldata.bloodGroup}</label>):
-            (
-              <FormControl size="small"
+                />
+              )}
+            </Typography>
+
+            <Typography style={{ margin: "10px" }} variant="h5">
+              Blood Group :{" "}
+              {enableReadOnly ? (
+                <label>{fulldata.bloodGroup}</label>
+              ) : (
+                <FormControl
+                  size="small"
                   // variant="outlined"
                   error={errors && errors.bloodGroup ? true : false}
                 >
@@ -444,82 +463,103 @@ function IndProfile() {
                     {errors && errors.bloodGroup ? errors.bloodGroup : null}
                   </FormHelperText>
                 </FormControl>
-            )}
+              )}
             </Typography>
-            <Typography  style={{ margin: "10px" }} variant="h5">Address : {enableReadOnly?(<label>{fulldata.address}</label>):
-            (<TextField 
-              name="address"
-              value={fulldata.address}
-              onChange={handleChange}
-              error={errors && errors.address ? true : false}
-              helperText={errors && errors.address ? errors.address : null} 
-              >
-             </TextField>)} </Typography>
-
-
-            <Typography  style={{ margin: "10px" }} variant="h5">State : {enableReadOnly?(<label>{fulldata.state}</label>):             
-             (<FormControl size="small" variant="outlined" style={margin} >
-                <InputLabel>
-                  {errors && errors.state ? (
-                    <p style={{ color: "#dc004e" }}>{errors.state}</p>
-                  ) : (
-                    <span></span>
-                  )}
-                </InputLabel>
-                <Select
-                  name="state"
+            <Typography style={{ margin: "10px" }} variant="h5">
+              Address :{" "}
+              {enableReadOnly ? (
+                <label>{fulldata.address}</label>
+              ) : (
+                <TextField
+                  name="address"
+                  value={fulldata.address}
                   onChange={handleChange}
-                  value={fulldata.state}
-                  error={errors && errors.state ? true : false}
-                >
-                  {states.states.map((item, id) => (
-                    <MenuItem value={item.state} key={id}>
-                      {item.state}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>)
-             } </Typography>
+                  error={errors && errors.address ? true : false}
+                  helperText={errors && errors.address ? errors.address : null}
+                ></TextField>
+              )}{" "}
+            </Typography>
 
-
-            <Typography  style={{ margin: "10px" }} variant="h5">District : {enableReadOnly?(<label>{fulldata.district}</label>):
-            
-            (<FormControl size="small" variant="outlined" style={{ margin: "10px" }}>
-                <InputLabel>
-                  {errors && errors.district ? (
-                    <p style={{ color: "#dc004e" }}>{errors.district}</p>
-                  ) : (
-                    <span></span>
-                  )}
-                </InputLabel>
-                <Select
-                  inputProps={{ readOnly: enable }}
-                  name="district"
-                  onChange={handleChange}
-                  value={fulldata.district}
-                >
-                  {states.states[selectedStateIndex].districts.map(
-                    (item, id) => (
-                      <MenuItem value={item} key={id}>
-                        {item}
+            <Typography style={{ margin: "10px" }} variant="h5">
+              State :{" "}
+              {enableReadOnly ? (
+                <label>{fulldata.state}</label>
+              ) : (
+                <FormControl size="small" variant="outlined" style={margin}>
+                  <InputLabel>
+                    {errors && errors.state ? (
+                      <p style={{ color: "#dc004e" }}>{errors.state}</p>
+                    ) : (
+                      <span></span>
+                    )}
+                  </InputLabel>
+                  <Select
+                    name="state"
+                    onChange={handleChange}
+                    value={fulldata.state}
+                    error={errors && errors.state ? true : false}
+                  >
+                    {states.states.map((item, id) => (
+                      <MenuItem value={item.state} key={id}>
+                        {item.state}
                       </MenuItem>
-                    )
-                  )}
-                </Select>
-              </FormControl>)            
-             } </Typography>
-            <Typography  style={{ margin: "10px" }} variant="h5">Pincode : {enableReadOnly?(<label>{fulldata.pincode}</label>):
-            (<TextField 
-              name="pincode"
-              value={fulldata.pincode}
-              onChange={handleChange} 
-              inputProps={{
-                maxLength: 6,
-              }}
-              error={errors && errors.pincode ? true : false}
-              helperText={errors && errors.pincode ? errors.pincode : null}
-              >
-             </TextField>)} </Typography>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}{" "}
+            </Typography>
+
+            <Typography style={{ margin: "10px" }} variant="h5">
+              District :{" "}
+              {enableReadOnly ? (
+                <label>{fulldata.district}</label>
+              ) : (
+                <FormControl
+                  size="small"
+                  variant="outlined"
+                  style={{ margin: "10px" }}
+                >
+                  <InputLabel>
+                    {errors && errors.district ? (
+                      <p style={{ color: "#dc004e" }}>{errors.district}</p>
+                    ) : (
+                      <span></span>
+                    )}
+                  </InputLabel>
+                  <Select
+                    inputProps={{ readOnly: enable }}
+                    name="district"
+                    onChange={handleChange}
+                    value={fulldata.district}
+                  >
+                    {states.states[selectedStateIndex].districts.map(
+                      (item, id) => (
+                        <MenuItem value={item} key={id}>
+                          {item}
+                        </MenuItem>
+                      )
+                    )}
+                  </Select>
+                </FormControl>
+              )}{" "}
+            </Typography>
+            <Typography style={{ margin: "10px" }} variant="h5">
+              Pincode :{" "}
+              {enableReadOnly ? (
+                <label>{fulldata.pincode}</label>
+              ) : (
+                <TextField
+                  name="pincode"
+                  value={fulldata.pincode}
+                  onChange={handleChange}
+                  inputProps={{
+                    maxLength: 6,
+                  }}
+                  error={errors && errors.pincode ? true : false}
+                  helperText={errors && errors.pincode ? errors.pincode : null}
+                ></TextField>
+              )}{" "}
+            </Typography>
           </Grid>
         </Grid>
         <Grid align="center" item xs={12}>
@@ -539,40 +579,62 @@ function IndProfile() {
             )}
           </ButtonGroup>
           <Grid align="center" item xs={12}>
-          {verify ? (
-                <><Button onClick={()=>{setVerify(false)}}>Change your password</Button></>
-            ):(
+            {verify ? (
               <>
-                <Typography >Confirm Your Password:</Typography>
-                <Input name="password" type="password"  value={pass.password} onChange={checkPass} 
+                <Button
+                  onClick={() => {
+                    setVerify(false);
+                  }}
+                >
+                  Change your password
+                </Button>
+              </>
+            ) : (
+              <>
+                <Typography>Confirm Your Password:</Typography>
+                <Input
+                  name="password"
+                  type="password"
+                  value={pass.password}
+                  onChange={checkPass}
                 />
-                <Button onClick={()=>{  verifyPassword()}}>Verify</Button>
+                <Button
+                  onClick={() => {
+                    verifyPassword();
+                  }}
+                >
+                  Verify
+                </Button>
               </>
             )}
           </Grid>
-            
-          <Dialog
-              open={open}
-              onClose={handleClose}
-            >
-              <DialogTitle >
-                {"Password Change"}
-              </DialogTitle>
-              <DialogContent>Type a new Password</DialogContent>
-              <DialogActions>
-                <TextField name="password" type="password" value={newPass.password} onChange={changePass}
+
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>{"Password Change"}</DialogTitle>
+            <DialogContent>Type a new Password</DialogContent>
+            <DialogActions>
+              <TextField
+                name="password"
+                type="password"
+                value={newPass.password}
+                onChange={changePass}
                 error={errors && errors.password}
                 helperText={errors && errors.password ? errors.password : null}
-                />
-              </DialogActions>
-              <DialogActions>
-                <TextField name="cpassword" type="password" value={newPass.cpassword} onChange={changePass}/>
-              </DialogActions>
-              <DialogActions>
-                <Button onClick={changePassword}>Submit</Button>
-              </DialogActions>
-            </Dialog>
-        </Grid> 
+              />
+            </DialogActions>
+            <DialogActions>
+              <TextField
+                name="cpassword"
+                type="password"
+                value={newPass.cpassword}
+                onChange={changePass}
+              />
+            </DialogActions>
+            <DialogActions>
+              <Button onClick={changePassword}>Submit</Button>
+            </DialogActions>
+          </Dialog>
+        </Grid>
       </Grid>
     </>
   );

@@ -26,6 +26,9 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   root: {
     marginTop: theme.spacing(3),
     padding: theme.spacing(3),
@@ -69,7 +72,7 @@ export default function AcceptedDonors(props) {
     <>
       <Navbar />
       <Container maxWidth="lg" className={classes.container}>
-        <Typography variant="h4" align="center">
+        <Typography variant="h4" align="center" className={classes.heading}>
           List of all Donors
         </Typography>
         <TableContainer component={Paper} className={classes.root}>
@@ -91,22 +94,22 @@ export default function AcceptedDonors(props) {
                   <TableCell align="center">{row.name}</TableCell>
                   <TableCell align="center">{row.bloodGroup}</TableCell>
                   <TableCell align="center">
-                  {row.acceptance === 2 ? (
-                          <p style={{ fontWeight: "bold" }}>Pending</p>
-                        ) : row.acceptance === 0 ? (
-                          <p style={{ fontWeight: "bold", color: "red" }}>
-                            Rejected
-                          </p>
-                        ) : (
-                          <Button
-                            disabled={newDonorsList[idx].donationStatus}
-                            variant="contained"
-                            color="secondary"
-                            onClick={(e) => handleClick(idx)}
-                          >
-                            Given ?
-                          </Button>
-                        )}
+                    {row.acceptance === 2 ? (
+                      <p style={{ fontWeight: "bold" }}>Pending</p>
+                    ) : row.acceptance === 0 ? (
+                      <p style={{ fontWeight: "bold", color: "red" }}>
+                        Rejected
+                      </p>
+                    ) : (
+                      <Button
+                        disabled={newDonorsList[idx].donationStatus}
+                        variant="contained"
+                        color="secondary"
+                        onClick={(e) => handleClick(idx)}
+                      >
+                        Given ?
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

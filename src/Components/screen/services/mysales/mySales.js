@@ -14,6 +14,9 @@ import { useSelector } from "react-redux";
 import Table from "./table";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
 
@@ -50,9 +53,11 @@ function MySales() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">My Sales</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          My Sales
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can view all the sale you have done and details about it
         </Typography>
       </Paper>
@@ -63,7 +68,7 @@ function MySales() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height:"200px" }}></Container>
+      <Container style={{ height: "200px" }}></Container>
       <Footer />
     </>
   );

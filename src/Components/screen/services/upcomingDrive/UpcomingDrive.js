@@ -21,6 +21,9 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     marginTop: theme.spacing(8),
     padding: theme.spacing(5),
@@ -132,9 +135,11 @@ function UpcomingDrive() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4">Find Upcoming Drives</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          Find Upcoming Drives
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can search upcoming blood donation drives. Fill the
           parameters and click on search.
         </Typography>

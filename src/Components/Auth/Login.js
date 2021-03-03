@@ -168,10 +168,10 @@ function Login() {
                   New user ? <Link to="/Options">Sign up</Link>
                 </p>
               </Typography>
-              <h3 style={margin}>OR</h3>
+              {/* <h3 style={margin}>OR</h3>
               <Typography style={margin}>
                 <Link to="/Options">Sign in with google account</Link>
-              </Typography>
+              </Typography> */}
             </Grid>
           </Paper>
         </Grid>

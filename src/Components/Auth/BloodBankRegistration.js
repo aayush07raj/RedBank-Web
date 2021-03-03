@@ -16,7 +16,7 @@ import {
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import bloodbank from "./images/bloodbank.jpg";
-import states from "./states.json";
+import states from "../screen/profile/states.json";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import axios from "axios";
 import { logging } from "../../redux/Actions/login";
@@ -225,27 +225,27 @@ function BloodBankRegistration(props) {
       .then(function (response) {
         console.log(response);
         // if (response.headers.success) {
-          console.log("works");
-          dispatch(
-            logging({
-              isLoggedIn: true,
-              userType: props.location.type,
-              userToken: response.data.userToken,
-              userId: response.data.userId,
-            })
-          );
-          const cookies = new Cookies();
-          cookies.set(
-            "Auth",
-            {
-              userType: response.data.userType,
-              userToken: response.data.userToken,
-              userId: response.data.userId,
-            },
-            { path: "/" }
-          );
-          console.log("should work")
-          history.push("/home");
+        console.log("works");
+        dispatch(
+          logging({
+            isLoggedIn: true,
+            userType: props.location.type,
+            userToken: response.data.userToken,
+            userId: response.data.userId,
+          })
+        );
+        const cookies = new Cookies();
+        cookies.set(
+          "Auth",
+          {
+            userType: response.data.userType,
+            userToken: response.data.userToken,
+            userId: response.data.userId,
+          },
+          { path: "/" }
+        );
+        console.log("should work");
+        history.push("/home");
         // } else {
         //   if (response.headers.error === "Email is already taken") {
         //     setErrors((prevErrors) => ({

@@ -15,7 +15,7 @@ import {
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import individual from "./images/individual.png";
-import states from "./states.json";
+import states from "../screen/profile/states.json";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import { useSelector, useDispatch } from "react-redux";
 import registerIndividual from "../../redux/Actions/registerIndividual";
@@ -27,7 +27,7 @@ function IndividualRegistration(props) {
   const [data, setData] = useState({
     name: "",
     email: "",
-    dob: "2021-02-27",
+    dob: "2021-03-01",
     phone: "",
     address: "",
     state: "",

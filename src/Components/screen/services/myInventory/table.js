@@ -63,8 +63,29 @@ export default function CustomizedTables() {
   }, []);
 
   const handleEdit = () => {
-    window.alert("start editing");
-    setStatus(false);
+    const currPassword = window.prompt("Enter your current password");
+    axios
+      .post(
+        "http://localhost:8080/profile/verifycurrentpassword",
+        {
+          currentPassword: currPassword,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          window.alert("You can start editing");
+          setStatus(false);
+        } else {
+          window.alert("Wrong password entered");
+        }
+      })
+      .catch();
   };
 
   const handleSave = () => {
@@ -77,7 +98,7 @@ export default function CustomizedTables() {
         })
         .then((response) => {
           // if (response.data.success) {
-          console.log(response.data);
+          console.log(response);
           setData(response.data);
           window.alert("changes successfully saved");
           setStatus(true);
@@ -93,7 +114,7 @@ export default function CustomizedTables() {
         })
         .then((response) => {
           // if (response.data.success) {
-          console.log(response.data);
+          console.log(response);
           setData(response.data);
           window.alert("changes successfully saved");
           setStatus(true);

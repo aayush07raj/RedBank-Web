@@ -20,6 +20,9 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
 
@@ -68,9 +71,11 @@ function InviteesList(props) {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">Invitees List</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          Invitees List
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           list of the Invitees of the selected Request
         </Typography>
       </Paper>
@@ -94,7 +99,7 @@ function InviteesList(props) {
                       <TableCell align="center">{row.name}</TableCell>
                       <TableCell align="center">{row.bloodGroup}</TableCell>
                       <TableCell align="center">
-                      {row.acceptance === 2 ? (
+                        {row.acceptance === 2 ? (
                           <p style={{ fontWeight: "bold" }}>Pending</p>
                         ) : row.acceptance === 0 ? (
                           <p style={{ fontWeight: "bold", color: "red" }}>
