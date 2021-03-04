@@ -75,7 +75,8 @@ function Home(props) {
 
     if (message.subject === "") {
       errors.subject = "Subject cannot be empty";
-    } else if (message.message === "") {
+    }
+    if (message.message === "") {
       errors.message = "Message cannot be empty";
     }
 
@@ -205,27 +206,12 @@ function Home(props) {
               spacing={10}
             >
               <Grid item xs={12} align="center">
-                <Typography variant="h4">Learn more about donation</Typography>
+                <Typography variant="h4">FAQS</Typography>
                 <Divider />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  style={{ padding: "20px" }}
-                >
-                  Blood Compatibility Table
-                </Typography>
-                <BloodTable />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  style={{ padding: "20px" }}
-                >
-                  FAQs
-                </Typography>
+              
+              <Grid item xs={6} >
+                
                 <Accordion>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography>
@@ -398,6 +384,7 @@ function Home(props) {
           </Grid>
         </Container>
       </div>
+      <Container style={{height:"150px"}} />
       <Footer />
     </>
   );

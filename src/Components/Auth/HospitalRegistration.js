@@ -12,6 +12,11 @@ import {
   Typography,
   FormHelperText,
   ButtonGroup,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
@@ -223,39 +228,45 @@ function HospitalRegistration(props) {
       .post("http://localhost:8080/registerhos", reqBody)
       .then(function (response) {
         console.log(response);
-        // if (response.headers.success) {
-        console.log("works");
-        dispatch(
-          logging({
-            isLoggedIn: true,
-            userType: props.location.type,
-            userToken: response.data.userToken,
-            userId: response.data.userId,
-          })
-        );
-        const cookies = new Cookies();
-        cookies.set(
-          "Auth",
-          {
-            userType: response.data.userType,
-            userToken: response.data.userToken,
-            userId: response.data.userId,
-          },
-          { path: "/" }
-        );
-        history.push("/home");
-        // } else {
-        //   if (response.headers.error == "Email is already taken") {
-        //     setErrors((prevErrors) => ({
-        //       ...prevErrors,
-        //       email: response.headers.error,
-        //     }));
-        //   }
-        // }
+        if (response.data.userToken) {
+          console.log("works");
+          dispatch(
+            logging({
+              isLoggedIn: true,
+              userType: response.data.userType,
+              userToken: response.data.userToken,
+              userId: response.data.userId,
+            })
+          );
+          const cookies = new Cookies();
+          cookies.set(
+            "Auth",
+            {
+              userType: response.data.userType,
+              userToken: response.data.userToken,
+              userId: response.data.userId,
+            },
+            { path: "/" }
+          );
+          history.push("/home");
+        } else {
+          handleClickOpen();
+        }
       })
       .catch(function (error) {
         window.alert(error.message);
       });
+  };
+
+  // dialog for already registered email
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -498,6 +509,22 @@ function HospitalRegistration(props) {
               </Typography>
             </Paper>
           </form>
+
+          {/* dialog for already registered email */}
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Email already exists</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Entered email is already registered with us, enter some other
+                email.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Grid>
     </>

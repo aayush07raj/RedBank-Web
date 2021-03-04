@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Box, Container, Grid } from "@material-ui/core/";
+import { Typography, Box, Container, Grid, Divider } from "@material-ui/core/";
 import { Navbar, Footer } from "../../layouts";
 import ServiceCard from "./serviceCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,8 +11,16 @@ import {
   HospitalServices,
 } from "./services/Services";
 import axios from "axios";
+import BloodTable from "../about/bloodCompatibilityTable";
 
 const useStyles = makeStyles((theme) => ({
+  space: {
+    marginBottom: theme.spacing(5),
+  },
+  bloodTable: {
+    paddingTop: theme.spacing(3),
+    marginTop: theme.spacing(3),
+  },
   hero: {
     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://unblast.com/wp-content/uploads/2020/04/Female-Doctor-Vector-Illustration.jpg')`,
     height: "600px",
@@ -53,10 +61,12 @@ function Main() {
         })
         .then((response) => {
           setName(response.data.name);
-          if (response.data.donorStatus === 2) {
-            setNotify("not eligible");
+          if (response.data.donorStatus === 1) {
+            setNotify("Active");
+          } else if (response.data.donorStatus === 0) {
+            setNotify("Inactive");
           } else {
-            setNotify("eligible");
+            setNotify("Disabled");
           }
         })
         .catch();
@@ -74,9 +84,20 @@ function Main() {
         <Container maxWidth="lg" className={classes.blogsContainer}>
           <Grid container spacing={8} justify="flex-start">
             <Grid item xs={12} align="center">
-              <Typography variant="h6" className={classes.space}>
-                Hello {name}, you are {notify} to donate blood
-              </Typography>
+              {loggedInState.userType === 1 ? (
+                <Typography variant="h4" className={classes.space}>
+                  Hello{" "}
+                  <span style={{ color: "#E94364", fontWeight: "bold" }}>
+                    {name}
+                  </span>
+                  , your current donation status :{" "}
+                  <span style={{ color: "#E94364", fontWeight: "bold" }}>
+                    {notify}
+                  </span>
+                </Typography>
+              ) : null}
+
+              <Divider className={classes.space} />
               <Typography variant="h4">Services provided by us</Typography>
             </Grid>
 
@@ -128,6 +149,21 @@ function Main() {
               </>
             )}
           </Grid>
+                      
+          <Grid className={classes.bloodTable} container justify="center">
+                      <Grid item xs ={6}>
+                      <Typography
+                        variant="h5"
+                        align="center"
+                        style={{ padding: "20px" }}
+                      >
+                        Blood Compatibility Table
+                      </Typography>
+                      <BloodTable />
+                      </Grid>
+          </Grid>
+
+          
         </Container>
       </div>
       <Footer />

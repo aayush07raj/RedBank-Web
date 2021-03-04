@@ -20,12 +20,12 @@ function Options() {
     if (name === "individual") {
       type = "1";
       history.push({ pathname: "/IndividualRegistration", type });
-    } else if (name === "bloodbank") {
-      type = "3";
-      history.push({ pathname: "/BloodBankRegistration", type });
-    } else {
+    } else if (name === "hospital") {
       type = "2";
       history.push({ pathname: "/HospitalRegistration", type });
+    } else {
+      type = "3";
+      history.push({ pathname: "/BloodBankRegistration", type });
     }
   };
 

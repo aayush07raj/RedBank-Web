@@ -124,6 +124,7 @@ function InviteesList(props) {
           </Grid>
         </Grid>
       </Container>
+      <Container style={{height:"220px"}}/>
       <Footer />
     </>
   );
