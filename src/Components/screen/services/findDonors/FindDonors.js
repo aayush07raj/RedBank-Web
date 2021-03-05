@@ -13,6 +13,11 @@ import {
   TextField,
   Button,
   FormHelperText,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@material-ui/core";
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
@@ -125,10 +130,21 @@ function FindDonors() {
           console.log(response);
           setList(response.data);
         } else {
-          window.alert("No donors available in the selected location");
+          handleClickOpen();
         }
       })
       .catch();
+  };
+
+  // state for no results dialog
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -267,13 +283,26 @@ function FindDonors() {
                 </Button>
               </Paper>
             </form>
+
+            {/* dialog for results */}
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>{"No results found"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  No active donors found in the selected location
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
           <Grid item xs={8} className={classes.tableContainer}>
-            {donorsList.length === 0 ? (
-              <h3 align="center">Results will be displayed here</h3>
-            ) : (
+            {donorsList.length !== 0 ? (
               <Table list={donorsList} formData={data} />
-            )}
+            ) : null}
           </Grid>
         </Grid>
       </Container>

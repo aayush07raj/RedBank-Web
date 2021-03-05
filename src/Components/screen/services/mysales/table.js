@@ -66,6 +66,12 @@ const headCells = [
     label: "Blood Group Sold",
   },
   {
+    id: "pricePerUnit",
+    numeric: false,
+    disablePadding: false,
+    label: "Price/Unit",
+  },
+  {
     id: "purchasedQuantity",
     numeric: true,
     disablePadding: false,
@@ -235,6 +241,7 @@ export default function EnhancedTable({ list }) {
                         {row.purchasedComponent}
                       </TableCell>
                       <TableCell align="center">{row.purchasedGroup}</TableCell>
+                      <TableCell align="center">{row.pricePerUnit}</TableCell>
                       <TableCell align="center">
                         {row.purchasedQuantity}
                       </TableCell>

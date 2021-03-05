@@ -193,4 +193,11 @@ export const HospitalServices = [
       "Manage your stock of blood and other components from within the RedBank website, hassle free. ",
     page: "MyInventory",
   },
+  {
+    image: myanalytics,
+    name: "My Analytics",
+    description:
+      "Analyze your inventory and past sales of the blood bank with visual graphical representations.",
+    page: "MyAnalytics",
+  },
 ];

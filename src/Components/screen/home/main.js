@@ -149,21 +149,19 @@ function Main() {
               </>
             )}
           </Grid>
-                      
-          <Grid className={classes.bloodTable} container justify="center">
-                      <Grid item xs ={6}>
-                      <Typography
-                        variant="h5"
-                        align="center"
-                        style={{ padding: "20px" }}
-                      >
-                        Blood Compatibility Table
-                      </Typography>
-                      <BloodTable />
-                      </Grid>
-          </Grid>
 
-          
+          <Grid className={classes.bloodTable} container justify="center">
+            <Grid item xs={6}>
+              <Typography
+                variant="h5"
+                align="center"
+                style={{ padding: "20px" }}
+              >
+                Blood Compatibility Table
+              </Typography>
+              <BloodTable />
+            </Grid>
+          </Grid>
         </Container>
       </div>
       <Footer />
