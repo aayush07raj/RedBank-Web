@@ -17,7 +17,11 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
+import {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -179,6 +183,7 @@ const EnhancedTableToolbar = (props) => {
       .catch();
   }
 
+  //data for are you sure popup dialog
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -222,6 +227,7 @@ const EnhancedTableToolbar = (props) => {
               Send
             </Button>
           </Tooltip>
+          {/* dialog for are you sure popup */}
           <Dialog
             open={open}
             onClose={handleClosed}
@@ -236,10 +242,9 @@ const EnhancedTableToolbar = (props) => {
               <Button
                 onClick={() => {
                   window.alert(
-                    "Notification sent successfully. Check 'My Donation Request' section for more info"
+                    "Notification sent successfully, check 'my donation requests' section for more info"
                   );
                   handleSend();
-                  handleClosed();
                 }}
                 color="inherit"
                 autoFocus

@@ -1,7 +1,9 @@
 import React from "react";
 import { Bar, Pie } from "react-chartjs-2";
 
-function PieChart(props) {
+function PieChart({ data, name }) {
+  console.log(name);
+  console.log(data);
   return (
     <>
       <Pie
@@ -10,7 +12,16 @@ function PieChart(props) {
           datasets: [
             {
               label: "units available",
-              data: [100, 232, 100, 232, 100, 232, 100, 232],
+              data: [
+                data.aPosUnits,
+                data.aNegUnits,
+                data.bPosUnits,
+                data.bNegUnits,
+                data.oPosUnits,
+                data.oNegUnits,
+                data.abPosUnits,
+                data.abNegUnits,
+              ],
               backgroundColor: ["lightgrey", "lightblue", "lightgreen", "pink"],
             },
           ],

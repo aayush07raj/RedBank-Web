@@ -6,6 +6,7 @@ import {
   Button,
   ButtonGroup,
   Typography,
+  Divider,
   FormControl,
   FormHelperText,
   Container,
@@ -377,502 +378,337 @@ function HosProfile() {
       
       <Typography style={{ margin: "5px" }} variant="h4">About</Typography>
 
+      <Divider />
+      <Grid container justify="center">
+      <Grid item xs={6}>
+                <Typography style={{ margin: "5px" }} variant="h5">
+                  Email :
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography style={{ margin: "5px" }} variant="h6">
+                  {fulldata.email}
+                </Typography>
+              </Grid>
 
-      <Typography style={{ margin: "5px" }} variant="h5">Email : {fulldata.email}
-            </Typography>
-            <Typography style={{ margin: "5px" }} variant="h5">License Number : {fulldata.license_number}
-            </Typography>
-      {fulldata.phone.map((val,idx)=>(
-              <Typography  style={{ margin: "5px" }}  variant="h5">{`Phone-${idx + 1} :  `}{enableReadOnly ? (<label>{fulldata.phone[idx]}</label>):
-              (<>
-                 <TextField
-                  type="text"
-                  name={`phone${idx}`}
-                  value={val}
-                  onChange={(e) => {
-                    handleNumberChange(e, idx);
-                    setTouched(prevState=>{
-                      let newState = [...prevState];
-                      newState[idx] = true;
-                      return newState;
-                    })
-                  }}
-                  key={idx}
-                  inputProps={{
-                    maxLength: 10,
-                  }}
-                  // error={!fulldata.phone[idx] && touched[idx] ? true : false}
-                  // helperText={!fulldata.phone[idx] && touched[idx] ? errors.phone : ""}
-                  ></TextField>
-                    <div>
-                    <ButtonGroup variant="text" color="default" align="center">
-                      {fulldata.phone.length < 5 ? (
-                        <Button onClick={handleAdd}>{maxLimit}</Button>
-                      ) : null}
-                      {fulldata.phone.length === 1 ? null : (
-                        <Button
-                          onClick={handleDelete}
-                          style={{ visibility: `${visibility}` }}
-                        >
-                          Delete phone number
-                        </Button>
-                      )}
-                      </ButtonGroup>
-                 </div>
-                  </>)
-                  } 
-              </Typography>
-            ))}
-            <Typography  style={{ margin: "5px" }} variant="h5">Address : {enableReadOnly?(<label>{fulldata.address}</label>):
-            (<TextField 
-              name="address"
-              value={fulldata.address}
-              onChange={handleChange}
-              error={errors && errors.address ? true : false}
-              helperText={errors && errors.address ? errors.address : null} 
-              >
-             </TextField>)} </Typography>
-            <Typography  style={{ margin: "5px" }} variant="h5">State : {enableReadOnly?(<label>{fulldata.state}</label>):             
-             (<FormControl size="small"
-             variant="outlined" style={margin} >
-                <InputLabel>
-                  {errors && errors.state ? (
-                    <p style={{ color: "#dc004e" }}>{errors.state}</p>
-                  ) : (
-                    <span></span>
-                  )}
-                </InputLabel>
-                <Select
-                  name="state"
-                  onChange={handleChange}
-                  value={fulldata.state}
-                  error={errors && errors.state ? true : false}
-                  helperText={errors && errors.state ? errors.state : null} 
-                >
-                  {states.states.map((item, id) => (
-                    <MenuItem value={item.state} key={id}>
-                      {item.state}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>)
-             } </Typography>
-            <Typography  style={{ margin: "5px" }} variant="h5">District : {enableReadOnly?(<label>{fulldata.district}</label>):
-            
-            (<FormControl size="small"
-            variant="outlined" style={margin}>
-                <InputLabel>
-                  {errors && errors.district ? (
-                    <p style={{ color: "#dc004e" }}>{errors.district}</p>
-                  ) : (
-                    <span></span>
-                  )}
-                </InputLabel>
-                <Select
-                  inputProps={{ readOnly: enable }}
-                  name="district"
-                  onChange={handleChange}
-                  value={fulldata.district}
-                  error={errors && errors.district ? true : false}
-                  helperText={
-                    errors && errors.district ? errors.district : null
-                  }
-                >
-                  {states.states[selectedStateIndex].districts.map(
-                    (item, id) => (
-                      <MenuItem value={item} key={id}>
-                        {item}
-                      </MenuItem>
-                    )
-                  )}
-                </Select>
-              </FormControl>)            
-             } </Typography>
-            <Typography  style={{ margin: "5px" }} variant="h5">Pincode : {enableReadOnly?(<label>{fulldata.pincode}</label>):
-            (<TextField 
-              name="pincode"
-              value={fulldata.pincode}
-              onChange={handleChange} 
-              inputProps={{
-                maxLength: 6,
-              }}
-              error={errors && errors.pincode ? true : false}
-              helperText={errors && errors.pincode ? errors.pincode : null}
-              >
-             </TextField>)} </Typography>
-
-
-            {/* For Edit Button */}
-            {enableReadOnly ? (
-              <Button onClick={handleClickOpenEdit} endIcon={<EditIcon />}> 
-                Edit profile
-                
-              </Button>
-            ) : (
-              <Button onClick={handleSave} endIcon={<SaveRoundedIcon />}>
-                Save Changes 
-              </Button>
-            )}
-
-
-             {/* For Change PassWord */}
-             {verify ? (
-              <>
-                <Button
-                  onClick={() => {
-                    setVerify(false);
-                  }}
-                  endIcon={<LockSharpIcon />}
-                >
-                  Change your password
-                  
-                </Button>
-              </>
-            ) : (
-              <>
-                <Typography>Confirm Your Password :</Typography>
-                <TextField
-                  name="password"
-                  type="password"
-                  value={pass.password}
-                  onChange={checkPass}
-                />
-                <Button
-                  onClick={() => {
-                    verifyPassword();
-                  }}
-                >
-                  Verify
-                </Button>
-                <Button
-                  onClick={() => {
-                    setVerify(true);
-                  }}
-                >
-                  Cancel
-                </Button>
-              </>
-            )}
-             <Dialog
-          open={open}
-          onClose={handleClose}
-          maxWidth="xs"
-          fullWidth={true}
-        >
-          <DialogTitle>Change Password</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Please enter your new password and confirm it
-            </DialogContentText>
-            <TextField
-              margin="dense"
-              label=" New Password"
-              name="password"
-              type="password"
-              value={newPass.password}
-              onChange={changePass}
-              error={errors && errors.password ? true : false}
-              helperText={errors && errors.password ? errors.password : null}
-              fullWidth
-            />
-            <TextField
-              margin="dense"
-              label=" Confirm Password"
-              name="cpassword"
-              type="password"
-              value={newPass.cpassword}
-              onChange={changePass}
-              error={errors && errors.cpassword ? true : false}
-              helperText={errors && errors.cpassword ? errors.cpassword : null}
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={changePassword} color="primary">
-              Submit
-            </Button>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* modal for edit profile */}
-        <Dialog open={openEdit} onClose={handleCloseEdit}>
-          <DialogTitle>{"Go ahead, you can start editing"}</DialogTitle>
-          <DialogContent></DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                handleCloseEdit();
-                setEdit(false);
-              }}
-              color="primary"
-              autoFocus
-            >
-              Got it
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* modal for save profile */}
-        <Dialog open={openSave} onClose={handleCloseSave}>
-          <DialogTitle>{"All changes saved successfully"}</DialogTitle>
-          <DialogContent></DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseSave} color="primary" autoFocus>
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-      </Grid>
+              <Grid item xs={6}>
+                <Typography style={{ margin: "5px" }} variant="h5">
+                  LicenseNumber:
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography style={{ margin: "5px" }} variant="h6">
+                  {fulldata.license_number}
+                </Typography>
+              </Grid>
       
-    </Grid>
+        {fulldata.phone.map((val,idx)=>(   
+          <>
+            <Grid item xs={6}>
+                <Typography  style={{ margin: "5px" }}  variant="h5">{`Phone-${idx + 1} :  `}</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography style={{ margin: "5px" }}  variant="h5">{enableReadOnly ? (<label>{fulldata.phone[idx]}</label>):
+                (<>
+                  <TextField
+                    type="text"
+                    name={`phone${idx}`}
+                    value={val}
+                    onChange={(e) => {
+                      handleNumberChange(e, idx);
+                      setTouched(prevState=>{
+                        let newState = [...prevState];
+                        newState[idx] = true;
+                        return newState;
+                      })
+                    }}
+                    key={idx}
+                    inputProps={{
+                      maxLength: 10,
+                    }}
+                    ></TextField>
+                      <div>
+                      <ButtonGroup variant="text" color="default" align="center">
+                        {fulldata.phone.length < 5 ? (
+                          <Button onClick={handleAdd}>{maxLimit}</Button>
+                        ) : null}
+                        {fulldata.phone.length === 1 ? null : (
+                          <Button
+                            onClick={handleDelete}
+                            style={{ visibility: `${visibility}` }}
+                          >
+                            Delete phone number
+                          </Button>
+                        )}
+                        </ButtonGroup>
+                  </div>
+                    </>)
+                    } 
+                </Typography>
+            </Grid>
+          </>
+       ))}  
+      
+      
 
-
-
-
-
-
-
-
-
-
-      {/* <Grid container>
-        <Grid container align="center" className={classes.container}>
-          <Grid item xs={12} sm={5}>
-            <CardMedia
-              image="https://image.flaticon.com/icons/png/512/1297/1297136.png"
-              style={{ height: 150, width: 150 }}
-              component="img"
-            />
-          </Grid>
-          <Grid item xs={12} sm={5}>
-            <CardContent>
-              <Typography variant="h6">BloodBank Name : {initialValues.name}</Typography>
-              <Typography variant="h6">User Id : {initialValues.userId}</Typography>
-            </CardContent>
-            <CardActions>
-            </CardActions>
-          </Grid>
-        </Grid>
-
-        <Grid container align="center" className={classes.container}>
-          <Grid item xs={12} sm={4}>
-          <Typography variant="h5">
-              {" "}
-              Request Made: <span style={{ color: "#e94394" }}> {fulldata.requestMade}</span>
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h5">
-              Drive Conducted: <span style={{ color: "blue" }}> {fulldata.drivesConducted}</span>
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h5">
-              Request Made: <span style={{ color: "green" }}> {fulldata.requestMade}</span>
-            </Typography>
-          </Grid>
-        </Grid>
-
-        <Grid item xs={8} sm={12} align="center">
-          <Typography variant="h4">About</Typography>
-        </Grid>
-
-        <Grid container className={classes.container} align="center">
-          <Grid item xs={12} sm={12}>
-            <Typography variant="h5">Email : {fulldata.email}
-            </Typography>
-            <Typography variant="h5">License Number : {fulldata.license_number}
-            </Typography>
-
-
-            {fulldata.phone.map((val,idx)=>(
-              <Typography  style={{ margin: "10px" }}  variant="h5">{`Phone-${idx + 1} :  `}{enableReadOnly ? (<label>{fulldata.phone[idx]}</label>):
-              (<>
-                 <TextField
-                  type="text"
-                  name={`phone${idx}`}
-                  value={val}
-                  onChange={(e) => {
-                    handleNumberChange(e, idx);
-                    setTouched(prevState=>{
-                      let newState = [...prevState];
-                      newState[idx] = true;
-                      return newState;
-                    })
-                  }}
-                  key={idx}
-                  inputProps={{
-                    maxLength: 10,
-                  }}
-                  error={!fulldata.phone[idx] && touched[idx] ? true : false}
-                  helperText={!fulldata.phone[idx] && touched[idx] ? errors.phone : ""}
-                  ></TextField>
-                    <div>
-                    <ButtonGroup variant="text" color="default" align="center">
-                      {fulldata.phone.length < 5 ? (
-                        <Button onClick={handleAdd}>{maxLimit}</Button>
-                      ) : null}
-                      {fulldata.phone.length === 1 ? null : (
-                        <Button
-                          onClick={handleDelete}
-                          style={{ visibility: `${visibility}` }}
-                        >
-                          Delete phone number
-                        </Button>
-                      )}
-                      </ButtonGroup>
-                 </div>
-                  </>)
-                  } 
+          <Grid item xs={6}>
+              <Typography style={{ margin: "5px" }} variant="h5">
+                  Address :
               </Typography>
-            ))}
+          </Grid>
+          <Grid item xs={6}>
+              <Typography style={{ margin: "5px" }} variant="h6">
+                  {enableReadOnly ? (
+                    <label>{fulldata.address}</label>
+                  ) : (
+                    <TextField
+                      name="address"
+                      value={fulldata.address}
+                      onChange={handleChange}
+                      error={errors && errors.address ? true : false}
+                      helperText={
+                        errors && errors.address ? errors.address : null
+                      }
+                    ></TextField>
+                  )}{" "}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography style={{ margin: "5px" }} variant="h5">
+                  State :
+              </Typography>
+            </Grid>
+            <Grid item xs={6} sm={6}>
+                {enableReadOnly ? (
+                <Typography variant="h6" style={{ margin: "5px" }}>
+                    {" "}
+                    {fulldata.state}
+                </Typography>
+                ) : (
+                  <FormControl
+                    variant="standard"
+                    error={errors && errors.state ? true : false}
+                  >
+                    <Select
+                      name="state"
+                      onChange={handleChange}
+                      value={fulldata.state}
+                    >
+                      {states.states.map((item, id) => (
+                        <MenuItem value={item.state} key={id}>
+                          {item.state}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>
+                      {errors && errors.state ? errors.state : null}
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              </Grid>
+      
 
-            
-            <Typography  style={{ margin: "10px" }} variant="h5">Address : {enableReadOnly?(<label>{fulldata.address}</label>):
-            (<TextField 
-              name="address"
-              value={fulldata.address}
-              onChange={handleChange}
-              error={errors && errors.address ? true : false}
-              helperText={errors && errors.address ? errors.address : null} 
-              >
-             </TextField>)} </Typography>
-            <Typography  style={{ margin: "10px" }} variant="h5">State : {enableReadOnly?(<label>{fulldata.state}</label>):             
-             (<FormControl size="small"
-             variant="outlined"
-             style={margin} 
-              error={errors && errors.state ? true : false}
-             >
-                <InputLabel>
-                  {errors && errors.state ? (
-                    <p style={{ color: "#dc004e" }}>{errors.state}</p>
-                  ) : (
-                    <span></span>
-                  )}
-                </InputLabel>
-                <Select
-                  name="state"
-                  onChange={handleChange}
-                  value={fulldata.state}
-                  
-                  // helperText={errors && errors.state ? errors.state : null} 
-                >
-                  {states.states.map((item, id) => (
-                    <MenuItem value={item.state} key={id}>
-                      {item.state}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText>
-                    {errors && errors.bloodGroup ? errors.bloodGroup : null}
-                  </FormHelperText>
-              </FormControl>)
-             } </Typography>
-            <Typography  style={{ margin: "10px" }} variant="h5">District : {enableReadOnly?(<label>{fulldata.district}</label>):
-            
-            (<FormControl size="small"
-            variant="outlined" style={margin}>
-                <InputLabel>
-                  {errors && errors.district ? (
-                    <p style={{ color: "#dc004e" }}>{errors.district}</p>
-                  ) : (
-                    <span></span>
-                  )}
-                </InputLabel>
-                <Select
-                  inputProps={{ readOnly: enable }}
-                  name="district"
-                  onChange={handleChange}
-                  value={fulldata.district}
-                  error={errors && errors.district ? true : false}
-                  helperText={
-                    errors && errors.district ? errors.district : null
-                  }
-                >
-                  {states.states[selectedStateIndex].districts.map(
-                    (item, id) => (
-                      <MenuItem value={item} key={id}>
-                        {item}
-                      </MenuItem>
-                    )
-                  )}
-                </Select>
-              </FormControl>)            
-             } </Typography>
-            <Typography  style={{ margin: "10px" }} variant="h5">Pincode : {enableReadOnly?(<label>{fulldata.pincode}</label>):
-            (<TextField 
-              name="pincode"
-              value={fulldata.pincode}
-              onChange={handleChange} 
-              inputProps={{
-                maxLength: 6,
-              }}
-              error={errors && errors.pincode ? true : false}
-              helperText={errors && errors.pincode ? errors.pincode : null}
-              >
-             </TextField>)} </Typography>
-          </Grid>
-        </Grid>
-        <Grid align="center" item xs={12}>
-          <ButtonGroup
-            variant="contained"
-            aria-label="contained primary button group"
-            size="small"
-          >
-            {enableReadOnly ? (
-              <Button color="secondary" onClick={handleEdit}>
-                Edit profile
-              </Button>
-            ) : (
-              <Button color="secondary" onClick={handleSave}>
-                Save Changes
-              </Button>
-            )}
-          </ButtonGroup>
-          <Grid align="center" item xs={12}>
-          {verify ? (
-                <><Button onClick={()=>{setVerify(false)}}>Change your password</Button></>
-            ):(
-              <>
-                <Typography >Confirm Your Password:</Typography>
-                <Input name="password" type="password"  value={pass.password} onChange={checkPass} 
-                />
-                <Button onClick={()=>{  verifyPassword()}}>Verify</Button>
-              </>
-            )}
-          </Grid>
-            
-          <Dialog
+
+            <Grid item xs={6}>
+                <Typography style={{ margin: "5px" }} variant="h5">
+                  District :
+                </Typography>
+            </Grid>
+              <Grid item xs={6} sm={6}>
+                {enableReadOnly ? (
+                  <Typography variant="h6" style={{ margin: "5px" }}>
+                    {" "}
+                    {fulldata.district}
+                  </Typography>
+                ) : (
+                  <FormControl
+                    variant="standard"
+                    error={errors && errors.district ? true : false}
+                  >
+                    <Select
+                      inputProps={{ readOnly: enable }}
+                      name="district"
+                      onChange={handleChange}
+                      value={fulldata.district}
+                    >
+                      {states.states[selectedStateIndex].districts.map(
+                        (item, id) => (
+                          <MenuItem value={item} key={id}>
+                            {item}
+                          </MenuItem>
+                        )
+                      )}
+                    </Select>
+                    <FormHelperText>
+                      {errors && errors.district ? errors.district : null}
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              </Grid>
+       <Grid item xs={6} sm={6}>
+                <Typography variant="h5" style={{ margin: "5px" }}>
+                  Pincode :
+                </Typography>
+              </Grid>
+              <Grid item xs={6} sm={6}>
+                {enableReadOnly ? (
+                  <Typography variant="h6" style={{ margin: "5px" }}>
+                    {" "}
+                    {fulldata.pincode}
+                  </Typography>
+                ) : (
+                  <TextField
+                    name="pincode"
+                    value={fulldata.pincode}
+                    onChange={handleChange}
+                    inputProps={{
+                      maxLength: 6,
+                    }}
+                    error={errors && errors.pincode ? true : false}
+                    helperText={
+                      errors && errors.pincode ? errors.pincode : null
+                    }
+                  />
+                )}
+              </Grid>
+      </Grid>
+      {/* Dialog for Edit and Change Password */}
+      <Dialog
               open={open}
               onClose={handleClose}
+              maxWidth="xs"
+              fullWidth={true}
             >
-              <DialogTitle >
-                {"Password Change"}
-              </DialogTitle>
-              <DialogContent>Type a new Password</DialogContent>
-              <DialogActions>
-                <Input name="password" type="password" value={newPass.password} onChange={changePass}
-                error={errors && errors.password ? true : false}
-                helperText={errors && errors.password ? errors.password : null} 
+              <DialogTitle>Change Password</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Please enter your new password and confirm it
+                </DialogContentText>
+                <TextField
+                  margin="dense"
+                  label=" New Password"
+                  name="password"
+                  type="password"
+                  value={newPass.password}
+                  onChange={changePass}
+                  error={errors && errors.password ? true : false}
+                  helperText={
+                    errors && errors.password ? errors.password : null
+                  }
+                  fullWidth
                 />
-                
-              </DialogActions>
-              <DialogActions>
-                <Input name="cpassword" type="password" value={newPass.cpassword} onChange={changePass}
-                error={errors && errors.cpassword ? true : false}
-                helperText={errors && errors.cpassword ? errors.cpassword : null} 
+                <TextField
+                  margin="dense"
+                  label=" Confirm Password"
+                  name="cpassword"
+                  type="password"
+                  value={newPass.cpassword}
+                  onChange={changePass}
+                  error={errors && errors.cpassword ? true : false}
+                  helperText={
+                    errors && errors.cpassword ? errors.cpassword : null
+                  }
+                  fullWidth
                 />
-              </DialogActions>
+              </DialogContent>
               <DialogActions>
-                <Button onClick={changePassword}>Submit</Button>
+                <Button onClick={changePassword} color="primary">
+                  Submit
+                </Button>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
               </DialogActions>
             </Dialog>
-        </Grid> 
-      </Grid> */}
+
+            {/* dialog for edit profile */}
+            <Dialog open={openEdit} onClose={handleCloseEdit}>
+              <DialogTitle>{"Go ahead, you can start editing"}</DialogTitle>
+              <DialogContent></DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    handleCloseEdit();
+                    setEdit(false);
+                  }}
+                  color="primary"
+                  autoFocus
+                >
+                  Got it
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            {/* dialog for save profile */}
+            <Dialog open={openSave} onClose={handleCloseSave}>
+              <DialogTitle>{"All changes saved successfully"}</DialogTitle>
+              <DialogContent></DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseSave} color="primary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container align="center">
+              {/* For Edit Button */}
+              <Grid item xs={12}>
+                {enableReadOnly ? (
+                  <Button onClick={handleClickOpenEdit} endIcon={<EditIcon />}>
+                    Edit profile
+                  </Button>
+                ) : (
+                  <Button onClick={handleSave} endIcon={<SaveRoundedIcon />}>
+                    Save Changes
+                  </Button>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                {verify ? (
+                  <>
+                    <Button
+                      onClick={() => {
+                        setVerify(false);
+                      }}
+                      endIcon={<LockSharpIcon />}
+                    >
+                      Change your password
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Typography>Confirm Your Password :</Typography>
+                    <TextField
+                      name="password"
+                      type="password"
+                      value={pass.password}
+                      onChange={checkPass}
+                    />
+                    <Button
+                      onClick={() => {
+                        verifyPassword();
+                      }}
+                    >
+                      Verify
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setVerify(true);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </>
+                )}
+              </Grid>
+            </Grid>
+          {/* </Grid> */}
+
+
+      </Grid>
+    </Grid>
+
     </>
   );
 }

@@ -9,7 +9,7 @@ function BarChart({ labels, legends, data }) {
           labels: labels,
           datasets: [
             {
-              label: legends,
+              label: "units sold",
               data: data,
               backgroundColor: "#E94394",
               borderColor: "#E94394",

@@ -5,6 +5,7 @@ import {
   makeStyles,
   Paper,
   FormControl,
+  FormHelperText,
   InputLabel,
   Select,
   Divider,
@@ -16,7 +17,6 @@ import {
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
-import Joi from "joi";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -58,22 +58,16 @@ function UpcomingDrive() {
     pincode: "",
   });
 
+  const regex = /^[0-9]*$/;
   const [driveList, setState] = useState([]);
-
   const loggedInState = useSelector((state) => state.loggedIn);
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
   const classes = useStyles();
 
-  const schema = {
-    state: Joi.string().required(),
-    district: Joi.string().required(),
-    pincode: Joi.required(),
-  };
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "state") {
       setEnable(false);
       setSelectedStateIndex(
@@ -81,43 +75,34 @@ function UpcomingDrive() {
       );
     }
 
-    const allErrors = { ...errors };
-    const errorMsg = validateProperty(e.target);
-    if (errorMsg) {
-      allErrors[name] = errorMsg;
-    } else {
-      delete allErrors[name];
-    }
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
-    setErrors(allErrors);
-  };
-
-  const validateProperty = ({ name, value }) => {
-    const inputField = { [name]: value };
-    const fieldSchema = Joi.object({ [name]: schema[name] });
-    const { error } = fieldSchema.validate(inputField);
-    return error ? error.details[0].message : null;
   };
 
   const validate = () => {
-    const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(data, {
-      abortEarly: false,
-    });
+    const errors = {};
 
-    if (!error) return null;
-
-    const allErrors = {};
-    for (let err of error.details) {
-      allErrors[err.path[0]] = err.message;
+    if (data.state === "") {
+      errors.state = "State cannot be empty";
     }
-    return allErrors;
+    if (data.district === "") {
+      errors.district = "District cannot be empty";
+    }
+    if (!regex.test(data.pincode)) {
+      errors.pincode = "Invalid pincode format";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(data);
+    const errors = validate();
+    console.log(errors);
+    setErrors(errors);
+    if (errors) return;
 
     axios
       .post("http://localhost:8080/upcomingdrives/fetchdriveslist", data, {
@@ -149,15 +134,17 @@ function UpcomingDrive() {
           <Grid item>
             <form onSubmit={handleSubmit}>
               <Paper className={classes.paper} elevation={5}>
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.state ? true : false}
+                >
                   <InputLabel>Select your State</InputLabel>
                   <Select
                     name="state"
                     value={data.state}
                     onChange={handleChange}
                     label="Select your State"
-                    error={errors && errors.state ? true : false}
-                    helperText={errors && errors.state ? errors.state : null}
                   >
                     {statesData.states.map((item, id) => (
                       <MenuItem key={id} value={item.state}>
@@ -165,9 +152,16 @@ function UpcomingDrive() {
                       </MenuItem>
                     ))}
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.state ? errors.state : null}
+                  </FormHelperText>
                 </FormControl>
 
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.district ? true : false}
+                >
                   <InputLabel>Select your District</InputLabel>
                   <Select
                     inputProps={{ readOnly: enable }}
@@ -175,10 +169,6 @@ function UpcomingDrive() {
                     value={data.district}
                     onChange={handleChange}
                     label="Select your District"
-                    error={errors && errors.district ? true : false}
-                    helperText={
-                      errors && errors.district ? errors.district : null
-                    }
                   >
                     {statesData.states[selectedStateIndex].districts.map(
                       (item, id) => (
@@ -188,6 +178,9 @@ function UpcomingDrive() {
                       )
                     )}
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.district ? errors.district : null}
+                  </FormHelperText>
                 </FormControl>
 
                 <TextField
@@ -206,7 +199,6 @@ function UpcomingDrive() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
-                  disabled={validate()}
                 >
                   Search
                 </Button>
@@ -214,11 +206,7 @@ function UpcomingDrive() {
             </form>
           </Grid>
           <Grid item xs={12} className={classes.tableContainer}>
-            {driveList.length === 0 ? (
-              <h3 align="center">Results will be displayed here</h3>
-            ) : (
-              <Table list={driveList} />
-            )}
+            {driveList.length !== 0 ? <Table list={driveList} /> : null}
           </Grid>
         </Grid>
       </Container>

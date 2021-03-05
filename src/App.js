@@ -37,6 +37,7 @@ import MyInvites from "./Components/screen/services/myInvites/myInvites";
 import AcceptedDonors from "./Components/screen/services/myDrives/acceptedDonors";
 import MyAnalytics from "./Components/screen/services/myanalytics/MyAnalytics";
 import NotFound from "./Components/screen/NotFound";
+import LandingPage from "./Components/screen/landingPage/landingPage.js";
 import { logging } from "./redux/Actions/login";
 import Cookies from "universal-cookie";
 
@@ -80,7 +81,7 @@ function App() {
           </>
         ) : (
           <>
-            <Route exact path="/" component={Login} />
+            <Route exact path="/" component={LandingPage} />
             <Route
               exact
               path="/BloodBankRegistration"

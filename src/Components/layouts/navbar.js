@@ -135,7 +135,7 @@ export default function MenuAppBar({ user }) {
     const cookies = new Cookies();
     dispatch(loggingOut());
     cookies.remove("Auth", { path: "/" });
-    history.push("/");
+    history.push("/Login");
   };
 
   const handleClick2 = (event) => {
