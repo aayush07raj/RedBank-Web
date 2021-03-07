@@ -437,22 +437,22 @@ function IndProfile() {
             </Typography>
             <Divider />
             <Grid container justify="center">
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <Typography style={{ margin: "5px" }} variant="h5">
                   Email :
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={7}>
                 <Typography style={{ margin: "5px" }} variant="h6">
                   {fulldata.email}
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <Typography style={{ margin: "5px" }} variant="h5">
                   DOB :
                 </Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={7}>
                 <Typography style={{ margin: "5px" }} variant="h6">
                   {fulldata.dob.split("T")[0]}
                 </Typography>

@@ -17,7 +17,6 @@ import {
 import { Navbar, Footer } from "../../../layouts";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
-import Joi from "joi";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
