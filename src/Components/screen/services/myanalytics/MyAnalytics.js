@@ -66,18 +66,30 @@ function MyAnalytics() {
   const classes = useStyles();
   const loggedInState = useSelector((state) => state.loggedIn);
   const [currYear, setCurrYear] = useState(new Date().getFullYear());
-  const [currMonth, setCurrMonth] = useState(
-    new Date().toLocaleString("en-us", { month: "long" })
-  );
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const [currMonth, setCurrMonth] = useState(monthNames[new Date().getMonth()]);
 
-  const [yearlySales, setYearlySales] = useState([]);
-  const [monthlySales, setMonthlySales] = useState([]);
+  const [yearlySales, setYearlySales] = useState({});
+  const [monthlySales, setMonthlySales] = useState({});
   const [inventoryData, setInventoryData] = useState([]);
 
-  const [yearlyRevenue, setYearlyRevenue] = useState([]);
-  const [monthlyRevenue, setMonthlyRevenue] = useState([]);
+  const [yearlyRevenue, setYearlyRevenue] = useState({});
+  const [monthlyRevenue, setMonthlyRevenue] = useState({});
 
-  const [yearlyPurchase, setYearlyPurchase] = useState([]);
+  const [yearlyPurchase, setYearlyPurchase] = useState({});
   const [monthlyPurchase, setMonthlyPurchase] = useState([]);
 
   const handleYearChangeSales = (e) => {
@@ -89,16 +101,32 @@ function MyAnalytics() {
         },
       })
       .then((response) => {
-        setYearlySales(response.data);
+        setYearlySales((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data.datasets[0].data;
+          data.labels = response.data.labels;
+          return data;
+        });
         console.log(response);
       });
   };
 
   const handleMonthChangeSales = (e) => {
     setCurrMonth(e.target.value);
+
+    let idx =
+      1 +
+      monthNames.findIndex((val) => {
+        return val === e.target.value;
+      });
+
+    if ((idx + "").length === 1) {
+      idx = "0" + idx;
+    }
+
     axios
       .get(
-        `http://localhost:8080/salesanalytics/monthly/${currYear}/${e.target.value}/1`,
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/1`,
         {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
@@ -107,7 +135,12 @@ function MyAnalytics() {
       )
       .then((response) => {
         console.log(response);
-        setMonthlySales(response.data);
+        setMonthlySales((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data.datasets[0].data;
+          data.labels = response.data.labels;
+          return data;
+        });
       });
   };
 
@@ -120,16 +153,30 @@ function MyAnalytics() {
         },
       })
       .then((response) => {
-        setYearlyRevenue(response.data);
+        setYearlyRevenue((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data.datasets[0].data;
+          data.labels = response.data.labels;
+          return data;
+        });
         console.log(response);
       });
   };
 
   const handleMonthChangeRevenue = (e) => {
     setCurrMonth(e.target.value);
+    let idx =
+      1 +
+      monthNames.findIndex((val) => {
+        return val === e.target.value;
+      });
+
+    if ((idx + "").length === 1) {
+      idx = "0" + idx;
+    }
     axios
       .get(
-        `http://localhost:8080/salesanalytics/monthly/${currYear}/${e.target.value}/0`,
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/0`,
         {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
@@ -138,7 +185,12 @@ function MyAnalytics() {
       )
       .then((response) => {
         console.log(response);
-        setMonthlyRevenue(response.data);
+        setMonthlyRevenue((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data.datasets[0].data;
+          data.labels = response.data.labels;
+          return data;
+        });
       });
   };
 
@@ -151,16 +203,30 @@ function MyAnalytics() {
         },
       })
       .then((response) => {
-        setYearlyPurchase(response.data);
+        setYearlyPurchase((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data.datasets[0].data;
+          data.labels = response.data.labels;
+          return data;
+        });
         console.log(response);
       });
   };
 
   const handleMonthChangePurchase = (e) => {
     setCurrMonth(e.target.value);
+    let idx =
+      1 +
+      monthNames.findIndex((val) => {
+        return val === e.target.value;
+      });
+
+    if ((idx + "").length === 1) {
+      idx = "0" + idx;
+    }
     axios
       .get(
-        `http://localhost:8080/salesanalytics/monthly/${currYear}/${e.target.value}/2`,
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/2`,
         {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
@@ -169,11 +235,29 @@ function MyAnalytics() {
       )
       .then((response) => {
         console.log(response);
-        setMonthlyPurchase(response.data);
+        setMonthlyPurchase((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data.datasets[0].data;
+          data.labels = response.data.labels;
+          return data;
+        });
       });
   };
 
   useEffect(() => {
+    let idx =
+      1 +
+      monthNames.findIndex((val) => {
+        return val === currMonth;
+      });
+    console.log(idx);
+
+    if ((idx + "").length === 1) {
+      idx = "0" + idx;
+    }
+
+    console.log(idx);
+
     if (loggedInState.userType === 3) {
       console.log("3");
       //sales call
@@ -184,13 +268,18 @@ function MyAnalytics() {
           },
         })
         .then((response) => {
-          setYearlySales(response.data);
+          setYearlySales((prevState) => {
+            const data = { ...prevState };
+            data.data = response.data.datasets[0].data;
+            data.labels = response.data.labels;
+            return data;
+          });
           console.log(response);
         });
 
       axios
         .get(
-          `http://localhost:8080/salesanalytics/monthly/${currYear}/${currMonth}/1`,
+          `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/1`,
           {
             headers: {
               Authorization: "Bearer " + loggedInState.userToken,
@@ -199,7 +288,12 @@ function MyAnalytics() {
         )
         .then((response) => {
           console.log(response);
-          setMonthlySales(response.data);
+          setMonthlySales((prevState) => {
+            const data = { ...prevState };
+            data.data = response.data.datasets[0].data;
+            data.labels = response.data.labels;
+            return data;
+          });
         });
 
       // revenue call
@@ -210,13 +304,18 @@ function MyAnalytics() {
           },
         })
         .then((response) => {
-          setYearlyRevenue(response.data);
+          setYearlyRevenue((prevState) => {
+            const data = { ...prevState };
+            data.data = response.data.datasets[0].data;
+            data.labels = response.data.labels;
+            return data;
+          });
           console.log(response);
         });
 
       axios
         .get(
-          `http://localhost:8080/salesanalytics/monthly/${currYear}/${currMonth}/0`,
+          `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/0`,
           {
             headers: {
               Authorization: "Bearer " + loggedInState.userToken,
@@ -225,7 +324,12 @@ function MyAnalytics() {
         )
         .then((response) => {
           console.log(response);
-          setMonthlyRevenue(response.data);
+          setMonthlyRevenue((prevState) => {
+            const data = { ...prevState };
+            data.data = response.data.datasets[0].data;
+            data.labels = response.data.labels;
+            return data;
+          });
         });
     }
 
@@ -237,7 +341,12 @@ function MyAnalytics() {
         },
       })
       .then((response) => {
-        setYearlyPurchase(response.data);
+        setYearlyPurchase((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data.datasets[0].data;
+          data.labels = response.data.labels;
+          return data;
+        });
         console.log(response);
       });
 
@@ -252,7 +361,12 @@ function MyAnalytics() {
       )
       .then((response) => {
         console.log(response);
-        setMonthlyPurchase(response.data);
+        setMonthlyPurchase((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data.datasets[0].data;
+          data.labels = response.data.labels;
+          return data;
+        });
       });
 
     //inventory call
@@ -331,9 +445,9 @@ function MyAnalytics() {
                   </FormControl>
                   <Grid item xs={12} align="center">
                     <BarChart
-                      data={yearlySales.datasets}
-                      legends={yearlySales.legend}
+                      data={yearlySales.data}
                       labels={yearlySales.labels}
+                      legends="Units sold"
                     />
                   </Grid>
                 </Grid>
@@ -353,6 +467,11 @@ function MyAnalytics() {
                       <MenuItem value={"May"}>May</MenuItem>
                       <MenuItem value={"June"}>June</MenuItem>
                       <MenuItem value={"July"}>July</MenuItem>
+                      <MenuItem value={"August"}>August</MenuItem>
+                      <MenuItem value={"September"}>September</MenuItem>
+                      <MenuItem value={"October"}>October</MenuItem>
+                      <MenuItem value={"November"}>November</MenuItem>
+                      <MenuItem value={"December"}>December</MenuItem>
                     </Select>
                     <FormHelperText>
                       Analytics for: {currMonth},{currYear}
@@ -361,7 +480,7 @@ function MyAnalytics() {
                   <Grid item xs={12} align="center">
                     <BarChart
                       data={monthlySales.data}
-                      legends={monthlySales.lagend}
+                      legends="Units sold"
                       labels={monthlySales.labels}
                     />
                   </Grid>
@@ -396,8 +515,8 @@ function MyAnalytics() {
                   </FormControl>
                   <Grid item xs={12} align="center">
                     <BarChart
-                      data={yearlyRevenue.datasets}
-                      legends={yearlyRevenue.legend}
+                      data={yearlyRevenue.data}
+                      legends="Revenue in Rs"
                       labels={yearlyRevenue.labels}
                     />
                   </Grid>
@@ -418,6 +537,11 @@ function MyAnalytics() {
                       <MenuItem value={"May"}>May</MenuItem>
                       <MenuItem value={"June"}>June</MenuItem>
                       <MenuItem value={"July"}>July</MenuItem>
+                      <MenuItem value={"August"}>August</MenuItem>
+                      <MenuItem value={"September"}>September</MenuItem>
+                      <MenuItem value={"October"}>October</MenuItem>
+                      <MenuItem value={"November"}>November</MenuItem>
+                      <MenuItem value={"December"}>December</MenuItem>
                     </Select>
                     <FormHelperText>
                       Analytics for: {currMonth},{currYear}
@@ -426,7 +550,7 @@ function MyAnalytics() {
                   <Grid item xs={12} align="center">
                     <BarChart
                       data={monthlyRevenue.data}
-                      legends={monthlyRevenue.lagend}
+                      legends="Revenue in Rs"
                       labels={monthlyRevenue.labels}
                     />
                   </Grid>
@@ -461,8 +585,8 @@ function MyAnalytics() {
                   </FormControl>
                   <Grid item xs={12} align="center">
                     <BarChart
-                      data={yearlyPurchase.datasets}
-                      legends={yearlyPurchase.legend}
+                      data={yearlyPurchase.data}
+                      legends="Units purchased"
                       labels={yearlyPurchase.labels}
                     />
                   </Grid>
@@ -483,6 +607,11 @@ function MyAnalytics() {
                       <MenuItem value={"May"}>May</MenuItem>
                       <MenuItem value={"June"}>June</MenuItem>
                       <MenuItem value={"July"}>July</MenuItem>
+                      <MenuItem value={"August"}>August</MenuItem>
+                      <MenuItem value={"September"}>September</MenuItem>
+                      <MenuItem value={"October"}>October</MenuItem>
+                      <MenuItem value={"November"}>November</MenuItem>
+                      <MenuItem value={"December"}>December</MenuItem>
                     </Select>
                     <FormHelperText>
                       Analytics for: {currMonth},{currYear}
@@ -491,7 +620,7 @@ function MyAnalytics() {
                   <Grid item xs={12} align="center">
                     <BarChart
                       data={monthlyPurchase.data}
-                      legends={monthlyPurchase.lagend}
+                      legends="Units purchased"
                       labels={monthlyPurchase.labels}
                     />
                   </Grid>
@@ -591,8 +720,8 @@ function MyAnalytics() {
                   </FormControl>
                   <Grid item xs={12} align="center">
                     <BarChart
-                      data={yearlyPurchase.datasets}
-                      legends={yearlyPurchase.legend}
+                      data={yearlyPurchase.data}
+                      legends="Units purchased"
                       labels={yearlyPurchase.labels}
                     />
                   </Grid>
@@ -613,6 +742,11 @@ function MyAnalytics() {
                       <MenuItem value={"May"}>May</MenuItem>
                       <MenuItem value={"June"}>June</MenuItem>
                       <MenuItem value={"July"}>July</MenuItem>
+                      <MenuItem value={"August"}>August</MenuItem>
+                      <MenuItem value={"September"}>September</MenuItem>
+                      <MenuItem value={"October"}>October</MenuItem>
+                      <MenuItem value={"November"}>November</MenuItem>
+                      <MenuItem value={"December"}>December</MenuItem>
                     </Select>
                     <FormHelperText>
                       Analytics for: {currMonth},{currYear}
@@ -621,7 +755,7 @@ function MyAnalytics() {
                   <Grid item xs={12} align="center">
                     <BarChart
                       data={monthlyPurchase.data}
-                      legends={monthlyPurchase.lagend}
+                      legends="Units purchased"
                       labels={monthlyPurchase.labels}
                     />
                   </Grid>
