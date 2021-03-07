@@ -8,7 +8,7 @@ import { Component } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // minHeight: '100vh',
+    minHeight: '100vh',
   },
 }));
 export default function LandingPage() {

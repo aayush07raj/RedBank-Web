@@ -392,17 +392,7 @@ export default function MenuAppBar({ user }) {
                                     Find Donors
                                   </Button>
                                 </MenuItem>
-                                <MenuItem onClick={handleClose2}>
-                                  <Button
-                                    onClick={handleClose2}
-                                    color="inherit"
-                                    component={Link}
-                                    to="/MyCommitments"
-                                    variant="h7"
-                                  >
-                                    My Commitments
-                                  </Button>
-                                </MenuItem>
+                               
                                 <MenuItem onClick={handleClose2}>
                                   <Button
                                     onClick={handleClose2}
@@ -505,17 +495,7 @@ export default function MenuAppBar({ user }) {
                                     Find Donors
                                   </Button>
                                 </MenuItem>
-                                <MenuItem onClick={handleClose2}>
-                                  <Button
-                                    onClick={handleClose2}
-                                    color="inherit"
-                                    component={Link}
-                                    to="/MyCommitments"
-                                    variant="h7"
-                                  >
-                                    My Commitments
-                                  </Button>
-                                </MenuItem>
+                               
                                 <MenuItem onClick={handleClose2}>
                                   <Button
                                     onClick={handleClose2}

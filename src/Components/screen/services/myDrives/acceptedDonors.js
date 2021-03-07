@@ -117,6 +117,7 @@ export default function AcceptedDonors(props) {
           </Table>
         </TableContainer>
       </Container>
+      <Container style={{height:"150px"}}/>
       <Footer />
     </>
   );

@@ -9,6 +9,7 @@ import myanalytics from "./images/myanalytics.png";
 import ConductDrive from "./images/drives.png";
 import Purchases from "./images/purchases.jpg";
 import mydrives from "./images/drives2.png";
+import inventory from "./images/inventory.png"
 
 export const BankServices = [
   {
@@ -40,13 +41,6 @@ export const BankServices = [
     page: "MyDrives",
   },
   {
-    image: commitmentImg,
-    name: "My Commitments",
-    description:
-      "Every commitment that you have made via RedBank services is listed here.",
-    page: "MyCommitments",
-  },
-  {
     image: Purchases,
     name: "My Purchases",
     description:
@@ -62,7 +56,7 @@ export const BankServices = [
   },
 
   {
-    image: saleImg,
+    image: inventory,
     name: "My Inventory",
     description:
       "Manage your stock of blood and other components from within the RedBank website, hassle free. ",
@@ -103,7 +97,7 @@ export const IndividualServices = [
     name: "Upcoming Drives",
     description:
       "Find a list of drives at your desired location that you can register for, to save a life.",
-    page: "ActiveDonorReq",
+    page: "UpcomingDrive",
   },
   {
     image: sentRequestImg,
@@ -165,13 +159,6 @@ export const HospitalServices = [
     page: "MyDrives",
   },
   {
-    image: commitmentImg,
-    name: "My Commitments",
-    description:
-      "Every commitment that you have made via RedBank services is listed here.",
-    page: "MyCommitments",
-  },
-  {
     image: Purchases,
     name: "My Purchases",
     description:
@@ -187,7 +174,7 @@ export const HospitalServices = [
   },
 
   {
-    image: saleImg,
+    image: inventory,
     name: "My Inventory",
     description:
       "Manage your stock of blood and other components from within the RedBank website, hassle free. ",
