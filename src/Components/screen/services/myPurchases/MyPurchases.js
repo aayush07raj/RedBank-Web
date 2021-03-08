@@ -9,13 +9,16 @@ import {
 } from "@material-ui/core";
 import { Navbar, Footer } from "../../../layouts";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import Table from "./table";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
-
     flexDirection: "column",
     margin: "auto",
     padding: theme.spacing(4),
@@ -27,14 +30,19 @@ const useStyles = makeStyles((theme) => ({
 
 function MyPurchase() {
   const [purchase, setList] = useState([]);
+  const loggedInState = useSelector((state) => state.loggedIn);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/purchase")
+      .get("http://localhost:8080/transactions/fetchpurchaseslist", {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
       .then((response) => {
-        if (response.data.success) {
-          console.log(response);
-          setList(response.data.list);
-        }
+        // if (response.data.success) {
+        console.log(response);
+        setList(response.data);
+        // }
       })
       .catch();
   }, []);
@@ -45,20 +53,23 @@ function MyPurchase() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">My Purchases</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          My Purchases
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can view all the purchases you have done since your
           registration
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
             <Table list={purchase} />
           </Grid>
         </Grid>
       </Container>
+      <Container style={{ height: "200px" }}></Container>
       <Footer />
     </>
   );

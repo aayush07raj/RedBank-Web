@@ -9,10 +9,14 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { Navbar, Footer } from "../../../layouts";
+import { useSelector } from "react-redux";
 
 import Table from "./table";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
 
@@ -28,13 +32,19 @@ const useStyles = makeStyles((theme) => ({
 function MySales() {
   const classes = useStyles();
   const [sale, setList] = useState([]);
+  const loggedInState = useSelector((state) => state.loggedIn);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/sales")
+      .get("http://localhost:8080/transactions/fetchsaleslist", {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
       .then((response) => {
-        if (response.data.success) {
-          setList(response.data.salesData);
-        }
+        // if (response.data.success) {
+        console.log(response);
+        setList(response.data);
+        // }
       })
       .catch();
   }, []);
@@ -43,19 +53,22 @@ function MySales() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">My Sales</Typography>
-        <Divider />
-        <Typography variant="h6">
-          Here you can view all the sale you have done
+        <Typography variant="h4" className={classes.heading}>
+          My Sales
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
+          Here you can view all the sale you have done and details about it
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
             <Table list={sale} />
           </Grid>
         </Grid>
       </Container>
+      <Container style={{ height: "220px" }}></Container>
       <Footer />
     </>
   );

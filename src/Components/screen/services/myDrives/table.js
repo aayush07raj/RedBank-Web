@@ -12,6 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -25,14 +26,6 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-// const handleClick = (idx) => {
-//   if (window.confirm("Are you sure ?")) {
-//     const updatedList = [...state];
-//     updatedList[index].acceptedDonors[idx].hasGivenBlood = true;
-//     setList(updatedList);
-//   }
-// };
-
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3),
@@ -40,55 +33,80 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CollapsibleTable() {
-  const [drivesList, setList] = useState([]);
-  const [acceptedDonors, setDonors] = useState([]);
   const classes = useStyles();
   const history = useHistory();
+  const [drivesList, setList] = useState([]);
+  const [donorsList, setDonors] = useState([]);
+  const [driveId, setDriveId] = useState("");
+  const loggedInState = useSelector((state) => state.loggedIn);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/mydrives").then((response) => {
-      if (response.data.success) {
-        setList(response.data.driveData);
-        console.log(response.data);
-      }
-    });
+    axios
+      .get("http://localhost:8080/mydrives/fetchdrives", {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data) {
+          setList(response.data);
+        }
+      });
 
     setDonors([]);
   }, []);
 
-  const handleClick = (driveId) => {
-    // {
-    //   headers: {
-    //     Authorization: loggedState.userToken;
-    //   }
-    // }
+  const handleDonorsList = (driveId) => {
     axios
-      .post("http://localhost:5000/donorList", { driveId })
+      .get(`http://localhost:8080/mydrives/fetchdrivedonorlist/${driveId}`, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
       .then((response) => {
-        if (response.data.success) {
-          console.log(response);
-          setDonors(response.data.acceptedDonors);
+        if (response.data[0]) {
+          setDriveId(driveId);
+          setDonors(response.data);
         }
       });
   };
 
-  const handleCancel = (idx) => {
+  const handleCancel = (idx, driveId) => {
     if (window.confirm("Are you sure ?")) {
-      const updatedList = [...drivesList];
-      updatedList[idx].cancel = true;
-      setList(updatedList);
+      axios
+        .put(
+          "http://localhost:8080/mydrives/canceldrive",
+          {
+            driveId: driveId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.data.success) {
+            const updatedList = [...drivesList];
+            updatedList[idx].status = false;
+            setList(updatedList);
+          }
+        });
     }
   };
 
   useEffect(() => {
-    if (acceptedDonors.length !== 0) {
+    if (donorsList.length !== 0) {
       history.push({
         pathname: "/acceptedDonors",
-        acceptedDonors,
+        donorsList,
+        driveId,
         setDonors,
       });
     }
-  }, [acceptedDonors]);
+  }, [donorsList]);
 
   return (
     <TableContainer component={Paper} className={classes.root}>
@@ -112,27 +130,35 @@ export default function CollapsibleTable() {
             <TableRow key={idx}>
               <TableCell align="center">{row.driveId}</TableCell>
               <TableCell align="center">
-                {row.startDate} - {row.endDate}
+
+                {row.startTimestamp.split("T")[0]} to{" "}
+                {row.endTimestamp.split("T")[0]}
               </TableCell>
               <TableCell align="center">
-                {row.startTime} - {row.endTime}
+                {row.startTimestamp.split("T")[1].split(":")[0]} :
+                {row.startTimestamp.split("T")[1].split(":")[1]} to{" "}
+                {row.endTimestamp.split("T")[1].split(":")[0]} :
+                {row.endTimestamp.split("T")[1].split(":")[1]}
               </TableCell>
               <TableCell align="center">
                 {row.address}, {row.district}, {row.state}, {row.pincode}
               </TableCell>
-              <TableCell align="center">{row.bloodGroupsInvited}</TableCell>
+
+              <TableCell align="center">{row.bloodGroups}</TableCell>
+
               <TableCell align="center">
                 <Button
                   size="small"
                   onClick={(e) => {
-                    handleClick(row.driveId);
+                    handleDonorsList(drivesList[idx].driveId);
                   }}
                 >
                   View list
                 </Button>
               </TableCell>
               <TableCell align="center">
-                {drivesList[idx].cancel ? (
+
+                {!drivesList[idx].status ? (
                   <p style={{ color: "red" }}>Canceled</p>
                 ) : new Date(row.endDate).getTime() <= new Date().getTime() ? (
                   <p style={{ color: "grey" }}>Completed</p>
@@ -151,11 +177,11 @@ export default function CollapsibleTable() {
                     size="small"
                     variant="contained"
                     onClick={(e) => {
-                      handleCancel(idx);
+                      handleCancel(idx, drivesList[idx].driveId);
                     }}
-                    disabled={drivesList[idx].cancel}
+                    disabled={!drivesList[idx].status}
                   >
-                    {drivesList[idx].cancel ? <p>Canceled</p> : <p>Cancel</p>}
+                    {drivesList[idx].status ? <p>Cancel</p> : <p>Canceled</p>}
                   </Button>
                 )}
               </TableCell>
@@ -165,4 +191,6 @@ export default function CollapsibleTable() {
       </Table>
     </TableContainer>
   );
-} 
+
+}
+

@@ -1,8 +1,10 @@
 import React from "react";
-import ProfileForm from "./profileForm";
-import OrgForm from "./orgForm";
+import IndProfile from "./indProfile";
+import HosProfile from "./hospProfile";
+import BbProfile from "./bbProfile";
 import { makeStyles, Paper } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import logging from "../../../redux/Actions/login";
 
 const useStyles = makeStyles((theme) => ({
   paperStyle: {
@@ -17,10 +19,11 @@ function Profile() {
   return (
     <>
       <Paper className={classes.paperStyle} elevation={5}>
-        <ProfileForm />
-        {/* {loggedInState.userType === 0 ? <ProfileForm /> : <>
-          {loggedInState.userType === 1 ? <OrgForm /> : <OrgForm />}
-          </>} */}
+        {loggedInState.userType === 1 ? (
+          <IndProfile />
+        ) : (
+          <>{loggedInState.userType === 2 ? <HosProfile /> : <BbProfile />}</>
+        )}
       </Paper>
     </>
   );

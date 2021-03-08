@@ -50,21 +50,36 @@ const headCells = [
     label: "Commitment type",
   },
   {
-    id: "Id",
-    label: "Id",
+    id: "driveId",
+    label: "Event Id",
+  },
+  {
+    id: "address",
+    label: "Event Address",
   },
   {
     id: "recipientType",
     label: "Recipient Type",
   },
   {
+    id: "recipientName",
+    label: "Recipient Name",
+  },
+  {
     id: "recipientContact",
     label: "Recipient Contact",
   },
-
   {
-    id: "address",
-    label: "Address",
+    id: "recipientEmail",
+    label: "Recipient Email",
+  },
+  {
+    id: "from",
+    label: "From",
+  },
+  {
+    id: "to",
+    label: "To",
   },
   {
     id: "completed",
@@ -202,25 +217,51 @@ export default function EnhancedTable({ list }) {
                   return (
                     <TableRow hover tabIndex={-1} key={row.Id}>
                       <TableCell align="center">
-                        {row.commitmentTime} on {row.commitmentDate}
+                        {row.commitmentType === "donation"
+                          ? row.commitment_timeStamp.split("T")[0]
+                          : row.dateTime.split("T")[0]}
                       </TableCell>
                       <TableCell id={index} align="center">
                         {row.commitmentType}
                       </TableCell>
                       <TableCell align="center">
-                        {row.driveId ? row.driveId : row.donationId}
+                        {row.commitmentType === "donation"
+                          ? row.donationId
+                          : row.driveId}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.recipientAddress}
                       </TableCell>
                       <TableCell align="center">{row.recipientType}</TableCell>
+                      <TableCell align="center">{row.recipientName}</TableCell>
                       <TableCell align="center">
-                        {row.recipientContact}, {row.recipientEmail}
+                        {row.recipientContact}
                       </TableCell>
-
+                      <TableCell align="center">{row.recipientEmail}</TableCell>
                       <TableCell align="center">
-                        {row.address}, {row.district}, {row.state},{" "}
-                        {row.pincode}
+                        {row.commitmentType === "donation" ? (
+                          <p>N/A</p>
+                        ) : (
+                          <p>
+                            {row.startTimeStamp.split("T")[0]},{" "}
+                            {row.startTimeStamp.split("T")[1].split(":")[0]}:{" "}
+                            {row.startTimeStamp.split("T")[1].split(":")[1]}{" "}
+                          </p>
+                        )}
                       </TableCell>
                       <TableCell align="center">
-                        {row.compeleted ? <p>Complete</p> : <p>Incomplete</p>}
+                        {row.commitmentType === "donation" ? (
+                          <p>N/A</p>
+                        ) : (
+                          <p>
+                            {row.endTimeStamp.split("T")[0]},{" "}
+                            {row.endTimeStamp.split("T")[1].split(":")[0]}:{" "}
+                            {row.endTimeStamp.split("T")[1].split(":")[1]}{" "}
+                          </p>
+                        )}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.status ? <p>Complete</p> : <p>Incomplete</p>}
                       </TableCell>
                     </TableRow>
                   );

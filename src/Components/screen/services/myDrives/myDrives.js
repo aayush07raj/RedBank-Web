@@ -13,6 +13,9 @@ import { Navbar, Footer } from "../../../layouts";
 import Table from "./table";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
 
@@ -32,20 +35,23 @@ function MyBloodDonationDrives() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">My Blood Donation Drives</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          My Blood Donation Drives
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           A section showing details of all the drives you have conducted, or
           which are yet to happen in the near future.
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
             <Table />
           </Grid>
         </Grid>
       </Container>
+      <Container style={{ height: "250px" }}/>
       <Footer />
     </>
   );

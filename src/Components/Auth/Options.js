@@ -18,14 +18,14 @@ function Options() {
   const handleSet = (e, name) => {
     var type = "";
     if (name === "individual") {
-      type = "0";
-      history.push({ pathname: "/IndividualRegistration", type });
-    } else if (name === "bloodbank") {
       type = "1";
-      history.push({ pathname: "/BloodBankRegistration", type });
-    } else {
+      history.push({ pathname: "/IndividualRegistration", type });
+    } else if (name === "hospital") {
       type = "2";
       history.push({ pathname: "/HospitalRegistration", type });
+    } else {
+      type = "3";
+      history.push({ pathname: "/BloodBankRegistration", type });
     }
   };
 

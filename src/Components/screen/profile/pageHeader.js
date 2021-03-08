@@ -8,20 +8,17 @@ import {
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: "#CCCCCC",
+  heading: {
+    marginBottom: theme.spacing(2)
+    
   },
   PageHeader: {
     diplay: "flex",
-    padding: theme.spacing(6),
-    marginBottom: theme.spacing(2),
+    padding: theme.spacing(3),
   },
 
   PageTitle: {
     paddingLeft: theme.spacing(4),
-    "& .MuiTypography-h6": {
-      opacity: "0.6",
-    },
   },
 }));
 
@@ -29,14 +26,14 @@ function PageHeader(props) {
   const classes = useStyles();
   const { title, subtitle } = props;
   return (
-    <Paper elevation={5} square className={classes.root}>
+    <Paper elevation={5} square >
       <div className={classes.PageHeader}>
         <div className={classes.PageTitle}>
-          <Typography variant="h3" component="div">
+          <Typography className={classes.heading} variant="h4" component="div">
             {title}
           </Typography>
-          <Divider />
-          <Typography variant="h6" component="div">
+          <Divider className={classes.heading} />
+          <Typography className={classes.heading} variant="h6" component="div">
             {subtitle}
           </Typography>
         </div>

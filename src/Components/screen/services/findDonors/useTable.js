@@ -17,8 +17,15 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
+import {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -48,19 +55,16 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Name",
+    id: "userid",
+    label: "User Id",
   },
-
-  { id: "addrr", numeric: true, disablePadding: false, label: "Address" },
-
   {
-    id: "bg",
-    numeric: true,
-    disablePadding: false,
-    label: "Blood Group",
+    id: "name",
+    label: "Name of Donor",
+  },
+  {
+    id: "address",
+    label: "Address of Donor",
   },
 ];
 
@@ -93,8 +97,7 @@ function EnhancedTableHead(props) {
           <TableCell
             key={headCell.id}
             style={{ fontWeight: "bold" }}
-            align="center"
-            padding={headCell.disablePadding ? "none" : "default"}
+            align="left"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -148,16 +151,39 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, data } = props;
+  const { numSelected, data, formData } = props;
+  const loggedInState = useSelector((state) => state.loggedIn);
+  const reqBody = {};
+  const history = useHistory();
 
-  function handleSend(e, data) {
-    console.log(data);
+  function handleSend() {
+    reqBody.address = formData.address;
+    reqBody.state = formData.state;
+    reqBody.district = formData.district;
+    reqBody.pincode = formData.pincode;
+    reqBody.address = formData.address;
+    reqBody.bloodGroup = formData.bloodGroup;
+    reqBody.idList = data;
+
+    console.log(formData);
+
+    axios
+      .post("http://localhost:8080/finddonors/sendnotification", reqBody, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
+      .then((response) => {
+        // if (response.data.success) {
+        // console.log(response);
+        // }
+        history.push("/home");
+        console.log("works");
+      })
+      .catch();
   }
 
-  const handleClick = () => {
-    window.alert("Notification sent.");
-  };
-
+  //data for are you sure popup dialog
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -201,6 +227,7 @@ const EnhancedTableToolbar = (props) => {
               Send
             </Button>
           </Tooltip>
+          {/* dialog for are you sure popup */}
           <Dialog
             open={open}
             onClose={handleClosed}
@@ -209,15 +236,17 @@ const EnhancedTableToolbar = (props) => {
           >
             <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
             <DialogActions>
-              <Button onClick={handleClosed} color="primary">
+              <Button onClick={handleClosed} color="inherit">
                 No
               </Button>
               <Button
                 onClick={() => {
-                  window.alert("Notification Sent");
-                  handleClosed();
+                  window.alert(
+                    "Notification sent successfully, check 'my donation requests' section for more info"
+                  );
+                  handleSend();
                 }}
-                color="primary"
+                color="inherit"
                 autoFocus
               >
                 Yes
@@ -241,6 +270,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: "100%",
     marginBottom: theme.spacing(2),
+    padding: theme.spacing(3),
   },
   table: {
     minWidth: 750,
@@ -258,7 +288,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ list }) {
+export default function EnhancedTable({ list, formData }) {
   var List = [];
   list.map((item) => {
     List.push(item);
@@ -269,7 +299,7 @@ export default function EnhancedTable({ list }) {
   const [orderBy, setOrderBy] = React.useState("contact");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -279,7 +309,7 @@ export default function EnhancedTable({ list }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = List.map((n) => n.id);
+      const newSelecteds = List.map((n) => n.userId);
       setSelected(newSelecteds);
       return;
     }
@@ -315,7 +345,7 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const isSelected = (contact) => selected.indexOf(contact) !== -1;
+  const isSelected = (userId) => selected.indexOf(userId) !== -1;
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
@@ -323,14 +353,13 @@ export default function EnhancedTable({ list }) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} data={selected} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          data={selected}
+          formData={formData}
+        />
         <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="medium"
-            aria-label="enhanced table"
-          >
+          <Table className={classes.table} size="medium">
             <EnhancedTableHead
               classes={classes}
               numSelected={selected.length}
@@ -344,17 +373,17 @@ export default function EnhancedTable({ list }) {
               {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
+                  const isItemSelected = isSelected(row.userId);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
+                      onClick={(event) => handleClick(event, row.userId)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.id}
+                      key={row.userId}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -363,9 +392,11 @@ export default function EnhancedTable({ list }) {
                           inputProps={{ "aria-labelledby": labelId }}
                         />
                       </TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.addrr}</TableCell>
-                      <TableCell align="center">{row.bg}</TableCell>
+                      <TableCell align="left">{row.userId}</TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">
+                        {row.address}, {row.district}, {row.state},{row.pincode}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -373,7 +404,7 @@ export default function EnhancedTable({ list }) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[15, 20, 25]}
           component="div"
           count={List.length}
           rowsPerPage={rowsPerPage}

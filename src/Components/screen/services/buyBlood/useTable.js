@@ -50,15 +50,15 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
+  { id: "bbId", numeric: false, disablePadding: false, label: "Blood Bank Id" },
   {
     id: "name",
     numeric: false,
     disablePadding: false,
     label: "Name",
   },
-  { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
-  { id: "address", numeric: true, disablePadding: false, label: "Address" },
-  { id: "price", numeric: true, disablePadding: false, label: "Price (Rs.)" },
+  { id: "contact", numeric: false, disablePadding: false, label: "Contact" },
+  { id: "price", numeric: false, disablePadding: false, label: "Price (Rs.)" },
   { id: "actions", label: "Actions", disableSorting: false },
 ];
 
@@ -156,6 +156,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: "100%",
     marginBottom: theme.spacing(2),
+    padding: theme.spacing(2),
   },
   table: {
     minWidth: 750,
@@ -203,26 +204,24 @@ export default function EnhancedTable({ list, bg, component, units }) {
     setPage(0);
   };
 
-  const [iota, setBuybtn] = React.useState({
-    bg: bg,
-    component: component,
-    units: units,
-    amount: "220",
-  });
+  // const [iota, setBuybtn] = React.useState({
+  //   bg: bg,
+  //   component: component,
+  //   units: units,
+  //   amount: units * List.price,
+  // });
 
-  const handleClick = (event, price) => {
+  const handleClick = (event, price, bbId) => {
     event.preventDefault();
     history.push({
       pathname: "/BuyBlood/Product",
-      iota,
+      bg,
+      component,
       price,
+      units,
+      bbId,
     });
   };
-
-  const isSelected = (contact) => selected.indexOf(contact) !== -1;
-
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -245,33 +244,21 @@ export default function EnhancedTable({ list, bg, component, units }) {
               {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.bbId}
                     >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        align="center"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="center">{row.contact}</TableCell>
-                      <TableCell align="center">
-                        {row.address}, {row.district}, {row.state},{" "}
-                        {row.pincode}
-                      </TableCell>
+                      <TableCell align="center">{row.bbId}</TableCell>
+                      <TableCell align="center">{row.bbName}</TableCell>
+                      <TableCell align="center">{row.phoneNo}</TableCell>
                       <TableCell align="center">{row.price}</TableCell>
                       <TableCell align="center">
                         <Button
                           onClick={(event) => {
-                            handleClick(event, row.price);
+                            handleClick(event, row.price, row.bbId);
                           }}
                           type="button"
                           variant="contained"

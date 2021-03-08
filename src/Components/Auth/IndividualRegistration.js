@@ -10,20 +10,43 @@ import {
   Checkbox,
   Button,
   Typography,
+  FormHelperText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import individual from "./images/individual.png";
-import states from "./states.json";
-import Joi from "joi";
+import states from "../screen/profile/states.json";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import { useSelector, useDispatch } from "react-redux";
 import registerIndividual from "../../redux/Actions/registerIndividual";
 import axios from "axios";
-import logging from "../../redux/Actions/login";
+import { logging } from "../../redux/Actions/login";
+import Cookies from "universal-cookie";
 
 function IndividualRegistration(props) {
   const [data, setData] = useState({
+    name: "",
+    email: "",
+    dob: "2021-03-01",
+    phone: "",
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    bloodGroup: "",
+    password: "",
+    cPassword: "",
+    terms: false,
+  });
+
+  const reqBody = {};
+
+  const [errors, setErrors] = useState({
     name: "",
     email: "",
     dob: "",
@@ -32,16 +55,14 @@ function IndividualRegistration(props) {
     state: "",
     district: "",
     pincode: "",
-    bg: "",
+    bloodGroup: "",
     password: "",
     cPassword: "",
-    terms: false,
+    terms: "",
   });
 
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
   const history = useHistory();
-  const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
@@ -54,124 +75,146 @@ function IndividualRegistration(props) {
   };
   const margin = { marginTop: "15px" };
 
-  const validateProperty = ({ name, value }) => {
-    const inputField = { [name]: value };
-    const fieldSchema = Joi.object({ [name]: schema[name] });
-    const { error } = fieldSchema.validate(inputField);
-    return error ? error.details[0].message : null;
-  };
-
   const validate = () => {
-    const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(data, {
-      abortEarly: false,
-    });
+    const strongRegex = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+    );
+    const errors = {};
 
-    if (!error) return null;
-
-    const allErrors = {};
-    for (let err of error.details) {
-      allErrors[err.path[0]] = err.message;
+    if (
+      data.name.trim() === "" ||
+      data.name.trim().length < 3 ||
+      data.name.trim().length > 20
+    ) {
+      errors.name = " Username is either empty or invalid ";
     }
-    return allErrors;
+    if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email.trim())) {
+      errors.email = "Email is either empty or invalid";
+    }
+    if (data.address.trim() === "") {
+      errors.address = "Address cannot be empty";
+    }
+    if (data.state === "") {
+      errors.state = "State cannot be empty";
+    }
+    if (data.bloodGroup === "") {
+      errors.bloodGroup = "Blood Group cannot be empty";
+    }
+    if (data.district === "") {
+      errors.district = "District cannot be empty";
+    }
+    if (!/^[1-9][0-9]{5}$/.test(data.pincode.trim())) {
+      errors.pincode = "Invalid pincode format";
+    }
+    if (!strongRegex.test(data.password.trim())) {
+      errors.password = "Enter a stronger password";
+    }
+    if (data.cPassword !== data.password || data.cPassword === "") {
+      errors.cPassword = "Password is either empty or Passwords do not match";
+    }
+    if (!data.terms) {
+      errors.terms = "Please accept our terms and conditions";
+    }
+
+    let age = new Date().getFullYear() - new Date(data.dob).getFullYear();
+    const m = new Date().getMonth() - new Date(data.dob).getMonth();
+    if (
+      m < 0 ||
+      (m === 0 && new Date().getDate() < new Date(data.dob).getDate())
+    ) {
+      age--;
+    }
+    if (age < 18 || age > 65) {
+      errors.dob = "User must be between 18 and 65 of age";
+    }
+
+    if (!/^\d{10}$/.test(data.phone.trim())) {
+      errors.phone = "Invalid Phone number";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "state") {
-      setEnable(false);
-      setSelectedStateIndex(
-        states.states.findIndex((item) => item.state === value)
-      );
-    }
-
-    const allErrors = { ...errors };
-    const errorMsg = validateProperty(e.target);
-    if (errorMsg) {
-      allErrors[name] = errorMsg;
+    if (name === "terms") {
+      const updatedData = { ...data };
+      updatedData[e.target.name] = e.target.checked;
+      setData(updatedData);
     } else {
-      delete allErrors[name];
+      if (name === "state") {
+        setEnable(false);
+        setSelectedStateIndex(
+          states.states.findIndex((item) => item.state === value)
+        );
+      }
+      const updatedData = { ...data };
+      updatedData[name] = value;
+      setData(updatedData);
     }
-    const updatedData = { ...data };
-    updatedData[name] = value;
-    setData(updatedData);
-    setErrors(allErrors);
-  };
-
-  const handleTermsCheck = (e) => {
-    const updatedData = { ...data };
-    updatedData[e.target.name] = e.target.checked;
-    const allErrors = { ...errors };
-    setData(updatedData);
-    setErrors(allErrors);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(data);
     const errors = validate();
-    setErrors({ errors: errors || {} });
+    console.log(errors);
+    setErrors(errors);
     if (errors) return;
 
+    // making a request object to send to the backend
+    reqBody.name = data.name;
+    reqBody.email = data.email;
+    reqBody.dob = new Date(data.dob).toLocaleDateString();
+    reqBody.phone = data.phone;
+    reqBody.address = data.address;
+    reqBody.state = data.state;
+    reqBody.district = data.district;
+    reqBody.pincode = data.pincode;
+    reqBody.bloodGroup = data.bloodGroup;
+    reqBody.password = data.password;
+
     axios
-      .post("http://localhost:5000/login", {
-        email: data.email,
-        password: data.password,
-      })
+      .post("http://localhost:8080/registerind", reqBody)
       .then(function (response) {
-        if (response.data.success) {
+        if (response.data.userToken) {
           dispatch(
-            logging({ isLoggedIn: true, userType: props.location.type })
+            logging({
+              isLoggedIn: true,
+              userType: response.data.userType,
+              userToken: response.data.userToken,
+              userId: response.data.userId,
+            })
+          );
+          const cookies = new Cookies();
+          cookies.set(
+            "Auth",
+            {
+              userType: response.data.userType,
+              userToken: response.data.userToken,
+              userId: response.data.userId,
+            },
+            { path: "/" }
           );
           history.push("/home");
         } else {
-          console.log(response.data.error);
-          if (response.data.error.includes("email")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              email: response.data.error,
-            }));
-          } else if (response.data.error.includes("password")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              password: response.data.error,
-            }));
-          }
+          handleClickOpen();
         }
       })
       .catch(function (error) {
         window.alert(error.message);
       });
-
-    // dispatch(registerIndividual(data));
-    // history.push("/home");
   };
 
-  const schema = {
-    name: Joi.string().min(3).max(30).required(),
-    email: Joi.string()
-      .email({ minDomainSegments: 2, tlds: { allow: ["com", "in"] } })
-      .required(),
-    dob: Joi.date()
-      .less("1-1-2003")
-      .message("must be between 18-56 years")
-      .greater("1-1-1957")
-      .message("must be between 18-56 years"),
-    phone: Joi.number().min(10).positive().required(),
-    address: Joi.string().required(),
-    state: Joi.string().required(),
-    district: Joi.string().required(),
-    pincode: Joi.number()
-      .positive()
-      .min(6)
-      .message("Pincode must contain 6 digits")
-      .required(),
-    bg: Joi.required(),
-    password: Joi.string()
-      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-      .message("Enter a stronger password")
-      .required(),
-    cPassword: Joi.ref("password"),
-    terms: Joi.boolean().required().invalid(false),
+  // dialog for already registered email
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -219,10 +262,8 @@ function IndividualRegistration(props) {
                 helperText={errors && errors.email ? errors.email : null}
               />
 
-              <InputLabel style={{ marginTop: "35px" }}>
-                Date of Birth
-              </InputLabel>
               <TextField
+                label="Date of Birth"
                 type="date"
                 fullWidth
                 style={margin}
@@ -262,37 +303,51 @@ function IndividualRegistration(props) {
                 helperText={errors && errors.address ? errors.address : null}
               />
 
-              <FormControl style={margin}>
-                <InputLabel>State</InputLabel>
+              <FormControl
+                style={margin}
+                error={errors && errors.state ? true : false}
+              >
+                <InputLabel>Select required State</InputLabel>
                 <Select
+                  label="Select required State"
                   name="state"
                   onChange={handleChange}
                   value={data.state}
-                  error={errors && errors.state}
-                  helperText={errors && errors.state ? errors.state : null}
                 >
-                  {states.states.map((item) => (
-                    <MenuItem value={item.state}>{item.state}</MenuItem>
+                  {states.states.map((item, id) => (
+                    <MenuItem value={item.state} key={id}>
+                      {item.state}
+                    </MenuItem>
                   ))}
                 </Select>
+                <FormHelperText>
+                  {errors && errors.state ? errors.state : null}
+                </FormHelperText>
               </FormControl>
 
-              <FormControl style={margin}>
-                <InputLabel>District</InputLabel>
+              <FormControl
+                style={margin}
+                error={errors && errors.district ? true : false}
+              >
+                <InputLabel>Select required District</InputLabel>
                 <Select
+                  label="Select required District"
                   inputProps={{ readOnly: enable }}
                   name="district"
-                  onChange={handleChange}
                   value={data.district}
-                  error={errors && errors.district}
-                  helperText={
-                    errors && errors.district ? errors.district : null
-                  }
+                  onChange={handleChange}
                 >
-                  {states.states[selectedStateIndex].districts.map((item) => (
-                    <MenuItem value={item}>{item}</MenuItem>
-                  ))}
+                  {states.states[selectedStateIndex].districts.map(
+                    (item, id) => (
+                      <MenuItem key={id} value={item}>
+                        {item}
+                      </MenuItem>
+                    )
+                  )}
                 </Select>
+                <FormHelperText>
+                  {errors && errors.district ? errors.district : null}
+                </FormHelperText>
               </FormControl>
 
               <TextField
@@ -311,12 +366,17 @@ function IndividualRegistration(props) {
                 helperText={errors && errors.pincode ? errors.pincode : null}
               />
 
-              <FormControl style={margin}>
-                <InputLabel>Blood Group</InputLabel>
-                <Select name="bg" onChange={handleChange} value={data.bg}>
-                  error={errors && errors.bg}
-                  helperText=
-                  {errors && errors.bg ? errors.bg : null}
+              <FormControl
+                style={margin}
+                error={errors && errors.bloodGroup ? true : false}
+              >
+                <InputLabel>Select required Blood Group</InputLabel>
+                <Select
+                  label="Select required Blood Group"
+                  name="bloodGroup"
+                  onChange={handleChange}
+                  value={data.bloodGroup}
+                >
                   <MenuItem value={"A+"}>A+</MenuItem>
                   <MenuItem value={"A-"}>A-</MenuItem>
                   <MenuItem value={"B+"}>B+</MenuItem>
@@ -326,6 +386,9 @@ function IndividualRegistration(props) {
                   <MenuItem value={"O+"}>O+</MenuItem>
                   <MenuItem value={"O-"}>O-</MenuItem>
                 </Select>
+                <FormHelperText>
+                  {errors && errors.bloodGroup ? errors.bloodGroup : null}
+                </FormHelperText>
               </FormControl>
 
               <TextField
@@ -350,24 +413,23 @@ function IndividualRegistration(props) {
                 name="cPassword"
                 value={data.cPassword}
                 onChange={handleChange}
-                error={data.password !== data.cPassword ? true : false}
+                inputProps={{
+                  maxLength: 30,
+                }}
+                error={errors && errors.cPassword ? true : false}
                 helperText={
-                  data.password !== data.cPassword
-                    ? "passwords do not match"
-                    : null
+                  errors && errors.cPassword ? errors.cPassword : null
                 }
               />
 
               <FormControlLabel
                 style={margin}
-                control={
-                  <Checkbox
-                    onChange={handleTermsCheck}
-                    inputProps={{ required: true }}
-                    name="terms"
-                  />
+                control={<Checkbox onChange={handleChange} name="terms" />}
+                label={
+                  errors && errors.terms
+                    ? errors.terms
+                    : "Accept Terms and Conditions"
                 }
-                label="Accept Terms and Conditions"
               />
               <Link
                 to="/terms"
@@ -380,7 +442,6 @@ function IndividualRegistration(props) {
                 variant="contained"
                 style={{ backgroundColor: "#E94364", marginTop: "20px" }}
                 type="submit"
-                disabled={validate()}
                 onClick={handleSubmit}
               >
                 Sign up
@@ -391,6 +452,22 @@ function IndividualRegistration(props) {
               </Typography>
             </Paper>
           </form>
+
+          {/* dialog for already registered email */}
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Email already exists</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Entered email is already registered with us, enter some other
+                email.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Grid>
     </>

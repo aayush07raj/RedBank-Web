@@ -3,30 +3,27 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Logo from "./logo.svg";
+import Divider from "@material-ui/core/Divider";
+import FacebookIcon from '@material-ui/icons/Facebook';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import YouTubeIcon from '@material-ui/icons/YouTube';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '40vh',
-  },
   logo:{
     height:100,
-    marginLeft: theme.spacing(10)
+    // marginLeft: theme.spacing(10)
   },
   text:{
     textAlign: "center",
-    color: "#FFFFFF"
-  },
-  list:{
-    padding: theme.spacing(3, 2),
     color: "#FFFFFF"
   },
   footer: {
     padding: theme.spacing(3, 2),
     marginTop: 'auto',
     backgroundColor: "#E94364",
-    height:'20vh'
+    maxWidth:"100%"
   },
 }));
 
@@ -34,45 +31,50 @@ function Footer() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <footer className={classes.footer}>
-        <Grid container spacing={3}>
-       
-        <Grid item xs={4}>
-          <img src={Logo} alt="logo" className={classes.logo} />
-        </Grid>
-       
-       
-        <Grid item xs={2}  className={ classes.list}>
-          <ul>Contact Us</ul>
-          <li>Facebook</li>
-          <li>Linkedin</li>
-          <li>Instagram</li>
-        </Grid>
-       
-       
-        <Grid item xs={3}>
-          <Typography className={classes.text}>
+    <div position="static" className={classes.footer} style={{paddingTop:"50px",marginTop:"140px", margin:"auto", textAlign:"center" }} >
+      <Grid container  spacing={2}>
+      <Grid xs={12} sm={3} md={3}>
+        <Typography  gutterBottom color={"textSecondary"}>
+        <img src={Logo} alt="logo" className={classes.logo} />
+        </Typography>
+      </Grid>
+      
+      <Grid item xs={12} sm={3} md={3}>
+        <Typography align={"center"} className={classes.text} gutterBottom >
+             <ul className={classes.text}>Contact Us</ul>
+             <ul><Button className={classes.text} startIcon={<FacebookIcon/>} > Facebook </Button></ul>
+             <ul><Button className={classes.text} startIcon={<LinkedInIcon/>}>Linkedin</Button></ul>
+             <ul><Button className={classes.text} startIcon={<InstagramIcon/>}>Instagram</Button></ul>
+             <ul><Button className={classes.text} startIcon={<YouTubeIcon/>}>Youtube</Button></ul>
+        </Typography>
+      </Grid>
+      <Grid item xs={12} sm={3} md={3}>
+        <Typography align={"center"} gutterBottom color={"textSecondary"} className={classes.text}>
               About
-              <ul>Lorem lipsum For a Better</ul>
-              <ul> World crap phrase lorem lipsum</ul>
+              <ul>Through this app you can </ul>
+              <ul>share Happiness to the one</ul>
+              <ul>who are in need, Donate Blood,</ul>
+              <ul>Donate Happiness.</ul>
           </Typography>
-        </Grid>
-       
-       
-        <Grid item xs={3} className={classes.text}>
-          Services
-          <ul> </ul>
-          <ul>Buy Blood</ul>
-          <ul>Find Donors</ul>
-          <ul>Active Donor Request</ul>
-          <ul>My Purchases </ul>
+      </Grid>
 
-        </Grid>
-        </Grid>
-      </footer>
+      <Grid item xs={12} sm={3} md={3}>
+        <Typography align={"center"} gutterBottom className={classes.text} >
+          <ul className={classes.text}>SERVICES OFFERED</ul>
+          <ul><Button className={classes.text}>Buy Blood</Button></ul>
+          <ul><Button className={classes.text}>Find Donors</Button></ul>
+          <ul><Button className={classes.text}>Active Donor Request</Button></ul>
+          <ul><Button className={classes.text}>My Purchases</Button></ul>
+        </Typography>
+      </Grid>
+    </Grid>
+    <Divider style={{ margin:"24px auto",width:60}}/>
+      <Typography className={classes.text}>
+        © Copyright 2021
+      </Typography>
     </div>
-  );
+  
+  )
 }
 
 export default Footer;

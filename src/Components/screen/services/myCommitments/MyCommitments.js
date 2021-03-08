@@ -9,10 +9,14 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { Navbar, Footer } from "../../../layouts";
+import { useDispatch, useSelector } from "react-redux";
 
 import Table from "./table";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
 
@@ -28,13 +32,19 @@ const useStyles = makeStyles((theme) => ({
 function MyCommitments() {
   const classes = useStyles();
   const [commitmentsList, setList] = useState([]);
+  const loggedInState = useSelector((state) => state.loggedIn);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/commitments")
+      .get("http://localhost:8080/commitment", {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
       .then((response) => {
-        if (response.data.success) {
-          setList(response.data.commitmentsList);
-        }
+        // if (response.data.success) {
+        console.log(response);
+        setList(response.data);
+        // }
       })
       .catch();
   }, []);
@@ -43,20 +53,23 @@ function MyCommitments() {
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">My Commitments</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          My Commitments
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can view all the types of donations you have done since your
           registration
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
             <Table list={commitmentsList} />
           </Grid>
         </Grid>
       </Container>
+      <Container style={{ height: "220px" }}></Container>
       <Footer />
     </>
   );

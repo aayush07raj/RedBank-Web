@@ -7,19 +7,29 @@ import {
   FormControl,
   InputLabel,
   Select,
+  FormHelperText,
   MenuItem,
   TextField,
   Divider,
   Typography,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
 } from "@material-ui/core";
 import { Navbar, Footer } from "../../../layouts/";
 import statesData from "../../../Auth/states.json";
 import Table from "./useTable";
 import Joi from "joi";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     marginTop: theme.spacing(8),
     padding: theme.spacing(5),
@@ -29,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
   },
   papers: {
     width: "100%",
-
     flexDirection: "column",
     margin: "auto",
     padding: theme.spacing(4),
@@ -47,32 +56,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FindDonors() {
+function BuyBlood() {
   const [data, setData] = useState({
     state: "",
     district: "",
     pincode: "",
-    bg: [],
-    component: [],
+    bg: "",
+    component: "",
     units: "",
   });
 
   const [list, setList] = useState([]);
-
+  const loggedInState = useSelector((state) => state.loggedIn);
   const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
   const classes = useStyles();
   const regex = /^[0-9]*$/;
-
-  const schema = {
-    state: Joi.required(),
-    district: Joi.required(),
-    pincode: Joi.required(),
-    bg: Joi.required(),
-    component: Joi.string().required(),
-    units: Joi.number().required(),
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,70 +84,84 @@ function FindDonors() {
       );
     }
 
-    const allErrors = { ...errors };
-    const errorMsg = validateProperty(e.target);
-    if (errorMsg) {
-      allErrors[name] = errorMsg;
-    } else {
-      delete allErrors[name];
-    }
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
-    setErrors(allErrors);
-  };
-
-  const validateProperty = ({ name, value }) => {
-    const inputField = { [name]: value };
-    const fieldSchema = Joi.object({ [name]: schema[name] });
-    const { error } = fieldSchema.validate(inputField);
-    return error ? error.details[0].message : null;
   };
 
   const validate = () => {
-    const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(data, {
-      abortEarly: false,
-    });
+    const errors = {};
 
-    if (!error) return null;
-
-    const allErrors = {};
-    for (let err of error.details) {
-      allErrors[err.path[0]] = err.message;
+    if (data.bg.trim() === "") {
+      errors.bg = "Bloood Group cannot be empty";
     }
-    return allErrors;
+    if (data.component.trim() === "") {
+      errors.component = "Component cannot be empty";
+    }
+    if (data.units.trim() === "") {
+      errors.units = "Units cannot be empty";
+    }
+    if (data.component.trim() === "") {
+      errors.component = "Component cannot be empty";
+    }
+    return Object.keys(errors).length === 0 ? null : errors;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(data);
-  };
-
-  const forAxios = (e) => {
-    e.preventDefault();
     const errors = validate();
-
-    setErrors({ errors: errors || {} });
+    setErrors(errors);
     if (errors) return;
 
     axios
-      .get("http://localhost:5000/buybloodlist")
+      .post(
+        "http://localhost:8080/buyblood/findbb",
+        {
+          bloodGroup: data.bg,
+          component: data.component,
+          reqUnits: data.units,
+          state: data.state,
+          district: data.district,
+          pincode: data.pincode,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
       .then((response) => {
-        if (response.data.success) {
-          setList(response.data.list);
+        if (response.data.length != 0) {
+          console.log(response);
+          setList(response.data);
+        } else {
+          handleClickOpen();
         }
       })
       .catch();
+  };
+
+  // state for no results dialog
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4">Buy Blood</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          Buy Blood
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can search nearest blood bank and buy items as per your
           requirement. Fill the parameters and click on search.
         </Typography>
@@ -155,10 +169,14 @@ function FindDonors() {
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
-            <form onSubmit={handleSubmit}>
+            <form>
               <Paper className={classes.paper} elevation={5}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel>Select required Blood Group *</InputLabel>
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.bg ? true : false}
+                >
+                  <InputLabel>Select required Blood Group</InputLabel>
                   <Select
                     label="Select required Blood Group"
                     name="bg"
@@ -176,9 +194,16 @@ function FindDonors() {
                     <MenuItem value={"O+"}>O+</MenuItem>
                     <MenuItem value={"O-"}>O-</MenuItem>
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.bg ? errors.bg : null}
+                  </FormHelperText>
                 </FormControl>
 
-                <FormControl variant="outlined" className={classes.formControl}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.component ? true : false}
+                >
                   <InputLabel>Select Component *</InputLabel>
                   <Select
                     label="Select Component"
@@ -194,6 +219,9 @@ function FindDonors() {
                     <MenuItem value={"Plasma"}>Plasma</MenuItem>
                     <MenuItem value={"Platelets"}>Platelets</MenuItem>
                   </Select>
+                  <FormHelperText>
+                    {errors && errors.component ? errors.component : null}
+                  </FormHelperText>
                 </FormControl>
 
                 <TextField
@@ -270,25 +298,38 @@ function FindDonors() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
-                  disabled={validate() ? true : false}
-                  onClick={forAxios}
+                  onClick={handleSubmit}
                 >
                   Search
                 </Button>
               </Paper>
             </form>
+            {/* dialog for results */}
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>{"No results found"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Either there are no blood banks found in the selected
+                  location, or they dont meet your requirements.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
+
           <Grid item xs={12} className={classes.tableContainer}>
-            {list.length === 0 ? (
-              <h3 align="center">Results will be displayed here</h3>
-            ) : (
+            {list.length !== 0 ? (
               <Table
                 list={list}
                 bg={data.bg}
                 component={data.component}
                 units={data.units}
               />
-            )}
+            ) : null}
           </Grid>
         </Grid>
       </Container>
@@ -297,4 +338,4 @@ function FindDonors() {
   );
 }
 
-export default FindDonors;
+export default BuyBlood;

@@ -13,6 +13,9 @@ import axios from "axios";
 import Table from "./useTable";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
 
@@ -25,40 +28,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FindDonors() {
+function MyDonationReq() {
   const classes = useStyles();
-  const [active , setList] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/donorlist")
-      .then((response) => {
-        if (response.data.success) {
-          setList(response.data.list);
-        }
-      })
-      .catch();
-  }, []);
 
   return (
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">Active Donor Request</Typography>
-        <Divider />
-        <Typography variant="h6">
+        <Typography variant="h4" className={classes.heading}>
+          My Donation Request
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can view all your sent request for donors
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
-            <Table list={active} />
+            <Table />
           </Grid>
         </Grid>
       </Container>
+      <Container style={{ height: "220px" }}></Container>
       <Footer />
     </>
   );
 }
 
-export default FindDonors;
+export default MyDonationReq;

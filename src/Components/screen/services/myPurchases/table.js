@@ -46,37 +46,59 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "date",
+    id: "dateOfTransaction",
     numeric: true,
     disablePadding: false,
     label: "Date of purchase",
   },
   {
-    id: "name",
+    id: "purchaseId",
     numeric: false,
-    disablePadding: true,
-    label: "Name of Blood Bank",
-  },
-
-  {
-    id: "bg",
-    numeric: true,
     disablePadding: false,
-    label: "Blood Group purchased",
+    label: "Purchase Id",
   },
   {
-    id: "component",
-    numeric: true,
+    id: "soldComponent",
+    numeric: false,
     disablePadding: false,
     label: "Component purchased",
   },
   {
-    id: "units",
+    id: "soldGroup",
+    numeric: false,
+    disablePadding: false,
+    label: "Blood Group purchased",
+  },
+  {
+    id: "pricePerUnit",
+    numeric: false,
+    disablePadding: false,
+    label: "Price/Unit",
+  },
+  {
+    id: "soldQuantity",
     numeric: true,
     disablePadding: false,
     label: "Units purchased",
   },
-  { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
+  {
+    id: "sellerName",
+    numeric: false,
+    disablePadding: false,
+    label: "Seller Name",
+  },
+  {
+    id: "sellerContact",
+    numeric: false,
+    disablePadding: false,
+    label: "Seller Contact",
+  },
+  {
+    id: "sellerEmail",
+    numeric: false,
+    disablePadding: false,
+    label: "Seller Email",
+  },
   {
     id: "amount",
     numeric: true,
@@ -174,7 +196,7 @@ export default function EnhancedTable({ list }) {
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("date");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -216,14 +238,21 @@ export default function EnhancedTable({ list }) {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
-                    <TableRow hover tabIndex={-1} key={row.name}>
-                      <TableCell align="center">{row.date}</TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.bg}</TableCell>
-                      <TableCell align="center">{row.component}</TableCell>
-                      <TableCell align="center">{row.units}</TableCell>
-                      <TableCell align="center">{row.contact}</TableCell>
-                      <TableCell align="center">{row.amount}</TableCell>
+                    <TableRow hover tabIndex={-1} key={index}>
+                      <TableCell align="center">
+                        {row.dateOfTransaction.split("T")[0]}
+                      </TableCell>
+                      <TableCell align="center">{row.purchaseId}</TableCell>
+                      <TableCell align="center">{row.soldComponent}</TableCell>
+                      <TableCell align="center">{row.soldGroup}</TableCell>
+                      <TableCell align="center">{row.pricePerUnit}</TableCell>
+                      <TableCell align="center">{row.soldQuantity}</TableCell>
+                      <TableCell align="center">{row.sellerName}</TableCell>
+                      <TableCell align="center">{row.sellerContact}</TableCell>
+                      <TableCell align="center">{row.sellerEmail}</TableCell>
+                      <TableCell align="center">
+                        {row.pricePerUnit * row.soldQuantity}{" "}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

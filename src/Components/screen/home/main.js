@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Box, Container, Grid } from "@material-ui/core/";
+import { Typography, Box, Container, Grid, Divider } from "@material-ui/core/";
 import { Navbar, Footer } from "../../layouts";
 import ServiceCard from "./serviceCard";
 import { useDispatch, useSelector } from "react-redux";
 import logging from "../../../redux/Actions/login";
-import IndividualServices from "./services/indiServices";
-import BankServices from "./services/BankServices";
-import HospitalServices from "./services/HospitalServices";
+import {
+  BankServices,
+  IndividualServices,
+  HospitalServices,
+} from "./services/Services";
+import axios from "axios";
+import BloodTable from "../about/bloodCompatibilityTable";
 
 const useStyles = makeStyles((theme) => ({
+  space: {
+    marginBottom: theme.spacing(5),
+  },
+  bloodTable: {
+    paddingTop: theme.spacing(3),
+    marginTop: theme.spacing(3),
+  },
   hero: {
     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://unblast.com/wp-content/uploads/2020/04/Female-Doctor-Vector-Illustration.jpg')`,
     height: "600px",
@@ -37,6 +48,31 @@ function Main() {
   const classes = useStyles();
   const loggedInState = useSelector((state) => state.loggedIn);
 
+  const [notify, setNotify] = React.useState("");
+  const [name, setName] = React.useState("");
+
+  useEffect(() => {
+    if (loggedInState.userType === 1) {
+      axios
+        .get("http://localhost:8080/profile/fetchuserprofile", {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        })
+        .then((response) => {
+          setName(response.data.name);
+          if (response.data.donorStatus === 1) {
+            setNotify("Active");
+          } else if (response.data.donorStatus === 0) {
+            setNotify("Inactive");
+          } else {
+            setNotify("Disabled");
+          }
+        })
+        .catch();
+    }
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -48,10 +84,24 @@ function Main() {
         <Container maxWidth="lg" className={classes.blogsContainer}>
           <Grid container spacing={8} justify="flex-start">
             <Grid item xs={12} align="center">
-              <Typography variant="h4">Services provided</Typography>
+              {loggedInState.userType === 1 ? (
+                <Typography variant="h4" className={classes.space}>
+                  Hello{" "}
+                  <span style={{ color: "#E94364", fontWeight: "bold" }}>
+                    {name}
+                  </span>
+                  , your current donation status :{" "}
+                  <span style={{ color: "#E94364", fontWeight: "bold" }}>
+                    {notify}
+                  </span>
+                </Typography>
+              ) : null}
+
+              <Divider className={classes.space} />
+              <Typography variant="h4">Services provided by us</Typography>
             </Grid>
 
-            {loggedInState.userType === 0 ? (
+            {loggedInState.userType === 1 ? (
               <>
                 {IndividualServices.map((item, idx) => (
                   <Grid item xs={12} sm={6} md={3}>
@@ -67,7 +117,7 @@ function Main() {
               </>
             ) : (
               <>
-                {loggedInState.userType === 1 ? (
+                {loggedInState.userType === 3 ? (
                   <>
                     {BankServices.map((item, idx) => (
                       <Grid item xs={12} sm={6} md={3}>
@@ -98,6 +148,19 @@ function Main() {
                 )}
               </>
             )}
+          </Grid>
+
+          <Grid className={classes.bloodTable} container justify="center">
+            <Grid item xs={6}>
+              <Typography
+                variant="h5"
+                align="center"
+                style={{ padding: "20px" }}
+              >
+                Blood Compatibility Table
+              </Typography>
+              <BloodTable />
+            </Grid>
           </Grid>
         </Container>
       </div>

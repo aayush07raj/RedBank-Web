@@ -1,181 +1,204 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import login from "./images/login.png";
-import avatar from "./images/avatar.png";
-import { Grid, Paper, TextField, Button, Typography } from "@material-ui/core";
-import LoggedOutNavbar from "../layouts/loggedoutNavbar";
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Grid,
+  makeStyles,
+  Paper,
+  FormControl,
+  InputLabel,
+  Select,
+  Divider,
+  Typography,
+  MenuItem,
+  TextField,
+  Button,
+  FormHelperText,
+} from "@material-ui/core";
+
+import statesData from "./states.json";
 import Joi from "joi";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
-function Login() {
-  const history = useHistory();
-
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({});
-
-  const paperStyle = {
+const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    padding: theme.spacing(5),
+    width: "550px",
     display: "flex",
-    width: 380,
     flexDirection: "column",
-    padding: "30px",
-  };
+  },
+  papers: {
+    width: "100%",
 
-  const margin = { marginTop: "20px" };
+    flexDirection: "column",
+    margin: "auto",
+    padding: theme.spacing(4),
+  },
+  formControl: {
+    marginTop: theme.spacing(3),
+    minWidth: 250,
+  },
+  tableContainer: {
+    marginTop: theme.spacing(9),
+    marginBottom: theme.spacing(3),
+  },
+  tables: {
+    padding: theme.spacing(3),
+  },
+}));
 
-  const schema = {
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "in"] },
-    }),
-    password: Joi.string()
-      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-      .message("Enter a stronger password")
-      .required(),
-  };
+function UpcomingDrive() {
+  const [data, setData] = useState({
+    state: "",
+    district: "",
+    pincode: "",
+  });
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    const errors = validate();
-
-    setErrors({ errors: errors || {} });
-    if (errors) return;
-
-    // axios
-    //   .post("http://localhost:5000/login", {
-    //     email: state.data.email,
-    //     password: state.data.password,
-    //   })
-    //   .then((response) => {
-    //     console.log(state);
-    //     console.log(response);
-    //     setState(!state.isLoggedIn);
-    //   });
-
-    // history.push("/home");
-    console.log(data);
-  };
-
-  const validateProperty = ({ name, value }) => {
-    const inputField = { [name]: value };
-    const fieldSchema = Joi.object({ [name]: schema[name] });
-    const { error } = fieldSchema.validate(inputField);
-    return error ? error.details[0].message : null;
-  };
-
-  const validate = () => {
-    const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(data, {
-      abortEarly: false,
-    });
-
-    if (!error) return null;
-
-    const allErrors = {};
-    for (let err of error.details) {
-      allErrors[err.path[0]] = err.message;
-    }
-    return allErrors;
-  };
+  const regex = /^[0-9]*$/;
+  const [driveList, setState] = useState([]);
+  const loggedInState = useSelector((state) => state.loggedIn);
+  const [errors, setErrors] = useState({});
+  const [enable, setEnable] = useState(true);
+  const [selectedStateIndex, setSelectedStateIndex] = useState(0);
+  const classes = useStyles();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    const allErrors = { ...errors };
-    const errorMsg = validateProperty(e.target);
-    if (errorMsg) {
-      allErrors[name] = errorMsg;
-    } else {
-      delete allErrors[name];
+    if (name === "state") {
+      setEnable(false);
+      setSelectedStateIndex(
+        statesData.states.findIndex((item) => item.state === value)
+      );
     }
+
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
-    setErrors(allErrors);
+  };
+
+  const validate = () => {
+    const errors = {};
+
+    if (data.state === "") {
+      errors.state = "State cannot be empty";
+    }
+    if (data.district === "") {
+      errors.district = "District cannot be empty";
+    }
+    if (!regex.test(data.pincode)) {
+      errors.pincode = "Invalid pincode format";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(data);
+    const errors = validate();
+    console.log(errors);
+    setErrors(errors);
+    if (errors) return;
+
+    // axios
+    //   .post("http://localhost:8080/upcomingdrives/fetchdriveslist", data, {
+    //     headers: {
+    //       Authorization: "Bearer " + loggedInState.userToken,
+    //     },
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+    //     setState(response.data);
+    //   });
   };
 
   return (
     <>
-      <LoggedOutNavbar />
+      <Container maxWidth="lg">
+        <Grid container justify="center">
+          <Grid item>
+            <form onSubmit={handleSubmit}>
+              <Paper className={classes.paper} elevation={5}>
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.state ? true : false}
+                >
+                  <InputLabel>Select your State</InputLabel>
+                  <Select
+                    name="state"
+                    value={data.state}
+                    onChange={handleChange}
+                    label="Select your State"
+                  >
+                    {statesData.states.map((item, id) => (
+                      <MenuItem key={id} value={item.state}>
+                        {item.state}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>
+                    {errors && errors.state ? errors.state : null}
+                  </FormHelperText>
+                </FormControl>
 
-      <Grid
-        container
-        style={{ marginTop: "100px", backgroundColor: "#E94364" }}
-      >
-        <Grid item xs={6} container justify="center" alignItems="center">
-          <img src={login} alt="#" />
+                <FormControl
+                  variant="outlined"
+                  className={classes.formControl}
+                  error={errors && errors.district ? true : false}
+                >
+                  <InputLabel>Select your District</InputLabel>
+                  <Select
+                    inputProps={{ readOnly: enable }}
+                    name="district"
+                    value={data.district}
+                    onChange={handleChange}
+                    label="Select your District"
+                  >
+                    {statesData.states[selectedStateIndex].districts.map(
+                      (item, id) => (
+                        <MenuItem key={id} value={item}>
+                          {item}
+                        </MenuItem>
+                      )
+                    )}
+                  </Select>
+                  <FormHelperText>
+                    {errors && errors.district ? errors.district : null}
+                  </FormHelperText>
+                </FormControl>
+
+                <TextField
+                  className={classes.formControl}
+                  label="Enter your Pincode"
+                  type="text"
+                  name="pincode"
+                  value={data.pincode}
+                  variant="outlined"
+                  onChange={handleChange}
+                  inputProps={{ maxLength: 6 }}
+                  error={errors && errors.pincode ? true : false}
+                  helperText={errors && errors.pincode ? errors.pincode : null}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className={classes.formControl}
+                >
+                  Search
+                </Button>
+              </Paper>
+            </form>
+          </Grid>
         </Grid>
-
-        <Grid item xs={6} container justify="center" alignItems="center">
-          <Paper style={paperStyle} elevation={5}>
-            <Grid align="center">
-              <img alt="" src={avatar} width="80px" />
-              <h2 style={{ marginTop: "10px" }}>Sign In</h2>
-            </Grid>
-
-            <TextField
-              label="Email"
-              placeholder="Enter your email"
-              type="email"
-              fullWidth
-              required
-              variant="outlined"
-              style={margin}
-              name="email"
-              value={data.email}
-              onChange={handleChange}
-              error={errors && errors.email}
-              helperText={errors && errors.email ? errors.email : null}
-            />
-
-            <TextField
-              label="Password"
-              placeholder="Enter your password"
-              type="password"
-              fullWidth
-              required
-              variant="outlined"
-              style={margin}
-              name="password"
-              value={data.password}
-              onChange={handleChange}
-              error={errors && errors.password}
-              helperText={errors && errors.password ? errors.password : null}
-            />
-
-            <Typography style={margin}>
-              <Link to="/ForgotPassword">Forgot password</Link>
-            </Typography>
-
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              style={{ marginTop: "20px", backgroundColor: "#E94364" }}
-              onClick={handleClick}
-              disabled={validate() ? true : false}
-            >
-              Login
-            </Button>
-
-            <Grid align="center">
-              <Typography style={margin}>
-                <p>
-                  New user ? <Link to="/Options">Sign up</Link>
-                </p>
-              </Typography>
-              <h3 style={margin}>OR</h3>
-              <Typography style={margin}>
-                <Link to="/Options">Sign in with google account</Link>
-              </Typography>
-            </Grid>
-          </Paper>
-        </Grid>
-      </Grid>
+      </Container>
     </>
   );
 }
 
-export default Login;
+export default UpcomingDrive;

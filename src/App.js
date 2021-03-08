@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 
 import Login from "./Components/Auth/Login";
@@ -22,12 +22,13 @@ import { useSelector, useDispatch } from "react-redux";
 
 //services
 import FindDonors from "./Components/screen/services/findDonors/FindDonors";
+import InviteesList from "./Components/screen/services/MyDonationReq/inviteesList";
 import UpcomingDrive from "./Components/screen/services/upcomingDrive/UpcomingDrive";
 import BuyBlood from "./Components/screen/services/buyBlood/BuyBlood";
 import Product from "./Components/screen/services/buyBlood/product";
 import MyCommitments from "./Components/screen/services/myCommitments/MyCommitments";
 import MyPurchases from "./Components/screen/services/myPurchases/MyPurchases";
-import ActiveDonorReq from "./Components/screen/services/activeDonorReq/ActiveDonorReq";
+import MyDonationReq from "./Components/screen/services/MyDonationReq/MyDonationReq";
 import ConductDrive from "./Components/screen/services/conductDrive/conductDrive";
 import MyDrives from "./Components/screen/services/myDrives/myDrives";
 import MyInventory from "./Components/screen/services/myInventory/myInventory";
@@ -36,9 +37,22 @@ import MyInvites from "./Components/screen/services/myInvites/myInvites";
 import AcceptedDonors from "./Components/screen/services/myDrives/acceptedDonors";
 import MyAnalytics from "./Components/screen/services/myanalytics/MyAnalytics";
 import NotFound from "./Components/screen/NotFound";
+import LandingPage from "./Components/screen/landingPage/landingPage.js";
+import { logging } from "./redux/Actions/login";
+import Cookies from "universal-cookie";
 
 function App() {
   const loggedIn = useSelector((state) => state.loggedIn);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const cookies = new Cookies();
+    const authObj = cookies.get("Auth");
+    if (authObj) {
+      dispatch(logging(authObj));
+    }
+  }, [dispatch]);
+
   return (
     <>
       <Switch>
@@ -48,7 +62,7 @@ function App() {
             <Route exact path="/home" component={Home} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/About" component={About} />
-            <Route exact path="/ActiveDonorReq" component={ActiveDonorReq} />
+            <Route exact path="/MyDonationReq" component={MyDonationReq} />
             <Route exact path="/FindDonors" component={FindDonors} />
             <Route exact path="/UpcomingDrive" component={UpcomingDrive} />
             <Route exact path="/BuyBlood" component={BuyBlood} />
@@ -57,17 +71,17 @@ function App() {
             <Route exact path="/MyPurchases" component={MyPurchases} />
             <Route exact path="/ConductDrive" component={ConductDrive} />
             <Route exact path="/MyDrives" component={MyDrives} />
+            <Route exact path="/AcceptedDonors" component={AcceptedDonors} />
             <Route exact path="/MyInventory" component={MyInventory} />
             <Route exact path="/MySales" component={MySales} />
             <Route exact path="/MyInvites" component={MyInvites} />
-            <Route exact path="/AcceptedDonors" component={AcceptedDonors} />
-            <Route exact path="/Test" component={Test} />
             <Route exact path="/MyAnalytics" component={MyAnalytics} />
+            <Route exact path="/inviteesList" component={InviteesList} />
             {/* <Route component={NotFound} /> */}
           </>
         ) : (
           <>
-            <Route exact path="/" component={Login} />
+            <Route exact path="/" component={LandingPage} />
             <Route
               exact
               path="/BloodBankRegistration"
@@ -90,6 +104,7 @@ function App() {
               path="/HospitalRegistration"
               component={HospitalRegistration}
             />
+            <Route exact path="/Test" component={Test} />
             {/* <Route component={NotFound} /> */}
           </>
         )}

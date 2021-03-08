@@ -5,7 +5,8 @@ import resetPwd from "./images/resetPwd.png";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import axios from "axios";
 
-function ResetPassword() {
+function ResetPassword(props) {
+  const { recoveryEmail } = props.location;
   const history = useHistory();
   const paperStyle = {
     display: "flex",
@@ -17,7 +18,7 @@ function ResetPassword() {
 
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setError] = useState({});
 
   const handleChange = (e) => {
     if (e.target.name === "password") setPassword(e.target.value);
@@ -26,37 +27,38 @@ function ResetPassword() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const error = validate();
-    setError(error);
-    if (error) return;
+    const errors = validate();
+    setError(errors);
+    if (errors) return;
 
     axios
-      .put("http://localhost:5000/resetpwd", {
-        password: password,
+      .put("http://localhost:8080/profile/resetpassword", {
+        userEmail: recoveryEmail,
+        newPassword: password,
       })
       .then((response) => {
+        console.log(response);
         if (response.data.success) {
-          window.alert("Password changed succesfully")
-          history.push("/Login");
+          history.push("/login");
+          window.alert("Password successfully changed");
         }
       });
   };
 
   const validate = () => {
-    let error = "";
+    let errors = {};
+    const strongRegex = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+    );
 
-    if (
-      new RegExp(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g
-      ).test(password)
-    )
-      error = "";
-    else
-      error =
-        "Password should contain Minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character";
+    if (!strongRegex.test(password.trim())) {
+      errors.password = "Enter a stronger password";
+    }
+    if (cPassword !== password || cPassword === "") {
+      errors.cPassword = "Password is either empty or Passwords do not match";
+    }
 
-    return error;
+    return Object.keys(errors).length === 0 ? null : errors;
   };
 
   return (
@@ -85,8 +87,10 @@ function ResetPassword() {
                   name="password"
                   value={password}
                   onChange={handleChange}
-                  error={error ? true : false}
-                  helperText={error ? error : null}
+                  error={errors && errors.password ? true : false}
+                  helperText={
+                    errors && errors.password ? errors.password : null
+                  }
                 />
                 <TextField
                   label="Confirm the new password"
@@ -97,9 +101,9 @@ function ResetPassword() {
                   name="cPassword"
                   value={cPassword}
                   onChange={handleChange}
-                  error={password !== cPassword ? true : false}
+                  error={errors && errors.cPassword ? true : false}
                   helperText={
-                    password !== cPassword ? "Passwords do not match" : null
+                    errors && errors.cPassword ? errors.cPassword : null
                   }
                 />
                 <Button

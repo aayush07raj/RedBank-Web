@@ -26,6 +26,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -57,26 +59,49 @@ const headCells = [
   {
     id: "name",
     numeric: false,
-    disablePadding: true,
-    label: "Organization Name",
+    disablePadding: false,
+    label: "Organiser Name",
   },
-  { id: "contact", numeric: true, disablePadding: false, label: "Contact" },
-  { id: "date", numeric: true, disablePadding: false, label: "Date" },
-  { id: "time", numeric: true, disablePadding: false, label: "Time" },
-  { id: "address", numeric: true, disablePadding: false, label: "Address" },
-  { id: "bg", numeric: true, disablePadding: false, label: "Blood Group" },
+  {
+    id: "date",
+    numeric: false,
+    disablePadding: false,
+    label: "Date",
+  },
+  {
+    id: "time",
+    numeric: false,
+    disablePadding: false,
+    label: "Time",
+  },
+  {
+    id: "address",
+    numeric: false,
+    disablePadding: false,
+    label: "Address",
+  },
+  {
+    id: "contact",
+    numeric: false,
+    disablePadding: false,
+    label: "Contact",
+  },
+  {
+    id: "bloodGroups",
+    numeric: false,
+    disablePadding: false,
+    label: "Invited Blood Groups",
+  },
+  {
+    id: "register",
+    numeric: false,
+    disablePadding: false,
+    label: "Register here",
+  },
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    classes,
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -84,20 +109,11 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all desserts" }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             style={{ fontWeight: "bold" }}
             align="center"
-            padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -149,89 +165,6 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = (props) => {
-  const classes = useToolbarStyles();
-  const { numSelected, data } = props;
-  const history = useHistory();
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClosed = () => {
-    setOpen(false);
-  };
-
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          className={classes.title}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          List of all upcoming drives
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <>
-          <Tooltip title="Apply for Donation" onClick={handleClickOpen}>
-            <Button variant="contained">Apply</Button>
-          </Tooltip>
-          <Dialog
-            open={open}
-            onClose={handleClosed}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
-            <DialogContent></DialogContent>
-            <DialogActions>
-              <Button onClick={handleClosed} color="primary">
-                No
-              </Button>
-              <Button
-                onClick={() => {
-                  window.alert(
-                    "Applied! you can see this and other commitments in My Commitments"
-                  );
-                  history.push("/home");
-                  handleClosed();
-                }}
-                color="primary"
-                autoFocus
-              >
-                Yes
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      ) : null}
-    </Toolbar>
-  );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -263,11 +196,12 @@ export default function EnhancedTable({ list }) {
   list.map((item) => {
     List.push(item);
   });
-  console.log(list);
+
+  const loggedInState = useSelector((state) => state.loggedIn);
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
-  const [selected, setSelected] = React.useState([]);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -275,35 +209,6 @@ export default function EnhancedTable({ list }) {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = List.map((n) => n.driveId);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -315,76 +220,70 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const isSelected = (contact) => selected.indexOf(contact) !== -1;
-
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
+  const handleRegister = (driveId) => {
+    axios
+      .post(
+        "http://localhost:8080/upcomingdrives/registerfordrive",
+        {
+          driveId: "DRV01",
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.success) {
+          console.log(response);
+          window.alert("Successfully Registered");
+        } else {
+          console.log(response);
+          window.alert("You are already Registered");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} data={selected} />
         <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="medium"
-            aria-label="enhanced table"
-          >
+          <Table className={classes.table} size="medium">
             <EnhancedTableHead
               classes={classes}
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={List.length}
             />
             <TableBody>
               {stableSort(List, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.driveId);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.driveId)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.driveId}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.orgName}
-                      </TableCell>
-                      <TableCell align="center">{row.orgContact}</TableCell>
+                    <TableRow hover tabIndex={-1} key={row.driveId}>
+                      <TableCell align="center">{row.name}</TableCell>
                       <TableCell align="center">
-                        {row.startDate} -- {row.endDate}
+                        {row.startTimestamp.split("T")[0]} --{" "}
+                        {row.endTimestamp.split("T")[0]}
                       </TableCell>
                       <TableCell align="center">
-                        {row.startTime} -- {row.endTime}
+                        {row.startTimestamp.split("T")[1].split(":")[0]} :
+                        {row.startTimestamp.split("T")[1].split(":")[1]} --{" "}
+                        {row.endTimestamp.split("T")[1].split(":")[0]} :
+                        {row.endTimestamp.split("T")[1].split(":")[1]}
                       </TableCell>
                       <TableCell align="center">
-                        {row.address}, {row.district}, {row.state},{" "}
-                        {row.pincode}
+                        {row.address}, {row.district}, {row.state},{row.pincode}
                       </TableCell>
+                      <TableCell align="center">{row.contact}</TableCell>
+                      <TableCell align="center">{row.bloodGroups}</TableCell>
                       <TableCell align="center">
-                        {row.bloodGroupsInvited}
+                        <Button onClick={(e) => handleRegister(row.driveId)}>
+                          Register
+                        </Button>
                       </TableCell>
                     </TableRow>
                   );

@@ -10,20 +10,25 @@ import {
   FormControlLabel,
   Checkbox,
   Typography,
+  FormHelperText,
+  ButtonGroup,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import hospital from "./images/hospital.jpg";
-import states from "./states.json";
-import Joi from "joi";
+import states from "../screen/profile/states.json";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import axios from "axios";
-import logging from "../../redux/Actions/login";
+import { logging } from "../../redux/Actions/login";
+import Cookies from "universal-cookie";
+import { useDispatch } from "react-redux";
 
-import { useSelector, useDispatch } from "react-redux";
-import registerHospital from "../../redux/Actions/registerHospital";
-
-function BloodBankRegistration(props) {
+function HospitalRegistration(props) {
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -38,15 +43,35 @@ function BloodBankRegistration(props) {
     terms: false,
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const dispatch = useDispatch();
-  const state = useSelector((state) => state);
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    license: "",
+    phone: [""],
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    password: "",
+    cPassword: "",
+    terms: "",
+  });
 
-  const history = useHistory();
-  const [errors, setErrors] = useState({});
+  const reqBody = {
+    name: "",
+    email: "",
+    licenseNumber: "",
+    phone: [""],
+    address: "",
+    state: "",
+    district: "",
+    pincode: "",
+    password: "",
+  };
 
   const [maxLimit, setMaxLimit] = useState("Add a phone number");
   const [enable, setEnable] = useState(true);
+  const [visibility, setVisibility] = useState("visible");
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
   const paperStyle = {
@@ -57,147 +82,36 @@ function BloodBankRegistration(props) {
     padding: "30px",
   };
 
+  const dispatch = useDispatch();
+  const history = useHistory();
   const margin = { marginTop: "15px" };
 
-  const validateProperty = ({ name, value }) => {
-    const inputField = { [name]: value };
-    const fieldSchema = Joi.object({ [name]: schema[name] });
-    const { error } = fieldSchema.validate(inputField);
-    return error ? error.details[0].message : null;
-  };
-
-  const validate = () => {
-    const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(data, {
-      abortEarly: false,
-    });
-
-    if (!error) return null;
-
-    const allErrors = {};
-    for (let err of error.details) {
-      allErrors[err.path[0]] = err.message;
-    }
-    return allErrors;
-  };
-
+  // filling the form data
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "state") {
-      setEnable(false);
-      setSelectedStateIndex(
-        states.states.findIndex((item) => item.state === value)
-      );
-    }
-
-    const allErrors = { ...errors };
-    const errorMsg = validateProperty(e.target);
-    if (errorMsg) {
-      allErrors[name] = errorMsg;
+    if (name === "terms") {
+      const updatedData = { ...data };
+      updatedData[e.target.name] = e.target.checked;
+      setData(updatedData);
     } else {
-      delete allErrors[name];
+      if (name === "state") {
+        setEnable(false);
+        setSelectedStateIndex(
+          states.states.findIndex((item) => item.state === value)
+        );
+      }
+
+      const updatedData = { ...data };
+      updatedData[name] = value;
+      setData(updatedData);
     }
-    const updatedData = { ...data };
-    updatedData[name] = value;
-    setData(updatedData);
-    setErrors(allErrors);
-  };
-
-  const handleTermsCheck = (e) => {
-    const updatedData = { ...data };
-    updatedData[e.target.name] = e.target.checked;
-    const allErrors = { ...errors };
-    setData(updatedData);
-    setErrors(allErrors);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const errors = validate();
-
-    setErrors({ errors: errors || {} });
-    if (errors) return;
-
-    axios
-      .post("http://localhost:5000/login", {
-        email: data.email,
-        password: data.password,
-      })
-      .then(function (response) {
-        if (response.data.success) {
-          dispatch(
-            logging({ isLoggedIn: true, userType: props.location.type })
-          );
-          history.push("/home");
-        } else {
-          console.log(response.data.error);
-          if (response.data.error.includes("email")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              email: response.data.error,
-            }));
-          } else if (response.data.error.includes("password")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              password: response.data.error,
-            }));
-          }
-        }
-      })
-      .catch(function (error) {
-        window.alert(error.message);
-      });
-  };
-
-  const schema = {
-    name: Joi.string().min(3).max(30).required(),
-    email: Joi.string()
-      .email({
-        minDomainSegments: 2,
-        tlds: { allow: ["com", "in"] },
-      })
-      .required(),
-    license: Joi.string().required(),
-    phone: Joi.array().items(Joi.number().min(10).required()).max(5),
-    address: Joi.string().required(),
-    state: Joi.string().required(),
-    district: Joi.string().required(),
-    pincode: Joi.number()
-      .positive()
-      .min(6)
-      .message("Pincode must contain 6 digits")
-      .required(),
-    password: Joi.string()
-      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-      .message("Enter a stronger password")
-      .required(),
-    cPassword: Joi.ref("password"),
-    terms: Joi.boolean().required().invalid(false),
   };
 
   const handleNumberChange = (e, id) => {
-    const allErrors = { ...errors };
-    const errorMsg = validatePhone(e.target);
-    if (errorMsg) {
-      errors[e.target.name] = errorMsg;
-    } else {
-      delete errors[e.target.name];
-    }
-
     const updatedData = { ...data };
     updatedData.phone[id] = e.target.value;
     setData(updatedData);
-    setErrors(allErrors);
-  };
-
-  const validatePhone = ({ name, value }) => {
-    const phone = { [name]: value };
-    const phoneSchema = Joi.object({
-      [name]: Joi.number().min(10).label("Phone Number"),
-    });
-    const { error } = phoneSchema.validate(phone);
-    return error ? error.details[0].message : null;
   };
 
   const handleAdd = () => {
@@ -206,9 +120,153 @@ function BloodBankRegistration(props) {
         ...prevState,
         phone: [...prevState.phone, ""],
       }));
-    } else {
-      setMaxLimit("Maximum limit reached");
     }
+  };
+
+  const handleDelete = () => {
+    if (data.phone.length > 1) {
+      setVisibility("visible");
+      setData((prevState) => {
+        const newState = { ...prevState };
+        newState.phone.pop();
+        return newState;
+      });
+    }
+  };
+
+  // submission and validation
+  const validate = () => {
+    const strongRegex = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+    );
+    const errors = {};
+
+    if (
+      data.name.trim() === "" ||
+      data.name.trim().length < 3 ||
+      data.name.trim().length > 20
+    ) {
+      errors.name = " Username is either empty or invalid ";
+    }
+    if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email.trim())) {
+      errors.email = "Email is either empty or invalid";
+    }
+    if (
+      !/^(?=.{5,20}$)(?![.])(?!.*[.]{2})[a-zA-Z0-9.]+(?<![.])$/.test(
+        data.license.trim()
+      )
+    ) {
+      errors.license = " License is either empty or invalid ";
+    }
+    if (data.address.trim() === "") {
+      errors.address = "Address cannot be empty";
+    }
+    if (data.state === "") {
+      errors.state = "State cannot be empty";
+    }
+    if (data.district === "") {
+      errors.district = "District cannot be empty";
+    }
+    if (!/^[1-9][0-9]{5}$/.test(data.pincode.trim())) {
+      errors.pincode = "Invalid pincode format";
+    }
+    if (!strongRegex.test(data.password.trim())) {
+      errors.password = "Enter a stronger password";
+    }
+    if (data.cPassword !== data.password || data.cPassword === "") {
+      errors.cPassword = "Password is either empty or Passwords do not match";
+    }
+    if (!data.terms) {
+      errors.terms = "Please accept our terms and conditions";
+    }
+    if (data.phone.length >= 1 && !data.phone[0]) {
+      console.log("Working error");
+      errors.phone = "wrong number";
+    }
+    if (data.phone.length >= 2 && !data.phone[1]) {
+      console.log("Working error");
+      errors.phone = "wrong number";
+    }
+    if (data.phone.length >= 3 && !data.phone[2]) {
+      console.log("Working error");
+      errors.phone = "wrong number";
+    }
+    if (data.phone.length >= 4 && !data.phone[3]) {
+      console.log("Working error");
+      errors.phone = "wrong number";
+    }
+    if (data.phone.length >= 5 && !data.phone[4]) {
+      console.log("Working error");
+      errors.phone = "wrong number";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+  const [touched, setTouched] = useState([false, false, false, false, false]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(data);
+    const errors = validate();
+    setTouched([true, true, true, true, true]);
+    console.log(errors);
+    setErrors(errors);
+    if (errors) return;
+    console.log("axios call here");
+
+    reqBody.name = data.name;
+    reqBody.email = data.email;
+    reqBody.licenseNumber = data.license;
+    reqBody.phone = data.phone;
+    reqBody.address = data.address;
+    reqBody.state = data.state;
+    reqBody.district = data.district;
+    reqBody.pincode = data.pincode;
+    reqBody.password = data.password;
+
+    axios
+      .post("http://localhost:8080/registerhos", reqBody)
+      .then(function (response) {
+        console.log(response);
+        if (response.data.userToken) {
+          console.log("works");
+          dispatch(
+            logging({
+              isLoggedIn: true,
+              userType: response.data.userType,
+              userToken: response.data.userToken,
+              userId: response.data.userId,
+            })
+          );
+          const cookies = new Cookies();
+          cookies.set(
+            "Auth",
+            {
+              userType: response.data.userType,
+              userToken: response.data.userToken,
+              userId: response.data.userId,
+            },
+            { path: "/" }
+          );
+          history.push("/home");
+        } else {
+          handleClickOpen();
+        }
+      })
+      .catch(function (error) {
+        window.alert(error.message);
+      });
+  };
+
+  // dialog for already registered email
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -280,20 +338,37 @@ function BloodBankRegistration(props) {
                   value={val}
                   onChange={(e) => {
                     handleNumberChange(e, idx);
+                    setTouched((prevState) => {
+                      let newState = [...prevState];
+                      newState[idx] = true;
+                      return newState;
+                    });
                   }}
                   key={idx}
                   inputProps={{
                     maxLength: 10,
                   }}
-                  error={errors && errors[`phone${idx}`] ? true : false}
+                  error={!data.phone[idx] && touched[idx] ? true : false}
                   helperText={
-                    errors && errors[`phone${idx}`]
-                      ? errors[`phone${idx}`]
-                      : null
+                    !data.phone[idx] && touched[idx] ? errors.phone : ""
                   }
                 />
               ))}
-              <Button onClick={handleAdd}>{maxLimit}</Button>
+              <div>
+                <ButtonGroup variant="text" color="default" align="center">
+                  {data.phone.length < 5 ? (
+                    <Button onClick={handleAdd}>{maxLimit}</Button>
+                  ) : null}
+                  {data.phone.length === 1 ? null : (
+                    <Button
+                      onClick={handleDelete}
+                      style={{ visibility: `${visibility}` }}
+                    >
+                      Delete phone number
+                    </Button>
+                  )}
+                </ButtonGroup>
+              </div>
 
               <TextField
                 label="Registered Address"
@@ -308,33 +383,51 @@ function BloodBankRegistration(props) {
                 helperText={errors && errors.address ? errors.address : null}
               />
 
-              <FormControl style={margin}>
-                <InputLabel>State</InputLabel>
-                <Select name="state" onChange={handleChange} value={data.state}>
+              <FormControl
+                style={margin}
+                error={errors && errors.state ? true : false}
+              >
+                <InputLabel>Select required State</InputLabel>
+                <Select
+                  label="Select required State"
+                  name="state"
+                  onChange={handleChange}
+                  value={data.state}
+                >
                   {states.states.map((item, id) => (
                     <MenuItem value={item.state} key={id}>
                       {item.state}
                     </MenuItem>
                   ))}
                 </Select>
+                <FormHelperText>
+                  {errors && errors.state ? errors.state : null}
+                </FormHelperText>
               </FormControl>
 
-              <FormControl style={margin}>
-                <InputLabel>District</InputLabel>
+              <FormControl
+                style={margin}
+                error={errors && errors.district ? true : false}
+              >
+                <InputLabel>Select required District</InputLabel>
                 <Select
+                  label="Select required District"
                   inputProps={{ readOnly: enable }}
                   name="district"
-                  onChange={handleChange}
                   value={data.district}
+                  onChange={handleChange}
                 >
                   {states.states[selectedStateIndex].districts.map(
                     (item, id) => (
-                      <MenuItem value={item} key={id}>
+                      <MenuItem key={id} value={item}>
                         {item}
                       </MenuItem>
                     )
                   )}
                 </Select>
+                <FormHelperText>
+                  {errors && errors.district ? errors.district : null}
+                </FormHelperText>
               </FormControl>
 
               <TextField
@@ -381,41 +474,31 @@ function BloodBankRegistration(props) {
                 inputProps={{
                   maxLength: 30,
                 }}
-                error={data.password !== data.cPassword ? true : false}
+                error={errors && errors.cPassword ? true : false}
                 helperText={
-                  data.password !== data.cPassword
-                    ? "passwords do not match"
-                    : null
+                  errors && errors.cPassword ? errors.cPassword : null
                 }
               />
 
               <FormControlLabel
                 style={margin}
-                control={
-                  <Checkbox
-                    onChange={handleTermsCheck}
-                    inputProps={{ required: true }}
-                    name="terms"
-                  />
+                control={<Checkbox onChange={handleChange} name="terms" />}
+                label={
+                  errors && errors.terms
+                    ? errors.terms
+                    : "Accept Terms and Conditions"
                 }
-                label="Accept Terms and Conditions"
               />
-              <Link
-                to="/terms"
-                style={{ color: "#E94364", fontWeight: "bold" }}
-              >
-                (Click here for terms and condition)
+              <Link to="/terms" style={{ color: "grey", fontWeight: "bold" }}>
+                Click here for terms and condition
               </Link>
-
               <Button
                 variant="contained"
                 style={{
-                  backgroundColor: "#E94364",
+                  backgroundColor: "#e33371",
                   marginTop: "20px",
-                  // color: "white",
                 }}
                 type="submit"
-                disabled={validate()}
                 onClick={handleSubmit}
               >
                 Sign Up
@@ -426,10 +509,26 @@ function BloodBankRegistration(props) {
               </Typography>
             </Paper>
           </form>
+
+          {/* dialog for already registered email */}
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Email already exists</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Entered email is already registered with us, enter some other
+                email.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Grid>
     </>
   );
 }
 
-export default BloodBankRegistration;
+export default HospitalRegistration;

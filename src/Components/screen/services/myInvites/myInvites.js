@@ -9,10 +9,14 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { Navbar, Footer } from "../../../layouts";
+import { useSelector } from "react-redux";
 
 import Table from "./table";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   paper: {
     width: "100%",
 
@@ -27,35 +31,28 @@ const useStyles = makeStyles((theme) => ({
 
 function MyInvites() {
   const classes = useStyles();
-  const [invitesList, setList] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/invites")
-      .then((response) => {
-        if (response.data.success) {
-          setList(response.data.invitesList);
-        }
-      })
-      .catch();
-  }, []);
 
   return (
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">My Invites</Typography>
-        <Divider />
-        <Typography variant="h6">
-          Here you can view all incoming invitation to you for donation drives and individua requests
+        <Typography variant="h4" className={classes.heading}>
+          My Invites
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
+          Here you can view all incoming invitation to you for donation drives
+          and individual requests
         </Typography>
       </Paper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
-            <Table list={invitesList} />
+            <Table />
           </Grid>
         </Grid>
       </Container>
+      <Container style={{ height: "200px" }}></Container>
       <Footer />
     </>
   );

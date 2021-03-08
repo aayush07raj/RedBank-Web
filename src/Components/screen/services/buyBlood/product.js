@@ -15,6 +15,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,19 +37,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const handleClick = () => {
-  window.alert(
-    "Purchased confirmed. You can check the details in the My Purchases section of your services"
-  );
-};
-
 // function Product({ iota }) {
 const Product = (props) => {
-  const { bg, component, units, amount } =
-    (props.location && props.location.iota) || {};
-  const price = props.location.price;
+  const { bg, component, price, units, bbId } = props.location;
   const history = useHistory();
+  const loggedInState = useSelector((state) => state.loggedIn);
 
+  console.log(props);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -56,6 +52,38 @@ const Product = (props) => {
 
   const handleClosed = () => {
     setOpen(false);
+  };
+
+  const handleSubmit = () => {
+    axios
+      .post(
+        "http://localhost:8080/buyblood/confirmbuy",
+        {
+          customerId: loggedInState.userId,
+          sellerId: bbId,
+          date: new Date().toISOString(),
+          bloodGroup: bg,
+          component: component,
+          price: price,
+          units: units,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.success) {
+          console.log(response);
+          handleClosed();
+          window.alert(
+            " Check 'My Purchases' section for more info about the transaction "
+          );
+          history.push("/home");
+        }
+      })
+      .catch();
   };
 
   const classes = useStyles();
@@ -81,16 +109,16 @@ const Product = (props) => {
             <Paper align="center" square style={{ padding: "50px" }}>
               <Container className={classes.typo}>
                 <Typography className={classes.typo} variant="h6">
-                  Blood Group: {bg}
+                  Blood Group : {bg}
                 </Typography>
                 <Typography className={classes.typo} variant="h6">
-                  Component:{component}
+                  Component :{component}
                 </Typography>
                 <Typography className={classes.typo} variant="h6">
-                  Units Required:{units}
+                  Units Required :{units}
                 </Typography>
                 <Typography className={classes.typo} variant="h6">
-                  Total Amount:{price}
+                  Total Amount to be paid :{price * units}
                 </Typography>
                 <Button
                   className={classes.typo}
@@ -111,17 +139,13 @@ const Product = (props) => {
                   </DialogTitle>
                   <DialogContent></DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClosed} color="primary">
+                    <Button onClick={handleClosed} color="inherit">
                       No
                     </Button>
                     <Button
-                      color="primary"
-                      onClick={() => {
-                        window.alert(
-                          "Your Invoice is updated in My Purchases Page"
-                        );
-                        handleClosed();
-                        history.push("/home");
+                      color="inherit"
+                      onClick={(e) => {
+                        handleSubmit();
                       }}
                       autoFocus
                     >

@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Collapse from "@material-ui/core/Collapse";
 import { Button, Container } from "@material-ui/core/";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,6 +9,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core/";
 import { Navbar, Footer } from "../../../layouts";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import React from "react";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -26,6 +26,9 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
   root: {
     marginTop: theme.spacing(3),
     padding: theme.spacing(3),
@@ -36,22 +39,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AcceptedDonors(props) {
-  const { acceptedDonors, setDonors } = props.location;
+  const { donorsList, setDonors, driveId } = props.location;
+  const [newDonorsList, setNewDonorsList] = React.useState([...donorsList]);
   const classes = useStyles();
-
-  console.log(acceptedDonors);
+  const loggedInState = useSelector((state) => state.loggedIn);
 
   const handleClick = (idx) => {
-    var updatedList = [...acceptedDonors];
-    updatedList[idx].hasGivenBlood = true;
-    setDonors(updatedList);
+    if (window.confirm("Are you sure ?")) {
+      axios
+        .put(
+          "http://localhost:8080/mydrives/drivedonorverification",
+          {
+            driveId: driveId,
+            userId: newDonorsList[idx].userId,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          var updatedList = [...newDonorsList];
+          updatedList[idx].donationStatus = true;
+          setNewDonorsList(updatedList);
+        });
+    }
   };
 
   return (
     <>
       <Navbar />
       <Container maxWidth="lg" className={classes.container}>
-        <Typography variant="h4" align="center">
+        <Typography variant="h4" align="center" className={classes.heading}>
           List of all Donors
         </Typography>
         <TableContainer component={Paper} className={classes.root}>
@@ -62,25 +83,33 @@ export default function AcceptedDonors(props) {
                 <StyledTableCell align="center">Donor Name</StyledTableCell>
                 <StyledTableCell align="center">Blood Group</StyledTableCell>
                 <StyledTableCell align="center">
-                  Has Given Blood
+                  Donation Status
                 </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {acceptedDonors.map((row, idx) => (
+              {newDonorsList.map((row, idx) => (
                 <TableRow key={idx}>
-                  <TableCell align="center">{row.donorId}</TableCell>
-                  <TableCell align="center">{row.donorName}</TableCell>
+                  <TableCell align="center">{row.userId}</TableCell>
+                  <TableCell align="center">{row.name}</TableCell>
                   <TableCell align="center">{row.bloodGroup}</TableCell>
                   <TableCell align="center">
-                    <Button
-                      disabled={acceptedDonors[idx].hasGivenBlood}
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleClick(idx)}
-                    >
-                      Given ?
-                    </Button>
+                    {row.acceptance === 2 ? (
+                      <p style={{ fontWeight: "bold" }}>Pending</p>
+                    ) : row.acceptance === 0 ? (
+                      <p style={{ fontWeight: "bold", color: "red" }}>
+                        Rejected
+                      </p>
+                    ) : (
+                      <Button
+                        disabled={newDonorsList[idx].donationStatus}
+                        variant="contained"
+                        color="secondary"
+                        onClick={(e) => handleClick(idx)}
+                      >
+                        Given ?
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -88,6 +117,7 @@ export default function AcceptedDonors(props) {
           </Table>
         </TableContainer>
       </Container>
+      <Container style={{height:"150px"}}/>
       <Footer />
     </>
   );

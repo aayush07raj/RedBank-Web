@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import login from "./images/login.png";
 import avatar from "./images/avatar.png";
@@ -6,125 +6,85 @@ import { Grid, Paper, TextField, Button, Typography } from "@material-ui/core";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import Joi from "joi";
 import axios from "axios";
-
-import { useSelector, useDispatch } from "react-redux";
-import logging from "../../redux/Actions/login";
+import Cookies from "universal-cookie";
+import { useDispatch } from "react-redux";
+import { logging } from "../../redux/Actions/login";
 
 function Login() {
   const history = useHistory();
   const dispatch = useDispatch();
-
+  const [errors, setErrors] = useState({});
   const [data, setData] = useState({
     email: "",
     password: "",
   });
-
-  const [errors, setErrors] = useState({});
-  const [loggedInState, setLoggedInState] = useState({
-    isLoggedIn: false,
-    userType: "",
-  });
-
   const paperStyle = {
     display: "flex",
     width: 380,
     flexDirection: "column",
     padding: "30px",
   };
-
   const margin = { marginTop: "20px" };
 
-  const schema = {
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "in"] },
-    }),
-    password: Joi.string()
-      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-      .message("Enter a stronger password")
-      .required(),
-  };
-
-  useEffect(() => {
-    dispatch(logging(loggedInState));
-  }, [loggedInState]);
-
-  const handleClick = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
-
-    setErrors({ errors: errors || {} });
+    setErrors(errors);
     if (errors) return;
 
     axios
-      .post("http://localhost:5000/login", {
+      .post("http://localhost:8080/authenticate", {
         email: data.email,
         password: data.password,
       })
       .then(function (response) {
-        if (response.data.success) {
-          console.log(response.data.userToken);
-          const newState = { ...loggedInState };
-          newState.isLoggedIn = true;
-          newState.userType = response.data.userType;
-          localStorage.setItem("JWTtoken", response.data.userToken);
-          setLoggedInState(newState);
-          history.push("/home");
-        } else {
-          if (response.data.error.includes("email")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              email: response.data.error,
-            }));
-          } else if (response.data.error.includes("password")) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              password: response.data.error,
-            }));
-          }
-        }
+        console.log(response);
+        dispatch(
+          logging({
+            userType: response.data.userType,
+            userToken: response.data.userToken,
+            userId: response.data.userId,
+          })
+        );
+        const cookies = new Cookies();
+        cookies.set(
+          "Auth",
+          {
+            userType: response.data.userType,
+            userToken: response.data.userToken,
+            userId: response.data.userId,
+          },
+          { path: "/" }
+        );
+
+        history.push("/home");
       })
       .catch(function (error) {
-        window.alert(error.message);
+        setErrors({
+          email: "Email / Password is invalid",
+          password: "Email / Password is invalid",
+        });
       });
   };
 
-  const validateProperty = ({ name, value }) => {
-    const inputField = { [name]: value };
-    const fieldSchema = Joi.object({ [name]: schema[name] });
-    const { error } = fieldSchema.validate(inputField);
-    return error ? error.details[0].message : null;
-  };
-
   const validate = () => {
-    const formSchema = Joi.object(schema);
-    const { error } = formSchema.validate(data, {
-      abortEarly: false,
-    });
+    const errors = {};
 
-    if (!error) return null;
-
-    const allErrors = {};
-    for (let err of error.details) {
-      allErrors[err.path[0]] = err.message;
+    if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email.trim())) {
+      errors.email = "Email is either empty or invalid";
     }
-    return allErrors;
+    if (!data.password) {
+      errors.password = "Password cannot be empty";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    const allErrors = { ...errors };
-    const errorMsg = validateProperty(e.target);
-    if (errorMsg) {
-      allErrors[name] = errorMsg;
-    } else {
-      delete allErrors[name];
-    }
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
-    setErrors(allErrors);
   };
 
   return (
@@ -135,11 +95,25 @@ function Login() {
         container
         style={{ marginTop: "100px", backgroundColor: "#E94364" }}
       >
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={false}
+          sm={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <img src={login} alt="#" />
         </Grid>
 
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <Paper style={paperStyle} elevation={5}>
             <Grid align="center">
               <img alt="" src={avatar} width="80px" />
@@ -151,7 +125,6 @@ function Login() {
               placeholder="Enter your email"
               type="email"
               fullWidth
-              required
               variant="outlined"
               style={margin}
               name="email"
@@ -166,7 +139,6 @@ function Login() {
               placeholder="Enter your password"
               type="password"
               fullWidth
-              required
               variant="outlined"
               style={margin}
               name="password"
@@ -176,8 +148,8 @@ function Login() {
               helperText={errors && errors.password ? errors.password : null}
             />
 
-            <Typography style={margin}>
-              <Link to="/ForgotPassword">Forgot password</Link>
+            <Typography style={margin} align="right">
+              <Link to="/ForgotPassword">Forgot password </Link>
             </Typography>
 
             <Button
@@ -185,8 +157,7 @@ function Login() {
               color="primary"
               fullWidth
               style={{ marginTop: "20px", backgroundColor: "#E94364" }}
-              onClick={handleClick}
-              disabled={validate() ? true : false}
+              onClick={handleSubmit}
             >
               Login
             </Button>
@@ -197,10 +168,10 @@ function Login() {
                   New user ? <Link to="/Options">Sign up</Link>
                 </p>
               </Typography>
-              <h3 style={margin}>OR</h3>
+              {/* <h3 style={margin}>OR</h3>
               <Typography style={margin}>
                 <Link to="/Options">Sign in with google account</Link>
-              </Typography>
+              </Typography> */}
             </Grid>
           </Paper>
         </Grid>
