@@ -9,6 +9,11 @@ import {
   InputLabel,
   Select,
   Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
   Typography,
   MenuItem,
   TextField,
@@ -110,10 +115,25 @@ function UpcomingDrive() {
           Authorization: "Bearer " + loggedInState.userToken,
         },
       })
-      .then(function (response) {
-        console.log(response);
-        setState(response.data);
-      });
+      .then((response) =>{
+        if(response.data.length != 0){
+          console.log(response);
+          setState(response.data)
+        }else{
+          handleClickOpen();
+        }
+      })    
+        .catch();
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -208,6 +228,20 @@ function UpcomingDrive() {
           <Grid item xs={12} className={classes.tableContainer}>
             {driveList.length !== 0 ? <Table list={driveList} /> : null}
           </Grid>
+          <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>{"No results found"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  There are no upcoming drive in the selected
+                  location.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
         </Grid>
       </Container>
       <Footer />
