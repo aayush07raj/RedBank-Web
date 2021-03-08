@@ -142,9 +142,9 @@ function HospitalRegistration(props) {
     const errors = {};
 
     if (
-      !/^(?=.{5,20}$)(?![.])(?!.*[.]{2})[a-zA-Z0-9.]+(?<![.])$/.test(
-        data.name.trim()
-      )
+      data.name.trim() === "" ||
+      data.name.trim().length < 3 ||
+      data.name.trim().length > 20
     ) {
       errors.name = " Username is either empty or invalid ";
     }
