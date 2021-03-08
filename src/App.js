@@ -43,6 +43,7 @@ import Cookies from "universal-cookie";
 
 function App() {
   const loggedIn = useSelector((state) => state.loggedIn);
+  const resetPassword = useSelector((state) => state.resetPassword);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -92,7 +93,9 @@ function App() {
 
             <Route exact path="/ForgotPassword" component={ForgotPassword} />
             <Route exact path="/VerifyCode" component={VerifyCode} />
-            <Route exact path="/ResetPassword" component={ResetPassword} />
+            {resetPassword.isOtpVerified ? (
+              <Route exact path="/ResetPassword" component={ResetPassword} />
+            ) : null}
             <Route exact path="/Options" component={Options} />
             <Route
               exact
