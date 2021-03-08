@@ -4,8 +4,11 @@ import { Grid, Paper, TextField, Button } from "@material-ui/core";
 import resetPwd from "./images/resetPwd.png";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { resetPassword } from "../../redux/Actions/resetPassword";
 
 function ResetPassword(props) {
+  const dispatch = useDispatch();
   const { recoveryEmail } = props.location;
   const history = useHistory();
   const paperStyle = {
@@ -39,6 +42,7 @@ function ResetPassword(props) {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
+          dispatch(resetPassword());
           history.push("/login");
           window.alert("Password successfully changed");
         }

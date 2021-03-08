@@ -3,10 +3,13 @@ import { Link, useHistory } from "react-router-dom";
 import verifyCode from "./images/verifyCode.png";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import { Grid, Paper, TextField, Button } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { verifyOtp } from "../../redux/Actions/resetPassword";
 
 import axios from "axios";
 
 function VerifyCode(props) {
+  const dispatch = useDispatch();
   const { recoveryEmail } = props.location;
   const paperStyle = {
     display: "flex",
@@ -37,6 +40,7 @@ function VerifyCode(props) {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
+          dispatch(verifyOtp());
           history.push({
             pathname: "/ResetPassword",
             recoveryEmail,
