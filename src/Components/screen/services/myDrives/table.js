@@ -130,6 +130,7 @@ export default function CollapsibleTable() {
             <TableRow key={idx}>
               <TableCell align="center">{row.driveId}</TableCell>
               <TableCell align="center">
+
                 {row.startTimestamp.split("T")[0]} to{" "}
                 {row.endTimestamp.split("T")[0]}
               </TableCell>
@@ -142,7 +143,9 @@ export default function CollapsibleTable() {
               <TableCell align="center">
                 {row.address}, {row.district}, {row.state}, {row.pincode}
               </TableCell>
+
               <TableCell align="center">{row.bloodGroups}</TableCell>
+
               <TableCell align="center">
                 <Button
                   size="small"
@@ -154,6 +157,7 @@ export default function CollapsibleTable() {
                 </Button>
               </TableCell>
               <TableCell align="center">
+
                 {!drivesList[idx].status ? (
                   <p style={{ color: "red" }}>Canceled</p>
                 ) : new Date(row.endDate).getTime() <= new Date().getTime() ? (
@@ -187,4 +191,6 @@ export default function CollapsibleTable() {
       </Table>
     </TableContainer>
   );
+
 }
+
