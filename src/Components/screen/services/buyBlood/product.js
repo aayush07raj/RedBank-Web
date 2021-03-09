@@ -125,6 +125,7 @@ const Product = (props) => {
                   type="button"
                   onClick={handleClickOpen}
                   variant="contained"
+                  style={{ backgroundColor: "#E94364", color: "white" }}
                 >
                   Buy
                 </Button>

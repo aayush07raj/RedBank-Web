@@ -410,6 +410,10 @@ export default function EnhancedTable() {
                               type="button"
                               variant="contained"
                               onClick={(e) => handleAccept(index)}
+                              style={{
+                                backgroundColor: "#E94364",
+                                color: "white",
+                              }}
                             >
                               Accept
                             </Button>
@@ -417,7 +421,6 @@ export default function EnhancedTable() {
                               type="button"
                               variant="contained"
                               onClick={(e) => handleReject(index)}
-                              color="secondary"
                             >
                               Ignore
                             </Button>

@@ -278,6 +278,7 @@ function FindDonors() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
+                  style={{ backgroundColor: "#E94364", color: "white" }}
                 >
                   Search
                 </Button>

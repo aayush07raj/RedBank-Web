@@ -281,7 +281,10 @@ export default function EnhancedTable({ list }) {
                       <TableCell align="center">{row.contact}</TableCell>
                       <TableCell align="center">{row.bloodGroups}</TableCell>
                       <TableCell align="center">
-                        <Button onClick={(e) => handleRegister(row.driveId)}>
+                        <Button
+                          onClick={(e) => handleRegister(row.driveId)}
+                          style={{ backgroundColor: "#E94364", color: "white" }}
+                        >
                           Register
                         </Button>
                       </TableCell>

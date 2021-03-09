@@ -181,6 +181,9 @@ export default function MenuAppBar({ user }) {
           <Typography to="/Home" component={Link} variant="h6">
             <img src={Logo} alt="logo" className={classes.logo} />
           </Typography>
+          <Typography variant="h5" style={{ padding: "10px" }}>
+            RedBank
+          </Typography>
           <Typography className={classes.space}></Typography>
 
           <div className={classes.sectionDesktop}>
@@ -392,7 +395,7 @@ export default function MenuAppBar({ user }) {
                                     Find Donors
                                   </Button>
                                 </MenuItem>
-                               
+
                                 <MenuItem onClick={handleClose2}>
                                   <Button
                                     onClick={handleClose2}
@@ -495,7 +498,7 @@ export default function MenuAppBar({ user }) {
                                     Find Donors
                                   </Button>
                                 </MenuItem>
-                               
+
                                 <MenuItem onClick={handleClose2}>
                                   <Button
                                     onClick={handleClose2}

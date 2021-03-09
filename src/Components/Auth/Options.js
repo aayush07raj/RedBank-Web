@@ -71,7 +71,15 @@ function Options() {
               <Divider style={margin} />
               <Typography style={margin}>
                 <p>
-                  Existing user ? <Link to="/">Sign in</Link>
+                  Existing user ?
+                  <Button
+                    size="small"
+                    onClick={(e) => {
+                      history.push("/Login");
+                    }}
+                  >
+                    Sign in
+                  </Button>
                 </p>
               </Typography>
             </Grid>

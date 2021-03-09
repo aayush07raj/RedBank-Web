@@ -299,6 +299,7 @@ function BuyBlood() {
                   variant="contained"
                   className={classes.formControl}
                   onClick={handleSubmit}
+                  style={{ backgroundColor: "#E94364", color: "white" }}
                 >
                   Search
                 </Button>
@@ -314,7 +315,11 @@ function BuyBlood() {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} color="primary" autoFocus>
+                <Button
+                  onClick={handleClose}
+                  style={{ backgroundColor: "#E94364", color: "white" }}
+                  autoFocus
+                >
                   Ok
                 </Button>
               </DialogActions>

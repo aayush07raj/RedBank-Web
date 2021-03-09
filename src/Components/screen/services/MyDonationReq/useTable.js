@@ -319,6 +319,7 @@ export default function EnhancedTable() {
                           onClick={(e) => {
                             handleExpire(e, index);
                           }}
+                          style={{ backgroundColor: "#E94364", color: "white" }}
                         >
                           Expire
                         </Button>
