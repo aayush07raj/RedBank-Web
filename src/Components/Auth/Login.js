@@ -4,7 +4,6 @@ import login from "./images/login.png";
 import avatar from "./images/avatar.png";
 import { Grid, Paper, TextField, Button, Typography } from "@material-ui/core";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
-import Joi from "joi";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
@@ -168,10 +167,6 @@ function Login() {
                   New user ? <Link to="/Options">Sign up</Link>
                 </p>
               </Typography>
-              {/* <h3 style={margin}>OR</h3>
-              <Typography style={margin}>
-                <Link to="/Options">Sign in with google account</Link>
-              </Typography> */}
             </Grid>
           </Paper>
         </Grid>

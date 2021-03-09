@@ -11,8 +11,9 @@ const useStyles = makeStyles((theme)=>({
       background: 'none',
     },
     appbarWrapper: {
-      width: '80%',
+      width: '100%',
       margin: '0 auto',
+      backgroundColor:'#E94364',
     },
     appbarTitle: {
       flexGrow: '1',

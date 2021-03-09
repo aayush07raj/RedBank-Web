@@ -20,7 +20,6 @@ function Index() {
                 <Route path="/Options" component={Options}/>
                 <Route path="/ResetPassword" component={ResetPassword}/>
             </Switch>
-            {/* <Login/>   */}
         </>
     )
 }

@@ -22,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
   cards:{
     padding: theme.spacing(10),
+  },
+  footer:{
+    paddingTop:'50px',
+    color: 'white',
+    fontSize: '2.5rem',
+    textAlign:"center"
   }
 }));
 export default function SecondView () {
@@ -87,8 +93,8 @@ export default function SecondView () {
         
       </Grid>
       <Grid Container style={{backgroundColor:"#E94364", height:'28vh',maxWidth:"100%"}} xs={12} >
-          <Grid style={{justifyContent: 'center', alignItems: 'center'}}>
-            
+          <Grid item md={12} style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Typography className={classes.footer}  >Your one deed will save someone's life</Typography>
           </Grid>
       </Grid>
       
