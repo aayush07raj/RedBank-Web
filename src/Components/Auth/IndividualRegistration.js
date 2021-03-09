@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  LinearProgress,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
@@ -42,6 +43,7 @@ function IndividualRegistration(props) {
     password: "",
     cPassword: "",
     terms: false,
+    otp: "",
   });
 
   const reqBody = {};
@@ -60,6 +62,7 @@ function IndividualRegistration(props) {
     cPassword: "",
     terms: "",
   });
+  const [otpError, setOtpError] = useState("");
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -79,6 +82,7 @@ function IndividualRegistration(props) {
     const strongRegex = new RegExp(
       "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
     );
+
     const errors = {};
 
     if (
@@ -88,7 +92,11 @@ function IndividualRegistration(props) {
     ) {
       errors.name = " Username is either empty or invalid ";
     }
-    if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email.trim())) {
+    if (
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        data.email.trim()
+      )
+    ) {
       errors.email = "Email is either empty or invalid";
     }
     if (data.address.trim() === "") {
@@ -162,49 +170,87 @@ function IndividualRegistration(props) {
     setErrors(errors);
     if (errors) return;
 
-    // making a request object to send to the backend
-    reqBody.name = data.name;
-    reqBody.email = data.email;
-    reqBody.dob = new Date(data.dob).toLocaleDateString();
-    reqBody.phone = data.phone;
-    reqBody.address = data.address;
-    reqBody.state = data.state;
-    reqBody.district = data.district;
-    reqBody.pincode = data.pincode;
-    reqBody.bloodGroup = data.bloodGroup;
-    reqBody.password = data.password;
+    // showing progress bar
+    setProgress(true);
 
+    // sending otp to user email
     axios
-      .post("http://localhost:8080/registerind", reqBody)
-      .then(function (response) {
-        if (response.data.userToken) {
-          dispatch(
-            logging({
-              isLoggedIn: true,
-              userType: response.data.userType,
-              userToken: response.data.userToken,
-              userId: response.data.userId,
-            })
-          );
-          const cookies = new Cookies();
-          cookies.set(
-            "Auth",
-            {
-              userType: response.data.userType,
-              userToken: response.data.userToken,
-              userId: response.data.userId,
-            },
-            { path: "/" }
-          );
-          history.push("/home");
+      .post("http://localhost:8080/verification/sendotp", {
+        userEmail: data.email,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          setProgress(false);
+          handleClickOpen2();
         } else {
+          setProgress(false);
           handleClickOpen();
         }
-      })
-      .catch(function (error) {
-        window.alert(error.message);
       });
   };
+
+  const handleClose2 = () => {
+    axios
+      .post("http://localhost:8080/verification/verifyotp", {
+        userEmail: data.email,
+        otp: data.otp,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          // making a request object to send to the backend
+          reqBody.name = data.name;
+          reqBody.email = data.email;
+          reqBody.dob = new Date(data.dob).toLocaleDateString();
+          reqBody.phone = data.phone;
+          reqBody.address = data.address;
+          reqBody.state = data.state;
+          reqBody.district = data.district;
+          reqBody.pincode = data.pincode;
+          reqBody.bloodGroup = data.bloodGroup;
+          reqBody.password = data.password;
+
+          axios
+            .post("http://localhost:8080/registerind", reqBody)
+            .then(function (response) {
+              if (response.data.userToken) {
+                dispatch(
+                  logging({
+                    isLoggedIn: true,
+                    userType: response.data.userType,
+                    userToken: response.data.userToken,
+                    userId: response.data.userId,
+                  })
+                );
+                const cookies = new Cookies();
+                cookies.set(
+                  "Auth",
+                  {
+                    userType: response.data.userType,
+                    userToken: response.data.userToken,
+                    userId: response.data.userId,
+                  },
+                  { path: "/" }
+                );
+                history.push("/home");
+              } else {
+                handleClickOpen();
+              }
+            })
+            .catch(function (error) {
+              window.alert(error.message);
+            });
+          setOpen2(false);
+        } else {
+          setOtpError("Invalid Otp");
+        }
+      });
+  };
+
+  const changeEmail=()=>{
+    setOpen2(false);
+  }
 
   // dialog for already registered email
   const [open, setOpen] = React.useState(false);
@@ -216,6 +262,15 @@ function IndividualRegistration(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  // dialog for otp validation for correct email
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClickOpen2 = () => {
+    setOpen2(true);
+  };
+
+  const [linearProgress, setProgress] = useState(false);
 
   return (
     <>
@@ -446,6 +501,10 @@ function IndividualRegistration(props) {
               >
                 Sign up
               </Button>
+              {/* //progress line till popup*/}
+              {linearProgress === false ? null : (
+                <LinearProgress color="secondary" style={margin} />
+              )}
 
               <Typography align="center" style={margin}>
                 <Link to="/Login">Already a user ? Sign in</Link>
@@ -465,6 +524,34 @@ function IndividualRegistration(props) {
             <DialogActions>
               <Button onClick={handleClose} color="primary">
                 Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          {/* dialog for otp validation for email registration */}
+          <Dialog open={open2} onClose={handleClose2}>
+            <DialogTitle>Email Validation</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                enter the otp sent to {data.email}
+              </DialogContentText>
+              <TextField
+                margin="dense"
+                type="text"
+                fullWidth
+                name="otp"
+                value={data.otp}
+                onChange={handleChange}
+                error={otpError.length != 0 ? true : false}
+                helperText={otpError.length != 0 ? otpError : null}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose2} color="inherit">
+                Verify
+              </Button>
+              <Button onClick={changeEmail}  color="inherit">
+                Change Email
               </Button>
             </DialogActions>
           </Dialog>

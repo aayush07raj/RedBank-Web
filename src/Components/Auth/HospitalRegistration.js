@@ -14,6 +14,7 @@ import {
   ButtonGroup,
   Dialog,
   DialogTitle,
+  LinearProgress,
   DialogContent,
   DialogContentText,
   DialogActions,
@@ -68,6 +69,7 @@ function HospitalRegistration(props) {
     pincode: "",
     password: "",
   };
+  const [otpError, setOtpError] = useState("");
 
   const [maxLimit, setMaxLimit] = useState("Add a phone number");
   const [enable, setEnable] = useState(true);
@@ -212,51 +214,88 @@ function HospitalRegistration(props) {
     console.log(errors);
     setErrors(errors);
     if (errors) return;
-    console.log("axios call here");
+    
+     // showing progress bar
+     setProgress(true);
 
-    reqBody.name = data.name;
-    reqBody.email = data.email;
-    reqBody.licenseNumber = data.license;
-    reqBody.phone = data.phone;
-    reqBody.address = data.address;
-    reqBody.state = data.state;
-    reqBody.district = data.district;
-    reqBody.pincode = data.pincode;
-    reqBody.password = data.password;
-
-    axios
-      .post("http://localhost:8080/registerhos", reqBody)
-      .then(function (response) {
-        console.log(response);
-        if (response.data.userToken) {
-          console.log("works");
-          dispatch(
-            logging({
-              isLoggedIn: true,
-              userType: response.data.userType,
-              userToken: response.data.userToken,
-              userId: response.data.userId,
-            })
-          );
-          const cookies = new Cookies();
-          cookies.set(
-            "Auth",
-            {
-              userType: response.data.userType,
-              userToken: response.data.userToken,
-              userId: response.data.userId,
-            },
-            { path: "/" }
-          );
-          history.push("/home");
-        } else {
-          handleClickOpen();
-        }
-      })
-      .catch(function (error) {
-        window.alert(error.message);
-      });
+     // sending otp to user email
+     axios
+       .post("http://localhost:8080/verification/sendotp", {
+         userEmail: data.email,
+       })
+       .then((response) => {
+         console.log(response);
+         if (response.data.success) {
+           setProgress(false);
+           handleClickOpen2();
+         } else {
+           setProgress(false);
+           handleClickOpen();
+         }
+       });
   };
+
+  const handleClose2 = () =>{
+    axios
+    .post("http://localhost:8080/verification/verifyotp",{
+        userEmail: data.email,
+        otp: data.otp,
+    })
+    .then((response)=>{
+      console.log(response);
+      if(response.data.success){
+        reqBody.name = data.name;
+        reqBody.email = data.email;
+        reqBody.licenseNumber = data.license;
+        reqBody.phone = data.phone;
+        reqBody.address = data.address;
+        reqBody.state = data.state;
+        reqBody.district = data.district;
+        reqBody.pincode = data.pincode;
+        reqBody.password = data.password;
+    
+        axios
+          .post("http://localhost:8080/registerhos", reqBody)
+          .then(function (response) {
+            console.log(response);
+            if (response.data.userToken) {
+              console.log("works");
+              dispatch(
+                logging({
+                  isLoggedIn: true,
+                  userType: response.data.userType,
+                  userToken: response.data.userToken,
+                  userId: response.data.userId,
+                })
+              );
+              const cookies = new Cookies();
+              cookies.set(
+                "Auth",
+                {
+                  userType: response.data.userType,
+                  userToken: response.data.userToken,
+                  userId: response.data.userId,
+                },
+                { path: "/" }
+              );
+              history.push("/home");
+            } else {
+              handleClickOpen();
+            }
+          })
+          .catch(function (error) {
+            window.alert(error.message);
+          });
+          setOpen2(false);
+        } else {
+          setOtpError("Invalid Otp");
+        }
+    })
+  }
+
+  const changeEmail=()=>{
+    setOpen2(false);
+  }
 
   // dialog for already registered email
   const [open, setOpen] = React.useState(false);
@@ -268,6 +307,16 @@ function HospitalRegistration(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+   // dialog for otp validation for correct email
+   const [open2, setOpen2] = React.useState(false);
+
+   const handleClickOpen2 = () => {
+     setOpen2(true);
+   };
+ 
+   const [linearProgress, setProgress] = useState(false);
+ 
 
   return (
     <>
@@ -503,6 +552,10 @@ function HospitalRegistration(props) {
               >
                 Sign Up
               </Button>
+              {/* //progress line till popup*/}
+              {linearProgress === false ? null : (
+                <LinearProgress color="secondary" style={margin} />
+              )}
 
               <Typography align="center" style={margin}>
                 <Link to="/Login">Already a user ? Sign in</Link>
@@ -522,6 +575,34 @@ function HospitalRegistration(props) {
             <DialogActions>
               <Button onClick={handleClose} color="primary">
                 Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          {/* dialog for otp validation for email registration */}
+          <Dialog open={open2} onClose={handleClose2}>
+            <DialogTitle>Email Validation</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                enter the otp sent to {data.email}
+              </DialogContentText>
+              <TextField
+                margin="dense"
+                type="text"
+                fullWidth
+                name="otp"
+                value={data.otp}
+                onChange={handleChange}
+                error={otpError.length != 0 ? true : false}
+                helperText={otpError.length != 0 ? otpError : null}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button  color="inherit" onClick={handleClose2}>
+                Verify
+              </Button>
+              <Button onClick={changeEmail}  color="inherit">
+                Change Email
               </Button>
             </DialogActions>
           </Dialog>
