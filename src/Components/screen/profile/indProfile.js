@@ -164,30 +164,6 @@ function IndProfile() {
     anotherAxios();
   }, []);
 
-  useEffect(() => {
-    axios
-      .put(
-        "http://localhost:8080/profile/donorstatus",
-        { donorStatus: initialValues.donorStatus },
-        {
-          headers: {
-            Authorization: "Bearer " + loggedInState.userToken,
-          },
-        }
-      )
-      .then((response) => {
-        setInitialValues((prevState) => ({
-          ...prevState,
-          donorStatus: response.data.donorStatus,
-        }));
-        console.log(response);
-        console.log(response.data);
-        console.log("works");
-      })
-      .catch();
-    console.log("after pressing donor status is ", initialValues.donorStatus);
-  }, [initialValues.donorStatus]);
-
   const handleStatus = async (status) => {
     const newStatus = await axios.put(
       "http://localhost:8080/profile/donorstatus",
@@ -217,8 +193,8 @@ function IndProfile() {
       })
       .catch();
   };
-  const margin = { marginTop: "15px" };
 
+  const margin = { marginTop: "15px" };
   const classes = useStyles();
   const [values, setValues] = useState(initialValues);
   // For Editing
@@ -443,7 +419,7 @@ function IndProfile() {
                 </Typography>
               </Grid>
               <Grid item xs={7}>
-                <Typography style={{ margin: "5px" }} variant="h6">
+                <Typography style={{ marginTop: "5px" }} variant="h6">
                   {fulldata.email}
                 </Typography>
               </Grid>
@@ -453,7 +429,7 @@ function IndProfile() {
                 </Typography>
               </Grid>
               <Grid item xs={7}>
-                <Typography style={{ margin: "5px" }} variant="h6">
+                <Typography style={{ marginTop: "5px" }} variant="h6">
                   {fulldata.dob.split("T")[0]}
                 </Typography>
               </Grid>

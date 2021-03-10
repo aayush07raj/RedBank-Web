@@ -115,7 +115,8 @@ function IndividualRegistration(props) {
       errors.pincode = "Invalid pincode format";
     }
     if (!strongRegex.test(data.password.trim())) {
-      errors.password = "Enter a stronger password";
+      errors.password =
+        "Use 8 or more characters with a mix of letters, numbers & symbols";
     }
     if (data.cPassword !== data.password || data.cPassword === "") {
       errors.cPassword = "Password is either empty or Passwords do not match";
@@ -248,9 +249,9 @@ function IndividualRegistration(props) {
       });
   };
 
-  const changeEmail=()=>{
+  const changeEmail = () => {
     setOpen2(false);
-  }
+  };
 
   // dialog for already registered email
   const [open, setOpen] = React.useState(false);
@@ -362,9 +363,9 @@ function IndividualRegistration(props) {
                 style={margin}
                 error={errors && errors.state ? true : false}
               >
-                <InputLabel>Select required State</InputLabel>
+                <InputLabel>Select your State</InputLabel>
                 <Select
-                  label="Select required State"
+                  label="Select your State"
                   name="state"
                   onChange={handleChange}
                   value={data.state}
@@ -384,9 +385,9 @@ function IndividualRegistration(props) {
                 style={margin}
                 error={errors && errors.district ? true : false}
               >
-                <InputLabel>Select required District</InputLabel>
+                <InputLabel>Select your District</InputLabel>
                 <Select
-                  label="Select required District"
+                  label="Select your District"
                   inputProps={{ readOnly: enable }}
                   name="district"
                   value={data.district}
@@ -425,9 +426,9 @@ function IndividualRegistration(props) {
                 style={margin}
                 error={errors && errors.bloodGroup ? true : false}
               >
-                <InputLabel>Select required Blood Group</InputLabel>
+                <InputLabel>Select your Blood Group</InputLabel>
                 <Select
-                  label="Select required Blood Group"
+                  label="Select your Blood Group"
                   name="bloodGroup"
                   onChange={handleChange}
                   value={data.bloodGroup}
@@ -507,7 +508,14 @@ function IndividualRegistration(props) {
               )}
 
               <Typography align="center" style={margin}>
-                <Link to="/Login">Already a user ? Sign in</Link>
+                <Button
+                  size="small"
+                  onClick={(e) => {
+                    history.push("/Login");
+                  }}
+                >
+                  Already a user ? Sign in
+                </Button>
               </Typography>
             </Paper>
           </form>
@@ -517,8 +525,8 @@ function IndividualRegistration(props) {
             <DialogTitle>Email already exists</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Entered email is already registered with us, enter some other
-                email.
+                Entered email is already associated with another account, please
+                log in or enter some other email.
               </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -550,7 +558,7 @@ function IndividualRegistration(props) {
               <Button onClick={handleClose2} color="inherit">
                 Verify
               </Button>
-              <Button onClick={changeEmail}  color="inherit">
+              <Button onClick={changeEmail} color="inherit">
                 Change Email
               </Button>
             </DialogActions>

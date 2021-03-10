@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import verifyCode from "./images/verifyCode.png";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
-import { Grid, Paper, TextField, Button } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  TextField,
+  Button,
+  Typography,
+  LinearProgress,
+} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { verifyOtp } from "../../redux/Actions/resetPassword";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 import axios from "axios";
 
@@ -57,6 +65,26 @@ function VerifyCode(props) {
     return error;
   };
 
+  const handleResend = () => {
+    setProgress(true);
+    setButtonStatus(true);
+
+    axios
+      .post("http://localhost:8080/email/sendotp", {
+        userEmail: recoveryEmail,
+      })
+      .then((response) => {
+        setProgress(false);
+        setButtonStatus(false);
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  };
+
+  const [linearProgress, setProgress] = useState(false);
+  const [buttonStatus, setButtonStatus] = useState(false);
+
   return (
     <>
       <LoggedOutNavbar />
@@ -88,10 +116,34 @@ function VerifyCode(props) {
                 error={error ? true : false}
                 helperText={error ? error : null}
               />
+              {/* //progress line till popup*/}
+              {linearProgress === false ? null : (
+                <LinearProgress color="secondary" style={margin} />
+              )}
+              <Typography style={margin} align="right">
+                <Button
+                  size="small"
+                  endIcon={
+                    <ReplayIcon
+                      style={{
+                        color: "#E94364",
+                      }}
+                    />
+                  }
+                  onClick={handleResend}
+                >
+                  Resend OTP{" "}
+                </Button>
+              </Typography>
               <Button
                 variant="contained"
-                style={{ marginTop: "20px", backgroundColor: "#E94364" }}
+                style={{
+                  marginTop: "20px",
+                  backgroundColor: "#E94364",
+                  color: "white",
+                }}
                 onClick={handleClick}
+                disabled={buttonStatus}
               >
                 Verify
               </Button>

@@ -312,7 +312,20 @@ export default function EnhancedTable() {
                       </TableCell>
 
                       <TableCell align="center">
-                        <Button
+                          {row.status ? 
+                          <Button
+                          type="button"
+                          variant="contained"
+                          disabled={!active[index].status}
+                          onClick={(e) => {
+                            handleExpire(e, index);
+                          }}
+                          style={{ backgroundColor: "#E94364", color: "white" }}
+                        >
+                          Expire
+                        </Button>
+                           : 
+                           <Button
                           type="button"
                           variant="contained"
                           disabled={!active[index].status}
@@ -322,6 +335,9 @@ export default function EnhancedTable() {
                         >
                           Expire
                         </Button>
+                           }
+
+                        
                       </TableCell>
                     </TableRow>
                   );

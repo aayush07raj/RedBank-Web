@@ -401,6 +401,7 @@ function ConductDrive() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
+                  style={{ backgroundColor: "#E94364", color: "white" }}
                 >
                   Send Notification
                 </Button>
@@ -428,7 +429,7 @@ function ConductDrive() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{height:"110px"}}/>
+      <Container style={{ height: "110px" }} />
       <Footer />
     </>
   );

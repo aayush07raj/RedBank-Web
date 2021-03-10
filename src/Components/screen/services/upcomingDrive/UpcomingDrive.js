@@ -115,15 +115,15 @@ function UpcomingDrive() {
           Authorization: "Bearer " + loggedInState.userToken,
         },
       })
-      .then((response) =>{
-        if(response.data.length != 0){
+      .then((response) => {
+        if (response.data.length != 0) {
           console.log(response);
-          setState(response.data)
-        }else{
+          setState(response.data);
+        } else {
           handleClickOpen();
         }
-      })    
-        .catch();
+      })
+      .catch();
   };
 
   const [open, setOpen] = React.useState(false);
@@ -219,6 +219,7 @@ function UpcomingDrive() {
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
+                  style={{ backgroundColor: "#E94364", color: "white" }}
                 >
                   Search
                 </Button>
@@ -229,19 +230,18 @@ function UpcomingDrive() {
             {driveList.length !== 0 ? <Table list={driveList} /> : null}
           </Grid>
           <Dialog open={open} onClose={handleClose}>
-              <DialogTitle>{"No results found"}</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  There are no upcoming drive in the selected
-                  location.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose} color="primary" autoFocus>
-                  Ok
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <DialogTitle>{"No results found"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                There are no upcoming drive in the selected location.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary" autoFocus>
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Container>
       <Footer />

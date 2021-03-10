@@ -134,12 +134,22 @@ export default function CustomizedTables() {
   return (
     <>
       <Grid container justify="flex-end">
-        <ButtonGroup color="secondary" className={classes.buttonGroup}>
+        <ButtonGroup className={classes.buttonGroup} variant="contained">
           {readOnly ? (
-            <Button onClick={handleEdit}>Edit</Button>
+            <Button
+              onClick={handleEdit}
+              style={{ backgroundColor: "#E94364", color: "white" }}
+            >
+              Edit
+            </Button>
           ) : (
-            <ButtonGroup color="secondary">
-              <Button onClick={handleSave}>Save</Button>
+            <ButtonGroup>
+              <Button
+                onClick={handleSave}
+                style={{ backgroundColor: "#E94364", color: "white" }}
+              >
+                Save
+              </Button>
             </ButtonGroup>
           )}
         </ButtonGroup>

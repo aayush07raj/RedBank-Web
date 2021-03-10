@@ -4,7 +4,6 @@ import login from "./images/login.png";
 import avatar from "./images/avatar.png";
 import { Grid, Paper, TextField, Button, Typography } from "@material-ui/core";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
-import Joi from "joi";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
@@ -70,7 +69,11 @@ function Login() {
   const validate = () => {
     const errors = {};
 
-    if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email.trim())) {
+    if (
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        data.email.trim()
+      )
+    ) {
       errors.email = "Email is either empty or invalid";
     }
     if (!data.password) {
@@ -87,6 +90,9 @@ function Login() {
     setData(updatedData);
   };
 
+  const handlePush = () => {
+    console.log("Asd");
+  };
   return (
     <>
       <LoggedOutNavbar />
@@ -149,7 +155,14 @@ function Login() {
             />
 
             <Typography style={margin} align="right">
-              <Link to="/ForgotPassword">Forgot password </Link>
+              <Button
+                size="small"
+                onClick={(e) => {
+                  history.push("/ForgotPassword");
+                }}
+              >
+                Forgot password
+              </Button>
             </Typography>
 
             <Button
@@ -165,13 +178,17 @@ function Login() {
             <Grid align="center">
               <Typography style={margin}>
                 <p>
-                  New user ? <Link to="/Options">Sign up</Link>
+                  New user ?
+                  <Button
+                    size="small"
+                    onClick={(e) => {
+                      history.push("/Options");
+                    }}
+                  >
+                    Sign up
+                  </Button>
                 </p>
               </Typography>
-              {/* <h3 style={margin}>OR</h3>
-              <Typography style={margin}>
-                <Link to="/Options">Sign in with google account</Link>
-              </Typography> */}
             </Grid>
           </Paper>
         </Grid>

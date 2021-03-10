@@ -262,6 +262,7 @@ export default function EnhancedTable({ list, bg, component, units }) {
                           }}
                           type="button"
                           variant="contained"
+                          style={{ backgroundColor: "#E94364", color: "white" }}
                         >
                           Buy
                         </Button>

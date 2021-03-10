@@ -180,6 +180,7 @@ export default function CollapsibleTable() {
                       handleCancel(idx, drivesList[idx].driveId);
                     }}
                     disabled={!drivesList[idx].status}
+                    style={{ backgroundColor: "#E94364", color: "white" }}
                   >
                     {drivesList[idx].status ? <p>Cancel</p> : <p>Canceled</p>}
                   </Button>
@@ -191,6 +192,4 @@ export default function CollapsibleTable() {
       </Table>
     </TableContainer>
   );
-
 }
-

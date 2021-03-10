@@ -223,7 +223,11 @@ const EnhancedTableToolbar = (props) => {
       {numSelected > 0 ? (
         <>
           <Tooltip title="Send Notification">
-            <Button variant="contained" onClick={handleClickOpen}>
+            <Button
+              variant="contained"
+              onClick={handleClickOpen}
+              style={{ backgroundColor: "#E94364", color: "white" }}
+            >
               Send
             </Button>
           </Tooltip>

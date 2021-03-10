@@ -150,7 +150,11 @@ function HospitalRegistration(props) {
     ) {
       errors.name = " Username is either empty or invalid ";
     }
-    if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(data.email.trim())) {
+    if (
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        data.email.trim()
+      )
+    ) {
       errors.email = "Email is either empty or invalid";
     }
     if (
@@ -173,7 +177,8 @@ function HospitalRegistration(props) {
       errors.pincode = "Invalid pincode format";
     }
     if (!strongRegex.test(data.password.trim())) {
-      errors.password = "Enter a stronger password";
+      errors.password =
+        "Use 8 or more characters with a mix of letters, numbers & symbols";
     }
     if (data.cPassword !== data.password || data.cPassword === "") {
       errors.cPassword = "Password is either empty or Passwords do not match";
@@ -214,88 +219,88 @@ function HospitalRegistration(props) {
     console.log(errors);
     setErrors(errors);
     if (errors) return;
-    
-     // showing progress bar
-     setProgress(true);
 
-     // sending otp to user email
-     axios
-       .post("http://localhost:8080/verification/sendotp", {
-         userEmail: data.email,
-       })
-       .then((response) => {
-         console.log(response);
-         if (response.data.success) {
-           setProgress(false);
-           handleClickOpen2();
-         } else {
-           setProgress(false);
-           handleClickOpen();
-         }
-       });
+    // showing progress bar
+    setProgress(true);
+
+    // sending otp to user email
+    axios
+      .post("http://localhost:8080/verification/sendotp", {
+        userEmail: data.email,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          setProgress(false);
+          handleClickOpen2();
+        } else {
+          setProgress(false);
+          handleClickOpen();
+        }
+      });
   };
 
-  const handleClose2 = () =>{
+  const handleClose2 = () => {
     axios
-    .post("http://localhost:8080/verification/verifyotp",{
+      .post("http://localhost:8080/verification/verifyotp", {
         userEmail: data.email,
         otp: data.otp,
-    })
-    .then((response)=>{
-      console.log(response);
-      if(response.data.success){
-        reqBody.name = data.name;
-        reqBody.email = data.email;
-        reqBody.licenseNumber = data.license;
-        reqBody.phone = data.phone;
-        reqBody.address = data.address;
-        reqBody.state = data.state;
-        reqBody.district = data.district;
-        reqBody.pincode = data.pincode;
-        reqBody.password = data.password;
-    
-        axios
-          .post("http://localhost:8080/registerhos", reqBody)
-          .then(function (response) {
-            console.log(response);
-            if (response.data.userToken) {
-              console.log("works");
-              dispatch(
-                logging({
-                  isLoggedIn: true,
-                  userType: response.data.userType,
-                  userToken: response.data.userToken,
-                  userId: response.data.userId,
-                })
-              );
-              const cookies = new Cookies();
-              cookies.set(
-                "Auth",
-                {
-                  userType: response.data.userType,
-                  userToken: response.data.userToken,
-                  userId: response.data.userId,
-                },
-                { path: "/" }
-              );
-              history.push("/home");
-            } else {
-              handleClickOpen();
-            }
-          })
-          .catch(function (error) {
-            window.alert(error.message);
-          });
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          reqBody.name = data.name;
+          reqBody.email = data.email;
+          reqBody.licenseNumber = data.license;
+          reqBody.phone = data.phone;
+          reqBody.address = data.address;
+          reqBody.state = data.state;
+          reqBody.district = data.district;
+          reqBody.pincode = data.pincode;
+          reqBody.password = data.password;
+
+          axios
+            .post("http://localhost:8080/registerhos", reqBody)
+            .then(function (response) {
+              console.log(response);
+              if (response.data.userToken) {
+                console.log("works");
+                dispatch(
+                  logging({
+                    isLoggedIn: true,
+                    userType: response.data.userType,
+                    userToken: response.data.userToken,
+                    userId: response.data.userId,
+                  })
+                );
+                const cookies = new Cookies();
+                cookies.set(
+                  "Auth",
+                  {
+                    userType: response.data.userType,
+                    userToken: response.data.userToken,
+                    userId: response.data.userId,
+                  },
+                  { path: "/" }
+                );
+                history.push("/home");
+              } else {
+                handleClickOpen();
+              }
+            })
+            .catch(function (error) {
+              window.alert(error.message);
+            });
           setOpen2(false);
         } else {
           setOtpError("Invalid Otp");
         }
-    })
-  }
+      });
+  };
 
-  const changeEmail=()=>{
+  const changeEmail = () => {
     setOpen2(false);
-  }
+  };
 
   // dialog for already registered email
   const [open, setOpen] = React.useState(false);
@@ -308,15 +313,14 @@ function HospitalRegistration(props) {
     setOpen(false);
   };
 
-   // dialog for otp validation for correct email
-   const [open2, setOpen2] = React.useState(false);
+  // dialog for otp validation for correct email
+  const [open2, setOpen2] = React.useState(false);
 
-   const handleClickOpen2 = () => {
-     setOpen2(true);
-   };
- 
-   const [linearProgress, setProgress] = useState(false);
- 
+  const handleClickOpen2 = () => {
+    setOpen2(true);
+  };
+
+  const [linearProgress, setProgress] = useState(false);
 
   return (
     <>
@@ -436,9 +440,9 @@ function HospitalRegistration(props) {
                 style={margin}
                 error={errors && errors.state ? true : false}
               >
-                <InputLabel>Select required State</InputLabel>
+                <InputLabel>Select your State</InputLabel>
                 <Select
-                  label="Select required State"
+                  label="Select your State"
                   name="state"
                   onChange={handleChange}
                   value={data.state}
@@ -458,9 +462,9 @@ function HospitalRegistration(props) {
                 style={margin}
                 error={errors && errors.district ? true : false}
               >
-                <InputLabel>Select required District</InputLabel>
+                <InputLabel>Select your District</InputLabel>
                 <Select
-                  label="Select required District"
+                  label="Select your District"
                   inputProps={{ readOnly: enable }}
                   name="district"
                   value={data.district}
@@ -538,8 +542,11 @@ function HospitalRegistration(props) {
                     : "Accept Terms and Conditions"
                 }
               />
-              <Link to="/terms" style={{ color: "grey", fontWeight: "bold" }}>
-                Click here for terms and condition
+              <Link
+                to="/terms"
+                style={{ color: "#E94364", fontWeight: "bold" }}
+              >
+                (Click here for terms and condition)
               </Link>
               <Button
                 variant="contained"
@@ -558,7 +565,14 @@ function HospitalRegistration(props) {
               )}
 
               <Typography align="center" style={margin}>
-                <Link to="/Login">Already a user ? Sign in</Link>
+                <Button
+                  size="small"
+                  onClick={(e) => {
+                    history.push("/Login");
+                  }}
+                >
+                  Already a user ? Sign in
+                </Button>
               </Typography>
             </Paper>
           </form>
@@ -568,8 +582,8 @@ function HospitalRegistration(props) {
             <DialogTitle>Email already exists</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Entered email is already registered with us, enter some other
-                email.
+                Entered email is already associated with another account, please
+                log in or enter some other email.
               </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -598,10 +612,10 @@ function HospitalRegistration(props) {
               />
             </DialogContent>
             <DialogActions>
-              <Button  color="inherit" onClick={handleClose2}>
+              <Button color="inherit" onClick={handleClose2}>
                 Verify
               </Button>
-              <Button onClick={changeEmail}  color="inherit">
+              <Button onClick={changeEmail} color="inherit">
                 Change Email
               </Button>
             </DialogActions>

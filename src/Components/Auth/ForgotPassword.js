@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import forgotPwd from "./images/forgotPwd.png";
 import LoggedOutNavbar from "../layouts/loggedoutNavbar";
-import { Grid, Paper, TextField, Button } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  TextField,
+  Button,
+  LinearProgress,
+} from "@material-ui/core";
 import Joi from "joi";
 import axios from "axios";
 
@@ -40,6 +46,9 @@ function ForgotPassword() {
     setError(error);
     if (error) return;
 
+    setButtonStatus(true);
+    setProgress(true);
+
     axios
       .post("http://localhost:8080/email/sendotp", {
         userEmail: recoveryEmail,
@@ -47,6 +56,7 @@ function ForgotPassword() {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
+          setProgress(false);
           history.push({
             pathname: "/VerifyCode",
             recoveryEmail,
@@ -54,8 +64,14 @@ function ForgotPassword() {
         } else {
           setError("Sorry, email doesn't exist");
         }
+      })
+      .catch((err) => {
+        window.alert(err);
       });
   };
+
+  const [linearProgress, setProgress] = useState(false);
+  const [buttonStatus, setButtonStatus] = useState(false);
 
   return (
     <>
@@ -88,10 +104,19 @@ function ForgotPassword() {
                   error={error ? true : false}
                   helperText={error ? error : null}
                 />
+                {/* //progress line till popup*/}
+                {linearProgress === false ? null : (
+                  <LinearProgress color="secondary" style={margin} />
+                )}
                 <Button
                   variant="contained"
                   type="submit"
-                  style={{ marginTop: "20px", backgroundColor: "#E94364" }}
+                  style={{
+                    marginTop: "20px",
+                    backgroundColor: "#E94364",
+                    color: "white",
+                  }}
+                  disabled={buttonStatus}
                 >
                   Next
                 </Button>

@@ -56,7 +56,8 @@ function ResetPassword(props) {
     );
 
     if (!strongRegex.test(password.trim())) {
-      errors.password = "Enter a stronger password";
+      errors.password =
+        "Use 8 or more characters with a mix of letters, numbers & symbols";
     }
     if (cPassword !== password || cPassword === "") {
       errors.cPassword = "Password is either empty or Passwords do not match";
@@ -81,7 +82,7 @@ function ResetPassword(props) {
             <Paper elevation={5} style={paperStyle}>
               <Grid align="center">
                 <h2 style={{ marginTop: "20px" }}>Reset your Password</h2>
-                <p style={margin}>create a new password</p>
+                <p style={margin}>Create a new password</p>
                 <TextField
                   label="Enter a new password"
                   type="password"
@@ -113,7 +114,11 @@ function ResetPassword(props) {
                 <Button
                   variant="contained"
                   type="submit"
-                  style={{ marginTop: "20px", backgroundColor: "#E94364" }}
+                  style={{
+                    marginTop: "20px",
+                    backgroundColor: "#E94364",
+                    color: "white",
+                  }}
                 >
                   Reset
                 </Button>
