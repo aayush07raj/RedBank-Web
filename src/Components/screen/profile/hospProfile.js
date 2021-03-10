@@ -377,7 +377,7 @@ function HosProfile() {
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography style={{ margin: "5px" }} variant="h6">
+                <Typography style={{ marginTop: "5px" }} variant="h6">
                   {fulldata.email}
                 </Typography>
               </Grid>
@@ -388,7 +388,7 @@ function HosProfile() {
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography style={{ margin: "5px" }} variant="h6">
+                <Typography style={{ marginTop: "5px" }} variant="h6">
                   {fulldata.license_number}
                 </Typography>
               </Grid>

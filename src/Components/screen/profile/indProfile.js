@@ -419,7 +419,7 @@ function IndProfile() {
                 </Typography>
               </Grid>
               <Grid item xs={7}>
-                <Typography style={{ margin: "5px" }} variant="h6">
+                <Typography style={{ marginTop: "5px" }} variant="h6">
                   {fulldata.email}
                 </Typography>
               </Grid>
@@ -429,7 +429,7 @@ function IndProfile() {
                 </Typography>
               </Grid>
               <Grid item xs={7}>
-                <Typography style={{ margin: "5px" }} variant="h6">
+                <Typography style={{ marginTop: "5px" }} variant="h6">
                   {fulldata.dob.split("T")[0]}
                 </Typography>
               </Grid>
