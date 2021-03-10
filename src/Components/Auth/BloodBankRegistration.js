@@ -597,7 +597,7 @@ function BloodBankRegistration(props) {
             <DialogTitle>Email Validation</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                enter the otp sent to {data.email}
+                Enter the otp sent to {data.email}
               </DialogContentText>
               <TextField
                 margin="dense"

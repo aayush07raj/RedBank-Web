@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Box, Container, Grid, Divider } from "@material-ui/core/";
+import { Typography, Box, Container, Grid, Divider,Button } from "@material-ui/core/";
 import { Navbar, Footer } from "../../layouts";
 import ServiceCard from "./serviceCard";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import logging from "../../../redux/Actions/login";
 import {
   BankServices,
@@ -15,7 +16,7 @@ import BloodTable from "../about/bloodCompatibilityTable";
 
 const useStyles = makeStyles((theme) => ({
   space: {
-    marginBottom: theme.spacing(5),
+    marginBottom: theme.spacing(3),
   },
   bloodTable: {
     paddingTop: theme.spacing(3),
@@ -96,6 +97,7 @@ function Main() {
                   </span>
                 </Typography>
               ) : null}
+              <Button component={Link} to="/profile" > Go to Profile to change the status</Button>
 
               <Divider className={classes.space} />
               <Typography variant="h4">Services provided by us</Typography>
