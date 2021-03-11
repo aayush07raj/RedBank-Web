@@ -94,10 +94,11 @@ function Main() {
                   , your current donation status :{" "}
                   <span style={{ color: "#E94364", fontWeight: "bold" }}>
                     {notify}
+                    <Button component={Link} to="/profile" > Go to Profile to change the status</Button>
                   </span>
                 </Typography>
               ) : null}
-              <Button component={Link} to="/profile" > Go to Profile to change the status</Button>
+              
 
               <Divider className={classes.space} />
               <Typography variant="h4">Services provided by us</Typography>
