@@ -38,6 +38,7 @@ import InfoIcon from "@material-ui/icons/Info";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    background: "#E94364",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -60,7 +61,7 @@ export default function MenuAppBar({ user }) {
   const history = useHistory();
   const classes = useStyles();
   const [notificationsList, setNotifications] = React.useState([]);
-
+  const [notificationsCount, setNotificationsCount] = React.useState(0);
   const [open4, setOpen4] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
@@ -68,7 +69,6 @@ export default function MenuAppBar({ user }) {
   const anchorRef = React.useRef(null);
   const anchorRef2 = React.useRef(null);
   const anchorRef3 = React.useRef(null);
-
   const [notify, setNotify] = React.useState("");
   const [name, setName] = React.useState("");
 
@@ -90,13 +90,34 @@ export default function MenuAppBar({ user }) {
     setOpen3((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event) => {
+  const handleClose = (event, notificationId, idx) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
-    setOpen(false);
+    if (notificationId !== 0) {
+      axios
+        .put(
+          `http://localhost:8080/notifications/setstatus`,
+          { notificationId },
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.success) {
+            const newList = [...notificationsList];
+            newList[idx].status = true;
+            setNotifications(newList);
+            setOpen(false);
+          }
+        });
+    } else {
+      setOpen(false);
+    }
   };
+
   const handleClose2 = (event) => {
     if (anchorRef2.current && anchorRef2.current.contains(event.target)) {
       return;
@@ -139,18 +160,8 @@ export default function MenuAppBar({ user }) {
   };
 
   const handleClick2 = (event) => {
+    var count = 0;
     setOpen((prevOpen) => !prevOpen);
-    axios
-      .get(`http://localhost:8080/notifications`, {
-        headers: {
-          Authorization: "Bearer " + loggedInState.userToken,
-        },
-      })
-      .then((response) => {
-        if (response.data[0]) {
-          setNotifications(response.data.reverse());
-        }
-      });
     setOpen(event.currentTarget);
   };
 
@@ -174,9 +185,54 @@ export default function MenuAppBar({ user }) {
     }
   }, []);
 
+  useEffect(() => {
+    var count = 0;
+    for (var i = 0; i < notificationsList.length; i++) {
+      if (!notificationsList[i].status) count = count + 1;
+    }
+    setNotificationsCount(count);
+  }, [notificationsList]);
+
+  useEffect(() => {
+    console.log("useeffect working")
+    axios
+      .get(`http://localhost:8080/notifications/fetchnotifications`, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data[0]) {
+          setNotifications(response.data.reverse());
+        }
+      });
+
+    // calling notifications api every 5 minutes
+    const notificationInterval = setInterval(() => {
+      axios
+        .get(`http://localhost:8080/notifications/fetchnotifications`, {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        })
+        .then((response) => {
+          if (response.data[0]) {
+            setNotifications(response.data.reverse());
+          }
+        });
+    }, 60000);
+
+    return () => {
+      clearInterval(notificationInterval);
+    };
+  }, []);
+
+  console.log(notificationsList);
+
   return (
-    <Fragment className={classes.root}>
-      <AppBar position="static" style={{ background: "#E94364" }}>
+    <>
+      <AppBar position="static" className={classes.root}>
         <Toolbar>
           <Typography to="/Home" component={Link} variant="h6">
             <img src={Logo} alt="logo" className={classes.logo} />
@@ -188,7 +244,7 @@ export default function MenuAppBar({ user }) {
 
           <div className={classes.sectionDesktop}>
             <IconButton ref={anchorRef} onClick={handleClick2} color="inherit">
-              <Badge color="secondary">
+              <Badge color="secondary" badgeContent={notificationsCount}>
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -208,7 +264,11 @@ export default function MenuAppBar({ user }) {
                   }}
                 >
                   <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
+                    <ClickAwayListener
+                      onClickAway={(e) => {
+                        handleClose(e, 0, -1);
+                      }}
+                    >
                       <MenuList
                         autoFocusItem={open}
                         id="menu-list-grow"
@@ -216,7 +276,9 @@ export default function MenuAppBar({ user }) {
                       >
                         {notificationsList.length === 0 ? (
                           <MenuItem
-                            onClick={handleClose}
+                            onClick={(e) => {
+                              handleClose(e, 0);
+                            }}
                             style={{
                               width: "300px",
                               fontSize: "13px",
@@ -235,11 +297,32 @@ export default function MenuAppBar({ user }) {
                           notificationsList.map((val, idx) => (
                             <>
                               <MenuItem
-                                onClick={handleClose}
-                                style={{
-                                  width: "300px",
-                                  fontSize: "12px",
+                                onClick={(e) => {
+                                  if (!notificationsList[idx].status) {
+                                    handleClose(
+                                      e,
+                                      notificationsList[idx].notification_id,
+                                      idx
+                                    );
+                                  } else {
+                                    setOpen(false);
+                                  }
                                 }}
+                                style={
+                                  val.status === true
+                                    ? {
+                                        width: "300px",
+                                        fontSize: "13px",
+                                        backgroundColor: "white",
+                                      }
+                                    : {
+                                        width: "300px",
+                                        fontSize: "13px",
+                                        backgroundColor: "#E94364",
+                                        color: "white",
+                                        border: "1px solid #000000",
+                                      }
+                                }
                               >
                                 <div
                                   style={{
@@ -247,9 +330,17 @@ export default function MenuAppBar({ user }) {
                                     wordWrap: "break-word",
                                   }}
                                 >
-                                  <p> {val.message}</p>
+                                  <p
+                                    style={{
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    {val.title}
+                                  </p>
+                                  <p> - {val.message}</p>
                                 </div>
                               </MenuItem>
+
                               <Divider />
                             </>
                           ))
@@ -631,12 +722,7 @@ export default function MenuAppBar({ user }) {
               )}
             </Popper>
 
-            <Dialog
-              open={open4}
-              onClose={handleClose4}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
+            <Dialog open={open4} onClose={handleClose4}>
               <DialogTitle id="alert-dialog-title">
                 {"Are You Sure, you want to logout?"}
               </DialogTitle>
@@ -653,6 +739,6 @@ export default function MenuAppBar({ user }) {
           </div>
         </Toolbar>
       </AppBar>
-    </Fragment>
+    </>
   );
 }
