@@ -35,6 +35,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import individual from "./images/individual.jpg";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -328,7 +329,7 @@ function IndProfile() {
             <Grid container>
               <Grid item xs={12}>
                 <CardMedia
-                  image="https://cdn1.vectorstock.com/i/1000x1000/20/90/a-happy-man-who-has-received-good-news-vector-21162090.jpg"
+                  image={individual}
                   style={{ marginLeft: "10px", height: 135, width: 150 }}
                   component="img"
                 />

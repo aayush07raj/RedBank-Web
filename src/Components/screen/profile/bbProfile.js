@@ -35,13 +35,13 @@ import states from "./states.json";
 import { useForm } from "./useForm";
 import {useSelector} from "react-redux"
 import { Link, useHistory } from "react-router-dom";
-// import "../../../App.css";
+import bloodBank from "./images/bloodBank.png";
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(1),
     padding: theme.spacing(3),
-    // fontFamily:"Montserrat"
   },
 }));
 
@@ -352,7 +352,7 @@ function HosProfile() {
       <Grid container className={classes.container}>
       <Grid item md={6} xs={12}>
             <CardMedia
-              image="https://image.flaticon.com/icons/png/512/1297/1297136.png"
+              image={bloodBank}
               style={{ marginLeft: "10px", height: 135, width: 150 }}
               component="img"
             />

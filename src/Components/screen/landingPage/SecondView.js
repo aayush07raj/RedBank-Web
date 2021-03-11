@@ -32,12 +32,26 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     textAlign: "center",
   },
+  appDownload: {
+    padding: "25px",
+    color: "grey",
+    textAlign: "center",
+  },
 }));
 export default function SecondView() {
   const classes = useStyles();
   return (
     <div className={classes.root} id="place-to-visit">
       <Grid className={classes.container} container xs={12}>
+      <Grid Container xs={12} >
+        <Grid
+         item
+         md={12}
+         style={{ justifyContent: "center", alignItems: "center" }}>
+           <Typography className={classes.appDownload} variant="h5" >Download our App if you are on Android</Typography>
+          
+        </Grid>
+      </Grid>
         <Grid className={classes.cards} item xs={12} md={3}>
           <Box>
             <CardMedia component="img" image={user} height="220" />
@@ -97,6 +111,7 @@ export default function SecondView() {
           </Box>
         </Grid>
       </Grid>
+      
       <Grid
         Container
         style={{ backgroundColor: "#E94364", height: "28vh", maxWidth: "100%" }}
