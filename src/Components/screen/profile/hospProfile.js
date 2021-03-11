@@ -36,6 +36,7 @@ import states from "./states.json";
 import { useForm } from "./useForm";
 import {useSelector} from "react-redux"
 import { Link, useHistory } from "react-router-dom";
+import hospital from "./images/hospital.jpg";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -344,7 +345,7 @@ function HosProfile() {
     <Grid container className={classes.container}>
       <Grid item md={6} xs={12}>
             <CardMedia
-              image="https://i.pinimg.com/originals/a9/7d/fb/a97dfbb8f6b6fa186bfc85a8a1a26ffa.jpg"
+              image={hospital}
               style={{ marginLeft: "10px", height: 135, width: 150 }}
               component="img"
             />
