@@ -1,4 +1,5 @@
 import React from "react";
+import playIcon from "./images/playIcon.png";
 import { makeStyles } from "@material-ui/core/styles";
 
 import {
@@ -44,13 +45,19 @@ export default function SecondView() {
     <div className={classes.root} id="place-to-visit">
       <Grid className={classes.container} container xs={12}>
       <Grid Container xs={12} >
+        
         <Grid
          item
          md={12}
          style={{ justifyContent: "center", alignItems: "center" }}>
-           <Typography className={classes.appDownload} variant="h5" >Download our App if you are on Android</Typography>
+           <Box>
           
+            <CardContent>
+           <Typography className={classes.appDownload} variant="h5" >Download our App if you are on Android</Typography>
+           </CardContent>
+          </Box>
         </Grid>
+        
       </Grid>
         <Grid className={classes.cards} item xs={12} md={3}>
           <Box>
@@ -128,6 +135,7 @@ export default function SecondView() {
           <Typography className={classes.footer} variant="h5">
             Give the gift of life - DONATE BLOOD
           </Typography>
+          <CardMedia component="img" image={playIcon} style={{ height: "100px", width:"auto" }}/> 
         </Grid>
       </Grid>
     </div>

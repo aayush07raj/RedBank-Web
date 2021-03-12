@@ -8,11 +8,22 @@ import {
   TextField,
   Button,
   LinearProgress,
+  Backdrop,
+  CircularProgress,
+  Typography,
 } from "@material-ui/core";
-import Joi from "joi";
 import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
 
 function ForgotPassword() {
+  const classes = useStyles();
   const history = useHistory();
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [error, setError] = useState("");
@@ -47,7 +58,7 @@ function ForgotPassword() {
     if (error) return;
 
     setButtonStatus(true);
-    setProgress(true);
+    setIndicatorOpen(true);
 
     axios
       .post("http://localhost:8080/email/sendotp", {
@@ -56,7 +67,8 @@ function ForgotPassword() {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
-          setProgress(false);
+          setIndicatorOpen(false);
+
           history.push({
             pathname: "/VerifyCode",
             recoveryEmail,
@@ -70,8 +82,8 @@ function ForgotPassword() {
       });
   };
 
-  const [linearProgress, setProgress] = useState(false);
   const [buttonStatus, setButtonStatus] = useState(false);
+  const [indicatorOpen, setIndicatorOpen] = React.useState(false);
 
   return (
     <>
@@ -104,10 +116,7 @@ function ForgotPassword() {
                   error={error ? true : false}
                   helperText={error ? error : null}
                 />
-                {/* //progress line till popup*/}
-                {linearProgress === false ? null : (
-                  <LinearProgress color="secondary" style={margin} />
-                )}
+
                 <Button
                   variant="contained"
                   type="submit"
@@ -124,6 +133,12 @@ function ForgotPassword() {
             </Paper>
           </form>
         </Grid>
+
+        {/* indicator for please wait */}
+        <Backdrop className={classes.backdrop} open={indicatorOpen}>
+          <CircularProgress style={{ color: "#E94364", marginRight: "10px" }} />
+          <Typography variant="h5">Please wait</Typography>
+        </Backdrop>
       </Grid>
     </>
   );

@@ -7,16 +7,25 @@ import {
   Paper,
   TextField,
   Button,
+  Backdrop,
   Typography,
-  LinearProgress,
+  CircularProgress,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { verifyOtp } from "../../redux/Actions/resetPassword";
 import ReplayIcon from "@material-ui/icons/Replay";
-
 import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
 
 function VerifyCode(props) {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { recoveryEmail } = props.location;
   const paperStyle = {
@@ -66,7 +75,7 @@ function VerifyCode(props) {
   };
 
   const handleResend = () => {
-    setProgress(true);
+    setIndicatorOpen(true);
     setButtonStatus(true);
 
     axios
@@ -74,7 +83,7 @@ function VerifyCode(props) {
         userEmail: recoveryEmail,
       })
       .then((response) => {
-        setProgress(false);
+        setIndicatorOpen(false);
         setButtonStatus(false);
       })
       .catch((err) => {
@@ -82,7 +91,7 @@ function VerifyCode(props) {
       });
   };
 
-  const [linearProgress, setProgress] = useState(false);
+  const [indicatorOpen, setIndicatorOpen] = React.useState(false);
   const [buttonStatus, setButtonStatus] = useState(false);
 
   return (
@@ -116,10 +125,13 @@ function VerifyCode(props) {
                 error={error ? true : false}
                 helperText={error ? error : null}
               />
-              {/* //progress line till popup*/}
-              {linearProgress === false ? null : (
-                <LinearProgress color="secondary" style={margin} />
-              )}
+              {/* indicator for please wait */}
+              <Backdrop className={classes.backdrop} open={indicatorOpen}>
+                <CircularProgress
+                  style={{ color: "#E94364", marginRight: "10px" }}
+                />
+                <Typography variant="h5">Please wait</Typography>
+              </Backdrop>
               <Typography style={margin} align="right">
                 <Button
                   size="small"
