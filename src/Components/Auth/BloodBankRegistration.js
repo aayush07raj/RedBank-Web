@@ -18,6 +18,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
@@ -27,10 +29,18 @@ import LoggedOutNavbar from "../layouts/loggedoutNavbar";
 import axios from "axios";
 import { logging } from "../../redux/Actions/login";
 import Cookies from "universal-cookie";
-
 import { useDispatch } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
 
 function BloodBankRegistration(props) {
+  const classes = useStyles();
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -222,7 +232,7 @@ function BloodBankRegistration(props) {
     if (errors) return;
 
     // showing progress bar
-    setProgress(true);
+    setIndicatorOpen(true);
 
     // sending otp to user email
     axios
@@ -232,10 +242,10 @@ function BloodBankRegistration(props) {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
-          setProgress(false);
+          setIndicatorOpen(false);
           handleClickOpen2();
         } else {
-          setProgress(false);
+          setIndicatorOpen(false);
           handleClickOpen();
         }
       });
@@ -319,7 +329,7 @@ function BloodBankRegistration(props) {
     setOpen2(true);
   };
 
-  const [linearProgress, setProgress] = useState(false);
+  const [indicatorOpen, setIndicatorOpen] = React.useState(false);
 
   return (
     <>
@@ -558,10 +568,13 @@ function BloodBankRegistration(props) {
               >
                 Sign Up
               </Button>
-              {/* //progress line till popup*/}
-              {linearProgress === false ? null : (
-                <LinearProgress color="secondary" style={margin} />
-              )}
+              {/* indicator for please wait */}
+              <Backdrop className={classes.backdrop} open={indicatorOpen}>
+                <CircularProgress
+                  style={{ color: "#E94364", marginRight: "10px" }}
+                />
+                <Typography variant="h5">Please wait</Typography>
+              </Backdrop>
 
               <Typography align="center" style={margin}>
                 <Button
@@ -597,7 +610,7 @@ function BloodBankRegistration(props) {
             <DialogTitle>Email Validation</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Enter the otp sent to {data.email}
+                enter the otp sent to {data.email}
               </DialogContentText>
               <TextField
                 margin="dense"

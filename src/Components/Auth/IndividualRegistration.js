@@ -17,6 +17,8 @@ import {
   DialogContentText,
   DialogActions,
   LinearProgress,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
@@ -28,8 +30,17 @@ import registerIndividual from "../../redux/Actions/registerIndividual";
 import axios from "axios";
 import { logging } from "../../redux/Actions/login";
 import Cookies from "universal-cookie";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
 
 function IndividualRegistration(props) {
+  const classes = useStyles();
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -47,7 +58,6 @@ function IndividualRegistration(props) {
   });
 
   const reqBody = {};
-
   const [errors, setErrors] = useState({
     name: "",
     email: "",
@@ -63,7 +73,6 @@ function IndividualRegistration(props) {
     terms: "",
   });
   const [otpError, setOtpError] = useState("");
-
   const dispatch = useDispatch();
   const history = useHistory();
   const [enable, setEnable] = useState(true);
@@ -171,8 +180,7 @@ function IndividualRegistration(props) {
     setErrors(errors);
     if (errors) return;
 
-    // showing progress bar
-    setProgress(true);
+    setIndicatorOpen(true);
 
     // sending otp to user email
     axios
@@ -182,10 +190,10 @@ function IndividualRegistration(props) {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
-          setProgress(false);
+          setIndicatorOpen(false);
           handleClickOpen2();
         } else {
-          setProgress(false);
+          setIndicatorOpen(false);
           handleClickOpen();
         }
       });
@@ -271,7 +279,7 @@ function IndividualRegistration(props) {
     setOpen2(true);
   };
 
-  const [linearProgress, setProgress] = useState(false);
+  const [indicatorOpen, setIndicatorOpen] = React.useState(false);
 
   return (
     <>
@@ -502,10 +510,14 @@ function IndividualRegistration(props) {
               >
                 Sign up
               </Button>
-              {/* //progress line till popup*/}
-              {linearProgress === false ? null : (
-                <LinearProgress color="secondary" style={margin} />
-              )}
+
+              {/* indicator for please wait */}
+              <Backdrop className={classes.backdrop} open={indicatorOpen}>
+                <CircularProgress
+                  style={{ color: "#E94364", marginRight: "10px" }}
+                />
+                <Typography variant="h5">Please wait</Typography>
+              </Backdrop>
 
               <Typography align="center" style={margin}>
                 <Button
@@ -541,7 +553,7 @@ function IndividualRegistration(props) {
             <DialogTitle>Email Validation</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Enter the otp sent to {data.email}
+                enter the otp sent to {data.email}
               </DialogContentText>
               <TextField
                 margin="dense"
