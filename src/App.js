@@ -41,6 +41,7 @@ import LandingPage from "./Components/screen/landingPage/landingPage.js";
 import { logging } from "./redux/Actions/login";
 import Cookies from "universal-cookie";
 
+
 function App() {
   const loggedIn = useSelector((state) => state.loggedIn);
   const resetPassword = useSelector((state) => state.resetPassword);
@@ -53,6 +54,8 @@ function App() {
       dispatch(logging(authObj));
     }
   }, [dispatch]);
+
+  
 
   return (
     <>

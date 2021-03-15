@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Home(props) {
+function About(props) {
   const [message, addMsg] = useState({
     subject: "",
     message: "",
@@ -411,4 +411,4 @@ function Home(props) {
   );
 }
 
-export default Home;
+export default About;

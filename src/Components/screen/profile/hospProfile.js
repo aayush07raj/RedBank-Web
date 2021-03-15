@@ -79,7 +79,7 @@ function HosProfile() {
 
   const validate = () => {
     const strongRegex = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+      "^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})"
     );
     const errors = {};
     if (fulldata.address.trim() === "") {
@@ -120,7 +120,7 @@ function HosProfile() {
 
   const validatePass = () => {
     const strongRegex = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+      "^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})"
     );
     const errors = {};
 

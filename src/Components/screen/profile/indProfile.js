@@ -108,7 +108,7 @@ function IndProfile() {
 
   const validatePass = () => {
     const strongRegex = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+      "^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})"
     );
     const errors = {};
     if (!strongRegex.test(newPass.password.trim())) {

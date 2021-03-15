@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function HosProfile() {
+function BbProfile() {
   const [initialValues, setInitialValues] = useState({
     name: "",
     userId: "",
@@ -78,7 +78,7 @@ function HosProfile() {
 
   const validate = () => {
     const strongRegex = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+      "^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})"
     );
     const errors = {};
 
@@ -120,7 +120,7 @@ function HosProfile() {
 
   const validatePass = () => {
     const strongRegex = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+      "^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})"
     );
     const errors = {};
 
@@ -726,4 +726,4 @@ function HosProfile() {
     </>
   );
 }
-export default HosProfile;
+export default BbProfile;
