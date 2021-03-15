@@ -20,7 +20,6 @@ import {
 } from "./services/Services";
 import axios from "axios";
 import BloodTable from "../about/bloodCompatibilityTable";
-import firebase from '../../../firebase'
 
 const useStyles = makeStyles((theme) => ({
   space: {
@@ -81,18 +80,6 @@ function Main() {
         .catch();
     }
   }, []);
-
-  useEffect(()=>{
-    const messaging = firebase.messaging()
-    messaging.requestPermission().then(()=>{
-      return messaging.getToken()
-    }).then(token=>{
-      console.log('Token : ',token)
-    }).catch((err)=>{
-      console.log(err);
-      
-    })
-  })
 
   return (
     <>
