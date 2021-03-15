@@ -26,7 +26,7 @@ function App() {
         title="My Profile"
         subtitle={`Here you can view as well as edit your profile details. Some fields( ${subtitle} ) kept uneditable due to security purposes `}
       />
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Profile />
       </Container>
       <Footer />
