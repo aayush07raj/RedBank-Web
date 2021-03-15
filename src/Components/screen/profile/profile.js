@@ -18,7 +18,7 @@ function Profile() {
   const loggedInState = useSelector((state) => state.loggedIn);
   return (
     <>
-      <Paper className={classes.paperStyle} elevation={5}>
+      <Paper className={classes.paperStyle} elevation={2}>
         {loggedInState.userType === 1 ? (
           <IndProfile />
         ) : (

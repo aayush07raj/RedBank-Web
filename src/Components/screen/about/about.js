@@ -5,12 +5,14 @@ import {
   Box,
   Container,
   Grid,
-  Card,
-  CardMedia,
   TextField,
   Paper,
   Button,
   Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
 } from "@material-ui/core/";
 import { Navbar, Footer } from "../../layouts";
 import axios from "axios";
@@ -99,8 +101,8 @@ function Home(props) {
       })
       .then((response) => {
         if (response.data.success) {
-          console.log(response);
-          window.alert("Your message has been Submiited!");
+          setOpen(true);
+          addMsg({ subject: "", message: "" });
         }
       });
   };
@@ -112,6 +114,12 @@ function Home(props) {
     width: 580,
     flexDirection: "column",
     padding: "30px",
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -176,7 +184,7 @@ function Home(props) {
                   name="subject"
                   value={message.subject}
                   variant="outlined"
-                  inputProps={{ maxLength: 20 }}
+                  inputProps={{ maxLength: 30 }}
                   error={errors && errors.subject ? true : false}
                   helperText={errors && errors.subject ? errors.subject : null}
                 />
@@ -198,6 +206,20 @@ function Home(props) {
                   Submit feedback
                 </Button>
               </Paper>
+
+              {/* dialog for response */}
+              <Dialog open={open} onClose={handleClose}>
+                <DialogContent>
+                  <DialogContentText>
+                    Your response has been submitted
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="secondary">
+                    Ok
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Grid>
             <Grid
               container
@@ -209,9 +231,8 @@ function Home(props) {
                 <Typography variant="h4">FAQS</Typography>
                 <Divider />
               </Grid>
-              
-              <Grid item xs={6} >
-                
+
+              <Grid item xs={6}>
                 <Accordion>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography>
@@ -384,7 +405,7 @@ function Home(props) {
           </Grid>
         </Container>
       </div>
-      <Container style={{height:"150px"}} />
+      <Container style={{ height: "150px" }} />
       <Footer />
     </>
   );

@@ -1,6 +1,13 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Box, Container, Grid, Divider,Button } from "@material-ui/core/";
+import {
+  Typography,
+  Box,
+  Container,
+  Grid,
+  Divider,
+  Button,
+} from "@material-ui/core/";
 import { Navbar, Footer } from "../../layouts";
 import ServiceCard from "./serviceCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -86,19 +93,31 @@ function Main() {
           <Grid container spacing={8} justify="flex-start">
             <Grid item xs={12} align="center">
               {loggedInState.userType === 1 ? (
-                <Typography variant="h4" className={classes.space}>
-                  Hello{" "}
-                  <span style={{ color: "#E94364", fontWeight: "bold" }}>
-                    {name}
-                  </span>
-                  , your current donation status :{" "}
-                  <span style={{ color: "#E94364", fontWeight: "bold" }}>
-                    {notify}
-                    <Button component={Link} to="/profile" > Go to Profile to change the status</Button>
-                  </span>
-                </Typography>
+                <>
+                  <Typography variant="h4" className={classes.space}>
+                    Hello{" "}
+                    <span style={{ color: "#E94364", fontWeight: "bold" }}>
+                      {name}
+                    </span>
+                    , your current donation status :{" "}
+                    <span style={{ color: "#E94364", fontWeight: "bold" }}>
+                      {notify}
+                    </span>
+                  </Typography>
+                  <Typography variant="h5">
+                    Go to{" "}
+                    <Button
+                      component={Link}
+                      to="/profile"
+                      size="large"
+                      color="secondary"
+                    >
+                      Profile
+                    </Button>{" "}
+                    to change the status
+                  </Typography>
+                </>
               ) : null}
-              
 
               <Divider className={classes.space} />
               <Typography variant="h4">Services provided by us</Typography>
