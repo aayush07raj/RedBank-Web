@@ -86,7 +86,6 @@ function Main() {
       console.log('Token : ',token)
     }).catch((err)=>{
       console.log(err);
-      
     })
     // firebase.messaging().subscribeToTopic([messaging], "BOB05")
     // .then(()=>{console.log("testing")})

@@ -90,9 +90,6 @@ function Login() {
     setData(updatedData);
   };
 
-  const handlePush = () => {
-    console.log("Asd");
-  };
   return (
     <>
       <LoggedOutNavbar />
