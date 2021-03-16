@@ -9,6 +9,7 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import Button from '@material-ui/core/Button';
+import { Link, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   logo:{
@@ -61,10 +62,10 @@ function Footer() {
       <Grid item xs={12} sm={3} md={3}>
         <Typography align={"center"} gutterBottom className={classes.text} >
           <ul className={classes.text}>SERVICES OFFERED</ul>
-          <ul><Button className={classes.text}>Buy Blood</Button></ul>
-          <ul><Button className={classes.text}>Find Donors</Button></ul>
-          <ul><Button className={classes.text}>Active Donor Request</Button></ul>
-          <ul><Button className={classes.text}>My Purchases</Button></ul>
+          <ul><Button component={Link} to="/BuyBlood" className={classes.text}>Buy Blood</Button></ul>
+          <ul><Button component={Link} to="/FindDonors" className={classes.text}>Find Donors</Button></ul>
+          <ul><Button component={Link} to="/MyDonationReq" className={classes.text}>My Donation Request</Button></ul>
+          <ul><Button component={Link} to="/MyPurchases" className={classes.text}>My Purchases</Button></ul>
         </Typography>
       </Grid>
     </Grid>
