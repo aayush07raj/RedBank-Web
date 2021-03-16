@@ -42,7 +42,7 @@ function Footer() {
       
       <Grid item xs={12} sm={3} md={3}>
         <Typography align={"center"} className={classes.text} gutterBottom >
-             <ul className={classes.text}>Contact Us</ul>
+             <ul className={classes.text}>CONTACT US</ul>
              <ul><Button className={classes.text} startIcon={<FacebookIcon/>} > Facebook </Button></ul>
              <ul><Button className={classes.text} startIcon={<LinkedInIcon/>}>Linkedin</Button></ul>
              <ul><Button className={classes.text} startIcon={<InstagramIcon/>}>Instagram</Button></ul>
@@ -51,7 +51,7 @@ function Footer() {
       </Grid>
       <Grid item xs={12} sm={3} md={3}>
         <Typography align={"center"} gutterBottom color={"textSecondary"} className={classes.text}>
-              About
+              ABOUT
               <ul>Through this app you can </ul>
               <ul>share Happiness to the one</ul>
               <ul>who are in need, Donate Blood,</ul>
