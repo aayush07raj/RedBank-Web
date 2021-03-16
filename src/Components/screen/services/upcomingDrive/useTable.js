@@ -190,8 +190,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable({ list }) {
-  // console.log(props.list)
-  // const [list, setState] =useState(props.list);
   var List = [];
   list.map((item) => {
     List.push(item);
@@ -201,7 +199,6 @@ export default function EnhancedTable({ list }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("contact");
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -235,16 +232,26 @@ export default function EnhancedTable({ list }) {
       )
       .then((response) => {
         if (response.data.success) {
-          console.log(response);
-          window.alert("Successfully Registered");
+          setOpen(true);
         } else {
-          console.log(response);
-          window.alert("You are already Registered");
+          setOpen2(true);
         }
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClose2 = () => {
+    setOpen2(false);
   };
 
   return (
@@ -303,6 +310,34 @@ export default function EnhancedTable({ list }) {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
+
+        {/* dialog for succesfully registered */}
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>{"Registration successful"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              You are Successfully registered.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* dialog for already registered */}
+        <Dialog open={open2} onClose={handleClose2}>
+          <DialogTitle>{"Registration failed"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>You are already registered.</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose2} color="primary" autoFocus>
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Paper>
     </div>
   );

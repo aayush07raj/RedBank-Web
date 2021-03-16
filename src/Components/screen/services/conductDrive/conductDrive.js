@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import { Navbar, Footer } from "../../../layouts";
-import statesData from "../../../Auth/states.json";
+import statesData from "../../../screen/profile/states.json";
 import Joi from "joi";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";

@@ -414,6 +414,9 @@ export default function EnhancedTable() {
                                 backgroundColor: "#E94364",
                                 color: "white",
                               }}
+                              disabled={
+                                loggedInState.donorStatus === 2 ? true : false
+                              }
                             >
                               Accept
                             </Button>

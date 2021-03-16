@@ -109,21 +109,25 @@ function UpcomingDrive() {
     setErrors(errors);
     if (errors) return;
 
-    axios
-      .post("http://localhost:8080/upcomingdrives/fetchdriveslist", data, {
-        headers: {
-          Authorization: "Bearer " + loggedInState.userToken,
-        },
-      })
-      .then((response) => {
-        if (response.data.length != 0) {
-          console.log(response);
-          setState(response.data);
-        } else {
-          handleClickOpen();
-        }
-      })
-      .catch();
+    console.log(loggedInState);
+    if (loggedInState.donorStatus !== 2) {
+      axios
+        .post("http://localhost:8080/upcomingdrives/fetchdriveslist", data, {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        })
+        .then((response) => {
+          if (response.data.length != 0) {
+            setState(response.data);
+          } else {
+            handleClickOpen();
+          }
+        })
+        .catch();
+    } else {
+      handleClickOpen();
+    }
   };
 
   const [open, setOpen] = React.useState(false);
@@ -233,7 +237,11 @@ function UpcomingDrive() {
             <DialogTitle>{"No results found"}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                There are no upcoming drive in the selected location.
+                {loggedInState.donorStatus === 2 ? (
+                  <>You are not eligible to register for a drive</>
+                ) : (
+                  <>There are no upcoming drive in the selected location</>
+                )}
               </DialogContentText>
             </DialogContent>
             <DialogActions>

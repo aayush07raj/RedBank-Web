@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Main() {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const loggedInState = useSelector((state) => state.loggedIn);
 
@@ -68,6 +69,10 @@ function Main() {
           },
         })
         .then((response) => {
+          dispatch({
+            type: "SET_DONOR_STATUS",
+            donorStatus: response.data.donorStatus,
+          });
           setName(response.data.name);
           if (response.data.donorStatus === 1) {
             setNotify("Active");

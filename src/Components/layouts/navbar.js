@@ -194,7 +194,7 @@ export default function MenuAppBar({ user }) {
   }, [notificationsList]);
 
   useEffect(() => {
-    console.log("useeffect working")
+    console.log("useeffect working");
     axios
       .get(`http://localhost:8080/notifications/fetchnotifications`, {
         headers: {
@@ -227,8 +227,6 @@ export default function MenuAppBar({ user }) {
       clearInterval(notificationInterval);
     };
   }, []);
-
-  console.log(notificationsList);
 
   return (
     <>
