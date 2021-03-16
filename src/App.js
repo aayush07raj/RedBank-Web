@@ -1,43 +1,43 @@
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import Login from "./Components/Auth/Login";
-import Options from "./Components/Auth/Options";
-import ForgotPassword from "./Components/Auth/ForgotPassword";
-import VerifyCode from "./Components/Auth/VerifyCode";
-import ResetPassword from "./Components/Auth/ResetPassword";
-import IndividualRegistration from "./Components/Auth/IndividualRegistration";
-import HospitalRegistration from "./Components/Auth/HospitalRegistration";
-import BloodBankRegistration from "./Components/Auth/BloodBankRegistration";
-import Home from "./Components/screen/home/main";
-import Terms from "./Components/Auth/terms";
-import Test from "./Components/Auth/Test";
-import Profile from "./Components/screen/profile/index";
-import About from "./Components/screen/about/about";
+import Login from "./container/Auth/Login";
+import Options from "./container/Auth/Options";
+import ForgotPassword from "./container/Auth/ForgotPassword";
+import VerifyCode from "./container/Auth/VerifyCode";
+import ResetPassword from "./container/Auth/ResetPassword";
+import IndividualRegistration from "./container/Auth/IndividualRegistration";
+import HospitalRegistration from "./container/Auth/HospitalRegistration";
+import BloodBankRegistration from "./container/Auth/BloodBankRegistration";
+import Home from "./container/screen/home/main";
+import Terms from "./container/Auth/terms";
+import Test from "./container/Auth/Test";
+import Profile from "./container/screen/profile/index";
+import About from "./container/screen/about/about";
 import { useSelector, useDispatch } from "react-redux";
 
 //profile pages
-// import MainIndividual from "./Components/screen/profile/Individual/MainIndividual";
-// import MainHospital from "./Components/screen/profile/Hospital/MainHospital";
+// import MainIndividual from "./container/screen/profile/Individual/MainIndividual";
+// import MainHospital from "./container/screen/profile/Hospital/MainHospital";
 
 //services
-import FindDonors from "./Components/screen/services/findDonors/FindDonors";
-import InviteesList from "./Components/screen/services/MyDonationReq/inviteesList";
-import UpcomingDrive from "./Components/screen/services/upcomingDrive/UpcomingDrive";
-import BuyBlood from "./Components/screen/services/buyBlood/BuyBlood";
-import Product from "./Components/screen/services/buyBlood/product";
-import MyCommitments from "./Components/screen/services/myCommitments/MyCommitments";
-import MyPurchases from "./Components/screen/services/myPurchases/MyPurchases";
-import MyDonationReq from "./Components/screen/services/MyDonationReq/MyDonationReq";
-import ConductDrive from "./Components/screen/services/conductDrive/conductDrive";
-import MyDrives from "./Components/screen/services/myDrives/myDrives";
-import MyInventory from "./Components/screen/services/myInventory/myInventory";
-import MySales from "./Components/screen/services/mysales/mySales";
-import MyInvites from "./Components/screen/services/myInvites/myInvites";
-import AcceptedDonors from "./Components/screen/services/myDrives/acceptedDonors";
-import MyAnalytics from "./Components/screen/services/myanalytics/MyAnalytics";
-import NotFound from "./Components/screen/NotFound";
-import LandingPage from "./Components/screen/landingPage/landingPage.js";
+import FindDonors from "./container/screen/services/findDonors/FindDonors";
+import InviteesList from "./container/screen/services/MyDonationReq/inviteesList";
+import UpcomingDrive from "./container/screen/services/upcomingDrive/UpcomingDrive";
+import BuyBlood from "./container/screen/services/buyBlood/BuyBlood";
+import Product from "./container/screen/services/buyBlood/product";
+import MyCommitments from "./container/screen/services/myCommitments/MyCommitments";
+import MyPurchases from "./container/screen/services/myPurchases/MyPurchases";
+import MyDonationReq from "./container/screen/services/MyDonationReq/MyDonationReq";
+import ConductDrive from "./container/screen/services/conductDrive/conductDrive";
+import MyDrives from "./container/screen/services/myDrives/myDrives";
+import MyInventory from "./container/screen/services/myInventory/myInventory";
+import MySales from "./container/screen/services/mysales/mySales";
+import MyInvites from "./container/screen/services/myInvites/myInvites";
+import AcceptedDonors from "./container/screen/services/myDrives/acceptedDonors";
+import MyAnalytics from "./container/screen/services/myanalytics/MyAnalytics";
+import NotFound from "./container/screen/NotFound";
+import LandingPage from "./container/screen/landingPage/landingPage.js";
 import { logging } from "./redux/Actions/login";
 import Cookies from "universal-cookie";
 
