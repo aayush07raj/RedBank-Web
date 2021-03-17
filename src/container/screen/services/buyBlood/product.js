@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
     flexDirection: "column",
     margin: "auto",
-    padding: theme.spacing(4),
+    padding: theme.spacing(2),
   },
   typo: {
     fontWeight: "bold",
@@ -93,7 +93,6 @@ const Product = (props) => {
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
         <Typography variant="h4">Selected Product</Typography>
-        <Divider />
         <Typography variant="h6" style={{}}>
           Details about the selected product, press Buy button to confirm your
           order

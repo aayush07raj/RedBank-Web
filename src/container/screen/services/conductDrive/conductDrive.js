@@ -27,37 +27,38 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import {useStyles} from "../serviceCSS";
 
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    padding: theme.spacing(5),
-    width: "650px",
-    display: "flex",
-    flexDirection: "column",
-  },
-  papers: {
-    width: "100%",
+// const useStyles = makeStyles((theme) => ({
+//   heading: {
+//     marginBottom: theme.spacing(2),
+//   },
+//   paper: {
+//     marginTop: theme.spacing(8),
+//     padding: theme.spacing(5),
+//     width: "650px",
+//     display: "flex",
+//     flexDirection: "column",
+//   },
+//   papers: {
+//     width: "100%",
 
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
-  },
-  formControl: {
-    marginTop: theme.spacing(3),
-    minWidth: 250,
-  },
-  tableContainer: {
-    marginTop: theme.spacing(9),
-    marginBottom: theme.spacing(3),
-  },
-  tables: {
-    padding: theme.spacing(3),
-  },
-}));
+//     flexDirection: "column",
+//     margin: "auto",
+//     padding: theme.spacing(4),
+//   },
+//   formControl: {
+//     marginTop: theme.spacing(3),
+//     minWidth: 250,
+//   },
+//   tableContainer: {
+//     marginTop: theme.spacing(9),
+//     marginBottom: theme.spacing(3),
+//   },
+//   tables: {
+//     padding: theme.spacing(3),
+//   },
+// }));
 
 function ConductDrive() {
   const [data, setData] = useState({
@@ -177,12 +178,13 @@ function ConductDrive() {
         },
       })
       .then((response) => {
-        // if (response.data.success) {
+        console.log(response)
+        if (response.data.success) {
         window.alert(
           "Drive has been initiated, check My Drives sections for more details"
         );
         history.push("/home");
-        // }
+        }
       });
   };
 
@@ -191,16 +193,15 @@ function ConductDrive() {
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          Organise Blood Donation Drive
-        </Typography>
-        <Divider className={classes.heading} />
-        <Typography variant="h6" className={classes.heading}>
+          Organise Blood Donation Drive- <Typography variant="h6" className={classes.heading}>
           Here you can orgainze a Blood Donation drive and send notification to
           eligible donors. They will recive all the necessary details filled
           here for the drive. Fields with "*" are mandatory.
         </Typography>
+        </Typography>
+        
       </Paper>
-      <Container maxWidth="lg">
+      <Container >
         <Grid container justify="center">
           <Grid item>
             <form onSubmit={handleSubmit}>

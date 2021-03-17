@@ -11,23 +11,24 @@ import Navbar from "../../../../component/navbar";
 import Footer from "../../../../component/footer";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import {useStyles} from "../serviceCSS";
 
 import Table from "./table";
 
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  paper: {
-    width: "100%",
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
-  },
-  table: {
-    margin: theme.spacing(3),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   heading: {
+//     marginBottom: theme.spacing(2),
+//   },
+//   paper: {
+//     width: "100%",
+//     flexDirection: "column",
+//     margin: "auto",
+//     padding: theme.spacing(4),
+//   },
+//   table: {
+//     margin: theme.spacing(3),
+//   },
+// }));
 
 function MyPurchase() {
   const [purchase, setList] = useState([]);
@@ -53,15 +54,15 @@ function MyPurchase() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.paper}>
+      <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          My Purchases
-        </Typography>
-        <Divider className={classes.heading} />
-        <Typography variant="h6" className={classes.heading}>
+          My Purchases- <Typography variant="h6" className={classes.inline}>
           Here you can view all the purchases you have done since your
           registration
         </Typography>
+        </Typography>
+        
+        
       </Paper>
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
@@ -70,7 +71,7 @@ function MyPurchase() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height: "200px" }}></Container>
+      <Container style={{ height: "250px" }}></Container>
       <Footer />
     </>
   );

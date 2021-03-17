@@ -26,36 +26,37 @@ import Table from "./useTable";
 import Joi from "joi";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import {useStyles} from "../serviceCSS";
 
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  papers: {
-    width: "100%",
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
-  },
-  form: {
-    marginTop: theme.spacing(8),
-    padding: theme.spacing(5),
-    width: "550px",
-    display: "flex",
-    flexDirection: "column",
-  },
-  formControl: {
-    marginTop: theme.spacing(3),
-    minWidth: 250,
-  },
-  tableContainer: {
-    marginTop: theme.spacing(9),
-    marginBottom: theme.spacing(3),
-  },
-  tables: {
-    padding: theme.spacing(3),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   heading: {
+//     marginBottom: theme.spacing(2),
+//   },
+//   papers: {
+//     width: "100%",
+//     flexDirection: "column",
+//     margin: "auto",
+//     padding: theme.spacing(2),
+//   },
+//   form: {
+//     marginTop: theme.spacing(8),
+//     padding: theme.spacing(5),
+//     width: "550px",
+//     display: "flex",
+//     flexDirection: "column",
+//   },
+//   formControl: {
+//     marginTop: theme.spacing(3),
+//     minWidth: 250,
+//   },
+//   tableContainer: {
+//     marginTop: theme.spacing(9),
+//     marginBottom: theme.spacing(3),
+//   },
+//   tables: {
+//     padding: theme.spacing(3),
+//   },
+// }));
 
 function FindDonors() {
   const [data, setData] = useState({
@@ -153,19 +154,18 @@ function FindDonors() {
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          Find Donor
-        </Typography>
-        <Divider className={classes.heading} />
-        <Typography variant="h6" className={classes.heading}>
+          Find Donor- <Typography className={classes.inline} variant="h6">
           Here you can search any inidividual for blood donation. Fill the
           parameters and click on search.
         </Typography>
+        </Typography>
+        
       </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
             <form onSubmit={handleSubmit}>
-              <Paper className={classes.form} elevation={5}>
+              <Paper xs={12} md={12} className={classes.paper} elevation={5}>
                 <FormControl
                   variant="outlined"
                   className={classes.formControl}
@@ -301,7 +301,7 @@ function FindDonors() {
               </DialogActions>
             </Dialog>
           </Grid>
-          <Grid item xs={8} className={classes.tableContainer}>
+          <Grid item xs={12} className={classes.tableContainer}>
             {donorsList.length !== 0 ? (
               <Table list={donorsList} formData={data} />
             ) : null}

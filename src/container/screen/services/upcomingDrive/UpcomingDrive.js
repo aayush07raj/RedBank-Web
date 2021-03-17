@@ -25,37 +25,38 @@ import statesData from "../../../../assets/json/statesWithAll.json";
 import Table from "./useTable";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import {useStyles} from "../serviceCSS";
 
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    padding: theme.spacing(5),
-    width: "550px",
-    display: "flex",
-    flexDirection: "column",
-  },
-  papers: {
-    width: "100%",
+// const useStyles = makeStyles((theme) => ({
+//   heading: {
+//     marginBottom: theme.spacing(2),
+//   },
+//   paper: {
+//     marginTop: theme.spacing(8),
+//     padding: theme.spacing(5),
+//     width: "550px",
+//     display: "flex",
+//     flexDirection: "column",
+//   },
+//   papers: {
+//     width: "100%",
 
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
-  },
-  formControl: {
-    marginTop: theme.spacing(3),
-    minWidth: 250,
-  },
-  tableContainer: {
-    marginTop: theme.spacing(9),
-    marginBottom: theme.spacing(3),
-  },
-  tables: {
-    padding: theme.spacing(3),
-  },
-}));
+//     flexDirection: "column",
+//     margin: "auto",
+//     padding: theme.spacing(4),
+//   },
+//   formControl: {
+//     marginTop: theme.spacing(3),
+//     minWidth: 250,
+//   },
+//   tableContainer: {
+//     marginTop: theme.spacing(9),
+//     marginBottom: theme.spacing(3),
+//   },
+//   tables: {
+//     padding: theme.spacing(3),
+//   },
+// }));
 
 function UpcomingDrive() {
   const [data, setData] = useState({
@@ -146,13 +147,13 @@ function UpcomingDrive() {
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          Find Upcoming Drives
-        </Typography>
-        <Divider className={classes.heading} />
-        <Typography variant="h6" className={classes.heading}>
+          Find Upcoming Drives- <Typography variant="h6" className={classes.inline}>
           Here you can search upcoming blood donation drives. Fill the
           parameters and click on search.
         </Typography>
+        </Typography>
+        
+        
       </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">

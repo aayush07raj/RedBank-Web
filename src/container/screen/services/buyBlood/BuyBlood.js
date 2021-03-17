@@ -26,36 +26,37 @@ import Table from "./useTable";
 import Joi from "joi";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import {useStyles} from "../serviceCSS";
 
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    padding: theme.spacing(5),
-    width: "550px",
-    display: "flex",
-    flexDirection: "column",
-  },
-  papers: {
-    width: "100%",
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
-  },
-  formControl: {
-    marginTop: theme.spacing(3),
-    minWidth: 250,
-  },
-  tableContainer: {
-    marginTop: theme.spacing(9),
-    marginBottom: theme.spacing(3),
-  },
-  tables: {
-    padding: theme.spacing(3),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   heading: {
+//     marginBottom: theme.spacing(2),
+//   },
+//   paper: {
+//     marginTop: theme.spacing(8),
+//     padding: theme.spacing(5),
+//     width: "550px",
+//     display: "flex",
+//     flexDirection: "column",
+//   },
+//   papers: {
+//     width: "100%",
+//     flexDirection: "column",
+//     margin: "auto",
+//     padding: theme.spacing(2),
+//   },
+//   formControl: {
+//     marginTop: theme.spacing(3),
+//     minWidth: 250,
+//   },
+//   tableContainer: {
+//     marginTop: theme.spacing(9),
+//     marginBottom: theme.spacing(3),
+//   },
+//   tables: {
+//     padding: theme.spacing(3),
+//   },
+// }));
 
 function BuyBlood() {
   const [data, setData] = useState({
@@ -159,19 +160,16 @@ function BuyBlood() {
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          Buy Blood
+          Buy Blood - <Typography className={classes.inline} variant="h6">  Here you can search nearest blood bank and buy items as per your
+          requirement. Fill the parameters and click on search.</Typography>
         </Typography>
-        <Divider className={classes.heading} />
-        <Typography variant="h6" className={classes.heading}>
-          Here you can search nearest blood bank and buy items as per your
-          requirement. Fill the parameters and click on search.
-        </Typography>
+ 
       </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
             <form>
-              <Paper className={classes.paper} elevation={5}>
+              <Paper xs={12} md={12} className={classes.paper} elevation={5}>
                 <FormControl
                   variant="outlined"
                   className={classes.formControl}

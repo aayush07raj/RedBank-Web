@@ -92,9 +92,9 @@ function Main() {
       <Navbar />
 
       <div className="Home">
-        <Box className={classes.hero}>
+        {/* <Box className={classes.hero}>
           <Box>Red Bank</Box>
-        </Box>
+        </Box> */}
         <Container maxWidth="lg" className={classes.blogsContainer}>
           <Grid container spacing={8} justify="flex-start">
             <Grid item xs={12} align="center">
@@ -125,7 +125,6 @@ function Main() {
                 </>
               ) : null}
 
-              <Divider className={classes.space} />
               <Typography variant="h4">Services provided by us</Typography>
             </Grid>
 

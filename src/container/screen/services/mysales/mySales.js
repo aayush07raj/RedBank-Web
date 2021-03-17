@@ -12,23 +12,24 @@ import Navbar from "../../../../component/navbar";
 import Footer from "../../../../component/footer";
 import { useSelector } from "react-redux";
 
+import {useStyles} from "../serviceCSS";
 import Table from "./table";
 
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  paper: {
-    width: "100%",
+// const useStyles = makeStyles((theme) => ({
+//   heading: {
+//     marginBottom: theme.spacing(2),
+//   },
+//   paper: {
+//     width: "100%",
 
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
-  },
-  table: {
-    margin: theme.spacing(3),
-  },
-}));
+//     flexDirection: "column",
+//     margin: "auto",
+//     padding: theme.spacing(4),
+//   },
+//   table: {
+//     margin: theme.spacing(3),
+//   },
+// }));
 
 function MySales() {
   const classes = useStyles();
@@ -53,14 +54,14 @@ function MySales() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.paper}>
+      <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          My Sales
+          My Sales-  
+        <Typography variant="h6" className={classes.inline}>
+           Here you can view all the sale you have done and details about it
         </Typography>
-        <Divider className={classes.heading} />
-        <Typography variant="h6" className={classes.heading}>
-          Here you can view all the sale you have done and details about it
         </Typography>
+        
       </Paper>
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>

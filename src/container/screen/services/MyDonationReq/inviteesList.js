@@ -20,22 +20,23 @@ import Footer from "../../../../component/footer";
 import Button from "@material-ui/core/Button";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import {useStyles} from "../serviceCSS";
 
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  paper: {
-    width: "100%",
+// const useStyles = makeStyles((theme) => ({
+//   heading: {
+//     marginBottom: theme.spacing(2),
+//   },
+//   paper: {
+//     width: "100%",
 
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
-  },
-  table: {
-    margin: theme.spacing(3),
-  },
-}));
+//     flexDirection: "column",
+//     margin: "auto",
+//     padding: theme.spacing(4),
+//   },
+//   table: {
+//     margin: theme.spacing(3),
+//   },
+// }));
 
 function InviteesList(props) {
   const classes = useStyles();
@@ -72,7 +73,7 @@ function InviteesList(props) {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.paper}>
+      <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
           Invitees List
         </Typography>
@@ -126,7 +127,7 @@ function InviteesList(props) {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{height:"220px"}}/>
+      <Container style={{height:"290px"}}/>
       <Footer />
     </>
   );

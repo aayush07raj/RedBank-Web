@@ -22,7 +22,16 @@ function PieChart({ data, name }) {
                 data.abPosUnits,
                 data.abNegUnits,
               ],
-              backgroundColor: ["lightgrey", "lightblue", "lightgreen", "pink"],
+              backgroundColor: [
+                "#E94364",
+                "#E74C3C",
+                "#F4D03F",
+                "#F39C12",
+                "#EB984E",
+                "#DC7633",
+                "#B3B6B7",
+                "#A9CCE3",
+              ],
             },
           ],
         }}

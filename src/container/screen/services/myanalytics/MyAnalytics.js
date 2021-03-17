@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    // minWidth: 120,
   },
   // Tabs data
   tabs: {
@@ -401,12 +401,12 @@ function MyAnalytics() {
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
         <Typography variant="h4" className={classes.heading}>
-          My Analytics
-        </Typography>
-        <Divider className={classes.heading} />
-        <Typography variant="h6" className={classes.heading}>
+          My Analytics- <Typography variant="h6" style={{display:"inline-block"}}>
           Here you can view statistics about your data that is present with us
         </Typography>
+        </Typography>
+       
+        
       </Paper>
       <Container maxWidth="lg">
         {loggedInState.userType === 3 ? (

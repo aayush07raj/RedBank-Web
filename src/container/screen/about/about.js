@@ -54,6 +54,21 @@ const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: "100%",
   },
+  form: {
+    marginTop: theme.spacing(8),
+    padding: theme.spacing(5),
+    width: "550px",
+    display: "flex",
+    flexDirection: "column",
+    [theme.breakpoints.down("xs")]:{
+      width:"100%"
+    }
+  },
+
+  faq:{
+    width:"550px"
+  }
+
 }));
 
 function About(props) {
@@ -111,12 +126,12 @@ function About(props) {
 
   const user = props.location.user;
   const classes = useStyles();
-  const paperStyle = {
-    display: "flex",
-    width: 580,
-    flexDirection: "column",
-    padding: "30px",
-  };
+  // const paperStyle = {
+  //   display: "flex",
+  //   width: "100%",
+  //   flexDirection: "column",
+  //   padding: "30px",
+  // };
 
   const [open, setOpen] = React.useState(false);
 
@@ -133,7 +148,6 @@ function About(props) {
           <Box>About Us</Box>
         </Box>
         <Container maxWidth="lg" className={classes.blogsContainer}>
-          <Grid container justify="center" spacing={10}>
             <Grid item xs={12} align="center">
               <Typography variant="h4">About our Portal</Typography>
               <Divider />
@@ -175,7 +189,7 @@ function About(props) {
             </Grid>
 
             <Grid item xs={12} align="center">
-              <Paper style={paperStyle} elevation={5}>
+              <Paper className={classes.form} elevation={5}>
                 <Typography variant="h5">Feel free to contact us </Typography>
                 <TextField
                   style={{ marginTop: "10px" }}
@@ -227,7 +241,7 @@ function About(props) {
               container
               className={classes.blogsContainer}
               justify="center"
-              spacing={10}
+              
             >
               <Grid item xs={12} align="center">
                 <Typography variant="h4">FAQS</Typography>
@@ -296,7 +310,6 @@ function About(props) {
                
               </Grid>
             </Grid>
-          </Grid>
         </Container>
       </div>
       <Container style={{ height: "150px" }} />
