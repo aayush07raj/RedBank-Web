@@ -191,7 +191,7 @@ function ConductDrive() {
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          Conduct Blood Donation Drive
+          Organise Blood Donation Drive
         </Typography>
         <Divider className={classes.heading} />
         <Typography variant="h6" className={classes.heading}>

@@ -28,10 +28,10 @@ export const BankServices = [
   },
   {
     image: ConductDrive,
-    name: "Conduct a Drive",
+    name: "Organise a Drive",
     description:
       "Find people who share a passion to save lives by donating blood and invite them for a donation drive",
-    page: "ConductDrive",
+    page: "OrganiseDrive",
   },
   {
     image: mydrives,
@@ -146,10 +146,10 @@ export const HospitalServices = [
   },
   {
     image: ConductDrive,
-    name: "Conduct a Drive",
+    name: "Organise a Drive",
     description:
       "Find people who share a passion to save lives by donating blood and invite them for a donation drive.",
-    page: "ConductDrive",
+    page: "OrganiseDrive",
   },
   {
     image: mydrives,

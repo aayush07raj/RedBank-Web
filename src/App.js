@@ -73,7 +73,7 @@ function App() {
             <Route exact path="/BuyBlood/Product" component={Product} />
             <Route exact path="/MyCommitments" component={MyCommitments} />
             <Route exact path="/MyPurchases" component={MyPurchases} />
-            <Route exact path="/ConductDrive" component={ConductDrive} />
+            <Route exact path="/OrganiseDrive" component={ConductDrive} />
             <Route exact path="/MyDrives" component={MyDrives} />
             <Route exact path="/AcceptedDonors" component={AcceptedDonors} />
             <Route exact path="/MyInventory" component={MyInventory} />

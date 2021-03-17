@@ -105,7 +105,7 @@ function Main() {
                     <span style={{ color: "#E94364", fontWeight: "bold" }}>
                       {name}
                     </span>
-                    , your current donation status :{" "}
+                    , your current donor status :{" "}
                     <span style={{ color: "#E94364", fontWeight: "bold" }}>
                       {notify}
                     </span>

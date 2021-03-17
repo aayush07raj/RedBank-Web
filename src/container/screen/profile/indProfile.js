@@ -457,7 +457,7 @@ function IndProfile() {
         <Grid item md={6} xs={12}>
           <Grid item xs={12} style={{ padding: "10px" }}>
             <Typography variant="h5" style={{ fontWeight: "bold" }}>
-              About
+                
             </Typography>
             <Divider />
           </Grid>
@@ -474,6 +474,12 @@ function IndProfile() {
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               <Typography variant="h6">{fulldata.dob.split("T")[0]}</Typography>
+            </Grid>
+            <Grid item xs={6} style={{ padding: "10px" }}>
+              <Typography variant="h6">Blood Group :</Typography>
+            </Grid>
+            <Grid item xs={6} style={{ padding: "10px" }}>
+              <Typography variant="h6">{fulldata.bloodGroup}</Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               <Typography variant="h6">Contact :</Typography>
@@ -494,12 +500,7 @@ function IndProfile() {
                 />
               )}
             </Grid>
-            <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography variant="h6">Blood Group :</Typography>
-            </Grid>
-            <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography variant="h6">{fulldata.bloodGroup}</Typography>
-            </Grid>
+            
             <Grid item xs={6} style={{ padding: "10px" }}>
               <Typography variant="h6">Address :</Typography>
             </Grid>

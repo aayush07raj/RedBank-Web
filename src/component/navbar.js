@@ -512,10 +512,10 @@ export default function MenuAppBar({ user }) {
                                     onClick={handleClose2}
                                     color="inherit"
                                     component={Link}
-                                    to="/ConductDrive"
+                                    to="/OrganiseDrive"
                                     variant="h7"
                                   >
-                                    Conduct Drive
+                                    Organise Drive
                                   </Button>
                                 </MenuItem>
                                 <MenuItem onClick={handleClose2}>
@@ -615,10 +615,10 @@ export default function MenuAppBar({ user }) {
                                     onClick={handleClose2}
                                     color="inherit"
                                     component={Link}
-                                    to="/ConductDrive"
+                                    to="/OrganiseDrive"
                                     variant="h7"
                                   >
-                                    Conduct Drive
+                                    Organise Drive
                                   </Button>
                                 </MenuItem>
                                 <MenuItem onClick={handleClose2}>
