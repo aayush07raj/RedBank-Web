@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import clsx from "clsx";
+
 import { lighten, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -10,24 +10,16 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import SendIcon from "@material-ui/icons/Send";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { useHistory } from "react-router-dom";
+
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -201,6 +193,8 @@ export default function EnhancedTable({ list }) {
   const [orderBy, setOrderBy] = React.useState("contact");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [dialogTitle, setTitle] = useState("");
+  const [dialogDescp, setDescp] = useState("");
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -232,13 +226,18 @@ export default function EnhancedTable({ list }) {
       )
       .then((response) => {
         if (response.data.success) {
+          setTitle("Registration Successful");
+          setDescp("You have been successfully registered");
           setOpen(true);
         } else {
-          setOpen2(true);
+          setTitle("Registration Failed");
+          setDescp("You are already registered");
+          setOpen(true);
         }
       })
       .catch((err) => {
-        console.log(err);
+        setTitle("Server Error");
+        setDescp(err);
       });
   };
 
@@ -246,12 +245,6 @@ export default function EnhancedTable({ list }) {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const [open2, setOpen2] = React.useState(false);
-
-  const handleClose2 = () => {
-    setOpen2(false);
   };
 
   return (
@@ -311,29 +304,17 @@ export default function EnhancedTable({ list }) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
 
-        {/* dialog for succesfully registered */}
+        {/* dialog for succesfully registered, already registered */}
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>{"Registration successful"}</DialogTitle>
+          <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              You are Successfully registered.
-            </DialogContentText>
+            <DialogContentText>{dialogDescp}</DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary" autoFocus>
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* dialog for already registered */}
-        <Dialog open={open2} onClose={handleClose2}>
-          <DialogTitle>{"Registration failed"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>You are already registered.</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose2} color="primary" autoFocus>
+            <Button
+              onClick={handleClose}
+              style={{ backgroundColor: "#E94364", color: "white" }}
+            >
               Ok
             </Button>
           </DialogActions>

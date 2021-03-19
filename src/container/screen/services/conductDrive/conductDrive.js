@@ -13,12 +13,12 @@ import {
   TextField,
   Button,
   FormHelperText,
+  CircularProgress,
+  Backdrop,
 } from "@material-ui/core";
-import DateFnsUtils from "@date-io/date-fns";
 import Navbar from "../../../../component/navbar";
 import Footer from "../../../../component/footer";
 import statesData from "../../../../assets/json/statesWithoutAll.json";
-import Joi from "joi";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -29,36 +29,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {useStyles} from "../serviceCSS";
 
-// const useStyles = makeStyles((theme) => ({
-//   heading: {
-//     marginBottom: theme.spacing(2),
-//   },
-//   paper: {
-//     marginTop: theme.spacing(8),
-//     padding: theme.spacing(5),
-//     width: "650px",
-//     display: "flex",
-//     flexDirection: "column",
-//   },
-//   papers: {
-//     width: "100%",
 
-//     flexDirection: "column",
-//     margin: "auto",
-//     padding: theme.spacing(4),
-//   },
-//   formControl: {
-//     marginTop: theme.spacing(3),
-//     minWidth: 250,
-//   },
-//   tableContainer: {
-//     marginTop: theme.spacing(9),
-//     marginBottom: theme.spacing(3),
-//   },
-//   tables: {
-//     padding: theme.spacing(3),
-//   },
-// }));
+
 
 function ConductDrive() {
   const [data, setData] = useState({
@@ -91,7 +63,6 @@ function ConductDrive() {
   const [errors, setError] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
-  const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const history = useHistory();
 
@@ -107,14 +78,6 @@ function ConductDrive() {
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClosed = () => {
-    setOpen(false);
   };
 
   const validate = () => {
@@ -158,9 +121,10 @@ function ConductDrive() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
-    console.log(errors);
     setError(errors);
     if (errors) return;
+
+    setIndicatorOpen(true);
 
     reqBody.bloodGroups = data.bloodGroups;
     reqBody.address = data.address;
@@ -178,30 +142,37 @@ function ConductDrive() {
         },
       })
       .then((response) => {
-        console.log(response)
         if (response.data.success) {
-        window.alert(
-          "Drive has been initiated, check My Drives sections for more details"
-        );
-        history.push("/home");
+          setIndicatorOpen(false);
+          setOpen(true);
         }
       });
   };
 
+  // state for confirmation dialog box
+  const [open, setOpen] = React.useState(false);
+
+  const handleClosed = () => {
+    setOpen(false);
+    history.push("/home");
+  };
+
+  const [indicatorOpen, setIndicatorOpen] = React.useState(false);
   return (
     <>
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          Organise Blood Donation Drive- <Typography variant="h6" className={classes.heading}>
+          Organise Blood Donation Drive
+        </Typography>
+        <Divider className={classes.heading} />
+        <Typography variant="h6" className={classes.heading}>
           Here you can orgainze a Blood Donation drive and send notification to
           eligible donors. They will recive all the necessary details filled
           here for the drive. Fields with "*" are mandatory.
         </Typography>
-        </Typography>
-        
       </Paper>
-      <Container >
+      <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>
             <form onSubmit={handleSubmit}>
@@ -407,22 +378,25 @@ function ConductDrive() {
                 >
                   Send Notification
                 </Button>
-                <Dialog
-                  open={open}
-                  onClose={handleClosed}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Are You Sure, you want to logout?"}
-                  </DialogTitle>
-                  <DialogContent></DialogContent>
+
+                {/* indicator for please wait */}
+                <Backdrop className={classes.backdrop} open={indicatorOpen}>
+                  <CircularProgress
+                    style={{ color: "#E94364", marginRight: "10px" }}
+                  />
+                  <Typography variant="h5">Please wait</Typography>
+                </Backdrop>
+
+                {/* Confirmation dialog box */}
+                <Dialog open={open} onClose={handleClosed}>
+                  <DialogTitle>{"Drive Inititated Successfully"}</DialogTitle>
+                  <DialogContent>
+                    Drive has been initiated, check My Drives sections for more
+                    details
+                  </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClosed} color="primary">
-                      No
-                    </Button>
-                    <Button color="primary" autoFocus>
-                      Yes
+                    <Button color="primary" onClick={handleClosed}>
+                      Ok
                     </Button>
                   </DialogActions>
                 </Dialog>

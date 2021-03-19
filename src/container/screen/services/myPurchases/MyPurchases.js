@@ -71,7 +71,7 @@ function MyPurchase() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height: "250px" }}></Container>
+      <Container style={{ height: "300px" }}></Container>
       <Footer />
     </>
   );

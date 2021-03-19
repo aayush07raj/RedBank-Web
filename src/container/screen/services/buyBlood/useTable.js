@@ -211,10 +211,11 @@ export default function EnhancedTable({ list, bg, component, units }) {
   //   amount: units * List.price,
   // });
 
-  const handleClick = (event, price, bbId) => {
+  const handleClick = (event,bbName , price, bbId) => {
     event.preventDefault();
     history.push({
       pathname: "/BuyBlood/Product",
+      bbName,
       bg,
       component,
       price,
@@ -258,7 +259,7 @@ export default function EnhancedTable({ list, bg, component, units }) {
                       <TableCell align="center">
                         <Button
                           onClick={(event) => {
-                            handleClick(event, row.price, row.bbId);
+                            handleClick(event, row.bbName, row.price, row.bbId);
                           }}
                           type="button"
                           variant="contained"

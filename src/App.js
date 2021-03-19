@@ -28,6 +28,8 @@ import BuyBlood from "./container/screen/services/buyBlood/BuyBlood";
 import Product from "./container/screen/services/buyBlood/product";
 import MyCommitments from "./container/screen/services/myCommitments/MyCommitments";
 import MyPurchases from "./container/screen/services/myPurchases/MyPurchases";
+
+import Invoice from "./container/screen/services/myPurchases/invoice";
 import MyDonationReq from "./container/screen/services/MyDonationReq/MyDonationReq";
 import ConductDrive from "./container/screen/services/conductDrive/conductDrive";
 import MyDrives from "./container/screen/services/myDrives/myDrives";
@@ -73,6 +75,7 @@ function App() {
             <Route exact path="/BuyBlood/Product" component={Product} />
             <Route exact path="/MyCommitments" component={MyCommitments} />
             <Route exact path="/MyPurchases" component={MyPurchases} />
+            <Route exact path="/MyPurchases/Invoice" component={Invoice}/>
             <Route exact path="/OrganiseDrive" component={ConductDrive} />
             <Route exact path="/MyDrives" component={MyDrives} />
             <Route exact path="/AcceptedDonors" component={AcceptedDonors} />

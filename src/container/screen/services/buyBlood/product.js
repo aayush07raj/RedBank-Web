@@ -40,11 +40,12 @@ const useStyles = makeStyles((theme) => ({
 
 // function Product({ iota }) {
 const Product = (props) => {
-  const { bg, component, price, units, bbId } = props.location;
+  const { bg, bbName, component, price, units, bbId } = props.location;
   const history = useHistory();
   const loggedInState = useSelector((state) => state.loggedIn);
 
-  console.log(props);
+
+// state for are you sure dialog
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -53,6 +54,14 @@ const Product = (props) => {
 
   const handleClosed = () => {
     setOpen(false);
+  };
+
+  // state for confirmation dialog
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClosed2 = () => {
+    setOpen2(false);
+    history.push("/home");
   };
 
   const handleSubmit = () => {
@@ -77,11 +86,8 @@ const Product = (props) => {
       .then((response) => {
         if (response.data.success) {
           console.log(response);
-          handleClosed();
-          window.alert(
-            " Check 'My Purchases' section for more info about the transaction "
-          );
-          history.push("/home");
+          setOpen(false);
+          setOpen2(true);
         }
       })
       .catch();
@@ -106,9 +112,17 @@ const Product = (props) => {
           className={classes.table}
         >
           <Grid item xs={12} style={{}}>
-            <Paper align="center" square style={{ padding: "50px" }}>
+            <Paper align="center" square style={{ padding: "20px" }}>
+              <Typography className={classes.typo} variant="h4">Confirm your Purchase</Typography>
+              <Divider/>
               <Container className={classes.typo}>
-                <Typography className={classes.typo} variant="h6">
+                <Grid container>
+                
+                  <Grid align="center" item md={12}>
+                  <Typography className={classes.typo} variant="h6">
+                  Seller Name : {bbName}
+                </Typography>
+                  <Typography className={classes.typo} variant="h6">
                   Blood Group : {bg}
                 </Typography>
                 <Typography className={classes.typo} variant="h6">
@@ -120,6 +134,9 @@ const Product = (props) => {
                 <Typography className={classes.typo} variant="h6">
                   Total Amount to be paid :{price * units}
                 </Typography>
+                  </Grid>
+                </Grid>
+                
                 <Button
                   className={classes.typo}
                   type="button"
@@ -129,7 +146,41 @@ const Product = (props) => {
                 >
                   Buy
                 </Button>
+                {/* Are you sure dialog */}
                 <Dialog
+                  open={open}
+                  onClose={handleClosed}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {"Are You Sure?"}
+                  </DialogTitle>
+                  <DialogActions>
+                    <Button onClick={handleClosed}>No</Button>
+                    <Button onClick={handleSubmit}>Yes</Button>
+                  </DialogActions>
+                </Dialog>
+
+                {/* confirmation box */}
+                <Dialog
+                  open={open2}
+                  onClose={handleClosed2}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {
+                      "Transaction successful. Check 'My Purchases' section for more info about the transaction"
+                    }
+                  </DialogTitle>
+                  <DialogActions>
+                    <Button onClick={handleClosed2}>Ok</Button>
+                  </DialogActions>
+                </Dialog>
+
+
+                {/* <Dialog
                   open={open}
                   onClose={handleClosed}
                   aria-labelledby="alert-dialog-title"
@@ -153,7 +204,7 @@ const Product = (props) => {
                       Yes
                     </Button>
                   </DialogActions>
-                </Dialog>
+                </Dialog> */}
               </Container>
             </Paper>
           </Grid>

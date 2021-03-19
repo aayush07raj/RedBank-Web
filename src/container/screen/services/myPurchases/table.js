@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import { lighten, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
+import { Button } from "@material-ui/core/";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -13,6 +14,8 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+
+import { Link, useHistory } from "react-router-dom";
 
 function createData(name, date, bg, component, units, contact, amount) {
   return { name, date, bg, component, units, contact, amount };
@@ -105,6 +108,12 @@ const headCells = [
     disablePadding: false,
     label: "Amount Paid (Rs)",
   },
+  {
+    id:"invoice",
+    numeric: false,
+    disablePadding: false,
+    label: "Invoice"
+  }
 ];
 
 const useHeaderStyles = makeStyles((theme) => ({
@@ -194,6 +203,9 @@ export default function EnhancedTable({ list }) {
     List.push(item);
   });
 
+
+  const history = useHistory();
+
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("date");
@@ -214,6 +226,19 @@ export default function EnhancedTable({ list }) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const handleInvoice =(event, soldComponent, soldGroup, soldQuantity, sellerName, 
+    sellerContact, sellerEmail )=>{
+    history.push({
+      pathname:"/MyPurchases/Invoice",
+      soldComponent,
+      soldGroup,
+      soldQuantity,
+      sellerName,
+      sellerContact,
+      sellerEmail
+    })
+  }
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
@@ -253,6 +278,16 @@ export default function EnhancedTable({ list }) {
                       <TableCell align="center">
                         {row.pricePerUnit * row.soldQuantity}{" "}
                       </TableCell>
+                      <TableCell align="center">
+                        <Button
+                          size="small"
+                          onClick={(event) => {
+                            handleInvoice(event, row.soldComponent, row.soldGroup,
+                            row.soldQuantity, row.sellerName, row.sellerContact, row.sellerEmail )
+                          }}
+                >
+                  View Invoice
+                </Button></TableCell>
                     </TableRow>
                   );
                 })}

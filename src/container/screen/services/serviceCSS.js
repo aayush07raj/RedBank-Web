@@ -50,6 +50,10 @@ export const useStyles = makeStyles((theme) =>({
     //   My Donation Req 
     table:{
         marginTop: "50px",
-    }
-    
+    },
+    // Loader CSS 
+    backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
 }) )

@@ -174,25 +174,18 @@ const EnhancedTableToolbar = (props) => {
         },
       })
       .then((response) => {
-        // if (response.data.success) {
-        // console.log(response);
-        // }
-        history.push("/home");
-        console.log("works");
+        setOpen(true);
       })
       .catch();
   }
 
-  //data for are you sure popup dialog
-  const [open, setOpen] = React.useState(false);
+//data for are you sure popup dialog
+const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClosed = () => {
-    setOpen(false);
-  };
+const handleClosed = () => {
+  setOpen(false);
+  history.push("/home");
+};
 
   return (
     <Toolbar
@@ -225,35 +218,26 @@ const EnhancedTableToolbar = (props) => {
           <Tooltip title="Send Notification">
             <Button
               variant="contained"
-              onClick={handleClickOpen}
+              onClick={handleSend}
               style={{ backgroundColor: "#E94364", color: "white" }}
             >
               Send
             </Button>
           </Tooltip>
-          {/* dialog for are you sure popup */}
-          <Dialog
-            open={open}
-            onClose={handleClosed}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{"Are You Sure?"}</DialogTitle>
+          {/* dialog for confirmation */}
+          <Dialog open={open} onClose={handleClosed}>
+            <DialogTitle>{"Notification sent successfully"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Check 'My Donation requests' section for more information
+              </DialogContentText>
+            </DialogContent>
             <DialogActions>
-              <Button onClick={handleClosed} color="inherit">
-                No
-              </Button>
               <Button
-                onClick={() => {
-                  window.alert(
-                    "Notification sent successfully, check 'my donation requests' section for more info"
-                  );
-                  handleSend();
-                }}
-                color="inherit"
-                autoFocus
+                onClick={handleClosed}
+                style={{ backgroundColor: "#E94364", color: "white" }}
               >
-                Yes
+                Ok
               </Button>
             </DialogActions>
           </Dialog>

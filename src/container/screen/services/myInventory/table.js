@@ -7,6 +7,11 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { Button, ButtonGroup, Grid, TextField } from "@material-ui/core/";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -45,6 +50,16 @@ export default function CustomizedTables() {
   const [data, setData] = useState([]);
   const regex = /^[0-9]*$/;
   const loggedInState = useSelector((state) => state.loggedIn);
+  const [currPassword, setCurrPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [errorTitle, setErrorTitle] = useState("");
+
+  const handleChange = (idx, e) => {
+    const { value, name } = e.target;
+    const updatedData = [...data];
+    updatedData[idx][name] = value;
+    setData(updatedData);
+  };
 
   useEffect(() => {
     axios
@@ -55,7 +70,6 @@ export default function CustomizedTables() {
       })
       .then((response) => {
         // if (response.data.success) {
-        console.log(response.data);
         setData(response.data);
         // }
       })
@@ -63,7 +77,7 @@ export default function CustomizedTables() {
   }, []);
 
   const handleEdit = () => {
-    const currPassword = window.prompt("Enter your current password");
+    setOpen(false);
     axios
       .post(
         "http://localhost:8080/profile/verifycurrentpassword",
@@ -79,10 +93,15 @@ export default function CustomizedTables() {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
-          window.alert("You can start editing");
+          setCurrPassword("");
           setStatus(false);
+          setErrorTitle("Start Editing");
+          setErrorMsg("You can start editing");
+          setOpen2(true);
         } else {
-          window.alert("Wrong password entered");
+          setErrorTitle("Wrong password");
+          setErrorMsg("Please enter the correct password.");
+          setOpen2(true);
         }
       })
       .catch();
@@ -98,10 +117,11 @@ export default function CustomizedTables() {
         })
         .then((response) => {
           // if (response.data.success) {
-          console.log(response);
           setData(response.data);
-          window.alert("changes successfully saved");
           setStatus(true);
+          setErrorTitle("Changes saved");
+          setErrorMsg("Changes saved successfully.");
+          setOpen2(true);
           // }
         })
         .catch();
@@ -114,21 +134,30 @@ export default function CustomizedTables() {
         })
         .then((response) => {
           // if (response.data.success) {
-          console.log(response);
           setData(response.data);
-          window.alert("changes successfully saved");
           setStatus(true);
+          setErrorTitle("Changes saved");
+          setErrorMsg("Changes saved successfully.");
+          setOpen2(true);
           // }
         })
         .catch();
     }
   };
 
-  const handleChange = (idx, e) => {
-    const { value, name } = e.target;
-    const updatedData = [...data];
-    updatedData[idx][name] = value;
-    setData(updatedData);
+  // dialog for verifying current password
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setCurrPassword("");
+    setOpen(false);
+  };
+
+  // dialog for worng current password
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClose2 = () => {
+    setOpen2(false);
   };
 
   return (
@@ -137,7 +166,7 @@ export default function CustomizedTables() {
         <ButtonGroup className={classes.buttonGroup} variant="contained">
           {readOnly ? (
             <Button
-              onClick={handleEdit}
+              onClick={() => setOpen(true)}
               style={{ backgroundColor: "#E94364", color: "white" }}
             >
               Edit
@@ -154,6 +183,48 @@ export default function CustomizedTables() {
           )}
         </ButtonGroup>
       </Grid>
+
+      {/* dialog for verifying current password */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Verify current password</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            For security reasons, please enter your current password
+          </DialogContentText>
+          <TextField
+            margin="dense"
+            label="Current password"
+            type="password"
+            name="currPassword"
+            value={currPassword}
+            onChange={(e) => {
+              setCurrPassword(e.target.value);
+            }}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleEdit} color="primary">
+            Verify
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* dialog for wrong password, edit , save changes */}
+      <Dialog open={open2} onClose={handleClose2}>
+        <DialogTitle>{errorTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{errorMsg}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose2} color="primary" autoFocus>
+            Got it
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {loggedInState.userType == 2 ? (
         <TableContainer component={Paper} className={classes.root}>
