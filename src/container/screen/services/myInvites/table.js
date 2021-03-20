@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { lighten, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -71,16 +75,8 @@ const headCells = [
     label: "Address",
   },
   {
-    id: "inviterName",
-    label: "Inviter Name",
-  },
-  {
-    id: "inviterContact",
-    label: "Inviter Contact",
-  },
-  {
-    id: "inviterEmail",
-    label: "Inviter Email",
+    id: "inviterDetails",
+    label: "Inviter Details",
   },
   {
     id: "accept",
@@ -274,12 +270,9 @@ export default function EnhancedTable() {
     }
   };
 
-  const handleReject = (index) => {
-    let rejectionMessage = window.prompt(
-      "Please submit your reason of rejection"
-    );
+  const [index, setIndex] = useState(0);
 
-    setRejectionMessage(rejectionMessage);
+  const handleReject = () => {
     // axios call
 
     if (List[index].inviteType === "drive") {
@@ -300,7 +293,8 @@ export default function EnhancedTable() {
         )
         .then((response) => {
           // if (response.data.success) {
-          console.log(response);
+          setOpen(false);
+          setRejectionMessage("");
           setList((prevList) => {
             const newList = [...prevList];
             newList[index].status = 0;
@@ -327,7 +321,8 @@ export default function EnhancedTable() {
         )
         .then((response) => {
           // if (response.data.success) {
-          console.log(response);
+          setOpen(false);
+          setRejectionMessage("");
           setList((prevList) => {
             const newList = [...prevList];
             newList[index].status = 0;
@@ -337,6 +332,14 @@ export default function EnhancedTable() {
         })
         .catch();
     }
+  };
+
+  // dialog
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setRejectionMessage("");
+    setOpen(false);
   };
 
   return (
@@ -390,13 +393,13 @@ export default function EnhancedTable() {
                         )}
                       </TableCell>
                       <TableCell align="center">
-                        {row.address},{row.district},{row.state},{row.pincode}
+                        {row.address}, {row.district}, {row.state},{" "}
+                        {row.pincode}
                       </TableCell>
-                      <TableCell align="center">{row.recipientName}</TableCell>
                       <TableCell align="center">
-                        {row.recipientContact}
+                        {row.recipientName}, {row.recipientContact},{" "}
+                        {row.recipientEmail}
                       </TableCell>
-                      <TableCell align="center">{row.recipientEmail}</TableCell>
                       <TableCell align="center">
                         {List[index].status !== 2 ? (
                           List[index].status === 1 ? (
@@ -423,7 +426,10 @@ export default function EnhancedTable() {
                             <Button
                               type="button"
                               variant="contained"
-                              onClick={(e) => handleReject(index)}
+                              onClick={(e) => {
+                                setIndex(index);
+                                setOpen(true);
+                              }}
                             >
                               Ignore
                             </Button>
@@ -447,6 +453,35 @@ export default function EnhancedTable() {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
+
+      {/* dialog for accepted or rejected */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>{"Rejection message"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter your reason of rejection
+          </DialogContentText>
+          <TextField
+            name="Message"
+            value={Message}
+            onChange={(e) => {
+              setRejectionMessage(e.target.value);
+            }}
+            margin="dense"
+            label="type Message"
+            type="text"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleReject} color="primary">
+            Submit
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

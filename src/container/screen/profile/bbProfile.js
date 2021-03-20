@@ -23,18 +23,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import LockSharpIcon from "@material-ui/icons/LockSharp";
 import EditIcon from "@material-ui/icons/Edit";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardActions,
-  CardMedia,
-} from "@material-ui/core";
+import { CardMedia } from "@material-ui/core";
 import axios from "axios";
 import states from "../../../assets/json/statesWithoutAll.json";
-import { useForm } from "./useForm";
 import { useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
 import bloodBank from "../../../assets/images/bbDp.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -120,7 +112,7 @@ function BbProfile() {
 
   const validatePass = () => {
     const strongRegex = new RegExp(
-      "^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})"
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
     );
     const errors = {};
 
@@ -134,8 +126,7 @@ function BbProfile() {
   };
 
   const [touched, setTouched] = useState([false, false, false, false, false]);
-
-  const [maxLimit, setMaxLimit] = useState("Add a phone number");
+  const [maxLimit, setMaxLimit] = useState("Add");
   const [enable, setEnable] = useState(true);
   const [visibility, setVisibility] = useState("visible");
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
@@ -202,24 +193,15 @@ function BbProfile() {
       })
       .then((response) => {
         setfulldata(response.data);
-        console.log(response.data);
       })
       .catch();
   };
-  const margin = { marginTop: "15px" };
 
   const classes = useStyles();
   const [values, setValues] = useState(initialValues);
+
   // For Editing
   const [enableReadOnly, setEdit] = useState(true);
-
-  const history = useHistory();
-
-  const handleEdit = () => {
-    window.alert("You can start editing !");
-    setEdit(false);
-    console.log(initialValues);
-  };
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -227,10 +209,9 @@ function BbProfile() {
     setTouched([true, true, true, true, true]);
     setError(errors);
     if (errors) return;
-    console.log(fulldata);
+
     // if(validate()){
 
-    setEdit(true);
     axios
       .put("http://localhost:8080/profile/updatebbprofile", fulldata, {
         headers: {
@@ -238,26 +219,23 @@ function BbProfile() {
         },
       })
       .then((response) => {
-        window.alert("Changes have been saved !");
-        // console.log(response.data);
-        // console.log("it did work");
+        setOpenSave(true);
+        setEdit(true);
       })
       .catch();
     // }
   };
 
   const [verify, setVerify] = useState(true);
-  const [pass, checkPass] = useForm({
-    password: "",
-  });
+  const [currPassword, checkPass] = useState("");
+  const [currPasswordError, checkPassError] = useState("");
 
   const verifyPassword = () => {
-    console.log(pass.password);
     axios
       .post(
         "http://localhost:8080/profile/verifycurrentpassword",
         {
-          currentPassword: pass.password,
+          currentPassword: currPassword,
         },
         {
           headers: {
@@ -268,10 +246,54 @@ function BbProfile() {
       .then((response) => {
         console.log(response);
         if (response.data.success) {
-          console.log("working");
+          checkPassError("");
+          checkPass("");
           handleClickOpen();
+        } else {
+          checkPassError("Incorrect Password");
         }
-        console.log("works");
+      })
+      .catch();
+  };
+
+  // Change passsword state
+  const [newPass, changePass] = useState({
+    password: "",
+    cpassword: "",
+  });
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    const newState = { ...newPass };
+    newState[name] = value;
+    changePass(newState);
+  };
+
+  const changePassword = (e) => {
+    const errors = validatePass();
+    setError(errors);
+
+    if (errors) {
+      return;
+    }
+    axios
+      .put(
+        "http://localhost:8080/profile/changepassword",
+        {
+          newPassword: newPass.password,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.success) {
+          setVerify(true);
+          handleClose();
+          setOpenSave(true);
+        }
       })
       .catch();
   };
@@ -302,44 +324,11 @@ function BbProfile() {
   };
 
   const handleClose = () => {
+    changePass({
+      password: "",
+      cpassword: "",
+    });
     setOpen(false);
-  };
-
-  // Change passsword state
-  const [newPass, changePass] = useForm({
-    password: "",
-    cpassword: "",
-  });
-
-  const changePassword = (e) => {
-    const errors = validatePass();
-    setError(errors);
-
-    if (errors) {
-      return;
-    }
-    axios
-      .put(
-        "http://localhost:8080/profile/changepassword",
-        {
-          newPassword: newPass.password,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + loggedInState.userToken,
-          },
-        }
-      )
-      .then((response) => {
-        if (response.data.success) {
-          console.log(response.data);
-          window.alert("New Password successfully saved");
-          history.push({
-            pathname: "/home",
-          });
-        }
-      })
-      .catch();
   };
 
   return (
@@ -607,7 +596,7 @@ function BbProfile() {
                 name="password"
                 type="password"
                 value={newPass.password}
-                onChange={changePass}
+                onChange={handlePasswordChange}
                 error={errors && errors.password ? true : false}
                 helperText={errors && errors.password ? errors.password : null}
                 fullWidth
@@ -618,7 +607,7 @@ function BbProfile() {
                 name="cpassword"
                 type="password"
                 value={newPass.cpassword}
-                onChange={changePass}
+                onChange={handlePasswordChange}
                 error={errors && errors.cpassword ? true : false}
                 helperText={
                   errors && errors.cpassword ? errors.cpassword : null
@@ -638,8 +627,12 @@ function BbProfile() {
 
           {/* dialog for edit profile */}
           <Dialog open={openEdit} onClose={handleCloseEdit}>
-            <DialogTitle>{"Go ahead, you can start editing"}</DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogTitle>{"Start editing"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Go ahead, you can start editing
+              </DialogContentText>
+            </DialogContent>
             <DialogActions>
               <Button
                 onClick={() => {
@@ -654,10 +647,14 @@ function BbProfile() {
             </DialogActions>
           </Dialog>
 
-          {/* dialog for save profile */}
+          {/* dialog for save profile, password changed successfully */}
           <Dialog open={openSave} onClose={handleCloseSave}>
-            <DialogTitle>{"All changes saved successfully"}</DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogTitle>{"Success"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                All changes saved successfully
+              </DialogContentText>
+            </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseSave} color="primary" autoFocus>
                 Ok
@@ -699,8 +696,12 @@ function BbProfile() {
                   <TextField
                     name="password"
                     type="password"
-                    value={pass.password}
-                    onChange={checkPass}
+                    value={currPassword}
+                    onChange={(e) => {
+                      checkPass(e.target.value);
+                    }}
+                    error={currPasswordError ? true : false}
+                    helperText={currPasswordError ? currPasswordError : null}
                   />
                   <Button
                     onClick={() => {
@@ -711,6 +712,8 @@ function BbProfile() {
                   </Button>
                   <Button
                     onClick={() => {
+                      checkPass("");
+                      checkPassError("");
                       setVerify(true);
                     }}
                   >

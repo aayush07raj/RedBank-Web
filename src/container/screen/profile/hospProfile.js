@@ -23,19 +23,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import LockSharpIcon from "@material-ui/icons/LockSharp";
 import EditIcon from "@material-ui/icons/Edit";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
-
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardActions,
-  CardMedia,
-} from "@material-ui/core";
+import { CardMedia } from "@material-ui/core";
 import axios from "axios";
 import states from "../../../assets/json/statesWithoutAll.json";
-import { useForm } from "./useForm";
 import { useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
 import hospital from "../../../assets/images/hosDp.jpg";
 
 const useStyles = makeStyles((theme) => ({
@@ -120,7 +111,7 @@ function HosProfile() {
 
   const validatePass = () => {
     const strongRegex = new RegExp(
-      "^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})"
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
     );
     const errors = {};
 
@@ -134,7 +125,6 @@ function HosProfile() {
   };
 
   const [touched, setTouched] = useState([false, false, false, false, false]);
-
   const [maxLimit, setMaxLimit] = useState("Add");
   const [enable, setEnable] = useState(true);
   const [visibility, setVisibility] = useState("visible");
@@ -202,24 +192,15 @@ function HosProfile() {
       })
       .then((response) => {
         setfulldata(response.data);
-        console.log(response.data);
       })
       .catch();
   };
-  const margin = { marginTop: "15px" };
 
   const classes = useStyles();
   const [values, setValues] = useState(initialValues);
+
   // For Editing
   const [enableReadOnly, setEdit] = useState(true);
-
-  const history = useHistory();
-
-  const handleEdit = () => {
-    window.alert("You can start editing !");
-    setEdit(false);
-    console.log(initialValues);
-  };
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -227,9 +208,7 @@ function HosProfile() {
     setTouched([true, true, true, true, true]);
     setError(errors);
     if (errors) return;
-    setEdit(true);
-    console.log(initialValues);
-    console.log(values);
+
     axios
       .put("http://localhost:8080/profile/updatehosprofile", fulldata, {
         headers: {
@@ -237,24 +216,23 @@ function HosProfile() {
         },
       })
       .then((response) => {
-        window.alert("Changes have been saved !");
+        setOpenSave(true);
+        setEdit(true);
       })
       .catch();
     // }
   };
 
   const [verify, setVerify] = useState(true);
-  const [pass, checkPass] = useForm({
-    password: "",
-  });
+  const [currPassword, checkPass] = useState("");
+  const [currPasswordError, checkPassError] = useState("");
 
   const verifyPassword = () => {
-    console.log(pass.password);
     axios
       .post(
         "http://localhost:8080/profile/verifycurrentpassword",
         {
-          currentPassword: pass.password,
+          currentPassword: currPassword,
         },
         {
           headers: {
@@ -263,50 +241,29 @@ function HosProfile() {
         }
       )
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
-          console.log("working");
+          checkPassError("");
+          checkPass("");
           handleClickOpen();
+        } else {
+          checkPassError("Incorrect Password");
         }
-        console.log("works");
       })
       .catch();
   };
 
-  //  for modal for edit
-  const [openEdit, setOpenEdit] = React.useState(false);
-
-  const handleClickOpenEdit = () => {
-    setOpenEdit(true);
-  };
-
-  const handleCloseEdit = () => {
-    setOpenEdit(false);
-  };
-
-  //  for modal for Save
-  const [openSave, setOpenSave] = React.useState(false);
-
-  const handleCloseSave = () => {
-    setOpenSave(false);
-  };
-
-  // Modal for Change Password
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   // Change passsword state
-  const [newPass, changePass] = useForm({
+  const [newPass, changePass] = useState({
     password: "",
     cpassword: "",
   });
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    const newState = { ...newPass };
+    newState[name] = value;
+    changePass(newState);
+  };
 
   const changePassword = (e) => {
     const errors = validatePass();
@@ -329,14 +286,45 @@ function HosProfile() {
       )
       .then((response) => {
         if (response.data.success) {
-          console.log(response.data);
-          window.alert("New Password successfully saved");
-          history.push({
-            pathname: "/home",
-          });
+          setVerify(true);
+          handleClose();
+          setOpenSave(true);
         }
       })
       .catch();
+  };
+
+  //  for modal for edit
+  const [openEdit, setOpenEdit] = React.useState(false);
+
+  const handleClickOpenEdit = () => {
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  //  for modal for Save, password changes successfully
+  const [openSave, setOpenSave] = React.useState(false);
+
+  const handleCloseSave = () => {
+    setOpenSave(false);
+  };
+
+  // Modal for Change Password
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    changePass({
+      password: "",
+      cpassword: "",
+    });
+    setOpen(false);
   };
 
   return (
@@ -594,7 +582,7 @@ function HosProfile() {
                 name="password"
                 type="password"
                 value={newPass.password}
-                onChange={changePass}
+                onChange={handlePasswordChange}
                 error={errors && errors.password ? true : false}
                 helperText={errors && errors.password ? errors.password : null}
                 fullWidth
@@ -605,7 +593,7 @@ function HosProfile() {
                 name="cpassword"
                 type="password"
                 value={newPass.cpassword}
-                onChange={changePass}
+                onChange={handlePasswordChange}
                 error={errors && errors.cpassword ? true : false}
                 helperText={
                   errors && errors.cpassword ? errors.cpassword : null
@@ -625,8 +613,12 @@ function HosProfile() {
 
           {/* dialog for edit profile */}
           <Dialog open={openEdit} onClose={handleCloseEdit}>
-            <DialogTitle>{"Go ahead, you can start editing"}</DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogTitle>{"Start editing"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Go ahead, you can start editing
+              </DialogContentText>
+            </DialogContent>
             <DialogActions>
               <Button
                 onClick={() => {
@@ -641,10 +633,14 @@ function HosProfile() {
             </DialogActions>
           </Dialog>
 
-          {/* dialog for save profile */}
+          {/* dialog for save profile, password changed successfully */}
           <Dialog open={openSave} onClose={handleCloseSave}>
-            <DialogTitle>{"All changes saved successfully"}</DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogTitle>{"Success"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                All changes saved successfully
+              </DialogContentText>
+            </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseSave} color="primary" autoFocus>
                 Ok
@@ -686,8 +682,12 @@ function HosProfile() {
                   <TextField
                     name="password"
                     type="password"
-                    value={pass.password}
-                    onChange={checkPass}
+                    value={currPassword}
+                    onChange={(e) => {
+                      checkPass(e.target.value);
+                    }}
+                    error={currPasswordError ? true : false}
+                    helperText={currPasswordError ? currPasswordError : null}
                   />
                   <Button
                     onClick={() => {
@@ -698,6 +698,8 @@ function HosProfile() {
                   </Button>
                   <Button
                     onClick={() => {
+                      checkPass("");
+                      checkPassError("");
                       setVerify(true);
                     }}
                   >

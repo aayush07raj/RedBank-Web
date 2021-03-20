@@ -26,37 +26,7 @@ import Table from "./useTable";
 import Joi from "joi";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import {useStyles} from "../serviceCSS";
-
-// const useStyles = makeStyles((theme) => ({
-//   heading: {
-//     marginBottom: theme.spacing(2),
-//   },
-//   papers: {
-//     width: "100%",
-//     flexDirection: "column",
-//     margin: "auto",
-//     padding: theme.spacing(2),
-//   },
-//   form: {
-//     marginTop: theme.spacing(8),
-//     padding: theme.spacing(5),
-//     width: "550px",
-//     display: "flex",
-//     flexDirection: "column",
-//   },
-//   formControl: {
-//     marginTop: theme.spacing(3),
-//     minWidth: 250,
-//   },
-//   tableContainer: {
-//     marginTop: theme.spacing(9),
-//     marginBottom: theme.spacing(3),
-//   },
-//   tables: {
-//     padding: theme.spacing(3),
-//   },
-// }));
+import { useStyles } from "../serviceCSS";
 
 function FindDonors() {
   const [data, setData] = useState({
@@ -154,12 +124,12 @@ function FindDonors() {
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          Find Donor- <Typography className={classes.inline} variant="h6">
-          Here you can search any inidividual for blood donation. Fill the
-          parameters and click on search.
+          Find Donor-{" "}
+          <Typography className={classes.inline} variant="h6">
+            Here you can search any inidividual for blood donation. Fill the
+            parameters and click on search.
+          </Typography>
         </Typography>
-        </Typography>
-        
       </Paper>
       <Container maxWidth="lg">
         <Grid container justify="center">

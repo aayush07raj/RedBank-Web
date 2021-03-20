@@ -10,25 +10,9 @@ import {
 import Navbar from "../../../../component/navbar";
 import Footer from "../../../../component/footer";
 import axios from "axios";
-import {useStyles} from "../serviceCSS";
+import { useStyles } from "../serviceCSS";
 
 import Table from "./useTable";
-
-// const useStyles = makeStyles((theme) => ({
-//   heading: {
-//     marginBottom: theme.spacing(2),
-//   },
-//   paper: {
-//     width: "100%",
-
-//     flexDirection: "column",
-//     margin: "auto",
-//     padding: theme.spacing(4),
-//   },
-//   table: {
-//     margin: theme.spacing(3),
-//   },
-// }));
 
 function MyDonationReq() {
   const classes = useStyles();
@@ -38,12 +22,11 @@ function MyDonationReq() {
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          My Donation Request- <Typography variant="h6" className={classes.inline}>
-          Here you can view all your sent request for donors
+          My Donation Request-{" "}
+          <Typography variant="h6" className={classes.inline}>
+            Here you can view all your sent request for donors
+          </Typography>
         </Typography>
-        </Typography>
-        
-        
       </Paper>
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>

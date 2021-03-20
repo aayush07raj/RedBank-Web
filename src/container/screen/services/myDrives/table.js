@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
-import { Button } from "@material-ui/core/";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core/";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -73,28 +80,26 @@ export default function CollapsibleTable() {
   };
 
   const handleCancel = (idx, driveId) => {
-    if (window.confirm("Are you sure ?")) {
-      axios
-        .put(
-          "http://localhost:8080/mydrives/canceldrive",
-          {
-            driveId: driveId,
+    axios
+      .put(
+        "http://localhost:8080/mydrives/canceldrive",
+        {
+          driveId: driveId,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
           },
-          {
-            headers: {
-              Authorization: "Bearer " + loggedInState.userToken,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          if (response.data.success) {
-            const updatedList = [...drivesList];
-            updatedList[idx].status = false;
-            setList(updatedList);
-          }
-        });
-    }
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        if (response.data.success) {
+          const updatedList = [...drivesList];
+          updatedList[idx].status = false;
+          setList(updatedList);
+        }
+      });
   };
 
   useEffect(() => {
@@ -109,83 +114,87 @@ export default function CollapsibleTable() {
   }, [donorsList]);
 
   return (
-    <TableContainer component={Paper} className={classes.root}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center">Drive Id</StyledTableCell>
-            <StyledTableCell align="center">Date</StyledTableCell>
-            <StyledTableCell align="center">Time</StyledTableCell>
-            <StyledTableCell align="center">Address</StyledTableCell>
-            <StyledTableCell align="center">
-              Blood Groups Invited
-            </StyledTableCell>
-            <StyledTableCell align="center">Donors List</StyledTableCell>
-            <StyledTableCell align="center">Status</StyledTableCell>
-            <StyledTableCell align="center">Cancel drive</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {drivesList.map((row, idx) => (
-            <TableRow key={idx}>
-              <TableCell align="center">{row.driveId}</TableCell>
-              <TableCell align="center">
-                {row.startTimestamp.split("T")[0]} to{" "}
-                {row.endTimestamp.split("T")[0]}
-              </TableCell>
-              <TableCell align="center">
-                {row.startTimestamp.split("T")[1].split(":")[0]} :
-                {row.startTimestamp.split("T")[1].split(":")[1]} to{" "}
-                {row.endTimestamp.split("T")[1].split(":")[0]} :
-                {row.endTimestamp.split("T")[1].split(":")[1]}
-              </TableCell>
-              <TableCell align="center">
-                {row.address}, {row.district}, {row.state}, {row.pincode}
-              </TableCell>
-              <TableCell align="center">{row.bloodGroups}</TableCell>
-              <TableCell align="center">
-                <Button
-                  size="small"
-                  onClick={(e) => {
-                    handleDonorsList(drivesList[idx].driveId);
-                  }}
-                >
-                  View list
-                </Button>
-              </TableCell>
-              <TableCell align="center">
-                {!drivesList[idx].status ? (
-                  <p style={{ color: "red" }}>Canceled</p>
-                ) : new Date(row.endDate).getTime() <= new Date().getTime() ? (
-                  <p style={{ color: "grey" }}>Completed</p>
-                ) : new Date(row.startDate).getTime() >=
-                  new Date().getTime() ? (
-                  <p style={{ color: "#007CFF" }}> Upcoming</p>
-                ) : (
-                  <p style={{ color: "green" }}> Active </p>
-                )}
-              </TableCell>
-              <TableCell align="center">
-                {new Date(row.endDate).getTime() <= new Date().getTime() ? (
-                  <p>N/A</p>
-                ) : (
+    <>
+      <TableContainer component={Paper} className={classes.root}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">Drive Id</StyledTableCell>
+              <StyledTableCell align="center">Date</StyledTableCell>
+              <StyledTableCell align="center">Time</StyledTableCell>
+              <StyledTableCell align="center">Address</StyledTableCell>
+              <StyledTableCell align="center">
+                Blood Groups Invited
+              </StyledTableCell>
+              <StyledTableCell align="center">Donors List</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell align="center">Cancel drive</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {drivesList.map((row, idx) => (
+              <TableRow key={idx}>
+                <TableCell align="center">{row.driveId}</TableCell>
+                <TableCell align="center">
+                  {row.startTimestamp.split("T")[0]} to{" "}
+                  {row.endTimestamp.split("T")[0]}
+                </TableCell>
+                <TableCell align="center">
+                  {row.startTimestamp.split("T")[1].split(":")[0]} :
+                  {row.startTimestamp.split("T")[1].split(":")[1]} to{" "}
+                  {row.endTimestamp.split("T")[1].split(":")[0]} :
+                  {row.endTimestamp.split("T")[1].split(":")[1]}
+                </TableCell>
+                <TableCell align="center">
+                  {row.address}, {row.district}, {row.state}, {row.pincode}
+                </TableCell>
+                <TableCell align="center">{row.bloodGroups}</TableCell>
+                <TableCell align="center">
                   <Button
                     size="small"
-                    variant="contained"
                     onClick={(e) => {
-                      handleCancel(idx, drivesList[idx].driveId);
+                      handleDonorsList(drivesList[idx].driveId);
                     }}
                     disabled={!drivesList[idx].status}
-                    style={{ backgroundColor: "#E94364", color: "white" }}
                   >
-                    {drivesList[idx].status ? <p>Cancel</p> : <p>Canceled</p>}
+                    View list
                   </Button>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                </TableCell>
+                <TableCell align="center">
+                  {!drivesList[idx].status ? (
+                    <p style={{ color: "red" }}>Canceled</p>
+                  ) : new Date(row.endDate).getTime() <=
+                    new Date().getTime() ? (
+                    <p style={{ color: "grey" }}>Completed</p>
+                  ) : new Date(row.startDate).getTime() >=
+                    new Date().getTime() ? (
+                    <p style={{ color: "#007CFF" }}> Upcoming</p>
+                  ) : (
+                    <p style={{ color: "green" }}> Active </p>
+                  )}
+                </TableCell>
+                <TableCell align="center">
+                  {new Date(row.endDate).getTime() <= new Date().getTime() ? (
+                    <p>N/A</p>
+                  ) : (
+                    <Button
+                      size="small"
+                      variant="contained"
+                      onClick={(e) => {
+                        handleCancel(idx, drivesList[idx].driveId);
+                      }}
+                      disabled={!drivesList[idx].status}
+                      style={{ backgroundColor: "#E94364", color: "white" }}
+                    >
+                      {drivesList[idx].status ? <p>Cancel</p> : <p>Canceled</p>}
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }

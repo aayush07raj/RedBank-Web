@@ -20,23 +20,7 @@ import Footer from "../../../../component/footer";
 import Button from "@material-ui/core/Button";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import {useStyles} from "../serviceCSS";
-
-// const useStyles = makeStyles((theme) => ({
-//   heading: {
-//     marginBottom: theme.spacing(2),
-//   },
-//   paper: {
-//     width: "100%",
-
-//     flexDirection: "column",
-//     margin: "auto",
-//     padding: theme.spacing(4),
-//   },
-//   table: {
-//     margin: theme.spacing(3),
-//   },
-// }));
+import { useStyles } from "../serviceCSS";
 
 function InviteesList(props) {
   const classes = useStyles();
@@ -45,29 +29,27 @@ function InviteesList(props) {
   const [newDonorsList, setNewDonorsList] = useState([...donorsList]);
 
   const handleClick = (idx) => {
-    if (window.confirm("Are you sure ?")) {
-      axios
-        .put(
-          "http://localhost:8080/donationrequests/donationdonorverification",
-          {
-            donationId: donationId,
-            userId: newDonorsList[idx].userId,
+    axios
+      .put(
+        "http://localhost:8080/donationrequests/donationdonorverification",
+        {
+          donationId: donationId,
+          userId: newDonorsList[idx].userId,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
           },
-          {
-            headers: {
-              Authorization: "Bearer " + loggedInState.userToken,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          setNewDonorsList((prevState) => {
-            var updatedList = [...prevState];
-            updatedList[idx].donationStatus = true;
-            return updatedList;
-          });
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        setNewDonorsList((prevState) => {
+          var updatedList = [...prevState];
+          updatedList[idx].donationStatus = true;
+          return updatedList;
         });
-    }
+      });
   };
 
   return (
@@ -127,7 +109,7 @@ function InviteesList(props) {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{height:"290px"}}/>
+      <Container style={{ height: "290px" }} />
       <Footer />
     </>
   );

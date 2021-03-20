@@ -208,30 +208,28 @@ export default function EnhancedTable() {
   };
 
   const handleExpire = (e, idx) => {
-    if (window.confirm("Are you sure ?")) {
-      var updatedList = [...active];
-      updatedList[idx].status = false;
-      setList(updatedList);
+    var updatedList = [...active];
+    updatedList[idx].status = false;
+    setList(updatedList);
 
-      axios
-        .put(
-          "http://localhost:8080/donationrequests/expirerequest",
-          {
-            donationId: active[idx].donationId,
+    axios
+      .put(
+        "http://localhost:8080/donationrequests/expirerequest",
+        {
+          donationId: active[idx].donationId,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
           },
-          {
-            headers: {
-              Authorization: "Bearer " + loggedInState.userToken,
-            },
-          }
-        )
-        .then((response) => {
-          // if (response.data.success) {
-          console.log(response);
-          // }
-        })
-        .catch();
-    }
+        }
+      )
+      .then((response) => {
+        // if (response.data.success) {
+        console.log(response);
+        // }
+      })
+      .catch();
   };
 
   const handleView = (idx) => {
@@ -312,32 +310,33 @@ export default function EnhancedTable() {
                       </TableCell>
 
                       <TableCell align="center">
-                          {row.status ? 
+                        {row.status ? (
                           <Button
-                          type="button"
-                          variant="contained"
-                          disabled={!active[index].status}
-                          onClick={(e) => {
-                            handleExpire(e, index);
-                          }}
-                          style={{ backgroundColor: "#E94364", color: "white" }}
-                        >
-                          Expire
-                        </Button>
-                           : 
-                           <Button
-                          type="button"
-                          variant="contained"
-                          disabled={!active[index].status}
-                          onClick={(e) => {
-                            handleExpire(e, index);
-                          }}
-                        >
-                          Expire
-                        </Button>
-                           }
-
-                        
+                            type="button"
+                            variant="contained"
+                            disabled={!active[index].status}
+                            onClick={(e) => {
+                              handleExpire(e, index);
+                            }}
+                            style={{
+                              backgroundColor: "#E94364",
+                              color: "white",
+                            }}
+                          >
+                            Expire
+                          </Button>
+                        ) : (
+                          <Button
+                            type="button"
+                            variant="contained"
+                            disabled={!active[index].status}
+                            onClick={(e) => {
+                              handleExpire(e, index);
+                            }}
+                          >
+                            Expire
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
                   );

@@ -46,27 +46,25 @@ export default function AcceptedDonors(props) {
   const loggedInState = useSelector((state) => state.loggedIn);
 
   const handleClick = (idx) => {
-    if (window.confirm("Are you sure ?")) {
-      axios
-        .put(
-          "http://localhost:8080/mydrives/drivedonorverification",
-          {
-            driveId: driveId,
-            userId: newDonorsList[idx].userId,
+    axios
+      .put(
+        "http://localhost:8080/mydrives/drivedonorverification",
+        {
+          driveId: driveId,
+          userId: newDonorsList[idx].userId,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
           },
-          {
-            headers: {
-              Authorization: "Bearer " + loggedInState.userToken,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          var updatedList = [...newDonorsList];
-          updatedList[idx].donationStatus = true;
-          setNewDonorsList(updatedList);
-        });
-    }
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        var updatedList = [...newDonorsList];
+        updatedList[idx].donationStatus = true;
+        setNewDonorsList(updatedList);
+      });
   };
 
   return (
@@ -118,7 +116,7 @@ export default function AcceptedDonors(props) {
           </Table>
         </TableContainer>
       </Container>
-      <Container style={{height:"150px"}}/>
+      <Container style={{ height: "150px" }} />
       <Footer />
     </>
   );

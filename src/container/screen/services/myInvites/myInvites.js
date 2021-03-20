@@ -12,25 +12,9 @@ import Navbar from "../../../../component/navbar";
 import Footer from "../../../../component/footer";
 import { useSelector } from "react-redux";
 
-import {useStyles} from "../serviceCSS";
+import { useStyles } from "../serviceCSS";
 
 import Table from "./table";
-
-// const useStyles = makeStyles((theme) => ({
-//   heading: {
-//     marginBottom: theme.spacing(2),
-//   },
-//   paper: {
-//     width: "100%",
-
-//     flexDirection: "column",
-//     margin: "auto",
-//     padding: theme.spacing(4),
-//   },
-//   table: {
-//     margin: theme.spacing(3),
-//   },
-// }));
 
 function MyInvites() {
   const classes = useStyles();
@@ -40,12 +24,12 @@ function MyInvites() {
       <Navbar />
       <Paper square elevation={5} className={classes.papers}>
         <Typography variant="h4" className={classes.heading}>
-          My Invites- <Typography variant="h6" className={classes.inline}>
-          Here you can view all incoming invitation to you for donation drives
-          and individual requests
+          My Invites-{" "}
+          <Typography variant="h6" className={classes.inline}>
+            Here you can view all incoming invitation to you for donation drives
+            and individual requests
+          </Typography>
         </Typography>
-        </Typography>
-        
       </Paper>
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>

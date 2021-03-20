@@ -27,7 +27,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import states from "../../../assets/json/statesWithoutAll.json";
-import { useForm } from "./useForm";
 import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import LockSharpIcon from "@material-ui/icons/LockSharp";
@@ -119,6 +118,7 @@ function IndProfile() {
     }
     return Object.keys(errors).length === 0 ? null : errors;
   };
+
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
@@ -135,8 +135,6 @@ function IndProfile() {
 
     updatedData[name] = value;
     setfulldata(updatedData);
-
-    console.log(updatedData);
   };
 
   useEffect(() => {
@@ -199,23 +197,18 @@ function IndProfile() {
       .catch();
   };
 
-  const margin = { marginTop: "15px" };
   const classes = useStyles();
   const [values, setValues] = useState(initialValues);
+
   // For Editing
   const [enableReadOnly, setEdit] = useState(true);
-
-  const history = useHistory();
 
   const handleSave = (e) => {
     e.preventDefault();
     const errors = validate();
-    console.log(errors);
     setError(errors);
     if (errors) return;
-    if (errors) {
-      return;
-    }
+
     axios
       .put("http://localhost:8080/profile/updateindprofile", fulldata, {
         headers: {
@@ -230,17 +223,15 @@ function IndProfile() {
   };
 
   const [verify, setVerify] = useState(true);
-  const [pass, checkPass] = useForm({
-    password: "",
-  });
+  const [currPassword, checkPass] = useState("");
+  const [currPasswordError, checkPassError] = useState("");
 
   const verifyPassword = () => {
-    console.log(pass.password);
     axios
       .post(
         "http://localhost:8080/profile/verifycurrentpassword",
         {
-          currentPassword: pass.password,
+          currentPassword: currPassword,
         },
         {
           headers: {
@@ -249,50 +240,29 @@ function IndProfile() {
         }
       )
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
-          console.log("working");
+          checkPassError("");
+          checkPass("");
           handleClickOpen();
+        } else {
+          checkPassError("Incorrect Password");
         }
-        console.log("works");
       })
       .catch();
   };
 
-  //  for modal for edit
-  const [openEdit, setOpenEdit] = React.useState(false);
-
-  const handleClickOpenEdit = () => {
-    setOpenEdit(true);
-  };
-
-  const handleCloseEdit = () => {
-    setOpenEdit(false);
-  };
-
-  //  for modal for Save
-  const [openSave, setOpenSave] = React.useState(false);
-
-  const handleCloseSave = () => {
-    setOpenSave(false);
-  };
-
-  // Modal for Change Password
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   // Change passsword state
-  const [newPass, changePass] = useForm({
+  const [newPass, changePass] = useState({
     password: "",
     cpassword: "",
   });
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    const newState = { ...newPass };
+    newState[name] = value;
+    changePass(newState);
+  };
 
   const changePassword = (e) => {
     const errors = validatePass();
@@ -315,14 +285,45 @@ function IndProfile() {
       )
       .then((response) => {
         if (response.data.success) {
-          console.log(response.data);
-          window.alert("New Password successfully saved");
-          history.push({
-            pathname: "/home",
-          });
+          setVerify(true);
+          handleClose();
+          setOpenSave(true);
         }
       })
       .catch();
+  };
+
+  //  for modal for edit
+  const [openEdit, setOpenEdit] = React.useState(false);
+
+  const handleClickOpenEdit = () => {
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  //  for modal for Save, password changes successfully
+  const [openSave, setOpenSave] = React.useState(false);
+
+  const handleCloseSave = () => {
+    setOpenSave(false);
+  };
+
+  // Modal for Change Password
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    changePass({
+      password: "",
+      cpassword: "",
+    });
+    setOpen(false);
   };
 
   return (
@@ -456,9 +457,10 @@ function IndProfile() {
         </Grid>
         <Grid item md={6} xs={12}>
           <Grid item xs={12} style={{ padding: "10px" }}>
-            <Typography variant="h5" style={{ fontWeight: "bold" }}>
-                
-            </Typography>
+            <Typography
+              variant="h5"
+              style={{ fontWeight: "bold" }}
+            ></Typography>
             <Divider />
           </Grid>
 
@@ -500,7 +502,7 @@ function IndProfile() {
                 />
               )}
             </Grid>
-            
+
             <Grid item xs={6} style={{ padding: "10px" }}>
               <Typography variant="h6">Address :</Typography>
             </Grid>
@@ -615,7 +617,7 @@ function IndProfile() {
                 name="password"
                 type="password"
                 value={newPass.password}
-                onChange={changePass}
+                onChange={handlePasswordChange}
                 error={errors && errors.password ? true : false}
                 helperText={errors && errors.password ? errors.password : null}
                 fullWidth
@@ -626,7 +628,7 @@ function IndProfile() {
                 name="cpassword"
                 type="password"
                 value={newPass.cpassword}
-                onChange={changePass}
+                onChange={handlePasswordChange}
                 error={errors && errors.cpassword ? true : false}
                 helperText={
                   errors && errors.cpassword ? errors.cpassword : null
@@ -646,8 +648,12 @@ function IndProfile() {
 
           {/* dialog for edit profile */}
           <Dialog open={openEdit} onClose={handleCloseEdit}>
-            <DialogTitle>{"Go ahead, you can start editing"}</DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogTitle>{"Start editing"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Go ahead, you can start editing
+              </DialogContentText>
+            </DialogContent>
             <DialogActions>
               <Button
                 onClick={() => {
@@ -662,10 +668,14 @@ function IndProfile() {
             </DialogActions>
           </Dialog>
 
-          {/* dialog for save profile */}
+          {/* dialog for save profile, password changed successfully */}
           <Dialog open={openSave} onClose={handleCloseSave}>
-            <DialogTitle>{"All changes saved successfully"}</DialogTitle>
-            <DialogContent></DialogContent>
+            <DialogTitle>{"Success"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                All changes saved successfully
+              </DialogContentText>
+            </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseSave} color="primary" autoFocus>
                 Ok
@@ -707,8 +717,12 @@ function IndProfile() {
                   <TextField
                     name="password"
                     type="password"
-                    value={pass.password}
-                    onChange={checkPass}
+                    value={currPassword}
+                    onChange={(e) => {
+                      checkPass(e.target.value);
+                    }}
+                    error={currPasswordError ? true : false}
+                    helperText={currPasswordError ? currPasswordError : null}
                   />
                   <Button
                     onClick={() => {
@@ -719,6 +733,8 @@ function IndProfile() {
                   </Button>
                   <Button
                     onClick={() => {
+                      checkPass("");
+                      checkPassError("");
                       setVerify(true);
                     }}
                   >

@@ -12,18 +12,14 @@ import {
 } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    // position:'fixed',
     width: "100%",
-
     flexDirection: "column",
     margin: "auto",
     padding: theme.spacing(2),
@@ -44,8 +40,7 @@ const Product = (props) => {
   const history = useHistory();
   const loggedInState = useSelector((state) => state.loggedIn);
 
-
-// state for are you sure dialog
+  // state for are you sure dialog
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -85,7 +80,6 @@ const Product = (props) => {
       )
       .then((response) => {
         if (response.data.success) {
-          console.log(response);
           setOpen(false);
           setOpen2(true);
         }
@@ -113,30 +107,31 @@ const Product = (props) => {
         >
           <Grid item xs={12} style={{}}>
             <Paper align="center" square style={{ padding: "20px" }}>
-              <Typography className={classes.typo} variant="h4">Confirm your Purchase</Typography>
-              <Divider/>
+              <Typography className={classes.typo} variant="h4">
+                Confirm your Purchase
+              </Typography>
+              <Divider />
               <Container className={classes.typo}>
                 <Grid container>
-                
                   <Grid align="center" item md={12}>
-                  <Typography className={classes.typo} variant="h6">
-                  Seller Name : {bbName}
-                </Typography>
-                  <Typography className={classes.typo} variant="h6">
-                  Blood Group : {bg}
-                </Typography>
-                <Typography className={classes.typo} variant="h6">
-                  Component :{component}
-                </Typography>
-                <Typography className={classes.typo} variant="h6">
-                  Units Required :{units}
-                </Typography>
-                <Typography className={classes.typo} variant="h6">
-                  Total Amount to be paid :{price * units}
-                </Typography>
+                    <Typography className={classes.typo} variant="h6">
+                      Seller Name : {bbName}
+                    </Typography>
+                    <Typography className={classes.typo} variant="h6">
+                      Blood Group : {bg}
+                    </Typography>
+                    <Typography className={classes.typo} variant="h6">
+                      Component :{component}
+                    </Typography>
+                    <Typography className={classes.typo} variant="h6">
+                      Units Required :{units}
+                    </Typography>
+                    <Typography className={classes.typo} variant="h6">
+                      Total Amount to be paid :{price * units}
+                    </Typography>
                   </Grid>
                 </Grid>
-                
+
                 <Button
                   className={classes.typo}
                   type="button"
@@ -178,7 +173,6 @@ const Product = (props) => {
                     <Button onClick={handleClosed2}>Ok</Button>
                   </DialogActions>
                 </Dialog>
-
 
                 {/* <Dialog
                   open={open}
