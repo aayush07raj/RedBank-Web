@@ -17,9 +17,7 @@ const useStyles = makeStyles((theme) => ({
     diplay: "flex",
     padding: theme.spacing(3),
   },
-  PageTitle: {
-    paddingLeft: theme.spacing(4),
-  },
+
 }));
 
 function PageHeader(props) {

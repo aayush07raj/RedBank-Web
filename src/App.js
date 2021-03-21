@@ -42,6 +42,7 @@ import NotFound from "./container/screen/NotFound";
 import LandingPage from "./container/screen/landingPage/landingPage.js";
 import { logging } from "./redux/Actions/login";
 import Cookies from "universal-cookie";
+import {ProtectedRoute} from "./protected.route";
 
 
 function App() {
@@ -62,61 +63,59 @@ function App() {
   return (
     <>
       <Switch>
-        {loggedIn.isLoggedIn ? (
+      { loggedIn.isLoggedIn ? ( 
+            <>
+              <ProtectedRoute exact path="/home" component={Home} />
+              <ProtectedRoute exact path="/About" component={About} />
+              <ProtectedRoute  exact path="/profile" component={Profile}/>
+              <ProtectedRoute exact path="/MyDonationReq" component={MyDonationReq} />
+              <ProtectedRoute exact path="/FindDonors" component={FindDonors}/>
+              <ProtectedRoute exact path="/UpcomingDrive" component={UpcomingDrive}/>
+              <ProtectedRoute exact path="/BuyBlood" component={BuyBlood}/>
+              <ProtectedRoute exact path="/BuyBlood/Product" component={Product}/>
+              <ProtectedRoute exact path="/MyCommitments" component={MyCommitments}/>
+              <ProtectedRoute exact path="/MyPurchases" component={MyPurchases}/>
+              <ProtectedRoute exact path="/MyPurchases/Invoice" component={Invoice}/>
+              <ProtectedRoute exact path="/OrganiseDrive" component={ConductDrive}/>
+              <ProtectedRoute exact path="/MyDrives" component={MyDrives}/>
+              <ProtectedRoute exact path="/AcceptedDonors" component={AcceptedDonors}/>
+              <ProtectedRoute exact path="/MyInventory" component={MyInventory}/>
+              <ProtectedRoute exact path="/MySales" component={MySales}/>
+              <ProtectedRoute exact path="/MyInvites" component={MyInvites}/ >
+              <ProtectedRoute exact path="/MyAnalytics" component={MyAnalytics}/>
+              <ProtectedRoute exact path="/inviteesList" component={InviteesList}/>
+              {/* <ProtectedRoute component={NotFound}/> */}
+              </>
+          ):
           <>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/home" component={Home} />
-            <Route exact path="/profile" component={Profile} />
-            <Route exact path="/About" component={About} />
-            <Route exact path="/MyDonationReq" component={MyDonationReq} />
-            <Route exact path="/FindDonors" component={FindDonors} />
-            <Route exact path="/UpcomingDrive" component={UpcomingDrive} />
-            <Route exact path="/BuyBlood" component={BuyBlood} />
-            <Route exact path="/BuyBlood/Product" component={Product} />
-            <Route exact path="/MyCommitments" component={MyCommitments} />
-            <Route exact path="/MyPurchases" component={MyPurchases} />
-            <Route exact path="/MyPurchases/Invoice" component={Invoice}/>
-            <Route exact path="/OrganiseDrive" component={ConductDrive} />
-            <Route exact path="/MyDrives" component={MyDrives} />
-            <Route exact path="/AcceptedDonors" component={AcceptedDonors} />
-            <Route exact path="/MyInventory" component={MyInventory} />
-            <Route exact path="/MySales" component={MySales} />
-            <Route exact path="/MyInvites" component={MyInvites} />
-            <Route exact path="/MyAnalytics" component={MyAnalytics} />
-            <Route exact path="/inviteesList" component={InviteesList} />
-            {/* <Route component={NotFound} /> */}
-          </>
-        ) : (
-          <>
-            <Route exact path="/" component={LandingPage} />
-            <Route
+          <Route exact path="/" component={LandingPage} />
+          <Route
               exact
               path="/BloodBankRegistration"
               component={BloodBankRegistration}
             />
-            <Route exact path="/Login" component={Login} />
-            <Route exact path="/terms" component={Terms} />
+          <Route exact path="/Login"  component={Login} />
+          <Route exact path="/terms" component={Terms} />
 
-            <Route exact path="/ForgotPassword" component={ForgotPassword} />
-            <Route exact path="/VerifyCode" component={VerifyCode} />
-            {resetPassword.isOtpVerified ? (
-              <Route exact path="/ResetPassword" component={ResetPassword} />
+          <Route exact path="/ForgotPassword" component={ForgotPassword} />
+          <Route exact path="/VerifyCode" component={VerifyCode} />
+          {resetPassword.isOtpVerified ? (
+            <Route exact path="/ResetPassword" component={ResetPassword} />
             ) : null}
-            <Route exact path="/Options" component={Options} />
-            <Route
-              exact
-              path="/IndividualRegistration"
-              component={IndividualRegistration}
-            />
-            <Route
-              exact
-              path="/HospitalRegistration"
-              component={HospitalRegistration}
-            />
-            <Route exact path="/Test" component={Test} />
-            {/* <Route component={NotFound} /> */}
-          </>
-        )}
+          <Route exact path="/Options" component={Options} />
+          <Route
+            exact
+            path="/IndividualRegistration"
+            component={IndividualRegistration}
+          />
+          <Route
+            exact
+            path="/HospitalRegistration"
+            component={HospitalRegistration}
+          />
+          </> }
+          
+          <Route component={NotFound}/>
       </Switch>
     </>
   );

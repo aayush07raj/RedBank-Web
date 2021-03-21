@@ -13,6 +13,7 @@ import Footer from "../../../../component/footer";
 import { useSelector } from "react-redux";
 import { useStyles } from "../serviceCSS";
 import Table from "./table";
+import PageHeader from "../../../../component/pageHeader";
 
 function MySales() {
   const classes = useStyles();
@@ -37,14 +38,10 @@ function MySales() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          My Sales-
-          <Typography variant="h6" className={classes.inline}>
-            Here you can view all the sale you have done and details about it
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="My Sales "
+        subtitle="Here you can view all the sale you have done and details about it."
+      />
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>

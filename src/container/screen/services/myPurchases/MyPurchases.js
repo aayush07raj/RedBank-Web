@@ -12,6 +12,7 @@ import Footer from "../../../../component/footer";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useStyles } from "../serviceCSS";
+import PageHeader from "../../../../component/pageHeader";
 
 import Table from "./table";
 
@@ -39,15 +40,12 @@ function MyPurchase() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          My Purchases-{" "}
-          <Typography variant="h6" className={classes.inline}>
-            Here you can view all the purchases you have done since your
-            registration
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="My Purchases "
+        subtitle="Here you can view all the purchases you have done since your
+        registration."
+      />
+      
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>

@@ -28,6 +28,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useStyles } from "../serviceCSS";
+import PageHeader from "../../../../component/pageHeader";
 
 function ConductDrive() {
   const [data, setData] = useState({
@@ -158,17 +159,14 @@ function ConductDrive() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          Organise Blood Donation Drive
-        </Typography>
-        <Divider className={classes.heading} />
-        <Typography variant="h6" className={classes.heading}>
-          Here you can orgainze a Blood Donation drive and send notification to
-          eligible donors. They will recive all the necessary details filled
-          here for the drive. Fields with "*" are mandatory.
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="Organise Blood Donation Drive "
+        subtitle="Here you can orgainze a Blood Donation drive and send notification to
+        eligible donors. They will recive all the necessary details filled
+        here for the drive. Fields with * are mandatory."
+      />
+       
+      
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>

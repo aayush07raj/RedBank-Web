@@ -14,6 +14,7 @@ import Footer from "../../../../component/footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useStyles } from "../serviceCSS";
 import Table from "./table";
+import PageHeader from "../../../../component/pageHeader";
 
 function MyCommitments() {
   const classes = useStyles();
@@ -38,15 +39,11 @@ function MyCommitments() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          My Commitments-{" "}
-          <Typography variant="h6" className={classes.inline}>
-            Here you can view all the types of donations you have done since
-            your registration
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title=" My Commitments "
+        subtitle="Here you can view all the types of donations you have done since
+        your registration."
+      />
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.tables}>
           <Grid item xs={12}>
@@ -54,7 +51,7 @@ function MyCommitments() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height: "250px" }}></Container>
+      <Container style={{ height: "300px" }}></Container>
       <Footer />
     </>
   );

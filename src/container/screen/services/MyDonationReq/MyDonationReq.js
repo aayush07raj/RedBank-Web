@@ -11,6 +11,7 @@ import Navbar from "../../../../component/navbar";
 import Footer from "../../../../component/footer";
 import axios from "axios";
 import { useStyles } from "../serviceCSS";
+import PageHeader from "../../../../component/pageHeader";
 
 import Table from "./useTable";
 
@@ -20,14 +21,10 @@ function MyDonationReq() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          My Donation Request-{" "}
-          <Typography variant="h6" className={classes.inline}>
-            Here you can view all your sent request for donors
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="My Donation Request "
+        subtitle="Here you can view all your sent request for donors."
+      />
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>

@@ -11,6 +11,7 @@ import axios from "axios";
 import Navbar from "../../../../component/navbar";
 import Footer from "../../../../component/footer";
 import { useSelector } from "react-redux";
+import PageHeader from "../../../../component/pageHeader";
 
 import { useStyles } from "../serviceCSS";
 
@@ -22,15 +23,12 @@ function MyInvites() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          My Invites-{" "}
-          <Typography variant="h6" className={classes.inline}>
-            Here you can view all incoming invitation to you for donation drives
-            and individual requests
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="My Invites "
+        subtitle="Here you can view all incoming invitation to you for donation drives
+        and individual requests."
+      />
+      
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>

@@ -27,6 +27,7 @@ import Joi from "joi";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useStyles } from "../serviceCSS";
+import PageHeader from "../../../../component/pageHeader";
 
 function FindDonors() {
   const [data, setData] = useState({
@@ -122,15 +123,12 @@ function FindDonors() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          Find Donor-{" "}
-          <Typography className={classes.inline} variant="h6">
-            Here you can search any inidividual for blood donation. Fill the
-            parameters and click on search.
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="Find Donor "
+        subtitle="Here you can search any inidividual for blood donation. Fill the
+        parameters and click on search."
+      />
+      
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>

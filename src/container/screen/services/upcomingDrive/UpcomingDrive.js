@@ -26,6 +26,7 @@ import Table from "./useTable";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useStyles } from "../serviceCSS";
+import PageHeader from "../../../../component/pageHeader";
 
 function UpcomingDrive() {
   const [data, setData] = useState({
@@ -114,15 +115,12 @@ function UpcomingDrive() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          Find Upcoming Drives-{" "}
-          <Typography variant="h6" className={classes.inline}>
-            Here you can search upcoming blood donation drives. Fill the
-            parameters and click on search.
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="Find Upcoming Drives "
+        subtitle="Here you can search upcoming blood donation drives. Fill the
+        parameters and click on search."
+      />
+      
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>

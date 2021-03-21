@@ -17,28 +17,18 @@ export const ProtectedRoute = ({ component: Component, ...rest}) => {
     }
   }, [dispatch]);
 
-
-        // const loggedIn = useSelector((state) => state.loggedIn);
         return(
             <Route
             {...rest}
-            render={props =>{
-                if(loggedIn.isLoggedIn && props.authObj){
-                    return <Component {...props}/>
-                }
-                else{
-                    return (
-                        <Redirect
-                          to={{
-                            pathname: "/",
-                            state: {
-                              from: props.location
-                            }
-                          }}
-                        />
-                      );
-                }
-            }}
+            render = {(props)=>
+              (loggedIn.isLoggedIn) ? (
+                <Component {...props} />
+              ):(
+                null
+                // <Redirect to="/Login"/>
+              )
+            }
             />
         );
     };
+
