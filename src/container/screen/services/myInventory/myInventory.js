@@ -10,6 +10,7 @@ import {
 import Navbar from "../../../../component/navbar";
 import Footer from "../../../../component/footer";
 import {useStyles} from "../serviceCSS";
+import PageHeader from "../../../../component/pageHeader";
 
 import Table from "./table";
 
@@ -20,15 +21,12 @@ function MyInventory() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          My Inventory- <Typography variant="h6" className={classes.inline}>
-          Here you can view, as well as update the stock availability of all
-          your components
-        </Typography>
-        </Typography>
-        
-      </Paper>
+      <PageHeader
+        title="My Inventory"
+        subtitle="Here you can view, as well as update the stock availability of all
+        your components."
+      />
+      
       <Container maxWidth="lg">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>

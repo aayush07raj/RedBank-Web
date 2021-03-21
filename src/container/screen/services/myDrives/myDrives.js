@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import Navbar from "../../../../component/navbar";
 import Footer from "../../../../component/footer";
+import PageHeader from "../../../../component/pageHeader";
 
 import Table from "./table";
 import { useStyles } from "../serviceCSS";
@@ -20,15 +21,11 @@ function MyBloodDonationDrives() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          My Blood Donation Drives-{" "}
-          <Typography variant="h6" className={classes.inline}>
-            A section showing details of all the drives you have conducted, or
-            which are yet to happen in the near future.
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="My Blood Donation Drives"
+        subtitle="A section showing details of all the drives you have conducted, or
+        which are yet to happen in the near future."
+      />
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>

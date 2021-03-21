@@ -56,4 +56,14 @@ export const useStyles = makeStyles((theme) =>({
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
+
+    // My Analytics
+    charts: {
+      margin: theme.spacing(3),
+    },
+    tabs: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.paper,
+      marginTop: theme.spacing(2),
+    },
 }) )

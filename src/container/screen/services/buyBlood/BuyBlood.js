@@ -27,6 +27,7 @@ import Joi from "joi";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useStyles } from "../serviceCSS";
+import PageHeader from "../../../../component/pageHeader";
 
 function BuyBlood() {
   const [data, setData] = useState({
@@ -127,16 +128,12 @@ function BuyBlood() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          Buy Blood -{" "}
-          <Typography className={classes.inline} variant="h6">
-            {" "}
-            Here you can search nearest blood bank and buy items as per your
-            requirement. Fill the parameters and click on search.
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="Buy Blood "
+        subtitle="Here you can search nearest blood bank and buy items as per your
+        requirement. Fill the parameters and click on search."
+      />
+       
       <Container maxWidth="lg">
         <Grid container justify="center">
           <Grid item>

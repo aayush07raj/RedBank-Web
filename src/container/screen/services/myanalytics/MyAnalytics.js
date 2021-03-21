@@ -23,6 +23,8 @@ import Footer from "../../../../component/footer";
 import BarChart from "./barChart";
 import PieChart from "./PieChart";
 import { useSelector } from "react-redux";
+import { useStyles } from "../serviceCSS";
+import PageHeader from "../../../../component/pageHeader";
 
 // Tabs data
 function TabPanel(props) {
@@ -38,31 +40,6 @@ function TabPanel(props) {
     </div>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  paper: {
-    width: "100%",
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(4),
-  },
-  charts: {
-    margin: theme.spacing(3),
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    // minWidth: 120,
-  },
-  // Tabs data
-  tabs: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    marginTop: theme.spacing(2),
-  },
-}));
 
 function MyAnalytics() {
   const classes = useStyles();
@@ -380,14 +357,10 @@ function MyAnalytics() {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4" className={classes.heading}>
-          My Analytics-{" "}
-          <Typography variant="h6" style={{ display: "inline-block" }}>
-            Here you can view statistics about your data that is present with us
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title=" My Analytics "
+        subtitle="Here you can view statistics about your data that is present with us"
+      />
       <Container maxWidth="lg">
         {loggedInState.userType === 3 ? (
           <div className={classes.tabs}>
