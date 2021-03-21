@@ -1,38 +1,46 @@
 import React from "react";
 import LoggedOutNavbar from "../../component/loggedoutNavbar";
 import notFound from "../../assets/images/notFound.svg";
-import { Route, Redirect } from "react-router-dom";
-
-import { Link, useHistory } from "react-router-dom";
-import {
-    Grid,
-    Paper,
-    TextField,
-    Button,
-    Backdrop,
-    Typography,
-    CircularProgress,
-  } from "@material-ui/core";
-
+import { Link } from "react-router-dom";
+import { Grid, Button } from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
 
 function NotFound() {
+  const loggedIn = useSelector((state) => state.loggedIn);
   return (
     <>
-    <LoggedOutNavbar/>
-    <Grid>
-    <Grid item xs={12} style={{marginTop:"20px"}} container justify="center" alignItems="center">
+      <LoggedOutNavbar />
+      <Grid>
+        <Grid
+          item
+          xs={12}
+          style={{ marginTop: "20px" }}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <img src={notFound} alt="verify" style={{ width: "40%" }} />
-    </Grid>
-    <Grid item xs={12} container justify="center" alignItems="center">
-        <h1>Error 404 : Page not found. You need to log in first to view this page </h1>
-    </Grid>  
-    <Grid item xs={12} container justify="center" alignItems="center">
-       <Button style={{marginTop:"20p"}} variant="contained" component={Link} to="/Login"> Login</Button>
-    </Grid>  
-    </Grid>
-    
-      
-
+        </Grid>
+        <Grid item xs={12} container justify="center" alignItems="center">
+          <h1>
+            Error 404 : Page not found. You need to log in first to view this
+            page{" "}
+          </h1>
+        </Grid>
+        {loggedIn.isLoggedIn ? null : (
+          <Grid item xs={12} container justify="center" alignItems="center">
+            <Button
+              style={{ marginTop: "20p" }}
+              variant="contained"
+              component={Link}
+              to="/Login"
+            >
+              {" "}
+              Login
+            </Button>
+          </Grid>
+        )}
+      </Grid>
     </>
   );
 }
