@@ -37,7 +37,6 @@ function Login() {
         password: data.password,
       })
       .then(function (response) {
-        console.log(response);
         dispatch(
           logging({
             userType: response.data.userType,
@@ -90,9 +89,7 @@ function Login() {
     setData(updatedData);
   };
 
-  const handlePush = () => {
-    console.log("Asd");
-  };
+  const handlePush = () => {};
   return (
     <>
       <LoggedOutNavbar />

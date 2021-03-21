@@ -17,7 +17,6 @@ const loggingInReducer = (state = initialLoginState, action) => {
       return initialLoginState;
     }
     case "SET_DONOR_STATUS": {
-      console.log(action.donorStatus);
       return { ...state, donorStatus: action.donorStatus };
     }
     default:

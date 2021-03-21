@@ -55,7 +55,6 @@ export default function CollapsibleTable() {
         },
       })
       .then((response) => {
-        console.log(response);
         if (response.data) {
           setList(response.data);
         }
@@ -93,7 +92,6 @@ export default function CollapsibleTable() {
         }
       )
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           const updatedList = [...drivesList];
           updatedList[idx].status = false;

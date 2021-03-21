@@ -9,6 +9,8 @@ import {
   Typography,
   Button,
   Divider,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -18,6 +20,10 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
   paper: {
     width: "100%",
     flexDirection: "column",
@@ -60,6 +66,8 @@ const Product = (props) => {
   };
 
   const handleSubmit = () => {
+    setOpen(false);
+    setIndicatorOpen(true);
     axios
       .post(
         "http://localhost:8080/buyblood/confirmbuy",
@@ -80,12 +88,14 @@ const Product = (props) => {
       )
       .then((response) => {
         if (response.data.success) {
-          setOpen(false);
+          setIndicatorOpen(false);
           setOpen2(true);
         }
       })
       .catch();
   };
+
+  const [indicatorOpen, setIndicatorOpen] = React.useState(false);
 
   const classes = useStyles();
   return (
@@ -142,15 +152,8 @@ const Product = (props) => {
                   Buy
                 </Button>
                 {/* Are you sure dialog */}
-                <Dialog
-                  open={open}
-                  onClose={handleClosed}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Are You Sure?"}
-                  </DialogTitle>
+                <Dialog open={open} onClose={handleClosed}>
+                  <DialogTitle>{"Are You Sure?"}</DialogTitle>
                   <DialogActions>
                     <Button onClick={handleClosed}>No</Button>
                     <Button onClick={handleSubmit}>Yes</Button>
@@ -158,13 +161,8 @@ const Product = (props) => {
                 </Dialog>
 
                 {/* confirmation box */}
-                <Dialog
-                  open={open2}
-                  onClose={handleClosed2}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
+                <Dialog open={open2} onClose={handleClosed2}>
+                  <DialogTitle>
                     {
                       "Transaction successful. Check 'My Purchases' section for more info about the transaction"
                     }
@@ -174,31 +172,13 @@ const Product = (props) => {
                   </DialogActions>
                 </Dialog>
 
-                {/* <Dialog
-                  open={open}
-                  onClose={handleClosed}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Are You Sure?"}
-                  </DialogTitle>
-                  <DialogContent></DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClosed} color="inherit">
-                      No
-                    </Button>
-                    <Button
-                      color="inherit"
-                      onClick={(e) => {
-                        handleSubmit();
-                      }}
-                      autoFocus
-                    >
-                      Yes
-                    </Button>
-                  </DialogActions>
-                </Dialog> */}
+                {/* indicator for please wait */}
+                <Backdrop className={classes.backdrop} open={indicatorOpen}>
+                  <CircularProgress
+                    style={{ color: "#E94364", marginRight: "10px" }}
+                  />
+                  <Typography variant="h5">Please wait</Typography>
+                </Backdrop>
               </Container>
             </Paper>
           </Grid>

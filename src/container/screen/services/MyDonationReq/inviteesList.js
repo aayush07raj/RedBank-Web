@@ -43,7 +43,6 @@ function InviteesList(props) {
         }
       )
       .then((response) => {
-        console.log(response);
         setNewDonorsList((prevState) => {
           var updatedList = [...prevState];
           updatedList[idx].donationStatus = true;

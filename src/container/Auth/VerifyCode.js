@@ -55,7 +55,6 @@ function VerifyCode(props) {
         otp: otp,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           dispatch(verifyOtp());
           history.push({

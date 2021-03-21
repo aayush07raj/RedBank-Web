@@ -174,9 +174,9 @@ function IndividualRegistration(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
+
     const errors = validate();
-    console.log(errors);
+
     setErrors(errors);
     if (errors) return;
 
@@ -188,7 +188,6 @@ function IndividualRegistration(props) {
         userEmail: data.email,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           setIndicatorOpen(false);
           handleClickOpen2();
@@ -206,7 +205,6 @@ function IndividualRegistration(props) {
         otp: data.otp,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           // making a request object to send to the backend
           reqBody.name = data.name;

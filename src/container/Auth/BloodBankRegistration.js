@@ -198,23 +198,18 @@ function BloodBankRegistration(props) {
       errors.terms = "Please accept our terms and conditions";
     }
     if (data.phone.length >= 1 && !data.phone[0]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
     if (data.phone.length >= 2 && !data.phone[1]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
     if (data.phone.length >= 3 && !data.phone[2]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
     if (data.phone.length >= 4 && !data.phone[3]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
     if (data.phone.length >= 5 && !data.phone[4]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
 
@@ -224,10 +219,10 @@ function BloodBankRegistration(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
+
     const errors = validate();
     setTouched([true, true, true, true, true]);
-    console.log(errors);
+
     setErrors(errors);
     if (errors) return;
 
@@ -240,7 +235,6 @@ function BloodBankRegistration(props) {
         userEmail: data.email,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           setIndicatorOpen(false);
           handleClickOpen2();
@@ -258,7 +252,6 @@ function BloodBankRegistration(props) {
         otp: data.otp,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           reqBody.name = data.name;
           reqBody.email = data.email;
@@ -273,9 +266,7 @@ function BloodBankRegistration(props) {
           axios
             .post("http://localhost:8080/registerbb", reqBody)
             .then(function (response) {
-              console.log(response);
               if (response.data.userToken) {
-                console.log("works");
                 dispatch(
                   logging({
                     isLoggedIn: true,

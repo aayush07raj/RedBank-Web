@@ -91,7 +91,6 @@ export default function CustomizedTables() {
         }
       )
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           setCurrPassword("");
           setStatus(false);

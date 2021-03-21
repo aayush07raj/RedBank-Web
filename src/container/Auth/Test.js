@@ -99,22 +99,9 @@ function UpcomingDrive() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
     const errors = validate();
-    console.log(errors);
     setErrors(errors);
     if (errors) return;
-
-    // axios
-    //   .post("http://localhost:8080/upcomingdrives/fetchdriveslist", data, {
-    //     headers: {
-    //       Authorization: "Bearer " + loggedInState.userToken,
-    //     },
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     setState(response.data);
-    //   });
   };
 
   return (

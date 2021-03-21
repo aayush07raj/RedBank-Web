@@ -179,7 +179,7 @@ export default function EnhancedTable({ list, bg, component, units }) {
   list.map((item) => {
     List.push(item);
   });
-  console.log(List);
+
   const history = useHistory();
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -211,7 +211,7 @@ export default function EnhancedTable({ list, bg, component, units }) {
   //   amount: units * List.price,
   // });
 
-  const handleClick = (event,bbName , price, bbId) => {
+  const handleClick = (event, bbName, price, bbId) => {
     event.preventDefault();
     history.push({
       pathname: "/BuyBlood/Product",

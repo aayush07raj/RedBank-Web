@@ -81,7 +81,7 @@ function BuyBlood() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
+
     const errors = validate();
     setErrors(errors);
     if (errors) return;
@@ -105,7 +105,6 @@ function BuyBlood() {
       )
       .then((response) => {
         if (response.data.length != 0) {
-          console.log(response);
           setList(response.data);
         } else {
           handleClickOpen();

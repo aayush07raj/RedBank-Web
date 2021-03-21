@@ -65,10 +65,8 @@ function ForgotPassword() {
         userEmail: recoveryEmail,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           setIndicatorOpen(false);
-
           history.push({
             pathname: "/VerifyCode",
             recoveryEmail,

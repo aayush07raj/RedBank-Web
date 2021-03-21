@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 
 function ServiceCard({ img, name, descp, page }) {
   const classes = useStyles();
-  console.log(img);
   const history = useHistory();
 
   const handleClick = () => {

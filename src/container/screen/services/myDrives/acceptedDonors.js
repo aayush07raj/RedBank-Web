@@ -60,7 +60,6 @@ export default function AcceptedDonors(props) {
         }
       )
       .then((response) => {
-        console.log(response);
         var updatedList = [...newDonorsList];
         updatedList[idx].donationStatus = true;
         setNewDonorsList(updatedList);

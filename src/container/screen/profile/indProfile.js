@@ -146,7 +146,6 @@ function IndProfile() {
       })
       .then((response) => {
         setInitialValues(response.data);
-        console.log(response.data);
 
         if (initialValues.lastDonationDate && initialValues.donorStatus === 2) {
           const lastDonationDate = initialValues.lastDonationDate;
@@ -157,9 +156,7 @@ function IndProfile() {
               (1000 * 60 * 60 * 24) >
             56;
           if (eligible) {
-            console.log("if working");
             setInitialValues((prevState) => ({ ...prevState, donorStatus: 0 }));
-            console.log("Changing donor status to: " + eligible);
           }
         }
       })
@@ -192,7 +189,6 @@ function IndProfile() {
       })
       .then((response) => {
         setfulldata(response.data);
-        console.log(response.data);
       })
       .catch();
   };

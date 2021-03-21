@@ -194,7 +194,6 @@ export default function MenuAppBar({ user }) {
   }, [notificationsList]);
 
   useEffect(() => {
-    console.log("useeffect working");
     axios
       .get(`http://localhost:8080/notifications/fetchnotifications`, {
         headers: {
@@ -202,7 +201,6 @@ export default function MenuAppBar({ user }) {
         },
       })
       .then((response) => {
-        console.log(response);
         if (response.data[0]) {
           setNotifications(response.data.reverse());
         }

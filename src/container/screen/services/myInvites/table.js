@@ -185,7 +185,7 @@ export default function EnhancedTable() {
       })
       .then((response) => {
         // if (response.data.success) {
-        console.log(response);
+
         setList(response.data);
         // }
       })
@@ -228,7 +228,7 @@ export default function EnhancedTable() {
         )
         .then((response) => {
           // if (response.data.success) {
-          console.log(response);
+
           window.alert("accepted");
           setList((prevList) => {
             const newList = [...prevList];
@@ -257,7 +257,7 @@ export default function EnhancedTable() {
         )
         .then((response) => {
           // if (response.data.success) {
-          console.log(response);
+
           window.alert("accepted");
           setList((prevList) => {
             const newList = [...prevList];

@@ -74,13 +74,12 @@ function UpcomingDrive() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
+
     const errors = validate();
-    console.log(errors);
+
     setErrors(errors);
     if (errors) return;
 
-    console.log(loggedInState);
     if (loggedInState.donorStatus !== 2) {
       axios
         .post("http://localhost:8080/upcomingdrives/fetchdriveslist", data, {

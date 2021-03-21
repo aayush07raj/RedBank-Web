@@ -2,8 +2,6 @@ import React from "react";
 import { Bar, Pie } from "react-chartjs-2";
 
 function PieChart({ data, name }) {
-  console.log(name);
-  console.log(data);
   return (
     <>
       <Pie

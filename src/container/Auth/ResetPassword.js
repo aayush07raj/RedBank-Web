@@ -40,7 +40,6 @@ function ResetPassword(props) {
         newPassword: password,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           dispatch(resetPassword());
           history.push("/login");

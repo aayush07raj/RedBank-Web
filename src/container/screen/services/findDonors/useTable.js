@@ -21,6 +21,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  Backdrop,
+  CircularProgress,
 } from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
@@ -130,6 +132,10 @@ EnhancedTableHead.propTypes = {
 };
 
 const useToolbarStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
   root: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
@@ -157,6 +163,7 @@ const EnhancedTableToolbar = (props) => {
   const history = useHistory();
 
   function handleSend() {
+    setIndicatorOpen(true);
     reqBody.address = formData.address;
     reqBody.state = formData.state;
     reqBody.district = formData.district;
@@ -165,8 +172,6 @@ const EnhancedTableToolbar = (props) => {
     reqBody.bloodGroup = formData.bloodGroup;
     reqBody.idList = data;
 
-    console.log(formData);
-
     axios
       .post("http://localhost:8080/finddonors/sendnotification", reqBody, {
         headers: {
@@ -174,76 +179,86 @@ const EnhancedTableToolbar = (props) => {
         },
       })
       .then((response) => {
+        setIndicatorOpen(false);
         setOpen(true);
       })
       .catch();
   }
 
-//data for are you sure popup dialog
-const [open, setOpen] = React.useState(false);
+  //data for are you sure popup dialog
+  const [open, setOpen] = React.useState(false);
 
-const handleClosed = () => {
-  setOpen(false);
-  history.push("/home");
-};
+  const handleClosed = () => {
+    setOpen(false);
+    history.push("/home");
+  };
+
+  const [indicatorOpen, setIndicatorOpen] = React.useState(false);
 
   return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          className={classes.title}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          List of all available Donors
-        </Typography>
-      )}
+    <>
+      {/* indicator for please wait */}
+      <Backdrop className={classes.backdrop} open={indicatorOpen}>
+        <CircularProgress style={{ color: "#E94364", marginRight: "10px" }} />
+        <Typography variant="h5">Please wait</Typography>
+      </Backdrop>
+      <Toolbar
+        className={clsx(classes.root, {
+          [classes.highlight]: numSelected > 0,
+        })}
+      >
+        {numSelected > 0 ? (
+          <Typography
+            className={classes.title}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {numSelected} selected
+          </Typography>
+        ) : (
+          <Typography
+            className={classes.title}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+          >
+            List of all available Donors
+          </Typography>
+        )}
 
-      {numSelected > 0 ? (
-        <>
-          <Tooltip title="Send Notification">
-            <Button
-              variant="contained"
-              onClick={handleSend}
-              style={{ backgroundColor: "#E94364", color: "white" }}
-            >
-              Send
-            </Button>
-          </Tooltip>
-          {/* dialog for confirmation */}
-          <Dialog open={open} onClose={handleClosed}>
-            <DialogTitle>{"Notification sent successfully"}</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Check 'My Donation requests' section for more information
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
+        {numSelected > 0 ? (
+          <>
+            <Tooltip title="Send Notification">
               <Button
-                onClick={handleClosed}
+                variant="contained"
+                onClick={handleSend}
                 style={{ backgroundColor: "#E94364", color: "white" }}
               >
-                Ok
+                Send
               </Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      ) : null}
-    </Toolbar>
+            </Tooltip>
+            {/* dialog for confirmation */}
+            <Dialog open={open} onClose={handleClosed}>
+              <DialogTitle>{"Notification sent successfully"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Check 'My Donation requests' section for more information
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={handleClosed}
+                  style={{ backgroundColor: "#E94364", color: "white" }}
+                >
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        ) : null}
+      </Toolbar>
+    </>
   );
 };
 

@@ -105,11 +105,9 @@ function MyAnalytics() {
       .then((response) => {
         setYearlySales((prevState) => {
           const data = { ...prevState };
-          data.data = response.data.datasets[0].data;
-          data.labels = response.data.labels;
+          data.data = response.data;
           return data;
         });
-        console.log(response);
       });
   };
 
@@ -136,7 +134,6 @@ function MyAnalytics() {
         }
       )
       .then((response) => {
-        console.log(response);
         setMonthlySales((prevState) => {
           const data = { ...prevState };
           data.data = response.data.datasets[0].data;
@@ -157,11 +154,9 @@ function MyAnalytics() {
       .then((response) => {
         setYearlyRevenue((prevState) => {
           const data = { ...prevState };
-          data.data = response.data.datasets[0].data;
-          data.labels = response.data.labels;
+          data.data = response.data;
           return data;
         });
-        console.log(response);
       });
   };
 
@@ -186,7 +181,6 @@ function MyAnalytics() {
         }
       )
       .then((response) => {
-        console.log(response);
         setMonthlyRevenue((prevState) => {
           const data = { ...prevState };
           data.data = response.data.datasets[0].data;
@@ -207,11 +201,9 @@ function MyAnalytics() {
       .then((response) => {
         setYearlyPurchase((prevState) => {
           const data = { ...prevState };
-          data.data = response.data.datasets[0].data;
-          data.labels = response.data.labels;
+          data.data = response.data;
           return data;
         });
-        console.log(response);
       });
   };
 
@@ -236,7 +228,6 @@ function MyAnalytics() {
         }
       )
       .then((response) => {
-        console.log(response);
         setMonthlyPurchase((prevState) => {
           const data = { ...prevState };
           data.data = response.data.datasets[0].data;
@@ -252,17 +243,14 @@ function MyAnalytics() {
       monthNames.findIndex((val) => {
         return val === currMonth;
       });
-    console.log(idx);
 
     if ((idx + "").length === 1) {
       idx = "0" + idx;
     }
 
-    console.log(idx);
-
     if (loggedInState.userType === 3) {
-      console.log("3");
       //sales call
+      //yearly call
       axios
         .get(`http://localhost:8080/salesanalytics/yearly/${currYear}/1`, {
           headers: {
@@ -272,13 +260,12 @@ function MyAnalytics() {
         .then((response) => {
           setYearlySales((prevState) => {
             const data = { ...prevState };
-            data.data = response.data.datasets[0].data;
-            data.labels = response.data.labels;
+            data.data = response.data;
             return data;
           });
-          console.log(response);
         });
 
+      //monthly call
       axios
         .get(
           `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/1`,
@@ -289,7 +276,6 @@ function MyAnalytics() {
           }
         )
         .then((response) => {
-          console.log(response);
           setMonthlySales((prevState) => {
             const data = { ...prevState };
             data.data = response.data.datasets[0].data;
@@ -308,11 +294,9 @@ function MyAnalytics() {
         .then((response) => {
           setYearlyRevenue((prevState) => {
             const data = { ...prevState };
-            data.data = response.data.datasets[0].data;
-            data.labels = response.data.labels;
+            data.data = response.data;
             return data;
           });
-          console.log(response);
         });
 
       axios
@@ -325,7 +309,6 @@ function MyAnalytics() {
           }
         )
         .then((response) => {
-          console.log(response);
           setMonthlyRevenue((prevState) => {
             const data = { ...prevState };
             data.data = response.data.datasets[0].data;
@@ -343,13 +326,13 @@ function MyAnalytics() {
         },
       })
       .then((response) => {
+        console.log("yearly purchase");
+        console.log(response);
         setYearlyPurchase((prevState) => {
           const data = { ...prevState };
-          data.data = response.data.datasets[0].data;
-          data.labels = response.data.labels;
+          data.data = response.data;
           return data;
         });
-        console.log(response);
       });
 
     axios
@@ -362,7 +345,6 @@ function MyAnalytics() {
         }
       )
       .then((response) => {
-        console.log(response);
         setMonthlyPurchase((prevState) => {
           const data = { ...prevState };
           data.data = response.data.datasets[0].data;
@@ -379,10 +361,9 @@ function MyAnalytics() {
         },
       })
       .then((response) => {
-        // if (response.data.success) {
-        console.log(response.data);
-        setInventoryData(response.data);
-        // }
+        if (response.data[0]) {
+          setInventoryData(response.data);
+        }
       })
       .catch((err) => {
         console.log(err.message);
@@ -401,12 +382,11 @@ function MyAnalytics() {
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
         <Typography variant="h4" className={classes.heading}>
-          My Analytics- <Typography variant="h6" style={{display:"inline-block"}}>
-          Here you can view statistics about your data that is present with us
+          My Analytics-{" "}
+          <Typography variant="h6" style={{ display: "inline-block" }}>
+            Here you can view statistics about your data that is present with us
+          </Typography>
         </Typography>
-        </Typography>
-       
-        
       </Paper>
       <Container maxWidth="lg">
         {loggedInState.userType === 3 ? (
@@ -414,7 +394,6 @@ function MyAnalytics() {
             <AppBar position="static" color="transparent">
               <Tabs value={value} onChange={handleChange} centered>
                 <Tab label="Sales " />
-                <Tab label="Revenue " />
                 <Tab label="Purchase " />
                 <Tab label="Inventory " />
               </Tabs>
@@ -426,6 +405,7 @@ function MyAnalytics() {
                 className={classes.charts}
                 spacing={5}
               >
+                {/* Sales graphs  */}
                 <Grid item xs={12}>
                   <Typography variant="h5">Yearly wise sales:</Typography>
                   <FormControl className={classes.formControl}>
@@ -448,8 +428,9 @@ function MyAnalytics() {
                   <Grid item xs={12} align="center">
                     <BarChart
                       data={yearlySales.data}
-                      labels={yearlySales.labels}
+                      labels={monthNames}
                       legends="Units sold"
+                      type="yearly"
                     />
                   </Grid>
                 </Grid>
@@ -484,18 +465,12 @@ function MyAnalytics() {
                       data={monthlySales.data}
                       legends="Units sold"
                       labels={monthlySales.labels}
+                      type="monthly"
                     />
                   </Grid>
                 </Grid>
-              </Grid>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <Grid
-                container
-                justify="center"
-                className={classes.charts}
-                spacing={5}
-              >
+
+                {/* Revenue graphs  */}
                 <Grid item xs={12}>
                   <Typography variant="h5">Yearly wise revenue:</Typography>
                   <FormControl className={classes.formControl}>
@@ -519,7 +494,8 @@ function MyAnalytics() {
                     <BarChart
                       data={yearlyRevenue.data}
                       legends="Revenue in Rs"
-                      labels={yearlyRevenue.labels}
+                      labels={monthNames}
+                      type="yearly"
                     />
                   </Grid>
                 </Grid>
@@ -554,12 +530,13 @@ function MyAnalytics() {
                       data={monthlyRevenue.data}
                       legends="Revenue in Rs"
                       labels={monthlyRevenue.labels}
+                      type="monthly"
                     />
                   </Grid>
                 </Grid>
               </Grid>
             </TabPanel>
-            <TabPanel value={value} index={2}>
+            <TabPanel value={value} index={1}>
               <Grid
                 container
                 justify="center"
@@ -586,11 +563,12 @@ function MyAnalytics() {
                     <FormHelperText>Analytics for: {currYear}</FormHelperText>
                   </FormControl>
                   <Grid item xs={12} align="center">
-                    <BarChart
+                    {/* <BarChart
                       data={yearlyPurchase.data}
                       legends="Units purchased"
-                      labels={yearlyPurchase.labels}
-                    />
+                      labels={monthNames}
+                      type="yearly"
+                    /> */}
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
@@ -624,12 +602,13 @@ function MyAnalytics() {
                       data={monthlyPurchase.data}
                       legends="Units purchased"
                       labels={monthlyPurchase.labels}
+                      type="monthly"
                     />
                   </Grid>
                 </Grid>
               </Grid>
             </TabPanel>
-            <TabPanel value={value} index={3}>
+            <TabPanel value={value} index={2}>
               <Grid container>
                 <Grid item xs={12}>
                   <Typography

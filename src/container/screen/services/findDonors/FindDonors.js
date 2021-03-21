@@ -99,7 +99,6 @@ function FindDonors() {
       })
       .then((response) => {
         if (response.data.length != 0) {
-          console.log(response);
           setList(response.data);
         } else {
           handleClickOpen();

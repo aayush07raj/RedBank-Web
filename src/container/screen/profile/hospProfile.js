@@ -86,23 +86,18 @@ function HosProfile() {
       errors.pincode = "Invalid pincode format";
     }
     if (fulldata.phone.length >= 1 && !fulldata.phone[0]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
     if (fulldata.phone.length >= 2 && !fulldata.phone[1]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
     if (fulldata.phone.length >= 3 && !fulldata.phone[2]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
     if (fulldata.phone.length >= 4 && !fulldata.phone[3]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
     if (fulldata.phone.length >= 5 && !fulldata.phone[4]) {
-      console.log("Working error");
       errors.phone = "wrong number";
     }
 

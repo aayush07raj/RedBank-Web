@@ -179,7 +179,7 @@ export default function EnhancedTable() {
       .then((response) => {
         // if (response.data.success) {
         setList(response.data);
-        console.log(response);
+
         // }
       })
       .catch();
@@ -226,7 +226,6 @@ export default function EnhancedTable() {
       )
       .then((response) => {
         // if (response.data.success) {
-        console.log(response);
         // }
       })
       .catch();
@@ -244,7 +243,6 @@ export default function EnhancedTable() {
         }
       )
       .then((response) => {
-        console.log(response);
         if (response.data[0]) {
           setDonationId(active[idx].donationId);
           setDonors(response.data);
