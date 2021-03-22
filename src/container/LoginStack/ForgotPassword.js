@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
+import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -57,11 +58,11 @@ function ForgotPassword() {
     setError(error);
     if (error) return;
 
-    setButtonStatus(true);
     setIndicatorOpen(true);
 
-    axios
-      .post("http://localhost:8080/email/sendotp", {
+    api
+      .post()
+      .forgotPassword({
         userEmail: recoveryEmail,
       })
       .then((response) => {
@@ -72,6 +73,7 @@ function ForgotPassword() {
             recoveryEmail,
           });
         } else {
+          setIndicatorOpen(false);
           setError("Sorry, email doesn't exist");
         }
       })

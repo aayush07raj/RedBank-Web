@@ -8,6 +8,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { logging } from "../../redux/Actions/login";
+import api from "../../Apis/api";
 
 function Login() {
   const history = useHistory();
@@ -31,8 +32,9 @@ function Login() {
     setErrors(errors);
     if (errors) return;
 
-    axios
-      .post("http://localhost:8080/authenticate", {
+    api
+      .post()
+      .authenticateUser({
         email: data.email,
         password: data.password,
       })

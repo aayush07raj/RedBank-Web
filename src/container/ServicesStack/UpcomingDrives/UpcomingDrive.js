@@ -27,6 +27,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 import PageHeader from "../../../component/pageHeader";
+import api from "../../../Apis/api";
 
 function UpcomingDrive() {
   const [data, setData] = useState({
@@ -82,8 +83,9 @@ function UpcomingDrive() {
     if (errors) return;
 
     if (loggedInState.donorStatus !== 2) {
-      axios
-        .post("http://localhost:8080/upcomingdrives/fetchdriveslist", data, {
+      api
+        .post()
+        .findDrives(data, {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
           },

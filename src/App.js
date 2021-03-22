@@ -129,6 +129,7 @@ function App() {
               path="/HospitalRegistration"
               component={HospitalRegistration}
             />
+            <Route exact path="/Test" component={Test} />
             {/* loggedIn URLs used when user is logged logged out */}
             <Route exact path="/home" component={NotFound} />
             <Route exact path="/About" component={NotFound} />

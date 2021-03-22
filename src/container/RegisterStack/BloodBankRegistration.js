@@ -31,6 +31,7 @@ import { logging } from "../../redux/Actions/login";
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -215,6 +216,7 @@ function BloodBankRegistration(props) {
 
     return Object.keys(errors).length === 0 ? null : errors;
   };
+
   const [touched, setTouched] = useState([false, false, false, false, false]);
 
   const handleSubmit = (e) => {
@@ -230,8 +232,9 @@ function BloodBankRegistration(props) {
     setIndicatorOpen(true);
 
     // sending otp to user email
-    axios
-      .post("http://localhost:8080/verification/sendotp", {
+    api
+      .post()
+      .sendOtp({
         userEmail: data.email,
       })
       .then((response) => {
@@ -246,8 +249,9 @@ function BloodBankRegistration(props) {
   };
 
   const handleClose2 = () => {
-    axios
-      .post("http://localhost:8080/verification/verifyotp", {
+    api
+      .post()
+      .verifyOtp({
         userEmail: data.email,
         otp: data.otp,
       })
@@ -263,8 +267,9 @@ function BloodBankRegistration(props) {
           reqBody.pincode = data.pincode;
           reqBody.password = data.password;
 
-          axios
-            .post("http://localhost:8080/registerbb", reqBody)
+          api
+            .post()
+            .registerBB(reqBody)
             .then(function (response) {
               if (response.data.userToken) {
                 dispatch(

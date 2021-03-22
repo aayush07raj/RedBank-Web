@@ -18,6 +18,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import api from "../../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -68,9 +69,10 @@ const Product = (props) => {
   const handleSubmit = () => {
     setOpen(false);
     setIndicatorOpen(true);
-    axios
-      .post(
-        "http://localhost:8080/buyblood/confirmbuy",
+
+    api
+      .post()
+      .confirmTransaction(
         {
           customerId: loggedInState.userId,
           sellerId: bbId,

@@ -1,34 +1,27 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Grid,
-  makeStyles,
-  Paper,
-  Typography,
-  Divider,
-} from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import Navbar from "../../../component/navbar";
 import Footer from "../../../component/footer";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 import PageHeader from "../../../component/pageHeader";
-
+import api from "../../../Apis/api";
 import Table from "./table";
 
 function MyPurchase() {
   const [purchase, setList] = useState([]);
   const loggedInState = useSelector((state) => state.loggedIn);
+
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/transactions/fetchpurchaseslist", {
+    api
+      .get()
+      .fetchPurchases({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
       })
       .then((response) => {
         // if (response.data.success) {
-
         setList(response.data);
         // }
       })

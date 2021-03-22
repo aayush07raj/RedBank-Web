@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Grid, Paper, Typography, Divider, Button } from "@material-ui/core";
-
 import LoggedOutNavbar from "../../component/loggedoutNavbar";
 
 function Options() {

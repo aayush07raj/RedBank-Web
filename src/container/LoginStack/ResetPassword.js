@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Grid, Paper, TextField, Button } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 import resetPwd from "../../assets/images/resetPwd.png";
 import LoggedOutNavbar from "../../component/loggedoutNavbar";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { resetPassword } from "../../redux/Actions/resetPassword";
+import api from "../../Apis/api";
 
 function ResetPassword(props) {
   const dispatch = useDispatch();
@@ -18,7 +28,6 @@ function ResetPassword(props) {
     padding: "30px",
   };
   const margin = { marginTop: "20px" };
-
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
   const [errors, setError] = useState({});
@@ -34,16 +43,16 @@ function ResetPassword(props) {
     setError(errors);
     if (errors) return;
 
-    axios
-      .put("http://localhost:8080/profile/resetpassword", {
+    api
+      .put()
+      .resetPassword({
         userEmail: recoveryEmail,
         newPassword: password,
       })
       .then((response) => {
         if (response.data.success) {
           dispatch(resetPassword());
-          history.push("/login");
-          window.alert("Password successfully changed");
+          setOpen(true);
         }
       });
   };
@@ -63,6 +72,14 @@ function ResetPassword(props) {
     }
 
     return Object.keys(errors).length === 0 ? null : errors;
+  };
+
+  // dialog for success
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    history.push("/login");
+    setOpen(false);
   };
 
   return (
@@ -125,6 +142,20 @@ function ResetPassword(props) {
             </Paper>
           </form>
         </Grid>
+
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>{"Success"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Password changed successfully.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </>
   );

@@ -13,10 +13,10 @@ import Footer from "../../../component/footer";
 import ServiceCard from "../../../component/serviceCard";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import logging from "../../../redux/Actions/login";
 import { BankServices, IndividualServices, HospitalServices } from "./Services";
 import axios from "axios";
 import BloodTable from "../../../component/bloodCompatibilityTable";
+import api from "../../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   space: {
@@ -59,8 +59,9 @@ function Main() {
 
   useEffect(() => {
     if (loggedInState.userType === 1) {
-      axios
-        .get("http://localhost:8080/profile/fetchuserprofile", {
+      api
+        .get()
+        .fetchUserProfile({
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
           },
@@ -86,7 +87,6 @@ function Main() {
   return (
     <>
       <Navbar />
-
       <div className="Home">
         {/* <Box className={classes.hero}>
           <Box>Red Bank</Box>

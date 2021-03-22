@@ -1,17 +1,8 @@
-import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Grid,
-  makeStyles,
-  Paper,
-  Typography,
-  Divider,
-} from "@material-ui/core";
-import axios from "axios";
+import React from "react";
+import { Container, Grid } from "@material-ui/core";
 import Navbar from "../../../component/navbar";
 import Footer from "../../../component/footer";
 import PageHeader from "../../../component/pageHeader";
-
 import Table from "./table";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 

@@ -31,6 +31,7 @@ import axios from "axios";
 import { logging } from "../../redux/Actions/login";
 import Cookies from "universal-cookie";
 import { makeStyles } from "@material-ui/core/styles";
+import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -183,8 +184,9 @@ function IndividualRegistration(props) {
     setIndicatorOpen(true);
 
     // sending otp to user email
-    axios
-      .post("http://localhost:8080/verification/sendotp", {
+    api
+      .post()
+      .sendOtp({
         userEmail: data.email,
       })
       .then((response) => {
@@ -199,8 +201,9 @@ function IndividualRegistration(props) {
   };
 
   const handleClose2 = () => {
-    axios
-      .post("http://localhost:8080/verification/verifyotp", {
+    api
+      .post()
+      .verifyOtp({
         userEmail: data.email,
         otp: data.otp,
       })
@@ -218,8 +221,9 @@ function IndividualRegistration(props) {
           reqBody.bloodGroup = data.bloodGroup;
           reqBody.password = data.password;
 
-          axios
-            .post("http://localhost:8080/registerind", reqBody)
+          api
+            .post()
+            .registerInd(reqBody)
             .then(function (response) {
               if (response.data.userToken) {
                 dispatch(
@@ -560,6 +564,9 @@ function IndividualRegistration(props) {
                 name="otp"
                 value={data.otp}
                 onChange={handleChange}
+                inputProps={{
+                  maxLength: 6,
+                }}
                 error={otpError.length != 0 ? true : false}
                 helperText={otpError.length != 0 ? otpError : null}
               />

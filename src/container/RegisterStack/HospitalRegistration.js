@@ -30,6 +30,7 @@ import { logging } from "../../redux/Actions/login";
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -228,8 +229,9 @@ function HospitalRegistration(props) {
     setIndicatorOpen(true);
 
     // sending otp to user email
-    axios
-      .post("http://localhost:8080/verification/sendotp", {
+    api
+      .post()
+      .sendOtp({
         userEmail: data.email,
       })
       .then((response) => {
@@ -244,8 +246,9 @@ function HospitalRegistration(props) {
   };
 
   const handleClose2 = () => {
-    axios
-      .post("http://localhost:8080/verification/verifyotp", {
+    api
+      .post()
+      .verifyOtp({
         userEmail: data.email,
         otp: data.otp,
       })
@@ -261,8 +264,9 @@ function HospitalRegistration(props) {
           reqBody.pincode = data.pincode;
           reqBody.password = data.password;
 
-          axios
-            .post("http://localhost:8080/registerhos", reqBody)
+          api
+            .post()
+            .registerHos(reqBody)
             .then(function (response) {
               if (response.data.userToken) {
                 dispatch(

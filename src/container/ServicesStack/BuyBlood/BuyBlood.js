@@ -28,6 +28,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useStyles } from "../serviceCSS";
 import PageHeader from "../../../component/pageHeader";
+import api from "../../../Apis/api";
 
 function BuyBlood() {
   const [data, setData] = useState({
@@ -87,9 +88,9 @@ function BuyBlood() {
     setErrors(errors);
     if (errors) return;
 
-    axios
-      .post(
-        "http://localhost:8080/buyblood/findbb",
+    api
+      .post()
+      .findBloodBanks(
         {
           bloodGroup: data.bg,
           component: data.component,
@@ -108,6 +109,7 @@ function BuyBlood() {
         if (response.data.length != 0) {
           setList(response.data);
         } else {
+          setList([]);
           handleClickOpen();
         }
       })

@@ -28,6 +28,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 import PageHeader from "../../../component/pageHeader";
+import api from "../../../Apis/api";
 
 function FindDonors() {
   const [data, setData] = useState({
@@ -92,8 +93,9 @@ function FindDonors() {
     reqBody.bloodGroup = data.bloodGroup;
     reqBody.address = data.address;
 
-    axios
-      .post("http://localhost:8080/finddonors/donorslist", reqBody, {
+    api
+      .post()
+      .findDonors(reqBody, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },

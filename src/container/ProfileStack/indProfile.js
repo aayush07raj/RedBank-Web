@@ -25,7 +25,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import axios from "axios";
 import states from "../../assets/json/statesWithoutAll.json";
 import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
@@ -35,6 +34,7 @@ import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import individual from "../../assets/images/indDp.jpg";
+import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -138,8 +138,9 @@ function IndProfile() {
   };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/profile/fetchuserprofile", {
+    api
+      .get()
+      .fetchUserProfile({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -165,8 +166,7 @@ function IndProfile() {
   }, []);
 
   const handleStatus = async (status) => {
-    const newStatus = await axios.put(
-      "http://localhost:8080/profile/donorstatus",
+    const newStatus = await api.put().setDonorStatus(
       { donorStatus: status },
       {
         headers: {
@@ -181,8 +181,9 @@ function IndProfile() {
   };
 
   const anotherAxios = () => {
-    axios
-      .get("http://localhost:8080/profile/fetchuserdata", {
+    api
+      .get()
+      .fetchUserData({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -205,8 +206,9 @@ function IndProfile() {
     setError(errors);
     if (errors) return;
 
-    axios
-      .put("http://localhost:8080/profile/updateindprofile", fulldata, {
+    api
+      .put()
+      .updateIndProfile(fulldata, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -223,9 +225,9 @@ function IndProfile() {
   const [currPasswordError, checkPassError] = useState("");
 
   const verifyPassword = () => {
-    axios
-      .post(
-        "http://localhost:8080/profile/verifycurrentpassword",
+    api
+      .post()
+      .verifyCurrPassword(
         {
           currentPassword: currPassword,
         },
@@ -267,9 +269,10 @@ function IndProfile() {
     if (errors) {
       return;
     }
-    axios
-      .put(
-        "http://localhost:8080/profile/changepassword",
+
+    api
+      .put()
+      .changePassword(
         {
           newPassword: newPass.password,
         },

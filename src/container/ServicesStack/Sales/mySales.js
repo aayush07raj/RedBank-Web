@@ -14,21 +14,22 @@ import { useSelector } from "react-redux";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 import Table from "./table";
 import PageHeader from "../../../component/pageHeader";
+import api from "../../../Apis/api";
 
 function MySales() {
   const classes = useStyles();
   const [sale, setList] = useState([]);
   const loggedInState = useSelector((state) => state.loggedIn);
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/transactions/fetchsaleslist", {
+    api
+      .get()
+      .fetchSales({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
       })
       .then((response) => {
         // if (response.data.success) {
-
         setList(response.data);
         // }
       })

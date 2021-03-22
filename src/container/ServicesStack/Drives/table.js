@@ -20,6 +20,7 @@ import Paper from "@material-ui/core/Paper";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import api from "../../../Apis/api";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -48,8 +49,9 @@ export default function CollapsibleTable() {
   const loggedInState = useSelector((state) => state.loggedIn);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/mydrives/fetchdrives", {
+    api
+      .get()
+      .fetchDrives({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -64,8 +66,9 @@ export default function CollapsibleTable() {
   }, []);
 
   const handleDonorsList = (driveId) => {
-    axios
-      .get(`http://localhost:8080/mydrives/fetchdrivedonorlist/${driveId}`, {
+    api
+      .get()
+      .fetchDriveDonorList(driveId, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -79,9 +82,9 @@ export default function CollapsibleTable() {
   };
 
   const handleCancel = (idx, driveId) => {
-    axios
-      .put(
-        "http://localhost:8080/mydrives/canceldrive",
+    api
+      .put()
+      .cancelDrive(
         {
           driveId: driveId,
         },

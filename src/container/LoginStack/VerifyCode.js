@@ -16,6 +16,7 @@ import { verifyOtp } from "../../redux/Actions/resetPassword";
 import ReplayIcon from "@material-ui/icons/Replay";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
+import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -49,8 +50,9 @@ function VerifyCode(props) {
     setError(error);
     if (error) return;
 
-    axios
-      .post("http://localhost:8080/email/verifyotp", {
+    api
+      .post()
+      .verifyOtp2({
         userEmail: recoveryEmail,
         otp: otp,
       })
@@ -77,8 +79,9 @@ function VerifyCode(props) {
     setIndicatorOpen(true);
     setButtonStatus(true);
 
-    axios
-      .post("http://localhost:8080/email/sendotp", {
+    api
+      .post()
+      .forgotPassword({
         userEmail: recoveryEmail,
       })
       .then((response) => {

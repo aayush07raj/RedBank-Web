@@ -22,6 +22,7 @@ import axios from "axios";
 import { Modal, TextField } from "@material-ui/core";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { useSelector } from "react-redux";
+import api from "../../../Apis/api";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -172,20 +173,22 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [Message, setRejectionMessage] = useState("");
-
   const loggedInState = useSelector((state) => state.loggedIn);
   const [List, setList] = useState([]);
+  const [acceptance, setAcceptance] = useState(false);
+  const [title, setTitle] = useState("");
+  const [descp, setDescp] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/invites/fetchinvites", {
+    api
+      .get()
+      .fetchInvites({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
       })
       .then((response) => {
         // if (response.data.success) {
-
         setList(response.data);
         // }
       })
@@ -211,9 +214,9 @@ export default function EnhancedTable() {
     // axios call
 
     if (List[index].inviteType === "drive") {
-      axios
-        .put(
-          "http://localhost:8080/invites/inviteresponse",
+      api
+        .put()
+        .setInviteStatus(
           {
             eventId: List[index].driveId,
             eventType: List[index].inviteType,
@@ -228,21 +231,22 @@ export default function EnhancedTable() {
         )
         .then((response) => {
           // if (response.data.success) {
-
-          window.alert("accepted");
+          setAcceptance(1);
+          setTitle("Invite accepted");
+          setDescp("check my commitments section for regular updates");
+          setOpen(true);
           setList((prevList) => {
             const newList = [...prevList];
             newList[index].status = 1;
-
             return newList;
           });
           // }
         })
         .catch();
     } else {
-      axios
-        .put(
-          "http://localhost:8080/invites/inviteresponse",
+      api
+        .put()
+        .setInviteStatus(
           {
             eventId: List[index].donationId,
             eventType: List[index].inviteType,
@@ -257,8 +261,10 @@ export default function EnhancedTable() {
         )
         .then((response) => {
           // if (response.data.success) {
-
-          window.alert("accepted");
+          setAcceptance(1);
+          setTitle("Invite accepted");
+          setDescp("check my commitments section for regular updates");
+          setOpen(true);
           setList((prevList) => {
             const newList = [...prevList];
             newList[index].status = 1;
@@ -273,12 +279,15 @@ export default function EnhancedTable() {
   const [index, setIndex] = useState(0);
 
   const handleReject = () => {
+    setAcceptance(false);
+    setTitle("Are you sure");
+    setDescp("please enter your reason of rejection");
+    setOpen(true);
     // axios call
-
     if (List[index].inviteType === "drive") {
-      axios
-        .put(
-          "http://localhost:8080/invites/inviteresponse",
+      api
+        .put()
+        .setInviteStatus(
           {
             eventId: List[index].driveId,
             eventType: List[index].inviteType,
@@ -304,9 +313,9 @@ export default function EnhancedTable() {
         })
         .catch();
     } else {
-      axios
-        .put(
-          "http://localhost:8080/invites/inviteresponse",
+      api
+        .put()
+        .setInviteStatus(
           {
             eventId: List[index].donationId,
             eventType: List[index].inviteType,
@@ -456,30 +465,38 @@ export default function EnhancedTable() {
 
       {/* dialog for accepted or rejected */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{"Rejection message"}</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please enter your reason of rejection
-          </DialogContentText>
-          <TextField
-            name="Message"
-            value={Message}
-            onChange={(e) => {
-              setRejectionMessage(e.target.value);
-            }}
-            margin="dense"
-            label="type Message"
-            type="text"
-            fullWidth
-          />
+          <DialogContentText>{descp}</DialogContentText>
+          {acceptance === false ? (
+            <TextField
+              name="Message"
+              value={Message}
+              onChange={(e) => {
+                setRejectionMessage(e.target.value);
+              }}
+              margin="dense"
+              label="type Message"
+              type="text"
+              fullWidth
+            />
+          ) : null}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleReject} color="primary">
-            Submit
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
+          {acceptance === false ? (
+            <>
+              <Button onClick={handleReject} color="primary">
+                Submit
+              </Button>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </div>

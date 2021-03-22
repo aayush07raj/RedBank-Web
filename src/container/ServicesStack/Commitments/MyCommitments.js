@@ -15,14 +15,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 import Table from "./table";
 import PageHeader from "../../../component/pageHeader";
+import api from "../../../Apis/api";
 
 function MyCommitments() {
   const classes = useStyles();
   const [commitmentsList, setList] = useState([]);
   const loggedInState = useSelector((state) => state.loggedIn);
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/commitment", {
+    api
+      .get()
+      .fetchCommitments({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },

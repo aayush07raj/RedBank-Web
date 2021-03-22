@@ -24,10 +24,10 @@ import LockSharpIcon from "@material-ui/icons/LockSharp";
 import EditIcon from "@material-ui/icons/Edit";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import { CardMedia } from "@material-ui/core";
-import axios from "axios";
 import states from "../../assets/json/statesWithoutAll.json";
 import { useSelector } from "react-redux";
 import hospital from "../../assets/images/hosDp.jpg";
+import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -165,8 +165,9 @@ function HosProfile() {
   };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/profile/fetchuserprofile", {
+    api
+      .get()
+      .fetchUserProfile({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -179,8 +180,9 @@ function HosProfile() {
   }, []);
 
   const anotherAxios = () => {
-    axios
-      .get("http://localhost:8080/profile/fetchuserdata", {
+    api
+      .get()
+      .fetchUserData({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -204,8 +206,9 @@ function HosProfile() {
     setError(errors);
     if (errors) return;
 
-    axios
-      .put("http://localhost:8080/profile/updatehosprofile", fulldata, {
+    api
+      .put()
+      .updateHosProfile(fulldata, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -223,9 +226,9 @@ function HosProfile() {
   const [currPasswordError, checkPassError] = useState("");
 
   const verifyPassword = () => {
-    axios
-      .post(
-        "http://localhost:8080/profile/verifycurrentpassword",
+    api
+      .post()
+      .verifyCurrPassword(
         {
           currentPassword: currPassword,
         },
@@ -267,9 +270,9 @@ function HosProfile() {
     if (errors) {
       return;
     }
-    axios
-      .put(
-        "http://localhost:8080/profile/changepassword",
+    api
+      .put()
+      .changePassword(
         {
           newPassword: newPass.password,
         },

@@ -15,6 +15,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { Button, ButtonGroup, Grid, TextField } from "@material-ui/core/";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import api from "../../../Apis/api";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -62,8 +63,9 @@ export default function CustomizedTables() {
   };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/inventory/receieveinventory", {
+    api
+      .get()
+      .receiveInventory({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -78,9 +80,9 @@ export default function CustomizedTables() {
 
   const handleEdit = () => {
     setOpen(false);
-    axios
-      .post(
-        "http://localhost:8080/profile/verifycurrentpassword",
+    api
+      .post()
+      .verifyCurrPassword(
         {
           currentPassword: currPassword,
         },
@@ -108,8 +110,9 @@ export default function CustomizedTables() {
 
   const handleSave = () => {
     if (loggedInState.userType === 2) {
-      axios
-        .put("http://localhost:8080/inventory/updatehosinventory", data, {
+      api
+        .put()
+        .updateHosInventory(data, {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
           },
@@ -125,8 +128,9 @@ export default function CustomizedTables() {
         })
         .catch();
     } else {
-      axios
-        .put("http://localhost:8080/inventory/updatebbinventory", data, {
+      api
+        .put()
+        .updateBbInventory(data, {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
           },

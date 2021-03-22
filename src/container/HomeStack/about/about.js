@@ -24,6 +24,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import BloodTable from "../../../component/bloodCompatibilityTable";
 import { useSelector } from "react-redux";
+import api from "../../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   hero: {
@@ -107,8 +108,16 @@ function About(props) {
     setError(errors);
     if (errors) return;
 
-    axios
-      .post("http://localhost:8080/contactus/addmessage", message, {
+    // axios
+    //   .post("http://localhost:8080/contactus/addmessage", message, {
+    //     headers: {
+    //       Authorization: "Bearer " + loggedInState.userToken,
+    //     },
+    //   })
+
+    api
+      .post()
+      .addMessage(message, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },

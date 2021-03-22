@@ -29,6 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 import PageHeader from "../../../component/pageHeader";
+import api from "../../../Apis/api";
 
 function ConductDrive() {
   const [data, setData] = useState({
@@ -133,8 +134,9 @@ function ConductDrive() {
     reqBody.endTimeStamp = data.endDate + "T" + data.endTime + ":00.00";
     reqBody.message = data.message;
 
-    axios
-      .post("http://localhost:8080/conductadrive/savedrivedetails", reqBody, {
+    api
+      .post()
+      .organizeDrive(reqBody, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },

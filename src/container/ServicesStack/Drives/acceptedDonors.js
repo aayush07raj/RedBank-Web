@@ -13,6 +13,7 @@ import Footer from "../../../component/footer";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import React from "react";
+import api from "../../../Apis/api";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -46,9 +47,9 @@ export default function AcceptedDonors(props) {
   const loggedInState = useSelector((state) => state.loggedIn);
 
   const handleClick = (idx) => {
-    axios
-      .put(
-        "http://localhost:8080/mydrives/drivedonorverification",
+    api
+      .put()
+      .verifyDonorStatus(
         {
           driveId: driveId,
           userId: newDonorsList[idx].userId,

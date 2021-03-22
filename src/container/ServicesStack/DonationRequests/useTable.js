@@ -11,9 +11,15 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import api from "../../../Apis/api";
+import { TramRounded } from "@material-ui/icons";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -170,8 +176,9 @@ export default function EnhancedTable() {
   const [donationId, setDonationId] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/donationrequests/fetchrequests", {
+    api
+      .get()
+      .fetchDonationRequests({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -179,7 +186,6 @@ export default function EnhancedTable() {
       .then((response) => {
         // if (response.data.success) {
         setList(response.data);
-
         // }
       })
       .catch();
@@ -212,9 +218,9 @@ export default function EnhancedTable() {
     updatedList[idx].status = false;
     setList(updatedList);
 
-    axios
-      .put(
-        "http://localhost:8080/donationrequests/expirerequest",
+    api
+      .put()
+      .expireDonationRequest(
         {
           donationId: active[idx].donationId,
         },
@@ -224,8 +230,9 @@ export default function EnhancedTable() {
           },
         }
       )
-      .then((response) => {
-        // if (response.data.success) {
+      .then((resp) => {
+        // if (resp.data.success) {
+        //console.log(resp)
         // }
       })
       .catch();
@@ -233,21 +240,19 @@ export default function EnhancedTable() {
 
   const handleView = (idx) => {
     // history.push("/inviteesList");
-    axios
-      .get(
-        `http://localhost:8080/donationrequests/fetchdonationdonorlist/${active[idx].donationId}`,
-        {
-          headers: {
-            Authorization: "Bearer " + loggedInState.userToken,
-          },
-        }
-      )
+    api
+      .get()
+      .fetchDonationDonorList(active[idx].donationId, {
+        headers: {
+          Authorization: "Bearer " + loggedInState.userToken,
+        },
+      })
       .then((response) => {
         if (response.data[0]) {
           setDonationId(active[idx].donationId);
           setDonors(response.data);
         } else {
-          window.alert("Sorry, no list to be shown");
+          setOpen(TramRounded);
         }
       });
   };
@@ -262,6 +267,17 @@ export default function EnhancedTable() {
       });
     }
   }, [donorsList]);
+
+  // dialog state
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={classes.root}>
@@ -351,6 +367,19 @@ export default function EnhancedTable() {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
+
+        {/* dialog for no list ot be shown */}
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>{"Not Found"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Sorry, no list to be shown</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Paper>
     </div>
   );

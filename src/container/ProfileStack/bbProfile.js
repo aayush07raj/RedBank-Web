@@ -24,10 +24,10 @@ import LockSharpIcon from "@material-ui/icons/LockSharp";
 import EditIcon from "@material-ui/icons/Edit";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import { CardMedia } from "@material-ui/core";
-import axios from "axios";
 import states from "../../assets/json/statesWithoutAll.json";
 import { useSelector } from "react-redux";
 import bloodBank from "../../assets/images/bbDp.png";
+import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -166,8 +166,9 @@ function BbProfile() {
   };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/profile/fetchuserprofile", {
+    api
+      .get()
+      .fetchUserProfile({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -180,8 +181,9 @@ function BbProfile() {
   }, []);
 
   const anotherAxios = () => {
-    axios
-      .get("http://localhost:8080/profile/fetchuserdata", {
+    api
+      .get()
+      .fetchUserData({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -207,8 +209,9 @@ function BbProfile() {
 
     // if(validate()){
 
-    axios
-      .put("http://localhost:8080/profile/updatebbprofile", fulldata, {
+    api
+      .put()
+      .updateBbProfile(fulldata, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -226,9 +229,9 @@ function BbProfile() {
   const [currPasswordError, checkPassError] = useState("");
 
   const verifyPassword = () => {
-    axios
-      .post(
-        "http://localhost:8080/profile/verifycurrentpassword",
+    api
+      .post()
+      .verifyCurrPassword(
         {
           currentPassword: currPassword,
         },
@@ -270,9 +273,9 @@ function BbProfile() {
     if (errors) {
       return;
     }
-    axios
-      .put(
-        "http://localhost:8080/profile/changepassword",
+    api
+      .put()
+      .changePassword(
         {
           newPassword: newPass.password,
         },

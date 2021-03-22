@@ -28,6 +28,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import api from "../../../Apis/api";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -172,8 +173,9 @@ const EnhancedTableToolbar = (props) => {
     reqBody.bloodGroup = formData.bloodGroup;
     reqBody.idList = data;
 
-    axios
-      .post("http://localhost:8080/finddonors/sendnotification", reqBody, {
+    api
+      .post()
+      .sendNotification(reqBody, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },

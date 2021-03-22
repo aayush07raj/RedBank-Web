@@ -17,6 +17,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import api from "../../../Apis/api";
 
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -212,9 +213,9 @@ export default function EnhancedTable({ list }) {
   };
 
   const handleRegister = (driveId) => {
-    axios
-      .post(
-        "http://localhost:8080/upcomingdrives/registerfordrive",
+    api
+      .post()
+      .registerForDrive(
         {
           driveId: "DRV01",
         },
