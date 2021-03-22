@@ -61,7 +61,6 @@ function App() {
     <>
       <Switch>
 {/* Common Pages */}
-              <ProtectedRoute exact path="/" component={Home} />
               <ProtectedRoute exact path="/home" component={Home} />
               <ProtectedRoute exact path="/About" component={About} />
               <ProtectedRoute exact path="/profile" component={Profile}/>

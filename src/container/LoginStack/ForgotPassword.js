@@ -15,13 +15,9 @@ import {
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../../Apis/api";
+import {useStyles} from "./loginCSS";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
+
 
 function ForgotPassword() {
   const classes = useStyles();
@@ -29,12 +25,6 @@ function ForgotPassword() {
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [error, setError] = useState("");
 
-  const paperStyle = {
-    display: "flex",
-    width: 380,
-    flexDirection: "column",
-    padding: "30px",
-  };
   const margin = { marginTop: "20px" };
 
   const handleChange = (e) => {
@@ -90,18 +80,18 @@ function ForgotPassword() {
       <LoggedOutNavbar />
       <Grid
         container
-        style={{ marginTop: "100px", backgroundColor: "#E94364" }}
+        className={classes.container}
       >
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid item md={6} className={classes.image} container justify="center" alignItems="center">
           <img src={forgotPwd} alt="fgtpwd" width="800px" height="600px" />
         </Grid>
 
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid item xs={12} md={6} container justify="center" alignItems="center">
           <form onSubmit={handleSubmit}>
-            <Paper elevation={5} style={paperStyle}>
+            <Paper elevation={5} className={classes.paperStyle}>
               <Grid align="center">
-                <h2 style={{ marginTop: "20px" }}>Find your Account</h2>
-                <p style={margin}>
+                <h2 className={classes.margin}>Find your Account</h2>
+                <p className={classes.margin}>
                   Help us find your account by entering your registered email.
                 </p>
                 <TextField
@@ -112,7 +102,7 @@ function ForgotPassword() {
                   onChange={handleChange}
                   fullWidth
                   required
-                  style={margin}
+                  className={classes.margin}
                   error={error ? true : false}
                   helperText={error ? error : null}
                 />
@@ -120,11 +110,7 @@ function ForgotPassword() {
                 <Button
                   variant="contained"
                   type="submit"
-                  style={{
-                    marginTop: "20px",
-                    backgroundColor: "#E94364",
-                    color: "white",
-                  }}
+                  className={classes.button}
                   disabled={buttonStatus}
                 >
                   Next
@@ -136,7 +122,7 @@ function ForgotPassword() {
 
         {/* indicator for please wait */}
         <Backdrop className={classes.backdrop} open={indicatorOpen}>
-          <CircularProgress style={{ color: "#E94364", marginRight: "10px" }} />
+          <CircularProgress className={classes.circularProgress} />
           <Typography variant="h5">Please wait</Typography>
         </Backdrop>
       </Grid>

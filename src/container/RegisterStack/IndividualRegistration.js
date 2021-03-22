@@ -32,13 +32,9 @@ import { logging } from "../../redux/Actions/login";
 import Cookies from "universal-cookie";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../../Apis/api";
+import {useStyles} from "./registerCSS";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
+
 
 function IndividualRegistration(props) {
   const classes = useStyles();
@@ -79,14 +75,6 @@ function IndividualRegistration(props) {
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
-  const paperStyle = {
-    height: "auto",
-    width: "450px",
-    display: "flex",
-    flexDirection: "column",
-    padding: "30px",
-  };
-  const margin = { marginTop: "15px" };
 
   const validate = () => {
     const strongRegex = new RegExp(
@@ -287,15 +275,15 @@ function IndividualRegistration(props) {
     <>
       <LoggedOutNavbar />
 
-      <Grid container style={{ margin: "20px auto" }}>
-        <Grid item xs={6} container justify="center" alignItems="center">
+      <Grid container className={classes.container}>
+        <Grid item md={6} className={classes.image} container justify="center" alignItems="center">
           <img src={individual} alt="individual" style={{ maxWidth: "100%" }} />
         </Grid>
 
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid item xs={12} md={6} container justify="center" alignItems="center">
           <form>
-            <Paper style={paperStyle} elevation={5}>
-              <h2 style={{ marginTop: "10px" }} align="center">
+            <Paper className={classes.paperStyle} elevation={5}>
+              <h2 className={classes.header} align="center">
                 Individual Registration
               </h2>
 
@@ -304,7 +292,7 @@ function IndividualRegistration(props) {
                 placeholder="Enter your full name"
                 type="text"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="name"
                 value={data.name}
                 onChange={handleChange}
@@ -320,7 +308,7 @@ function IndividualRegistration(props) {
                 placeholder="Enter your email"
                 type="email"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="email"
                 value={data.email}
                 onChange={handleChange}
@@ -332,7 +320,7 @@ function IndividualRegistration(props) {
                 label="Date of Birth"
                 type="date"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="dob"
                 value={data.dob}
                 onChange={handleChange}
@@ -345,7 +333,7 @@ function IndividualRegistration(props) {
                 placeholder="Enter your phone number"
                 type="text"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="phone"
                 value={data.phone}
                 onChange={handleChange}
@@ -361,7 +349,7 @@ function IndividualRegistration(props) {
                 placeholder="Enter your current address"
                 type="text"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="address"
                 value={data.address}
                 onChange={handleChange}
@@ -370,7 +358,7 @@ function IndividualRegistration(props) {
               />
 
               <FormControl
-                style={margin}
+                className={classes.margin}
                 error={errors && errors.state ? true : false}
               >
                 <InputLabel>Select your State</InputLabel>
@@ -392,7 +380,7 @@ function IndividualRegistration(props) {
               </FormControl>
 
               <FormControl
-                style={margin}
+                className={classes.margin}
                 error={errors && errors.district ? true : false}
               >
                 <InputLabel>Select your District</InputLabel>
@@ -421,7 +409,7 @@ function IndividualRegistration(props) {
                 placeholder="Enter your pincode"
                 type="text"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="pincode"
                 value={data.pincode}
                 onChange={handleChange}
@@ -433,7 +421,7 @@ function IndividualRegistration(props) {
               />
 
               <FormControl
-                style={margin}
+                className={classes.margin}
                 error={errors && errors.bloodGroup ? true : false}
               >
                 <InputLabel>Select your Blood Group</InputLabel>
@@ -462,7 +450,7 @@ function IndividualRegistration(props) {
                 placeholder="Create your password"
                 type="password"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="password"
                 value={data.password}
                 onChange={handleChange}
@@ -475,7 +463,7 @@ function IndividualRegistration(props) {
                 placeholder="Confirm your password"
                 type="password"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="cPassword"
                 value={data.cPassword}
                 onChange={handleChange}
@@ -489,7 +477,7 @@ function IndividualRegistration(props) {
               />
 
               <FormControlLabel
-                style={margin}
+                className={classes.margin}
                 control={<Checkbox onChange={handleChange} name="terms" />}
                 label={
                   errors && errors.terms
@@ -499,14 +487,14 @@ function IndividualRegistration(props) {
               />
               <Link
                 to="/terms"
-                style={{ color: "#E94364", fontWeight: "bold" }}
+                className={classes.link}
               >
                 (Click here for terms and condition)
               </Link>
 
               <Button
                 variant="contained"
-                style={{ backgroundColor: "#E94364", marginTop: "20px" }}
+                className={classes.button}
                 type="submit"
                 onClick={handleSubmit}
               >
@@ -516,12 +504,12 @@ function IndividualRegistration(props) {
               {/* indicator for please wait */}
               <Backdrop className={classes.backdrop} open={indicatorOpen}>
                 <CircularProgress
-                  style={{ color: "#E94364", marginRight: "10px" }}
+                  className={classes.progress}
                 />
                 <Typography variant="h5">Please wait</Typography>
               </Backdrop>
 
-              <Typography align="center" style={margin}>
+              <Typography align="center" className={classes.margin}>
                 <Button
                   size="small"
                   onClick={(e) => {

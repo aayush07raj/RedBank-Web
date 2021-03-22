@@ -12,10 +12,6 @@ export const ProtectedRoute = ({ component: Component, ...rest}) => {
   const authObj = cookies.get("Auth");
 
   useEffect(() => {
-    console.log(loggedIn.isLoggedIn);
-    
-    // const cookies = new Cookies();
-    // const authObj = cookies.get("Auth");
     if (authObj) {
       dispatch(logging(authObj));
       console.log(authObj);

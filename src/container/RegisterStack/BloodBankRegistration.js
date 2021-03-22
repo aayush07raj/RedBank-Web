@@ -32,13 +32,8 @@ import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../../Apis/api";
+import {useStyles} from "./registerCSS";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
 
 function BloodBankRegistration(props) {
   const classes = useStyles();
@@ -88,17 +83,10 @@ function BloodBankRegistration(props) {
   const [visibility, setVisibility] = useState("visible");
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
 
-  const paperStyle = {
-    height: "auto",
-    width: "450px",
-    display: "flex",
-    flexDirection: "column",
-    padding: "30px",
-  };
+
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const margin = { marginTop: "15px" };
 
   // filling the form data
   const handleChange = (e) => {
@@ -331,15 +319,15 @@ function BloodBankRegistration(props) {
     <>
       <LoggedOutNavbar />
 
-      <Grid container style={{ margin: "20px auto" }}>
-        <Grid item xs={6} container justify="center" alignItems="center">
+      <Grid container className={classes.container}>
+        <Grid item md={6} className={classes.image} container justify="center" alignItems="center">
           <img src={bloodbank} alt="hospital" style={{ maxWidth: "100%" }} />
         </Grid>
 
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid item xs={12} md={6} container justify="center" alignItems="center">
           <form>
-            <Paper style={paperStyle} elevation={5}>
-              <h2 style={{ marginTop: "10px" }} align="center">
+            <Paper className={classes.paperStyle} elevation={5}>
+              <h2 className={classes.header}>
                 Blood Bank Registration
               </h2>
 
@@ -348,7 +336,7 @@ function BloodBankRegistration(props) {
                 placeholder="Enter your full name"
                 type="text"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="name"
                 value={data.name}
                 onChange={handleChange}
@@ -364,7 +352,7 @@ function BloodBankRegistration(props) {
                 placeholder="Enter your email"
                 type="email"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="email"
                 value={data.email}
                 onChange={handleChange}
@@ -377,7 +365,7 @@ function BloodBankRegistration(props) {
                 placeholder="Enter your license number"
                 type="text"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="license"
                 value={data.license}
                 onChange={handleChange}
@@ -391,7 +379,7 @@ function BloodBankRegistration(props) {
                   placeholder="Enter your phone number"
                   type="text"
                   fullWidth
-                  style={margin}
+                  className={classes.margin}
                   name={`phone${idx}`}
                   value={val}
                   onChange={(e) => {
@@ -433,7 +421,7 @@ function BloodBankRegistration(props) {
                 placeholder="Enter your registered address"
                 type="text"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="address"
                 value={data.address}
                 onChange={handleChange}
@@ -442,7 +430,7 @@ function BloodBankRegistration(props) {
               />
 
               <FormControl
-                style={margin}
+                className={classes.margin}
                 error={errors && errors.state ? true : false}
               >
                 <InputLabel>Select your State</InputLabel>
@@ -464,7 +452,7 @@ function BloodBankRegistration(props) {
               </FormControl>
 
               <FormControl
-                style={margin}
+                className={classes.margin}
                 error={errors && errors.district ? true : false}
               >
                 <InputLabel>Select your District</InputLabel>
@@ -493,7 +481,7 @@ function BloodBankRegistration(props) {
                 placeholder="Enter your pincode"
                 type="text"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="pincode"
                 value={data.pincode}
                 onChange={handleChange}
@@ -509,7 +497,7 @@ function BloodBankRegistration(props) {
                 placeholder="Create your password"
                 type="password"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="password"
                 value={data.password}
                 onChange={handleChange}
@@ -525,7 +513,7 @@ function BloodBankRegistration(props) {
                 placeholder="Confirm your password"
                 type="password"
                 fullWidth
-                style={margin}
+                className={classes.margin}
                 name="cPassword"
                 value={data.cPassword}
                 onChange={handleChange}
@@ -539,7 +527,7 @@ function BloodBankRegistration(props) {
               />
 
               <FormControlLabel
-                style={margin}
+                className={classes.margin}
                 control={<Checkbox onChange={handleChange} name="terms" />}
                 label={
                   errors && errors.terms
@@ -549,16 +537,13 @@ function BloodBankRegistration(props) {
               />
               <Link
                 to="/terms"
-                style={{ color: "#E94364", fontWeight: "bold" }}
+                className={classes.link}
               >
                 (Click here for terms and condition)
               </Link>
               <Button
                 variant="contained"
-                style={{
-                  backgroundColor: "#e33371",
-                  marginTop: "20px",
-                }}
+                className={classes.button}
                 type="submit"
                 onClick={handleSubmit}
               >
@@ -567,12 +552,12 @@ function BloodBankRegistration(props) {
               {/* indicator for please wait */}
               <Backdrop className={classes.backdrop} open={indicatorOpen}>
                 <CircularProgress
-                  style={{ color: "#E94364", marginRight: "10px" }}
+                  className={classes.progress}
                 />
                 <Typography variant="h5">Please wait</Typography>
               </Backdrop>
 
-              <Typography align="center" style={margin}>
+              <Typography align="center" className={classes.margin}>
                 <Button
                   size="small"
                   onClick={(e) => {

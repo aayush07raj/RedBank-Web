@@ -9,6 +9,7 @@ import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { logging } from "../../redux/Actions/login";
 import api from "../../Apis/api";
+import {useStyles} from "./loginCSS";
 
 function Login() {
   const history = useHistory();
@@ -18,12 +19,8 @@ function Login() {
     email: "",
     password: "",
   });
-  const paperStyle = {
-    display: "flex",
-    width: 380,
-    flexDirection: "column",
-    padding: "30px",
-  };
+  const classes = useStyles();
+  
   const margin = { marginTop: "20px" };
 
   const handleSubmit = (e) => {
@@ -91,19 +88,17 @@ function Login() {
     setData(updatedData);
   };
 
-  const handlePush = () => {};
   return (
     <>
       <LoggedOutNavbar />
 
       <Grid
         container
-        style={{ marginTop: "100px", backgroundColor: "#E94364" }}
+        className={classes.container}
       >
         <Grid
           item
-          xs={false}
-          sm={6}
+          md={6} className={classes.image}
           container
           justify="center"
           alignItems="center"
@@ -114,15 +109,15 @@ function Login() {
         <Grid
           item
           xs={12}
-          sm={6}
+          md={6}
           container
           justify="center"
           alignItems="center"
         >
-          <Paper style={paperStyle} elevation={5}>
+          <Paper className={classes.paperStyle} elevation={5}>
             <Grid align="center">
               <img alt="" src={avatar} width="80px" />
-              <h2 style={{ marginTop: "10px" }}>Sign In</h2>
+              <h2 sclassName={classes.margin}>Sign In</h2>
             </Grid>
 
             <TextField
@@ -131,7 +126,7 @@ function Login() {
               type="email"
               fullWidth
               variant="outlined"
-              style={margin}
+              className={classes.margin}
               name="email"
               value={data.email}
               onChange={handleChange}
@@ -145,7 +140,7 @@ function Login() {
               type="password"
               fullWidth
               variant="outlined"
-              style={margin}
+              className={classes.margin}
               name="password"
               value={data.password}
               onChange={handleChange}
@@ -153,7 +148,7 @@ function Login() {
               helperText={errors && errors.password ? errors.password : null}
             />
 
-            <Typography style={margin} align="right">
+            <Typography className={classes.margin} align="right">
               <Button
                 size="small"
                 onClick={(e) => {
@@ -163,19 +158,17 @@ function Login() {
                 Forgot password
               </Button>
             </Typography>
-
             <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              style={{ marginTop: "20px", backgroundColor: "#E94364" }}
-              onClick={handleSubmit}
-            >
+                variant="contained"
+                className={classes.button}
+                type="submit"
+                onClick={handleSubmit}
+              >
               Login
             </Button>
 
             <Grid align="center">
-              <Typography style={margin}>
+              <Typography className={classes.margin}>
                 <p>
                   New user ?
                   <Button
