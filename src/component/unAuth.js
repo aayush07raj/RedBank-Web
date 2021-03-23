@@ -1,8 +1,8 @@
 import React from "react";
 import LoggedOutNavbar from "./loggedoutNavbar";
-import notFound from "../assets/images/notFound.svg";
+import unAuth from "../assets/images/unAuth.svg";
 import { Grid, Button } from "@material-ui/core";
-function NotFound() {
+function UnAuth() {
   return (
     <>
       <LoggedOutNavbar />
@@ -15,11 +15,11 @@ function NotFound() {
           justify="center"
           alignItems="center"
         >
-          <img src={notFound} alt="verify" style={{ width: "40%" }} />
+          <img src={unAuth} alt="verify" style={{ width: "40%" }} />
         </Grid>
         <Grid item xs={12} container justify="center" alignItems="center">
           <h1>
-            Error 404 : Page not found.
+            Error 401 : You are not Authorised
           </h1>
         </Grid>
       </Grid>
@@ -27,4 +27,4 @@ function NotFound() {
   );
 }
 
-export default NotFound;
+export default UnAuth;

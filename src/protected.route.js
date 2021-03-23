@@ -8,12 +8,13 @@ import Cookies from "universal-cookie";
 export const ProtectedRoute = ({ component: Component, ...rest}) => {
   const loggedIn = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
+  const cookies = new Cookies();
+  const authObj = cookies.get("Auth");
 
   useEffect(() => {
-    const cookies = new Cookies();
-    const authObj = cookies.get("Auth");
     if (authObj) {
       dispatch(logging(authObj));
+      console.log(authObj);
     }
   }, [dispatch]);
 
@@ -21,7 +22,8 @@ export const ProtectedRoute = ({ component: Component, ...rest}) => {
             <Route
             {...rest}
             render = {(props)=>
-              (loggedIn.isLoggedIn) ? (
+              (authObj) ? (
+                
                 <Component {...props} />
               ):(
                 // null

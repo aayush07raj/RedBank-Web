@@ -16,18 +16,14 @@ import LoggedOutNavbar from "../../component/loggedoutNavbar";
 import { useDispatch } from "react-redux";
 import { resetPassword } from "../../redux/Actions/resetPassword";
 import api from "../../Apis/api";
+import {useStyles} from "./loginCSS";
 
 function ResetPassword(props) {
   const dispatch = useDispatch();
   const { recoveryEmail } = props.location;
   const history = useHistory();
-  const paperStyle = {
-    display: "flex",
-    width: 380,
-    flexDirection: "column",
-    padding: "30px",
-  };
-  const margin = { marginTop: "20px" };
+  const classes = useStyles();
+  
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
   const [errors, setError] = useState({});
@@ -87,24 +83,24 @@ function ResetPassword(props) {
       <LoggedOutNavbar />
       <Grid
         container
-        style={{ marginTop: "100px", backgroundColor: "#E94364" }}
+        className={classes.container}
       >
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid item md={6} className={classes.image} container justify="center" alignItems="center">
           <img src={resetPwd} alt="reset" width="600px" height="600px" />
         </Grid>
 
-        <Grid item xs={6} container justify="center" alignItems="center">
+        <Grid item xs={12} md={6} container justify="center" alignItems="center">
           <form onSubmit={handleSubmit}>
-            <Paper elevation={5} style={paperStyle}>
+            <Paper elevation={5} className={classes.paperStyle}>
               <Grid align="center">
-                <h2 style={{ marginTop: "20px" }}>Reset your Password</h2>
-                <p style={margin}>Create a new password</p>
+                <h2 className={classes.margin}>Reset your Password</h2>
+                <p className={classes.margin}>Create a new password</p>
                 <TextField
                   label="Enter a new password"
                   type="password"
                   fullWidth
                   required
-                  style={margin}
+                  className={classes.margin}
                   name="password"
                   value={password}
                   onChange={handleChange}
@@ -118,7 +114,7 @@ function ResetPassword(props) {
                   type="password"
                   fullWidth
                   required
-                  style={margin}
+                  className={classes.margin}
                   name="cPassword"
                   value={cPassword}
                   onChange={handleChange}
@@ -130,11 +126,7 @@ function ResetPassword(props) {
                 <Button
                   variant="contained"
                   type="submit"
-                  style={{
-                    marginTop: "20px",
-                    backgroundColor: "#E94364",
-                    color: "white",
-                  }}
+                  className={classes.button}
                 >
                   Reset
                 </Button>
@@ -151,7 +143,7 @@ function ResetPassword(props) {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleClose}>
               Ok
             </Button>
           </DialogActions>
