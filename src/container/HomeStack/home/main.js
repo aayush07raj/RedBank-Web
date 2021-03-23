@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
   Box,
   Container,
+  IconButton,
+  Collapse,
   Grid,
   Divider,
   Button,
+  Paper,
 } from "@material-ui/core/";
 import Navbar from "../../../component/navbar";
 import Footer from "../../../component/footer";
@@ -17,6 +20,7 @@ import { BankServices, IndividualServices, HospitalServices } from "./Services";
 import axios from "axios";
 import BloodTable from "../../../component/bloodCompatibilityTable";
 import api from "../../../Apis/api";
+import Carousel from 'react-elastic-carousel';
 
 const useStyles = makeStyles((theme) => ({
   space: {
@@ -27,26 +31,41 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   hero: {
-    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://unblast.com/wp-content/uploads/2020/04/Female-Doctor-Vector-Illustration.jpg')`,
-    height: "750px",
+    height: "400px",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     position: "relative",
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    color: "#fff",
+    color: "white",
     fontSize: "4rem",
+    width:"100%",
     [theme.breakpoints.down("sm")]: {
       height: 300,
       fontSize: "3em",
     },
   },
+  box1:{
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://unblast.com/wp-content/uploads/2020/04/Female-Doctor-Vector-Illustration.jpg')`,
+  },
+  box2:{
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://wallpapercave.com/wp/wp4323458.jpg')`,
+  },
+  box3:{
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://unblast.com/wp-content/uploads/2020/04/Female-Doctor-Vector-Illustration.jpg')`,
+  },
   blogsContainer: {
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(8),
   },
+  button:{
+    color:"white",
+    marginTop:"20px",
+    border: "2px solid white"
+  }
 }));
 
 function Main() {
@@ -88,9 +107,24 @@ function Main() {
     <>
       <Navbar />
       <div className="Home">
-        {/* <Box className={classes.hero}>
-          <Box>Red Bank</Box>
-        </Box> */}
+      
+        
+        <Carousel style={{marginTop:"5px"}} showArrows={false} enableAutoPlay autoPlaySpeed={5000}>
+          <Box className={[classes.hero,classes.box1]} >
+          <Typography variant="h4">Find Donor Service</Typography>
+          <Button className={classes.button} variant="outlined" component={Link} to="/FindDonors"> Find a Donor</Button>
+          </Box>
+          <Box className={[classes.hero,classes.box3]}>
+          <Typography variant="h4">Stats to be shown</Typography>
+          
+        </Box>
+        {loggedInState.userType === 1 ? <Box className={[classes.hero,classes.box2]}>
+          <Button className={classes.button} component={Link} to="/UpcomingDrive" variant="outlined"> Donate Now</Button>
+        </Box>: null}
+        
+        </Carousel>
+        
+        
         <Container maxWidth="lg" className={classes.blogsContainer}>
           <Grid container spacing={8} justify="flex-start">
             <Grid item xs={12} align="center">

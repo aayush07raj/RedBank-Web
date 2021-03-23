@@ -12,7 +12,7 @@ import axios from "axios";
 import Navbar from "../../../component/navbar";
 import Footer from "../../../component/footer";
 import { useDispatch, useSelector } from "react-redux";
-import { useStyles } from "../../ServicesStack/serviceCSS";
+import { useStyles } from "../serviceCSS";
 import Table from "./table";
 import PageHeader from "../../../component/pageHeader";
 import api from "../../../Apis/api";
@@ -41,7 +41,7 @@ function MyCommitments() {
     <>
       <Navbar />
       <PageHeader
-        title=" My Commitments "
+        title=" Activity Tracker "
         subtitle="Here you can view all the types of donations you have done since
         your registration."
       />

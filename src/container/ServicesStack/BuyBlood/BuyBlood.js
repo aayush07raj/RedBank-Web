@@ -23,7 +23,6 @@ import Navbar from "../../../component/navbar";
 import Footer from "../../../component/footer";
 import statesData from "../../../assets/json/statesWithAll.json";
 import Table from "./useTable";
-import Joi from "joi";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useStyles } from "../serviceCSS";

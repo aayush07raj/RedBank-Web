@@ -415,7 +415,7 @@ export default function MenuAppBar({ user }) {
                                 onClick={handleClose2}
                                 color="inherit"
                                 component={Link}
-                                to="/MyCommitments"
+                                to="/ActivityTracker"
                                 variant="h7"
                               >
                                 Activity Tracker
