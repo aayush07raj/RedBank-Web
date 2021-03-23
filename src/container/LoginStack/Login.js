@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import login from "../../assets/images/login.png";
 import avatar from "../../assets/images/avatar.png";
@@ -67,6 +67,32 @@ function Login() {
       });
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const updatedData = { ...data };
+    updatedData[name] = value;
+    setData(updatedData);
+    const errors = validateField(name, value);
+    setErrors(errors);
+  };
+
+  const validateField = (fieldName) => {
+    const errors = {};
+
+    if (
+      fieldName === "email" &&
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        data.email.trim()
+      )
+    ) {
+      errors.email = "Email is either empty or invalid";
+    } else if (fieldName === "password" && !data.password) {
+      errors.password = "Password cannot be empty";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
   const validate = () => {
     const errors = {};
 
@@ -84,14 +110,6 @@ function Login() {
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const updatedData = { ...data };
-    updatedData[name] = value;
-    setData(updatedData);
-  };
-
-  const handlePush = () => {};
   return (
     <>
       <LoggedOutNavbar />

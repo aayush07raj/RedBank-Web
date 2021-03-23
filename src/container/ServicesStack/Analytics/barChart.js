@@ -8,9 +8,6 @@ function BarChart({ labels, legends, data, type }) {
 
   // in case of yearly.... labels is not present and data is an object
 
-  if (type === "yearly") {
-    console.log(data);
-  }
   return (
     <>
       {type === "monthly" ? (

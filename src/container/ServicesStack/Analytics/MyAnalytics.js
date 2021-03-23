@@ -113,8 +113,7 @@ function MyAnalytics() {
       .then((response) => {
         setMonthlySales((prevState) => {
           const data = { ...prevState };
-          data.data = response.data.datasets[0].data;
-          data.labels = response.data.labels;
+          data.data = response.data;
           return data;
         });
       });
@@ -255,8 +254,7 @@ function MyAnalytics() {
         .then((response) => {
           setMonthlySales((prevState) => {
             const data = { ...prevState };
-            data.data = response.data.datasets[0].data;
-            data.labels = response.data.labels;
+            data.data = response.data;
             return data;
           });
         });
@@ -288,8 +286,7 @@ function MyAnalytics() {
         .then((response) => {
           setMonthlyRevenue((prevState) => {
             const data = { ...prevState };
-            data.data = response.data.datasets[0].data;
-            data.labels = response.data.labels;
+            data.data = response.data;
             return data;
           });
         });
@@ -303,8 +300,6 @@ function MyAnalytics() {
         },
       })
       .then((response) => {
-        console.log("yearly purchase");
-        console.log(response);
         setYearlyPurchase((prevState) => {
           const data = { ...prevState };
           data.data = response.data;
@@ -324,8 +319,7 @@ function MyAnalytics() {
       .then((response) => {
         setMonthlyPurchase((prevState) => {
           const data = { ...prevState };
-          data.data = response.data.datasets[0].data;
-          data.labels = response.data.labels;
+          data.data = response.data;
           return data;
         });
       });
@@ -354,6 +348,7 @@ function MyAnalytics() {
     setValue(newValue);
   };
 
+  console.log(monthlySales);
   return (
     <>
       <Navbar />
@@ -400,7 +395,7 @@ function MyAnalytics() {
                   </FormControl>
                   <Grid item xs={12} align="center">
                     <BarChart
-                      data={yearlySales.data}
+                      data={yearlySales.data ? yearlySales.data : {}}
                       labels={monthNames}
                       legends="Units sold"
                       type="yearly"
@@ -433,14 +428,50 @@ function MyAnalytics() {
                       Analytics for: {currMonth},{currYear}
                     </FormHelperText>
                   </FormControl>
-                  <Grid item xs={12} align="center">
-                    <BarChart
-                      data={monthlySales.data}
-                      legends="Units sold"
-                      labels={monthlySales.labels}
-                      type="monthly"
-                    />
-                  </Grid>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlySales.data &&
+                      monthlySales.data.bloodObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlySales.data.bloodObject
+                        : [1]
+                    }
+                    name="blood"
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlySales.data &&
+                      monthlySales.data.plasmaObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlySales.data.plasmaObject
+                        : [1]
+                    }
+                    name="plasma"
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlySales.data &&
+                      monthlySales.data.plateletObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlySales.data.plateletObject
+                        : [1]
+                    }
+                    name="platelet"
+                  />
                 </Grid>
 
                 {/* Revenue graphs  */}
@@ -465,7 +496,7 @@ function MyAnalytics() {
                   </FormControl>
                   <Grid item xs={12} align="center">
                     <BarChart
-                      data={yearlyRevenue.data}
+                      data={yearlyRevenue.data ? yearlyRevenue.data : {}}
                       legends="Revenue in Rs"
                       labels={monthNames}
                       type="yearly"
@@ -498,14 +529,48 @@ function MyAnalytics() {
                       Analytics for: {currMonth},{currYear}
                     </FormHelperText>
                   </FormControl>
-                  <Grid item xs={12} align="center">
-                    <BarChart
-                      data={monthlyRevenue.data}
-                      legends="Revenue in Rs"
-                      labels={monthlyRevenue.labels}
-                      type="monthly"
-                    />
-                  </Grid>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyRevenue.data &&
+                      monthlyRevenue.data.bloodObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyRevenue.data.bloodObject
+                        : [1]
+                    }
+                    name="blood"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyRevenue.data &&
+                      monthlyRevenue.data.plasmaObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyRevenue.data.plasmaObject
+                        : [1]
+                    }
+                    name="plasma"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyRevenue.data &&
+                      monthlyRevenue.data.plateletObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyRevenue.data.plateletObject
+                        : [1]
+                    }
+                    name="platelet"
+                  />
                 </Grid>
               </Grid>
             </TabPanel>
@@ -536,12 +601,12 @@ function MyAnalytics() {
                     <FormHelperText>Analytics for: {currYear}</FormHelperText>
                   </FormControl>
                   <Grid item xs={12} align="center">
-                    {/* <BarChart
-                      data={yearlyPurchase.data}
+                    <BarChart
+                      data={yearlyPurchase.data ? yearlyPurchase.data : {}}
                       legends="Units purchased"
                       labels={monthNames}
                       type="yearly"
-                    /> */}
+                    />
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
@@ -570,14 +635,48 @@ function MyAnalytics() {
                       Analytics for: {currMonth},{currYear}
                     </FormHelperText>
                   </FormControl>
-                  <Grid item xs={12} align="center">
-                    <BarChart
-                      data={monthlyPurchase.data}
-                      legends="Units purchased"
-                      labels={monthlyPurchase.labels}
-                      type="monthly"
-                    />
-                  </Grid>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyPurchase.data &&
+                      monthlyPurchase.data.bloodObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyPurchase.data.bloodObject
+                        : [1]
+                    }
+                    name="blood"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyPurchase.data &&
+                      monthlyPurchase.data.plasmaObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyPurchase.data.plasmaObject
+                        : [1]
+                    }
+                    name="plasma"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyPurchase.data &&
+                      monthlyPurchase.data.plateletObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyPurchase.data.plateletObject
+                        : [1]
+                    }
+                    name="platelet"
+                  />
                 </Grid>
               </Grid>
             </TabPanel>
@@ -674,9 +773,10 @@ function MyAnalytics() {
                   </FormControl>
                   <Grid item xs={12} align="center">
                     <BarChart
-                      data={yearlyPurchase.data}
+                      data={yearlyPurchase.data ? yearlyPurchase.data : {}}
                       legends="Units purchased"
-                      labels={yearlyPurchase.labels}
+                      labels={monthNames}
+                      type="yearly"
                     />
                   </Grid>
                 </Grid>
@@ -706,13 +806,48 @@ function MyAnalytics() {
                       Analytics for: {currMonth},{currYear}
                     </FormHelperText>
                   </FormControl>
-                  <Grid item xs={12} align="center">
-                    <BarChart
-                      data={monthlyPurchase.data}
-                      legends="Units purchased"
-                      labels={monthlyPurchase.labels}
-                    />
-                  </Grid>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyPurchase.data &&
+                      monthlyPurchase.data.bloodObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyPurchase.data.bloodObject
+                        : [1]
+                    }
+                    name="blood"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyPurchase.data &&
+                      monthlyPurchase.data.plasmaObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyPurchase.data.plasmaObject
+                        : [1]
+                    }
+                    name="plasma"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyPurchase.data &&
+                      monthlyPurchase.data.plateletObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyPurchase.data.plateletObject
+                        : [1]
+                    }
+                    name="platelet"
+                  />
                 </Grid>
               </Grid>
             </TabPanel>
