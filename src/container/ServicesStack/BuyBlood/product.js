@@ -19,40 +19,9 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import api from "../../../Apis/api";
+import { useStyles } from "../../ServicesStack/serviceCSS";
+import PageHeader from "../../../component/pageHeader";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  paper: {
-    width: "100%",
-    flexDirection: "column",
-    height: "auto",
-    margin: "auto",
-    padding: theme.spacing(2),
-  },
-
-  typo: {
-    padding: "10px",
-  },
-  note: {
-    fontWeight: "bold",
-    color: "#e94364",
-    marginTop: "20px",
-  },
-  table: {
-    margin: theme.spacing(10),
-    width: "80%",
-  },
-  button: {
-    backgroundColor: "#e94364",
-    color: "white",
-    marginTop: "20px",
-  },
-}));
-
-// function Product({ iota }) {
 const Product = (props) => {
   const {
     bg,
@@ -122,19 +91,17 @@ const Product = (props) => {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">Selected Product</Typography>
-        <Typography variant="h6">
-          Details about the selected product, press Buy button to confirm your
-          order
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="Selected Product "
+        subtitle="Details about the selected product, press Buy button to confirm your
+        order"
+      />
       <Container maxWidth="lg">
         <Grid
           container
           alignContent="center"
           justify="center"
-          className={classes.table}
+          className={classes.table2}
         >
           <Paper align="center" style={{ padding: "20px" }}>
             <Typography className={classes.typo} variant="h4">

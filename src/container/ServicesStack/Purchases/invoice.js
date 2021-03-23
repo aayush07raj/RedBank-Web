@@ -10,23 +10,8 @@ import {
   Divider,
 } from "@material-ui/core";
 import Footer from "../../../component/footer";
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    // position:'fixed',
-    width: "100%",
-    flexDirection: "column",
-    margin: "auto",
-    padding: theme.spacing(3),
-  },
-  typo: {
-    padding: "10px",
-  },
-  table: {
-    margin: theme.spacing(10),
-    width: "80%",
-  },
-}));
+import { useStyles } from "../../ServicesStack/serviceCSS";
+import PageHeader from "../../../component/pageHeader";
 
 const Invoice = (props) => {
   const { Details } = props.location;
@@ -35,26 +20,19 @@ const Invoice = (props) => {
   return (
     <>
       <Navbar />
-      <Paper square elevation={6} className={classes.paper}>
-        <Typography variant="h4">
-          Invoice
-          <Typography
-            variant="h6"
-            style={{ display: "inline-block", marginLeft: "20px" }}
-          >
-            Show this to the concerned blood bank while asking for your booked
-            blood
-          </Typography>
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="Invoice "
+        subtitle="Show this to the concerned blood bank while asking for your booked
+        blood"
+      />
       <Container maxWidth="lg">
         <Grid
           container
           alignContent="center"
           justify="center"
-          className={classes.table}
+          className={classes.table2}
         >
-          <Paper align="center" square style={{ padding: "20px" }}>
+          <Paper align="center" square style={{ marginBottom:"20px", padding: "20px" }}>
             <Typography className={classes.typo} variant="h4">
               Invoice
             </Typography>

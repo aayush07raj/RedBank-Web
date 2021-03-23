@@ -66,4 +66,25 @@ export const useStyles = makeStyles((theme) =>({
       backgroundColor: theme.palette.background.paper,
       marginTop: theme.spacing(2),
     },
+
+    // Invoice
+    typo: {
+      padding: "10px",
+    },
+    table2:{
+      margin: theme.spacing(10),
+      width: "80%",
+    },
+    note: {
+          fontWeight: "bold",
+          color: "#e94364",
+          marginTop: "20px",
+    },
+
+    // Product
+    button: {
+          backgroundColor: "#e94364",
+          color: "white",
+          marginTop: "20px",
+    },
 }) )

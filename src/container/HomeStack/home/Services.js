@@ -23,7 +23,7 @@ export const BankServices = [
     image: findDonorImg,
     name: "Find Donors",
     description:
-      "Search for available donors near you in case of emergencies. Donors will be notified immediately",
+      "Search for available donors near you. Donors will be notified immediately",
     page: "FindDonors",
   },
   {
@@ -89,7 +89,7 @@ export const IndividualServices = [
     image: findDonorImg,
     name: "Find Donors",
     description:
-      "Search for available donors near you in case of emergencies. Donors will be notified immediately",
+      "Search for available donors near you. Donors will be notified immediately",
     page: "FindDonors",
   },
   {
@@ -141,7 +141,7 @@ export const HospitalServices = [
     image: findDonorImg,
     name: "Find Donors",
     description:
-      "Search for available donors near you in case of emergencies. Donors will be notified immediately",
+      "Search for available donors near you. Donors will be notified immediately",
     page: "FindDonors",
   },
   {
