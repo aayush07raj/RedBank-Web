@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 
 import { lighten, makeStyles } from "@material-ui/core/styles";
@@ -14,7 +14,6 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-
 import { Link, useHistory } from "react-router-dom";
 
 function createData(name, date, bg, component, units, contact, amount) {
@@ -133,6 +132,7 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
+  
 
   return (
     <TableHead>
@@ -173,6 +173,7 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -198,11 +199,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ list }) {
+export default function EnhancedTable({list}) {
   var List = [];
   list.map((item) => {
     List.push(item);
   });
+
+
 
   const history = useHistory();
 
@@ -236,7 +239,6 @@ export default function EnhancedTable({ list }) {
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>

@@ -34,6 +34,7 @@ import MenuList from "@material-ui/core/MenuList";
 import AccountBoxRoundedIcon from "@material-ui/icons/AccountBoxRounded";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import InfoIcon from "@material-ui/icons/Info";
+import { logging } from "../redux/Actions/login";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -164,6 +165,15 @@ export default function MenuAppBar({ user }) {
     setOpen((prevOpen) => !prevOpen);
     setOpen(event.currentTarget);
   };
+
+  useEffect(() => {
+  const cookies = new Cookies();
+  const authObj = cookies.get("Auth");
+    if (authObj) {
+      dispatch(logging(authObj));
+      console.log(authObj);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     if (loggedInState.userType === 1) {
@@ -408,7 +418,7 @@ export default function MenuAppBar({ user }) {
                                 to="/MyCommitments"
                                 variant="h7"
                               >
-                                My Commitments
+                                Activity Tracker
                               </Button>
                             </MenuItem>
                             <MenuItem onClick={handleClose2}>

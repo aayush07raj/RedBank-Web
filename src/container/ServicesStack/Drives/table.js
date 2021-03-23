@@ -63,7 +63,7 @@ export default function CollapsibleTable() {
       });
 
     setDonors([]);
-  }, []);
+  }, [loggedInState]);
 
   const handleDonorsList = (driveId) => {
     api

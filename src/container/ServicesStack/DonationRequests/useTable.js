@@ -189,7 +189,7 @@ export default function EnhancedTable() {
         // }
       })
       .catch();
-  }, []);
+  }, [loggedInState]);
 
   const history = useHistory();
   const classes = useStyles();

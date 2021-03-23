@@ -82,7 +82,7 @@ function Main() {
         })
         .catch();
     }
-  }, []);
+  }, [loggedInState]);
 
   return (
     <>

@@ -163,7 +163,7 @@ function IndProfile() {
       })
       .catch();
     anotherAxios();
-  }, []);
+  }, [loggedInState]);
 
   const handleStatus = async (status) => {
     const newStatus = await api.put().setDonorStatus(

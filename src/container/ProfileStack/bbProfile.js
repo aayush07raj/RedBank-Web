@@ -178,7 +178,7 @@ function BbProfile() {
       })
       .catch();
     anotherAxios();
-  }, []);
+  }, [loggedInState]);
 
   const anotherAxios = () => {
     api

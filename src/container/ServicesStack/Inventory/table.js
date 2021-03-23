@@ -76,7 +76,7 @@ export default function CustomizedTables() {
         // }
       })
       .catch();
-  }, []);
+  }, [loggedInState]);
 
   const handleEdit = () => {
     setOpen(false);

@@ -337,7 +337,7 @@ function MyAnalytics() {
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  }, [loggedInState]);
 
   // Tabs data
   const [value, setValue] = React.useState(0);

@@ -177,7 +177,7 @@ function HosProfile() {
       })
       .catch();
     anotherAxios();
-  }, []);
+  }, [loggedInState]);
 
   const anotherAxios = () => {
     api

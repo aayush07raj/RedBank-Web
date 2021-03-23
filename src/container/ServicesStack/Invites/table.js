@@ -193,7 +193,7 @@ export default function EnhancedTable() {
         // }
       })
       .catch();
-  }, []);
+  }, [loggedInState]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

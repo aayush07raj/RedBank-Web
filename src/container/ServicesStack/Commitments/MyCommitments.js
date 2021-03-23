@@ -35,7 +35,7 @@ function MyCommitments() {
         // }
       })
       .catch();
-  }, []);
+  }, [loggedInState]);
 
   return (
     <>

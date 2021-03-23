@@ -21,16 +21,9 @@ function MySales() {
   const [sale, setList] = useState([]);
   const loggedInState = useSelector((state) => state.loggedIn);
   useEffect(() => {
-    // api
-    //   .get()
-    //   .fetchSales({
-    //     headers: {
-    //       Authorization: "Bearer " + loggedInState.userToken,
-    //     },
-    //   })
-
-    axios
-      .get("http://localhost:8080/transactions/fetchsaleslist", {
+    api
+      .get()
+      .fetchSales({
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
@@ -41,8 +34,7 @@ function MySales() {
         setList(response.data);
         // }
       })
-      .catch((err) => window.alert(err));
-  }, []);
+  }, [loggedInState]);
 
   return (
     <>
@@ -58,7 +50,7 @@ function MySales() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height: "220px" }}></Container>
+      <Container style={{ height: "280px" }}></Container>
       <Footer />
     </>
   );

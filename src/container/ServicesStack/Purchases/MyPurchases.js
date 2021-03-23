@@ -9,7 +9,10 @@ import api from "../../../Apis/api";
 import Table from "./table";
 
 function MyPurchase() {
+
+
   const [purchase, setList] = useState([]);
+
   const loggedInState = useSelector((state) => state.loggedIn);
 
   useEffect(() => {
@@ -21,13 +24,17 @@ function MyPurchase() {
         },
       })
       .then((response) => {
+      
         // if (response.data.success) {
         console.log(response);
         setList(response.data);
+
         // }
       })
       .catch();
-  }, []);
+  }, [loggedInState]);
+
+  
 
   const classes = useStyles();
 
