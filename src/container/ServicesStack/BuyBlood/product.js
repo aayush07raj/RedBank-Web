@@ -28,16 +28,27 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     width: "100%",
     flexDirection: "column",
+    height: "auto",
     margin: "auto",
     padding: theme.spacing(2),
   },
+
   typo: {
-    fontWeight: "bold",
     padding: "10px",
+  },
+  note: {
+    fontWeight: "bold",
+    color: "#e94364",
+    marginTop: "20px",
   },
   table: {
     margin: theme.spacing(10),
     width: "80%",
+  },
+  button: {
+    backgroundColor: "#e94364",
+    color: "white",
+    marginTop: "20px",
   },
 }));
 
@@ -113,7 +124,7 @@ const Product = (props) => {
       <Navbar />
       <Paper square elevation={5} className={classes.paper}>
         <Typography variant="h4">Selected Product</Typography>
-        <Typography variant="h6" style={{}}>
+        <Typography variant="h6">
           Details about the selected product, press Buy button to confirm your
           order
         </Typography>
@@ -125,73 +136,109 @@ const Product = (props) => {
           justify="center"
           className={classes.table}
         >
-          <Grid item xs={12} style={{}}>
-            <Paper align="center" square style={{ padding: "20px" }}>
-              <Typography className={classes.typo} variant="h4">
-                Confirm your Purchase
-              </Typography>
-              <Divider />
-              <Container className={classes.typo}>
-                <Grid container>
-                  <Grid align="center" item md={12}>
-                    <Typography className={classes.typo} variant="h6">
-                      Seller Name : {bbName}
-                    </Typography>
-                    <Typography className={classes.typo} variant="h6">
-                      Blood Group : {bg}
-                    </Typography>
-                    <Typography className={classes.typo} variant="h6">
-                      Component :{component}
-                    </Typography>
-                    <Typography className={classes.typo} variant="h6">
-                      Units Required :{units}
-                    </Typography>
-                    <Typography className={classes.typo} variant="h6">
-                      Total Amount to be paid :{price * units}
-                    </Typography>
-                  </Grid>
+          <Paper align="center" style={{ padding: "20px" }}>
+            <Typography className={classes.typo} variant="h4">
+              Confirm your Purchase
+            </Typography>
+            <Divider />
+            <Container className={classes.typo}>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Seller name :
+                  </Typography>
                 </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {bbName}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Blood Group selected :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {bg}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Component selected
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {component}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Units booked :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {units}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Total amount to be paid :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {price * units}
+                  </Typography>
+                </Grid>
+              </Grid>
 
-                <Button
-                  className={classes.typo}
-                  type="button"
-                  onClick={handleClickOpen}
-                  variant="contained"
-                  style={{ backgroundColor: "#E94364", color: "white" }}
-                >
-                  Buy
-                </Button>
-                {/* Are you sure dialog */}
-                <Dialog open={open} onClose={handleClosed}>
-                  <DialogTitle>{"Are You Sure?"}</DialogTitle>
-                  <DialogActions>
-                    <Button onClick={handleClosed}>No</Button>
-                    <Button onClick={handleSubmit}>Yes</Button>
-                  </DialogActions>
-                </Dialog>
+              {/* Are you sure dialog */}
+              <Dialog open={open} onClose={handleClosed}>
+                <DialogTitle>{"Are You Sure?"}</DialogTitle>
+                <DialogActions>
+                  <Button onClick={handleClosed}>No</Button>
+                  <Button onClick={handleSubmit}>Yes</Button>
+                </DialogActions>
+              </Dialog>
 
-                {/* confirmation box */}
-                <Dialog open={open2} onClose={handleClosed2}>
-                  <DialogTitle>
-                    {
-                      "Transaction successful. Check 'My Purchases' section for more info about the transaction"
-                    }
-                  </DialogTitle>
-                  <DialogActions>
-                    <Button onClick={handleClosed2}>Ok</Button>
-                  </DialogActions>
-                </Dialog>
+              {/* confirmation box */}
+              <Dialog open={open2} onClose={handleClosed2}>
+                <DialogTitle>
+                  {
+                    "Transaction successful. Check 'My Purchases' section for more info about the transaction"
+                  }
+                </DialogTitle>
+                <DialogActions>
+                  <Button onClick={handleClosed2}>Ok</Button>
+                </DialogActions>
+              </Dialog>
 
-                {/* indicator for please wait */}
-                <Backdrop className={classes.backdrop} open={indicatorOpen}>
-                  <CircularProgress
-                    style={{ color: "#E94364", marginRight: "10px" }}
-                  />
-                  <Typography variant="h5">Please wait</Typography>
-                </Backdrop>
-              </Container>
-            </Paper>
-          </Grid>
+              {/* indicator for please wait */}
+              <Backdrop className={classes.backdrop} open={indicatorOpen}>
+                <CircularProgress
+                  style={{ color: "#E94364", marginRight: "10px" }}
+                />
+                <Typography variant="h5">Please wait</Typography>
+              </Backdrop>
+            </Container>
+            <Divider />
+
+            <Typography className={classes.note} variant="body2">
+              Important note : Booked blood must be collected within 24 hrs
+            </Typography>
+
+            <Button
+              className={classes.button}
+              type="button"
+              onClick={handleClickOpen}
+              variant="contained"
+            >
+              Proceed to buy
+            </Button>
+          </Paper>
         </Grid>
       </Container>
 

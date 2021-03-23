@@ -100,13 +100,13 @@ const headCells = [
     id: "reason",
     numeric: false,
     disablePadding: false,
-    label: "reason for purchase",
+    label: "Reason for purchase",
   },
   {
     id: "location",
     numeric: false,
     disablePadding: false,
-    label: "location of usage",
+    label: "Location of usage",
   },
 
   {
@@ -210,7 +210,7 @@ export default function EnhancedTable({ list }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("date");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -227,23 +227,10 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const handleInvoice = (
-    event,
-    soldComponent,
-    soldGroup,
-    soldQuantity,
-    sellerName,
-    sellerContact,
-    sellerEmail
-  ) => {
+  const handleInvoice = (Details) => {
     history.push({
       pathname: "/MyPurchases/Invoice",
-      soldComponent,
-      soldGroup,
-      soldQuantity,
-      sellerName,
-      sellerContact,
-      sellerEmail,
+      Details,
     });
   };
 
@@ -295,15 +282,7 @@ export default function EnhancedTable({ list }) {
                         <Button
                           size="small"
                           onClick={(event) => {
-                            handleInvoice(
-                              event,
-                              row.soldComponent,
-                              row.soldGroup,
-                              row.soldQuantity,
-                              row.sellerName,
-                              row.sellerContact,
-                              row.sellerEmail
-                            );
+                            handleInvoice(List[index]);
                           }}
                         >
                           View Invoice
@@ -316,7 +295,7 @@ export default function EnhancedTable({ list }) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 15, 25]}
           component="div"
           count={List.length}
           rowsPerPage={rowsPerPage}

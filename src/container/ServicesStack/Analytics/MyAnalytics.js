@@ -69,7 +69,7 @@ function MyAnalytics() {
   const [monthlyRevenue, setMonthlyRevenue] = useState({});
 
   const [yearlyPurchase, setYearlyPurchase] = useState({});
-  const [monthlyPurchase, setMonthlyPurchase] = useState([]);
+  const [monthlyPurchase, setMonthlyPurchase] = useState({});
 
   const handleYearChangeSales = (e) => {
     setCurrYear(e.target.value);

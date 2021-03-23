@@ -98,7 +98,7 @@ const headCells = [
     id: "location",
     numeric: false,
     disablePadding: false,
-    label: "location of usage",
+    label: "Location of usage",
   },
 ];
 

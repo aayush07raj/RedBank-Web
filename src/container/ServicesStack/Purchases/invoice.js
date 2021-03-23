@@ -15,13 +15,11 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     // position:'fixed',
     width: "100%",
-
     flexDirection: "column",
     margin: "auto",
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
   },
   typo: {
-    fontWeight: "bold",
     padding: "10px",
   },
   table: {
@@ -31,20 +29,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Invoice = (props) => {
-  const {
-    soldComponent,
-    soldGroup,
-    soldQuantity,
-    sellerName,
-    sellerContact,
-    sellerEmail,
-  } = props.location;
+  const { Details } = props.location;
+  console.log(Details);
   const classes = useStyles();
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.paper}>
-        <Typography variant="h4">Invoice</Typography>
+      <Paper square elevation={6} className={classes.paper}>
+        <Typography variant="h4">
+          Invoice
+          <Typography
+            variant="h6"
+            style={{ display: "inline-block", marginLeft: "20px" }}
+          >
+            Show this to the concerned blood bank while asking for your booked
+            blood
+          </Typography>
+        </Typography>
       </Paper>
       <Container maxWidth="lg">
         <Grid
@@ -60,24 +61,104 @@ const Invoice = (props) => {
             <Divider />
             <Container className={classes.typo}>
               <Grid container>
-                <Grid align="center" item md={12}>
+                <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Component Type : {soldComponent}
+                    Date of Transaction :
                   </Typography>
+                </Grid>
+                <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Blood Group : {soldGroup}
+                    {Details.dateOfTransaction.split("T")[0]}
                   </Typography>
+                </Grid>
+                <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Quantity :{soldQuantity}
+                    Invoice no :
                   </Typography>
+                </Grid>
+                <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Seller :{sellerName}
+                    {Details.purchaseId}
                   </Typography>
+                </Grid>
+                <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Seller Contact :{sellerContact}
+                    Component purchased :
                   </Typography>
+                </Grid>
+                <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Seller Email :{sellerEmail}
+                    {Details.soldComponent}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Blood group purchased :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {Details.soldGroup}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Quantity purchased :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {Details.soldQuantity}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Reason for purchase :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {Details.reason}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Location of usage :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {Details.location}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Seller Name :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {Details.sellerName}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Seller contact details :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {Details.sellerContact}, {Details.sellerEmail}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Total amount to be paid :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {Details.pricePerUnit * Details.soldQuantity}
                   </Typography>
                 </Grid>
               </Grid>
