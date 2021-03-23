@@ -21,19 +21,27 @@ function MySales() {
   const [sale, setList] = useState([]);
   const loggedInState = useSelector((state) => state.loggedIn);
   useEffect(() => {
-    api
-      .get()
-      .fetchSales({
+    // api
+    //   .get()
+    //   .fetchSales({
+    //     headers: {
+    //       Authorization: "Bearer " + loggedInState.userToken,
+    //     },
+    //   })
+
+    axios
+      .get("http://localhost:8080/transactions/fetchsaleslist", {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
       })
       .then((response) => {
         // if (response.data.success) {
+        console.log(response);
         setList(response.data);
         // }
       })
-      .catch();
+      .catch((err) => window.alert(err));
   }, []);
 
   return (

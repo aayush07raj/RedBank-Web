@@ -38,6 +38,8 @@ function BuyBlood() {
     bg: "",
     component: "",
     units: "",
+    reason: "",
+    location: "",
   });
 
   const [list, setList] = useState([]);
@@ -77,6 +79,12 @@ function BuyBlood() {
     }
     if (data.component.trim() === "") {
       errors.component = "Component cannot be empty";
+    }
+    if (data.reason.trim() === "") {
+      errors.reason = "Reason cannot be empty";
+    }
+    if (data.location.trim() === "") {
+      errors.location = "Location cannot be empty";
     }
     return Object.keys(errors).length === 0 ? null : errors;
   };
@@ -206,6 +214,7 @@ function BuyBlood() {
                   error={errors && errors.units ? true : false}
                   helperText={errors && errors.units ? errors.units : null}
                 />
+
                 <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Select your State</InputLabel>
                   <Select
@@ -264,6 +273,33 @@ function BuyBlood() {
                   helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
+                <TextField
+                  className={classes.formControl}
+                  label="Add the reason for purchase *"
+                  multiline
+                  rows={5}
+                  name="reason"
+                  value={data.reason}
+                  onChange={handleChange}
+                  variant="outlined"
+                  error={errors && errors.reason}
+                  helperText={errors && errors.reason ? errors.reason : null}
+                />
+
+                <TextField
+                  className={classes.formControl}
+                  label="Location of usage *"
+                  type="text"
+                  name="location"
+                  value={data.location}
+                  variant="outlined"
+                  onChange={handleChange}
+                  error={errors && errors.location ? true : false}
+                  helperText={
+                    errors && errors.location ? errors.location : null
+                  }
+                />
+
                 <Button
                   type="submit"
                   variant="contained"
@@ -303,6 +339,8 @@ function BuyBlood() {
                 bg={data.bg}
                 component={data.component}
                 units={data.units}
+                location={data.location}
+                reason={data.reason}
               />
             ) : null}
           </Grid>

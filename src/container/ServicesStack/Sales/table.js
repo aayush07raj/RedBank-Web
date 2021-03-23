@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-import { lighten, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -78,22 +77,10 @@ const headCells = [
     label: "Units Sold",
   },
   {
-    id: "buyerName",
+    id: "buyerDetails",
     numeric: false,
     disablePadding: false,
-    label: "Buyer Name",
-  },
-  {
-    id: "buyerContact",
-    numeric: false,
-    disablePadding: false,
-    label: "Buyer Contact",
-  },
-  {
-    id: "buyerEmail",
-    numeric: false,
-    disablePadding: false,
-    label: "Buyer Email",
+    label: "Buyer Details",
   },
   {
     id: "amount",
@@ -101,11 +88,23 @@ const headCells = [
     disablePadding: false,
     label: "Amount Paid (Rs)",
   },
+  {
+    id: "reason",
+    numeric: false,
+    disablePadding: false,
+    label: "Reason for purchase",
+  },
+  {
+    id: "location",
+    numeric: false,
+    disablePadding: false,
+    label: "location of usage",
+  },
 ];
 
 const useHeaderStyles = makeStyles((theme) => ({
   head: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
   body: {
@@ -245,12 +244,14 @@ export default function EnhancedTable({ list }) {
                       <TableCell align="center">
                         {row.purchasedQuantity}
                       </TableCell>
-                      <TableCell align="center">{row.buyerName}</TableCell>
-                      <TableCell align="center">{row.buyerContact}</TableCell>
-                      <TableCell align="center">{row.buyerEmail}</TableCell>
+                      <TableCell align="center">
+                        {row.buyerName},{row.buyerContact},{row.buyerEmail}
+                      </TableCell>
                       <TableCell align="center">
                         {row.pricePerUnit * row.purchasedQuantity}{" "}
                       </TableCell>
+                      <TableCell align="center">{row.reason}</TableCell>
+                      <TableCell align="center">{row.location}</TableCell>
                     </TableRow>
                   );
                 })}

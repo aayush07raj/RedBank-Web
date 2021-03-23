@@ -123,7 +123,9 @@ export default function CollapsibleTable() {
               <StyledTableCell align="center">Drive Id</StyledTableCell>
               <StyledTableCell align="center">Date</StyledTableCell>
               <StyledTableCell align="center">Time</StyledTableCell>
-              <StyledTableCell align="center">Address</StyledTableCell>
+              <StyledTableCell align="center" style={{ width: "30%" }}>
+                Address
+              </StyledTableCell>
               <StyledTableCell align="center">
                 Blood Groups Invited
               </StyledTableCell>
@@ -156,7 +158,6 @@ export default function CollapsibleTable() {
                     onClick={(e) => {
                       handleDonorsList(drivesList[idx].driveId);
                     }}
-                    disabled={!drivesList[idx].status}
                   >
                     View list
                   </Button>

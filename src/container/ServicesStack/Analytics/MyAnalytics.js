@@ -159,8 +159,7 @@ function MyAnalytics() {
       .then((response) => {
         setMonthlyRevenue((prevState) => {
           const data = { ...prevState };
-          data.data = response.data.datasets[0].data;
-          data.labels = response.data.labels;
+          data.data = response.data;
           return data;
         });
       });
@@ -206,8 +205,7 @@ function MyAnalytics() {
       .then((response) => {
         setMonthlyPurchase((prevState) => {
           const data = { ...prevState };
-          data.data = response.data.datasets[0].data;
-          data.labels = response.data.labels;
+          data.data = response.data;
           return data;
         });
       });

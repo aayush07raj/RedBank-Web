@@ -174,7 +174,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({ list, bg, component, units }) {
+export default function EnhancedTable({
+  list,
+  bg,
+  component,
+  units,
+  location,
+  reason,
+}) {
   var List = [];
   list.map((item) => {
     List.push(item);
@@ -204,13 +211,6 @@ export default function EnhancedTable({ list, bg, component, units }) {
     setPage(0);
   };
 
-  // const [iota, setBuybtn] = React.useState({
-  //   bg: bg,
-  //   component: component,
-  //   units: units,
-  //   amount: units * List.price,
-  // });
-
   const handleClick = (event, bbName, price, bbId) => {
     event.preventDefault();
     history.push({
@@ -221,6 +221,8 @@ export default function EnhancedTable({ list, bg, component, units }) {
       price,
       units,
       bbId,
+      location,
+      reason,
     });
   };
 

@@ -22,6 +22,7 @@ function MyPurchase() {
       })
       .then((response) => {
         // if (response.data.success) {
+        console.log(response);
         setList(response.data);
         // }
       })

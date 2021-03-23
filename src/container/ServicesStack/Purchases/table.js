@@ -85,22 +85,10 @@ const headCells = [
     label: "Units purchased",
   },
   {
-    id: "sellerName",
+    id: "sellerDetails",
     numeric: false,
     disablePadding: false,
-    label: "Seller Name",
-  },
-  {
-    id: "sellerContact",
-    numeric: false,
-    disablePadding: false,
-    label: "Seller Contact",
-  },
-  {
-    id: "sellerEmail",
-    numeric: false,
-    disablePadding: false,
-    label: "Seller Email",
+    label: "Seller Details",
   },
   {
     id: "amount",
@@ -109,11 +97,24 @@ const headCells = [
     label: "Amount Paid (Rs)",
   },
   {
-    id:"invoice",
+    id: "reason",
     numeric: false,
     disablePadding: false,
-    label: "Invoice"
-  }
+    label: "reason for purchase",
+  },
+  {
+    id: "location",
+    numeric: false,
+    disablePadding: false,
+    label: "location of usage",
+  },
+
+  {
+    id: "invoice",
+    numeric: false,
+    disablePadding: false,
+    label: "Invoice",
+  },
 ];
 
 const useHeaderStyles = makeStyles((theme) => ({
@@ -203,7 +204,6 @@ export default function EnhancedTable({ list }) {
     List.push(item);
   });
 
-
   const history = useHistory();
 
   const classes = useStyles();
@@ -227,18 +227,25 @@ export default function EnhancedTable({ list }) {
     setPage(0);
   };
 
-  const handleInvoice =(event, soldComponent, soldGroup, soldQuantity, sellerName, 
-    sellerContact, sellerEmail )=>{
+  const handleInvoice = (
+    event,
+    soldComponent,
+    soldGroup,
+    soldQuantity,
+    sellerName,
+    sellerContact,
+    sellerEmail
+  ) => {
     history.push({
-      pathname:"/MyPurchases/Invoice",
+      pathname: "/MyPurchases/Invoice",
       soldComponent,
       soldGroup,
       soldQuantity,
       sellerName,
       sellerContact,
-      sellerEmail
-    })
-  }
+      sellerEmail,
+    });
+  };
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
@@ -272,22 +279,36 @@ export default function EnhancedTable({ list }) {
                       <TableCell align="center">{row.soldGroup}</TableCell>
                       <TableCell align="center">{row.pricePerUnit}</TableCell>
                       <TableCell align="center">{row.soldQuantity}</TableCell>
-                      <TableCell align="center">{row.sellerName}</TableCell>
-                      <TableCell align="center">{row.sellerContact}</TableCell>
-                      <TableCell align="center">{row.sellerEmail}</TableCell>
+                      <TableCell align="center">
+                        {row.sellerName} ,{row.sellerContact},{row.sellerEmail}
+                      </TableCell>
                       <TableCell align="center">
                         {row.pricePerUnit * row.soldQuantity}{" "}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.reason ? row.reason : <>N/A</>}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.location ? row.location : <>N/A</>}
                       </TableCell>
                       <TableCell align="center">
                         <Button
                           size="small"
                           onClick={(event) => {
-                            handleInvoice(event, row.soldComponent, row.soldGroup,
-                            row.soldQuantity, row.sellerName, row.sellerContact, row.sellerEmail )
+                            handleInvoice(
+                              event,
+                              row.soldComponent,
+                              row.soldGroup,
+                              row.soldQuantity,
+                              row.sellerName,
+                              row.sellerContact,
+                              row.sellerEmail
+                            );
                           }}
-                >
-                  View Invoice
-                </Button></TableCell>
+                        >
+                          View Invoice
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   );
                 })}

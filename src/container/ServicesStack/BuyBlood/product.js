@@ -43,7 +43,16 @@ const useStyles = makeStyles((theme) => ({
 
 // function Product({ iota }) {
 const Product = (props) => {
-  const { bg, bbName, component, price, units, bbId } = props.location;
+  const {
+    bg,
+    bbName,
+    component,
+    price,
+    units,
+    bbId,
+    location,
+    reason,
+  } = props.location;
   const history = useHistory();
   const loggedInState = useSelector((state) => state.loggedIn);
 
@@ -74,13 +83,12 @@ const Product = (props) => {
       .post()
       .confirmTransaction(
         {
-          customerId: loggedInState.userId,
           sellerId: bbId,
-          date: new Date().toISOString(),
           bloodGroup: bg,
           component: component,
-          price: price,
           units: units,
+          location: location,
+          reason: reason,
         },
         {
           headers: {
