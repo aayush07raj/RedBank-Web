@@ -454,16 +454,16 @@ function IndProfile() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item md={6} xs={12}>
+        <Grid item md={6} xs={12} >
           <Grid item xs={12} style={{ padding: "10px" }}>
             <Typography
               variant="h5"
               style={{ fontWeight: "bold" }}
-            ></Typography>
+            >About</Typography>
             <Divider />
           </Grid>
 
-          <Grid container justify="center">
+          <Grid  container justify="center">
             <Grid item xs={6} style={{ padding: "10px" }}>
               <Typography variant="h6">Email :</Typography>
             </Grid>

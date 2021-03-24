@@ -16,6 +16,7 @@ import inventory from "../../assets/images/inventory.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    // minHeight: "30vh",
     justifyContent: "center",
     alignItems: "center",
     [theme.breakpoints.down("md")]: {
@@ -35,10 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
   appDownload: {
     paddingBottom: "25px",
-    color: "grey",
+    color: "black",
     textAlign: "center",
   },
 }));
+
 export default function SecondView() {
   const classes = useStyles();
   return (
@@ -48,10 +50,10 @@ export default function SecondView() {
           <Box>
             <CardMedia component="img" image={user} height="220" />
             <CardContent>
-              <Typography gutterBottom variant="h6" component="h2">
+              <Typography gutterBottom variant="h5">
                 User Type
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
+              <Typography variant="h6" color="textSecondary">
                 Avail our Service as either an individual,hospital, or a blood
                 bank.
               </Typography>
@@ -62,10 +64,10 @@ export default function SecondView() {
           <Box>
             <CardMedia component="img" image={drives} height="200" />
             <CardContent>
-              <Typography gutterBottom variant="h6" component="h2">
+              <Typography gutterBottom variant="h5">
                 Organise Donation Drives
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
+              <Typography variant="h6" color="textSecondary">
                 The community of donors at RedBank are always ready for an
                 opportunity to save lives. Give them the opportunity do so by
                 Organizing donation drives from within the app.
@@ -77,10 +79,10 @@ export default function SecondView() {
           <Box>
             <CardMedia component="img" image={findDonors} height="220" />
             <CardContent>
-              <Typography gutterBottom variant="h6" component="h2">
+              <Typography gutterBottom variant="h5">
                 Find Blood
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
+              <Typography variant="h6" color="textSecondary">
                 Buy Blood Components or find donors near you in case of
                 emergencies
               </Typography>
@@ -91,10 +93,10 @@ export default function SecondView() {
           <Box>
             <CardMedia component="img" image={inventory} height="200" />
             <CardContent>
-              <Typography gutterBottom variant="h6" component="h2">
+              <Typography gutterBottom variant="h5">
                 Invnentory Management
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
+              <Typography variant="h6" color="textSecondary">
                 If you are a hospital or blood bank and you are looking for a
                 way to manage your inventory hassle free, you have come to right
                 place.

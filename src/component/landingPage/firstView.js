@@ -90,10 +90,9 @@ export default function FirstView() {
         collapsedHeight={50}
       >
         <div className={classes.container}>
-          <h1 className={classes.title}>
-            Welcome to <br />
-            RedBank
-          </h1>
+          <Typography variant="h3" className={classes.title}>
+            Welcome to RedBank
+          </Typography>
           <Scroll to="place-to-visit" smooth={true}>
             <IconButton>
               <ExpandMoreIcon className={classes.goDown} />

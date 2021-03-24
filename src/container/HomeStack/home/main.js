@@ -140,7 +140,7 @@ function Main() {
                       {notify}
                     </span>
                   </Typography>
-                  <Typography variant="h5">
+                  <Typography variant="h5" className={classes.space}>
                     Go to{" "}
                     <Button
                       component={Link}
@@ -154,10 +154,12 @@ function Main() {
                   </Typography>
                 </>
               ) : null}
-
-              <Typography variant="h4">Services provided by us</Typography>
+              <Divider/>
+              
+            </Grid >
+            <Grid item xs={12} align="center">
+            <Typography variant="h4">Services provided by us</Typography>
             </Grid>
-
             {loggedInState.userType === 1 ? (
               <>
                 {IndividualServices.map((item, idx) => (
