@@ -305,9 +305,11 @@ function MyAnalytics() {
         });
       });
 
+      console.log(currMonth);
     axios
+    
       .get(
-        `http://localhost:8080/salesanalytics/monthly/${currYear}/${currMonth}/2`,
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/2`,
         {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
@@ -346,7 +348,7 @@ function MyAnalytics() {
     setValue(newValue);
   };
 
-  console.log(monthlySales);
+  console.log(monthlyPurchase);
   return (
     <>
       <Navbar />
