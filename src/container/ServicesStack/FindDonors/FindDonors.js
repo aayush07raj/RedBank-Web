@@ -139,7 +139,7 @@ function FindDonors() {
                   className={classes.formControl}
                   error={errors && errors.state ? true : false}
                 >
-                  <InputLabel>Select required State</InputLabel>
+                  <InputLabel>Select required State*</InputLabel>
                   <Select
                     label="Select required State"
                     name="state"
@@ -162,7 +162,7 @@ function FindDonors() {
                   className={classes.formControl}
                   error={errors && errors.district ? true : false}
                 >
-                  <InputLabel>Select required District</InputLabel>
+                  <InputLabel>Select required District*</InputLabel>
                   <Select
                     label="Select required District"
                     inputProps={{ readOnly: enable }}
@@ -205,7 +205,7 @@ function FindDonors() {
                   className={classes.formControl}
                   error={errors && errors.bloodGroup ? true : false}
                 >
-                  <InputLabel>Select required Blood Group</InputLabel>
+                  <InputLabel>Select required Blood Group*</InputLabel>
                   <Select
                     label="Select required Blood Group"
                     name="bloodGroup"
@@ -232,7 +232,7 @@ function FindDonors() {
 
                 <TextField
                   className={classes.formControl}
-                  label="Add the venue for the invitation"
+                  label="Add the venue for the invitation*"
                   multiline
                   rows={7}
                   name="address"

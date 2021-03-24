@@ -178,7 +178,7 @@ function ConductDrive() {
                   className={classes.formControl}
                   error={errors && errors.bloodGroups ? true : false}
                 >
-                  <InputLabel>Select required Blood Group</InputLabel>
+                  <InputLabel>Select required Blood Group*</InputLabel>
                   <Select
                     multiple
                     label="Select required Blood Group"
@@ -206,7 +206,7 @@ function ConductDrive() {
 
                 <TextField
                   className={classes.formControl}
-                  label="Enter your Address"
+                  label="Enter your Address*"
                   type="text"
                   name="address"
                   value={data.address}
@@ -220,7 +220,7 @@ function ConductDrive() {
                   style={{ marginTop: "20px" }}
                   error={errors && errors.state ? true : false}
                 >
-                  <InputLabel>Select required State</InputLabel>
+                  <InputLabel>Select required State*</InputLabel>
                   <Select
                     label="Select required State"
                     name="state"
@@ -243,7 +243,7 @@ function ConductDrive() {
                   style={{ marginTop: "20px" }}
                   error={errors && errors.district ? true : false}
                 >
-                  <InputLabel>Select required District</InputLabel>
+                  <InputLabel>Select required District*</InputLabel>
                   <Select
                     label="Select required District"
                     inputProps={{ readOnly: enable }}
@@ -266,7 +266,7 @@ function ConductDrive() {
 
                 <TextField
                   style={{ marginTop: "20px" }}
-                  label="Enter required Pincode"
+                  label="Enter required Pincode*"
                   type="text"
                   name="pincode"
                   value={data.pincode}
@@ -285,7 +285,7 @@ function ConductDrive() {
                   style={{ marginTop: "20px" }}
                   error={errors && errors.startDate}
                 >
-                  Start Date
+                  Start Date*
                 </InputLabel>
                 <TextField
                   type="date"
@@ -304,7 +304,7 @@ function ConductDrive() {
                   style={{ marginTop: "20px" }}
                   error={errors && errors.endDate}
                 >
-                  End Date
+                  End Date*
                 </InputLabel>
                 <TextField
                   type="date"
@@ -321,7 +321,7 @@ function ConductDrive() {
                   style={{ marginTop: "20px" }}
                   error={errors && errors.startTime}
                 >
-                  Start Time
+                  Start Time*
                 </InputLabel>
                 <TextField
                   type="time"
@@ -340,7 +340,7 @@ function ConductDrive() {
                   style={{ marginTop: "20px" }}
                   error={errors && errors.endTime}
                 >
-                  End Time
+                  End Time*
                 </InputLabel>
                 <TextField
                   type="time"

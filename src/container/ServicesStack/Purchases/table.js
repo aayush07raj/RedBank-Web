@@ -57,19 +57,13 @@ const headCells = [
     id: "purchaseId",
     numeric: false,
     disablePadding: false,
-    label: "Purchase Id",
-  },
-  {
-    id: "soldComponent",
-    numeric: false,
-    disablePadding: false,
-    label: "Component purchased",
+    label: "Transaction Id",
   },
   {
     id: "soldGroup",
     numeric: false,
     disablePadding: false,
-    label: "Blood Group purchased",
+    label: "Product purchased",
   },
   {
     id: "pricePerUnit",
@@ -106,13 +100,6 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: "Location of usage",
-  },
-
-  {
-    id: "invoice",
-    numeric: false,
-    disablePadding: false,
-    label: "Invoice",
   },
 ];
 
@@ -263,13 +250,14 @@ export default function EnhancedTable({list}) {
                       <TableCell align="center">
                         {row.dateOfTransaction.split("T")[0]}
                       </TableCell>
-                      <TableCell align="center">{row.purchaseId}</TableCell>
-                      <TableCell align="center">{row.soldComponent}</TableCell>
-                      <TableCell align="center">{row.soldGroup}</TableCell>
+                      <TableCell align="center" onClick={(event) => {
+                            handleInvoice(row);
+                          }} style={{color:"blue" ,cursor:"pointer"}} >{row.purchaseId}</TableCell>
+                      <TableCell align="center">{row.soldGroup} ({row.soldComponent})</TableCell>
                       <TableCell align="center">{row.pricePerUnit}</TableCell>
                       <TableCell align="center">{row.soldQuantity}</TableCell>
                       <TableCell align="center">
-                        {row.sellerName} ,{row.sellerContact},{row.sellerEmail}
+                        {row.sellerName}, {row.sellerContact}, {row.sellerEmail}
                       </TableCell>
                       <TableCell align="center">
                         {row.pricePerUnit * row.soldQuantity}{" "}
@@ -279,16 +267,6 @@ export default function EnhancedTable({list}) {
                       </TableCell>
                       <TableCell align="center">
                         {row.location ? row.location : <>N/A</>}
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button
-                          size="small"
-                          onClick={(event) => {
-                            handleInvoice(List[index]);
-                          }}
-                        >
-                          View Invoice
-                        </Button>
                       </TableCell>
                     </TableRow>
                   );

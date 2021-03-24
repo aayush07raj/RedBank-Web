@@ -66,8 +66,16 @@ const headCells = [
     label: "Name of Donor",
   },
   {
-    id: "address",
-    label: "Address of Donor",
+    id: "district",
+    label: "District ",
+  },
+  {
+    id: "state",
+    label: "State ",
+  },
+  {
+    id: "pincode",
+    label: "Pincode ",
   },
 ];
 
@@ -273,7 +281,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   paper: {
-    width: "100%",
+    width: "80%",
     marginBottom: theme.spacing(2),
     padding: theme.spacing(3),
   },
@@ -356,8 +364,8 @@ export default function EnhancedTable({ list, formData }) {
     rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
+    <div align="center" className={classes.root}>
+      <Paper  className={classes.paper}>
         <EnhancedTableToolbar
           numSelected={selected.length}
           data={selected}
@@ -400,7 +408,13 @@ export default function EnhancedTable({ list, formData }) {
                       <TableCell align="left">{row.userId}</TableCell>
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="left">
-                        {row.address}, {row.district}, {row.state},{row.pincode}
+                         {row.district}
+                      </TableCell>
+                      <TableCell align="left">
+                          {row.state}
+                      </TableCell>
+                      <TableCell align="left">
+                         {row.pincode}
                       </TableCell>
                     </TableRow>
                   );

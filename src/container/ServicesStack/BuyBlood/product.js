@@ -26,6 +26,7 @@ const Product = (props) => {
   const {
     bg,
     bbName,
+    address,
     component,
     price,
     units,
@@ -96,30 +97,21 @@ const Product = (props) => {
         subtitle="Details about the selected product, press Buy button to confirm your
         order"
       />
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <Grid
           container
           alignContent="center"
           justify="center"
           className={classes.table2}
         >
-          <Paper align="center" style={{ padding: "20px" }}>
+          <Paper  style={{ padding: "20px"}}>
             <Typography className={classes.typo} variant="h4">
               Confirm your Purchase
             </Typography>
             <Divider />
             <Container className={classes.typo}>
               <Grid container>
-                <Grid item xs={6}>
-                  <Typography className={classes.typo} variant="h6">
-                    Seller name :
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography className={classes.typo} variant="h6">
-                    {bbName}
-                  </Typography>
-                </Grid>
+               
                 <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
                     Blood Group selected :
@@ -152,12 +144,32 @@ const Product = (props) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
+                    Seller name :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {bbName}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    Seller address :
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
+                    {address}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography className={classes.typo} variant="h6">
                     Total amount to be paid :
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    {price * units}
+                    {price * units} INR
                   </Typography>
                 </Grid>
               </Grid>

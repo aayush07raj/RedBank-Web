@@ -113,6 +113,7 @@ function BuyBlood() {
         }
       )
       .then((response) => {
+        console.log(response)
         if (response.data.length != 0) {
           setList(response.data);
         } else {
@@ -153,7 +154,7 @@ function BuyBlood() {
                   className={classes.formControl}
                   error={errors && errors.bg ? true : false}
                 >
-                  <InputLabel>Select required Blood Group</InputLabel>
+                  <InputLabel>Select required Blood Group*</InputLabel>
                   <Select
                     label="Select required Blood Group"
                     name="bg"

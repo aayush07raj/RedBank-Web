@@ -57,6 +57,12 @@ const headCells = [
     disablePadding: false,
     label: "Name",
   },
+  {
+    id: "address",
+    numeric: false,
+    disablePadding: false,
+    label: "Address",
+  },
   { id: "contact", numeric: false, disablePadding: false, label: "Contact" },
   { id: "price", numeric: false, disablePadding: false, label: "Price (Rs.)" },
   { id: "actions", label: "Actions", disableSorting: false },
@@ -211,12 +217,13 @@ export default function EnhancedTable({
     setPage(0);
   };
 
-  const handleClick = (event, bbName, price, bbId) => {
+  const handleClick = (event, bbName, address, price, bbId) => {
     event.preventDefault();
     history.push({
       pathname: "/BuyBlood/Product",
       bbName,
       bg,
+      address,
       component,
       price,
       units,
@@ -256,12 +263,13 @@ export default function EnhancedTable({
                     >
                       <TableCell align="center">{row.bbId}</TableCell>
                       <TableCell align="center">{row.bbName}</TableCell>
+                      <TableCell align="center">{row.address}</TableCell>
                       <TableCell align="center">{row.phoneNo}</TableCell>
                       <TableCell align="center">{row.price}</TableCell>
                       <TableCell align="center">
                         <Button
                           onClick={(event) => {
-                            handleClick(event, row.bbName, row.price, row.bbId);
+                            handleClick(event, row.bbName, row.address, row.price, row.bbId);
                           }}
                           type="button"
                           variant="contained"

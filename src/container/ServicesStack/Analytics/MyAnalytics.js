@@ -375,7 +375,7 @@ function MyAnalytics() {
               >
                 {/* Sales graphs  */}
                 <Grid item xs={12}>
-                  <Typography variant="h5">Yearly wise sales:</Typography>
+                  <Typography variant="h5">Monthly wise sales:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Year</InputLabel>
                     <Select
@@ -403,7 +403,7 @@ function MyAnalytics() {
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h5">Monthly wise sales:</Typography>
+                  <Typography variant="h5">Component wise Breakdown:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Month</InputLabel>
                     <Select
@@ -476,7 +476,7 @@ function MyAnalytics() {
 
                 {/* Revenue graphs  */}
                 <Grid item xs={12}>
-                  <Typography variant="h5">Yearly wise revenue:</Typography>
+                  <Typography variant="h5">Monthly wise revenue:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Year</InputLabel>
                     <Select
@@ -504,7 +504,7 @@ function MyAnalytics() {
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h5">Monthly wise revenue:</Typography>
+                  <Typography variant="h5">Component wise Breakdown:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Month</InputLabel>
                     <Select
@@ -582,7 +582,7 @@ function MyAnalytics() {
                 spacing={5}
               >
                 <Grid item xs={12}>
-                  <Typography variant="h5">Yearly wise purchase:</Typography>
+                  <Typography variant="h5">Monthly wise purchase:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Year</InputLabel>
                     <Select
@@ -610,7 +610,7 @@ function MyAnalytics() {
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h5">Monthly wise purchase:</Typography>
+                  <Typography variant="h5">Component wise Breakdown:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Month</InputLabel>
                     <Select
@@ -753,7 +753,7 @@ function MyAnalytics() {
                 spacing={5}
               >
                 <Grid item xs={12}>
-                  <Typography variant="h5">Yearly wise purchase:</Typography>
+                  <Typography variant="h5">Monthly wise purchase:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Year</InputLabel>
                     <Select
