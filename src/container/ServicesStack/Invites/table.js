@@ -53,11 +53,11 @@ function stableSort(array, comparator) {
 const headCells = [
   {
     id: "inviteTimestamp",
-    label: "Invite Made on",
+    label: "Invite made on",
   },
   {
     id: "inviteType",
-    label: "Type",
+    label: "Invite type",
   },
   {
     id: "inviteId",
@@ -77,7 +77,7 @@ const headCells = [
   },
   {
     id: "inviterDetails",
-    label: "Inviter Details",
+    label: "Inviter details",
   },
   {
     id: "accept",
@@ -188,6 +188,7 @@ export default function EnhancedTable() {
         },
       })
       .then((response) => {
+        console.log(response)
         // if (response.data.success) {
         setList(response.data);
         // }
@@ -371,8 +372,9 @@ export default function EnhancedTable() {
                       <TableCell align="center">
                         {row.inviteTimestamp.split("T")[0]}
                       </TableCell>
-
-                      <TableCell align="center">{row.inviteType}</TableCell>
+                      <TableCell id={index} align="center">
+                        {row.inviteType ===  "donation" ? row.recipientType === "Individual" ? <>Individual</>: row.recipientType === "Hospital" ? <>Hospital</>: <>BloodBank </>: <>Drive</>} 
+                      </TableCell>
                       <TableCell align="center">
                         {row.inviteType === "drive"
                           ? row.driveId

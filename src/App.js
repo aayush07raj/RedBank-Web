@@ -22,7 +22,7 @@ import BuyBlood from "./container/ServicesStack/BuyBlood/BuyBlood";
 import Product from "./container/ServicesStack/BuyBlood/product";
 import ConductDrive from "./container/ServicesStack/ConductDrive/conductDrive";
 import MyAnalytics from "./container/ServicesStack/Analytics/MyAnalytics";
-import ActivityTracker from "./container/ServicesStack/ActivityTracker/ActivityTracker";
+import MyActivity from "./container/ServicesStack/MyActivity/MyActivity";
 import MyDonationReq from "./container/ServicesStack/DonationRequests/MyDonationReq";
 import InviteesList from "./container/ServicesStack/DonationRequests/inviteesList";
 import MyDrives from "./container/ServicesStack/Drives/myDrives";
@@ -73,7 +73,7 @@ function App() {
               <ProtectedRoute exact path="/inviteesList" component={InviteesList}/>
 {/* Urls for Individual only */}
               <ProtectedRoute exact path="/UpcomingDrive" component={loggedIn.userType === Individual ? UpcomingDrive : UnAuth }/>
-              <ProtectedRoute exact path="/ActivityTracker" component={loggedIn.userType === Individual ? ActivityTracker: UnAuth }/>
+              <ProtectedRoute exact path="/MyActivity" component={loggedIn.userType === Individual ? MyActivity: UnAuth }/>
               <ProtectedRoute exact path="/MyInvites" component={loggedIn.userType === Individual ? MyInvites: UnAuth} />
 {/* Urls for Ho[ital and Bloodbank only */}
               <ProtectedRoute exact path="/OrganiseDrive" component={loggedIn.userType === Individual ? UnAuth: ConductDrive}/>

@@ -57,6 +57,7 @@ export default function CollapsibleTable() {
         },
       })
       .then((response) => {
+        console.log(response.data);
         if (response.data) {
           setList(response.data);
         }
@@ -165,10 +166,10 @@ export default function CollapsibleTable() {
                 <TableCell align="center">
                   {!drivesList[idx].status ? (
                     <p style={{ color: "red" }}>Canceled</p>
-                  ) : new Date(row.endDate).getTime() <=
+                  ) : new Date(row.endTimestamp).getTime() <=
                     new Date().getTime() ? (
                     <p style={{ color: "grey" }}>Completed</p>
-                  ) : new Date(row.startDate).getTime() >=
+                  ) : new Date(row.startTimestamp).getTime() >=
                     new Date().getTime() ? (
                     <p style={{ color: "#007CFF" }}> Upcoming</p>
                   ) : (

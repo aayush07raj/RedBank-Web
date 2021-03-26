@@ -26,7 +26,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 import PageHeader from "../../../component/pageHeader";
 import api from "../../../Apis/api";
@@ -387,11 +387,14 @@ function ConductDrive() {
                 <Dialog open={open} onClose={handleClosed}>
                   <DialogTitle>{"Drive Inititated Successfully"}</DialogTitle>
                   <DialogContent>
+                    <DialogContentText>
                     Drive has been initiated, check My Drives sections for more
                     details
+                    </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button color="primary" onClick={handleClosed}>
+                    <Button component={Link} to="/MyDrives">Go to My Drives</Button>
+                    <Button style={{ backgroundColor: "#E94364", color: "white" }} onClick={handleClosed}>
                       Ok
                     </Button>
                   </DialogActions>

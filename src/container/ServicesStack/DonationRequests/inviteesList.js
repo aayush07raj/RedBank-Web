@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 
+import PageHeader from "../../../component/pageHeader";
+
 function InviteesList(props) {
   const classes = useStyles();
   const { donorsList, setDonors, donationId } = props.location;
@@ -54,15 +56,10 @@ function InviteesList(props) {
   return (
     <>
       <Navbar />
-      <Paper square elevation={5} className={classes.papers}>
-        <Typography variant="h4" className={classes.heading}>
-          Invitees List
-        </Typography>
-        <Divider className={classes.heading} />
-        <Typography variant="h6" className={classes.heading}>
-          list of the Invitees of the selected Request
-        </Typography>
-      </Paper>
+      <PageHeader
+        title="Invitees List "
+        subtitle="list of the Invitees of the selected Request."
+      />
       <Container maxWidth="lg">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
@@ -96,7 +93,7 @@ function InviteesList(props) {
                             color="secondary"
                             onClick={(e) => handleClick(idx)}
                           >
-                            Given ?
+                            Donated ?
                           </Button>
                         )}
                       </TableCell>

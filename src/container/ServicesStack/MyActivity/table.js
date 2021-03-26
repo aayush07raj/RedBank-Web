@@ -47,7 +47,7 @@ const headCells = [
   },
   {
     id: "commitmentType",
-    label: "Commitment type",
+    label: "Activity type",
   },
   {
     id: "driveId",
@@ -58,21 +58,14 @@ const headCells = [
     label: "Event Address",
   },
   {
-    id: "recipientType",
-    label: "Recipient Type",
-  },
-  {
     id: "recipientName",
-    label: "Recipient Name",
+    label: "Recipient",
   },
   {
     id: "recipientContact",
-    label: "Recipient Contact",
+    label: "Recipient Details",
   },
-  {
-    id: "recipientEmail",
-    label: "Recipient Email",
-  },
+  
   {
     id: "from",
     label: "From",
@@ -222,7 +215,7 @@ export default function EnhancedTable({ list }) {
                           : row.dateTime.split("T")[0]}
                       </TableCell>
                       <TableCell id={index} align="center">
-                        {row.commitmentType}
+                        {row.commitmentType ===  "donation" ? row.recipientType === "individual" ? <>Individual donation</>: row.recipientType === "hospital" ? <>Hospital donation</>: <>BloodBank donation</>: <>Drive</>} 
                       </TableCell>
                       <TableCell align="center">
                         {row.commitmentType === "donation"
@@ -232,12 +225,11 @@ export default function EnhancedTable({ list }) {
                       <TableCell align="center">
                         {row.recipientAddress}
                       </TableCell>
-                      <TableCell align="center">{row.recipientType}</TableCell>
-                      <TableCell align="center">{row.recipientName}</TableCell>
+                      <TableCell align="center">{row.recipientName} ({row.recipientType})</TableCell>
                       <TableCell align="center">
-                        {row.recipientContact}
+                        {row.recipientContact}, {row.recipientEmail}
                       </TableCell>
-                      <TableCell align="center">{row.recipientEmail}</TableCell>
+                      
                       <TableCell align="center">
                         {row.commitmentType === "donation" ? (
                           <p>N/A</p>
@@ -261,7 +253,7 @@ export default function EnhancedTable({ list }) {
                         )}
                       </TableCell>
                       <TableCell align="center">
-                        {row.status ? <p>Complete</p> : <p>Incomplete</p>}
+                        {row.status ? <p style={{fontWeight:"bold", color:"green"}}>Complete</p> : <p style={{fontWeight:"bold", color:"red"}}>Incomplete</p>}
                       </TableCell>
                     </TableRow>
                   );

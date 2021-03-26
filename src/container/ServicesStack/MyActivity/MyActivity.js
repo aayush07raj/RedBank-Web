@@ -41,7 +41,7 @@ function MyCommitments() {
     <>
       <Navbar />
       <PageHeader
-        title=" Activity Tracker "
+        title=" My Activity"
         subtitle="Here you can view all the types of donations you have done since
         your registration."
       />

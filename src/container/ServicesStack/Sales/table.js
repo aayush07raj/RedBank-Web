@@ -98,7 +98,7 @@ const headCells = [
     id: "location",
     numeric: false,
     disablePadding: false,
-    label: "Location of usage",
+    label: "Location of transfusion/storage",
   },
 ];
 

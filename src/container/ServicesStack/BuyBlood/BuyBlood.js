@@ -121,7 +121,9 @@ function BuyBlood() {
           handleClickOpen();
         }
       })
-      .catch();
+      .catch(err =>{
+        window.alert(err);
+      });
   };
 
   // state for no results dialog
@@ -273,33 +275,54 @@ function BuyBlood() {
                   helperText={errors && errors.pincode ? errors.pincode : null}
                 />
 
-                <TextField
-                  className={classes.formControl}
-                  label="Add the reason for purchase *"
-                  multiline
-                  rows={5}
-                  name="reason"
-                  value={data.reason}
-                  onChange={handleChange}
+                <FormControl
                   variant="outlined"
-                  error={errors && errors.reason}
-                  helperText={errors && errors.reason ? errors.reason : null}
-                />
-
-                <TextField
                   className={classes.formControl}
-                  label="Location of usage *"
+                  error={errors && errors.bg ? true : false}
+                >
+                  <InputLabel>Select reason for purchase*</InputLabel>
+                  <Select
+                    label="Select reason for purchase*"
+                    name="reason"
+                    onChange={handleChange}
+                    value={data.reason}
+                    error={errors && errors.reason ? true : false}
+                    helperText={errors && errors.reason ? errors.reason : null}
+                  >
+                    <MenuItem value={"Surgery"}>Surgery</MenuItem>
+                    <MenuItem value={"Accident"}>Accident</MenuItem>
+                    <MenuItem value={"Others"}>Others</MenuItem>
+                  </Select>
+                  <FormHelperText>
+                    {errors && errors.reason ? errors.reason : null}
+                  </FormHelperText>
+                </FormControl>
+
+                {loggedInState.userType === 1 ? (
+                    <TextField
+                    className={classes.formControl}
+                    label="Clinic/Hospital *"
+                    type="text"
+                    name="location"
+                    value={data.location}
+                    variant="outlined"
+                    onChange={handleChange}
+                    error={errors && errors.location ? true : false}
+                    helperText={
+                      errors && errors.location ? errors.location : null
+                    }
+                  />
+                ):(
+                  <TextField
+                  className={classes.formControl}
+                  label="Clinic/Hospital *"
                   type="text"
                   name="location"
                   value={data.location}
+                  disabled={true}
                   variant="outlined"
-                  onChange={handleChange}
-                  error={errors && errors.location ? true : false}
-                  helperText={
-                    errors && errors.location ? errors.location : null
-                  }
                 />
-
+                )}
                 <Button
                   type="submit"
                   variant="contained"
@@ -341,7 +364,7 @@ function BuyBlood() {
                 units={data.units}
                 location={data.location}
                 reason={data.reason}
-              />
+              /> 
             ) : null}
           </Grid>
         </Grid>

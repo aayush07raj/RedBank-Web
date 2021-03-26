@@ -27,7 +27,7 @@ import {
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import api from "../../../Apis/api";
 
 function descendingComparator(a, b, orderBy) {
@@ -257,6 +257,7 @@ const EnhancedTableToolbar = (props) => {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
+              <Button component={Link} to="/MyDonationReq">Go to My Donation Request</Button>
                 <Button
                   onClick={handleClosed}
                   style={{ backgroundColor: "#E94364", color: "white" }}

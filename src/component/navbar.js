@@ -415,10 +415,10 @@ export default function MenuAppBar({ user }) {
                                 onClick={handleClose2}
                                 color="inherit"
                                 component={Link}
-                                to="/ActivityTracker"
+                                to="/MyActivity"
                                 variant="h7"
                               >
-                                Activity Tracker
+                                My Activity 
                               </Button>
                             </MenuItem>
                             <MenuItem onClick={handleClose2}>

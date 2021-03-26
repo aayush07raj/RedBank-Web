@@ -65,30 +65,14 @@ const headCells = [
     disablePadding: false,
     label: "Product purchased",
   },
-  {
-    id: "pricePerUnit",
-    numeric: false,
-    disablePadding: false,
-    label: "Price/Unit",
-  },
-  {
-    id: "soldQuantity",
-    numeric: true,
-    disablePadding: false,
-    label: "Units purchased",
-  },
+  
   {
     id: "sellerDetails",
     numeric: false,
     disablePadding: false,
     label: "Seller Details",
   },
-  {
-    id: "amount",
-    numeric: true,
-    disablePadding: false,
-    label: "Amount Paid (Rs)",
-  },
+  
   {
     id: "reason",
     numeric: false,
@@ -99,7 +83,25 @@ const headCells = [
     id: "location",
     numeric: false,
     disablePadding: false,
-    label: "Location of usage",
+    label: "Location of transfusion/storage",
+  },
+  {
+    id: "soldQuantity",
+    numeric: true,
+    disablePadding: false,
+    label: "Units purchased",
+  },
+  {
+    id: "pricePerUnit",
+    numeric: false,
+    disablePadding: false,
+    label: "Price/Unit",
+  },
+  {
+    id: "amount",
+    numeric: true,
+    disablePadding: false,
+    label: "Amount Paid (Rs)",
   },
 ];
 
@@ -247,26 +249,28 @@ export default function EnhancedTable({list}) {
                 .map((row, index) => {
                   return (
                     <TableRow hover tabIndex={-1} key={index}>
-                      <TableCell align="center">
+                      <TableCell style={{width:"10%"}} align="center">
                         {row.dateOfTransaction.split("T")[0]}
                       </TableCell>
-                      <TableCell align="center" onClick={(event) => {
+                      <TableCell style={{width:"10%"}} align="center" onClick={(event) => {
                             handleInvoice(row);
                           }} style={{color:"blue" ,cursor:"pointer"}} >{row.purchaseId}</TableCell>
-                      <TableCell align="center">{row.soldGroup} ({row.soldComponent})</TableCell>
-                      <TableCell align="center">{row.pricePerUnit}</TableCell>
-                      <TableCell align="center">{row.soldQuantity}</TableCell>
-                      <TableCell align="center">
+                      <TableCell style={{width:"10%"}} align="center">{row.soldGroup} ({row.soldComponent})</TableCell>
+                      
+                      <TableCell style={{width:"20%"}} align="center">
                         {row.sellerName}, {row.sellerContact}, {row.sellerEmail}
                       </TableCell>
-                      <TableCell align="center">
-                        {row.pricePerUnit * row.soldQuantity}{" "}
-                      </TableCell>
-                      <TableCell align="center">
+                      
+                      <TableCell style={{width:"10%"}} align="center">
                         {row.reason ? row.reason : <>N/A</>}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell style={{width:"10%"}} align="center">
                         {row.location ? row.location : <>N/A</>}
+                      </TableCell>
+                      <TableCell style={{width:"10%"}} align="center">{row.soldQuantity}</TableCell>
+                      <TableCell style={{width:"10%"}} align="center">{row.pricePerUnit}</TableCell>
+                      <TableCell style={{width:"10%"}} align="center">
+                        {row.pricePerUnit * row.soldQuantity}{" "}
                       </TableCell>
                     </TableRow>
                   );

@@ -115,16 +115,16 @@ export const IndividualServices = [
   },
   {
     image: commitmentImg,
-    name: "Activity Tracker",
+    name: "My Activity",
     description:
-      "Every commitment that you have made via RedBank services is listed here.",
-    page: "ActivityTracker",
+      "View your upcoming donations and past donation",
+    page: "MyActivity",
   },
   {
     image: Purchases,
     name: "My Purchases",
     description:
-      "View a list of invoices corresponding to each purchase that you have made through RedBank.",
+      "View a list of invoices corresponding to each purchase.",
     page: "MyPurchases",
   },
 ];

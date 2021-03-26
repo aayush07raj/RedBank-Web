@@ -184,6 +184,8 @@ export default function EnhancedTable() {
         },
       })
       .then((response) => {
+
+        console.log(response)
         // if (response.data.success) {
         setList(response.data);
         // }
@@ -230,7 +232,7 @@ export default function EnhancedTable() {
           },
         }
       )
-      .then((resp) => {
+      .then((resp) => { 
         // if (resp.data.success) {
         //console.log(resp)
         // }

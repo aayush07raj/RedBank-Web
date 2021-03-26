@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   hero: {
-    height: "400px",
+    height: "500px",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
@@ -110,6 +110,9 @@ function Main() {
       
         
         <Carousel style={{marginTop:"5px"}} showArrows={false} enableAutoPlay autoPlaySpeed={5000}>
+        {loggedInState.userType === 1 ? null: <Box className={[classes.hero,classes.box2]}>
+          <Button className={classes.button} component={Link} to="/ConductDrive" variant="outlined">Conduct a Drive</Button>
+        </Box>}
           <Box className={[classes.hero,classes.box1]} >
           <Typography variant="h4">Find Donor Service</Typography>
           <Button className={classes.button} variant="outlined" component={Link} to="/FindDonors"> Find a Donor</Button>

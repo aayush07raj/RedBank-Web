@@ -245,6 +245,7 @@ class ComponentToPrint extends React.Component {
                   this.props.Details.soldQuantity}{" "}
               </Typography>
             </Grid>
+            
           </Grid>
         </Container>
       </>
