@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { lighten, makeStyles } from "@material-ui/core/styles";
@@ -49,65 +49,59 @@ function stableSort(array, comparator) {
 const headCells = [
   {
     id: "dateOfTransaction",
-    numeric: true,
-    disablePadding: false,
+
     label: "Date of purchase",
   },
   {
     id: "purchaseId",
-    numeric: false,
-    disablePadding: false,
+
     label: "Transaction Id",
   },
   {
     id: "soldGroup",
-    numeric: false,
-    disablePadding: false,
+
     label: "Product purchased",
   },
-  
+
   {
     id: "sellerDetails",
-    numeric: false,
-    disablePadding: false,
+
     label: "Seller Details",
   },
-  
+
   {
     id: "reason",
-    numeric: false,
-    disablePadding: false,
+
     label: "Reason for purchase",
   },
   {
     id: "location",
-    numeric: false,
-    disablePadding: false,
+
     label: "Location of transfusion/storage",
   },
   {
     id: "soldQuantity",
-    numeric: true,
-    disablePadding: false,
+
     label: "Units purchased",
   },
   {
     id: "pricePerUnit",
-    numeric: false,
-    disablePadding: false,
+
     label: "Price/Unit",
   },
   {
     id: "amount",
-    numeric: true,
-    disablePadding: false,
+
     label: "Amount Paid (Rs)",
   },
 ];
 
 const useHeaderStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3),
+  },
   head: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "bold",
   },
   body: {
@@ -121,7 +115,6 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-  
 
   return (
     <TableHead>
@@ -129,7 +122,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align="center"
+            align="left"
             sortDirection={orderBy === headCell.id ? order : false}
             className={headerClasses.head}
           >
@@ -162,15 +155,10 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
-    padding: theme.spacing(1),
+    padding: theme.spacing(3),
   },
   table: {
     minWidth: 750,
@@ -188,13 +176,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({list}) {
+export default function EnhancedTable({ list }) {
   var List = [];
   list.map((item) => {
     List.push(item);
   });
-
-
 
   const history = useHistory();
 
@@ -229,65 +215,76 @@ export default function EnhancedTable({list}) {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, List.length - page * rowsPerPage);
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="medium"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {stableSort(List, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  return (
-                    <TableRow hover tabIndex={-1} key={index}>
-                      <TableCell style={{width:"10%"}} align="center">
-                        {row.dateOfTransaction.split("T")[0]}
-                      </TableCell>
-                      <TableCell style={{width:"10%"}} align="center" onClick={(event) => {
-                            handleInvoice(row);
-                          }} style={{color:"blue" ,cursor:"pointer"}} >{row.purchaseId}</TableCell>
-                      <TableCell style={{width:"10%"}} align="center">{row.soldGroup} ({row.soldComponent})</TableCell>
-                      
-                      <TableCell style={{width:"20%"}} align="center">
-                        {row.sellerName}, {row.sellerContact}, {row.sellerEmail}
-                      </TableCell>
-                      
-                      <TableCell style={{width:"10%"}} align="center">
-                        {row.reason ? row.reason : <>N/A</>}
-                      </TableCell>
-                      <TableCell style={{width:"10%"}} align="center">
-                        {row.location ? row.location : <>N/A</>}
-                      </TableCell>
-                      <TableCell style={{width:"10%"}} align="center">{row.soldQuantity}</TableCell>
-                      <TableCell style={{width:"10%"}} align="center">{row.pricePerUnit}</TableCell>
-                      <TableCell style={{width:"10%"}} align="center">
-                        {row.pricePerUnit * row.soldQuantity}{" "}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 15, 25]}
-          component="div"
-          count={List.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
+    <Paper elevation={5}>
+      <TableContainer className={classes.root}>
+        <Table
+          className={classes.table}
+          aria-labelledby="tableTitle"
+          size="medium"
+        >
+          <EnhancedTableHead
+            classes={classes}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {stableSort(List, getComparator(order, orderBy))
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                return (
+                  <TableRow hover tabIndex={-1} key={index}>
+                    <TableCell style={{ width: "10%" }} align="left">
+                      {row.dateOfTransaction.split("T")[0]}
+                    </TableCell>
+                    <TableCell style={{ width: "10%" }} align="left">
+                      <Button
+                        onClick={(event) => {
+                          handleInvoice(row);
+                        }}
+                        color="primary"
+                      >
+                        {row.purchaseId}
+                      </Button>
+                    </TableCell>
+                    <TableCell style={{ width: "10%" }} align="left">
+                      {row.soldGroup} ({row.soldComponent})
+                    </TableCell>
+
+                    <TableCell style={{ width: "20%" }} align="left">
+                      {row.sellerName}, {row.sellerContact}, {row.sellerEmail}
+                    </TableCell>
+
+                    <TableCell style={{ width: "10%" }} align="left">
+                      {row.reason ? row.reason : <>N/A</>}
+                    </TableCell>
+                    <TableCell style={{ width: "10%" }} align="left">
+                      {row.location ? row.location : <>N/A</>}
+                    </TableCell>
+                    <TableCell style={{ width: "10%" }} align="left">
+                      {row.soldQuantity}
+                    </TableCell>
+                    <TableCell style={{ width: "10%" }} align="left">
+                      {row.pricePerUnit}
+                    </TableCell>
+                    <TableCell style={{ width: "10%" }} align="left">
+                      {row.pricePerUnit * row.soldQuantity}{" "}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 15, 25]}
+        component="div"
+        count={List.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }

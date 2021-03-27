@@ -184,8 +184,7 @@ export default function EnhancedTable() {
         },
       })
       .then((response) => {
-
-        console.log(response)
+        console.log(response);
         // if (response.data.success) {
         setList(response.data);
         // }
@@ -232,7 +231,7 @@ export default function EnhancedTable() {
           },
         }
       )
-      .then((resp) => { 
+      .then((resp) => {
         // if (resp.data.success) {
         //console.log(resp)
         // }
@@ -240,18 +239,17 @@ export default function EnhancedTable() {
       .catch();
   };
 
-  const handleView = (idx) => {
-    // history.push("/inviteesList");
+  const handleView = (donationId) => {
     api
       .get()
-      .fetchDonationDonorList(active[idx].donationId, {
+      .fetchDonationDonorList(donationId, {
         headers: {
           Authorization: "Bearer " + loggedInState.userToken,
         },
       })
       .then((response) => {
         if (response.data[0]) {
-          setDonationId(active[idx].donationId);
+          setDonationId(donationId);
           setDonors(response.data);
         } else {
           setOpen(TramRounded);
@@ -315,7 +313,7 @@ export default function EnhancedTable() {
                       <TableCell align="center">
                         <Button
                           onClick={(e) => {
-                            handleView(index);
+                            handleView(row.donationId);
                           }}
                         >
                           View List
@@ -346,11 +344,8 @@ export default function EnhancedTable() {
                             type="button"
                             variant="contained"
                             disabled={!active[index].status}
-                            onClick={(e) => {
-                              handleExpire(e, index);
-                            }}
                           >
-                            Expire
+                            Expired
                           </Button>
                         )}
                       </TableCell>

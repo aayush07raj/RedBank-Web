@@ -24,8 +24,8 @@ class ComponentToPrint extends React.Component {
             <Grid item xs={12} className={this.props.classes.typo}>
               <img
                 src="https://firebasestorage.googleapis.com/v0/b/redbank-104.appspot.com/o/logotransparentbkg.png?alt=media&token=7a6f228c-0998-4f81-bd25-519cced6e13f"
-                height="110px"
-                width="110px"
+                height="90px"
+                width="90px"
               />
             </Grid>
             <Grid item xs={12}>
@@ -245,7 +245,11 @@ class ComponentToPrint extends React.Component {
                   this.props.Details.soldQuantity}{" "}
               </Typography>
             </Grid>
-            
+            <Grid item xs={12} align="center">
+              <Typography className={[this.props.classes.note]} variant="body2">
+                Important note : Booked blood must be collected within 24 hrs
+              </Typography>
+            </Grid>
           </Grid>
         </Container>
       </>

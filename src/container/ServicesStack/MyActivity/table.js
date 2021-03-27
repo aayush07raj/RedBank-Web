@@ -65,7 +65,7 @@ const headCells = [
     id: "recipientContact",
     label: "Recipient Details",
   },
-  
+
   {
     id: "from",
     label: "From",
@@ -82,11 +82,11 @@ const headCells = [
 
 const useHeaderStyles = makeStyles((theme) => ({
   head: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
   body: {
-    fontSize: 16,
+    fontSize: 14,
   },
 }));
 
@@ -103,7 +103,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align="center"
+            align="left"
             sortDirection={orderBy === headCell.id ? order : false}
             className={headerClasses.head}
           >
@@ -139,11 +139,7 @@ EnhancedTableHead.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
-    padding: theme.spacing(1),
+    padding: theme.spacing(3),
   },
   table: {
     minWidth: 750,
@@ -189,88 +185,100 @@ export default function EnhancedTable({ list }) {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="medium"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {stableSort(List, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  return (
-                    <TableRow hover tabIndex={-1} key={row.Id}>
-                      <TableCell align="center">
-                        {row.commitmentType === "donation"
-                          ? row.commitment_timeStamp.split("T")[0]
-                          : row.dateTime.split("T")[0]}
-                      </TableCell>
-                      <TableCell id={index} align="center">
-                        {row.commitmentType ===  "donation" ? row.recipientType === "individual" ? <>Individual donation</>: row.recipientType === "hospital" ? <>Hospital donation</>: <>BloodBank donation</>: <>Drive</>} 
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.commitmentType === "donation"
-                          ? row.donationId
-                          : row.driveId}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.recipientAddress}
-                      </TableCell>
-                      <TableCell align="center">{row.recipientName} ({row.recipientType})</TableCell>
-                      <TableCell align="center">
-                        {row.recipientContact}, {row.recipientEmail}
-                      </TableCell>
-                      
-                      <TableCell align="center">
-                        {row.commitmentType === "donation" ? (
-                          <p>N/A</p>
+    <Paper elevation={4}>
+      <TableContainer className={classes.root}>
+        <Table className={classes.table} size="medium">
+          <EnhancedTableHead
+            classes={classes}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {stableSort(List, getComparator(order, orderBy))
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                return (
+                  <TableRow hover tabIndex={-1} key={row.Id}>
+                    <TableCell align="left">
+                      {row.commitmentType === "donation"
+                        ? row.commitment_timeStamp.split("T")[0]
+                        : row.dateTime.split("T")[0]}
+                    </TableCell>
+                    <TableCell id={index} align="left">
+                      {row.commitmentType === "donation" ? (
+                        row.recipientType === "individual" ? (
+                          <>Individual donation</>
+                        ) : row.recipientType === "hospital" ? (
+                          <>Hospital donation</>
                         ) : (
-                          <p>
-                            {row.startTimeStamp.split("T")[0]},{" "}
-                            {row.startTimeStamp.split("T")[1].split(":")[0]}:{" "}
-                            {row.startTimeStamp.split("T")[1].split(":")[1]}{" "}
-                          </p>
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.commitmentType === "donation" ? (
-                          <p>N/A</p>
-                        ) : (
-                          <p>
-                            {row.endTimeStamp.split("T")[0]},{" "}
-                            {row.endTimeStamp.split("T")[1].split(":")[0]}:{" "}
-                            {row.endTimeStamp.split("T")[1].split(":")[1]}{" "}
-                          </p>
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.status ? <p style={{fontWeight:"bold", color:"green"}}>Complete</p> : <p style={{fontWeight:"bold", color:"red"}}>Incomplete</p>}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={List.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
+                          <>BloodBank donation</>
+                        )
+                      ) : (
+                        <>Drive</>
+                      )}
+                    </TableCell>
+                    <TableCell align="left">
+                      {row.commitmentType === "donation"
+                        ? row.donationId
+                        : row.driveId}
+                    </TableCell>
+                    <TableCell align="left">{row.recipientAddress}</TableCell>
+                    <TableCell align="left">
+                      {row.recipientName} ({row.recipientType})
+                    </TableCell>
+                    <TableCell align="left">
+                      {row.recipientContact}, {row.recipientEmail}
+                    </TableCell>
+
+                    <TableCell align="left">
+                      {row.commitmentType === "donation" ? (
+                        <p>N/A</p>
+                      ) : (
+                        <p>
+                          {row.startTimeStamp.split("T")[0]},{" "}
+                          {row.startTimeStamp.split("T")[1].split(":")[0]}:{" "}
+                          {row.startTimeStamp.split("T")[1].split(":")[1]}{" "}
+                        </p>
+                      )}
+                    </TableCell>
+                    <TableCell align="left">
+                      {row.commitmentType === "donation" ? (
+                        <p>N/A</p>
+                      ) : (
+                        <p>
+                          {row.endTimeStamp.split("T")[0]},{" "}
+                          {row.endTimeStamp.split("T")[1].split(":")[0]}:{" "}
+                          {row.endTimeStamp.split("T")[1].split(":")[1]}{" "}
+                        </p>
+                      )}
+                    </TableCell>
+                    <TableCell align="left">
+                      {row.status ? (
+                        <p style={{ fontWeight: "bold", color: "green" }}>
+                          Complete
+                        </p>
+                      ) : (
+                        <p style={{ fontWeight: "bold", color: "red" }}>
+                          Incomplete
+                        </p>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={List.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }

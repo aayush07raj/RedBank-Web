@@ -67,19 +67,19 @@ function InviteesList(props) {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">Donor Id</TableCell>
-                    <TableCell align="center">Donor Name</TableCell>
-                    <TableCell align="center">Blood Group</TableCell>
-                    <TableCell align="center">Donation Status</TableCell>
+                    <TableCell align="left">Donor Id</TableCell>
+                    <TableCell align="left">Donor Name</TableCell>
+                    <TableCell align="left">Blood Group</TableCell>
+                    <TableCell align="left">Donation Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {newDonorsList.map((row, idx) => (
                     <TableRow key={idx}>
-                      <TableCell align="center">{row.userId}</TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.bloodGroup}</TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left">{row.userId}</TableCell>
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">{row.bloodGroup}</TableCell>
+                      <TableCell align="left">
                         {row.acceptance === 2 ? (
                           <p style={{ fontWeight: "bold" }}>Pending</p>
                         ) : row.acceptance === 0 ? (

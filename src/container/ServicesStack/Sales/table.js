@@ -42,62 +42,42 @@ function stableSort(array, comparator) {
 const headCells = [
   {
     id: "dateOfTransaction",
-    numeric: true,
-    disablePadding: false,
     label: "Date of Transaction",
   },
   {
     id: "salesId",
-    numeric: false,
-    disablePadding: false,
     label: "Purchase Id",
   },
   {
     id: "purchasedComponent",
-    numeric: false,
-    disablePadding: false,
     label: "Component Sold",
   },
   {
     id: "purchasedGroup",
-    numeric: false,
-    disablePadding: false,
     label: "Blood Group Sold",
   },
   {
     id: "pricePerUnit",
-    numeric: false,
-    disablePadding: false,
     label: "Price/Unit",
   },
   {
     id: "purchasedQuantity",
-    numeric: true,
-    disablePadding: false,
     label: "Units Sold",
   },
   {
     id: "buyerDetails",
-    numeric: false,
-    disablePadding: false,
     label: "Buyer Details",
   },
   {
     id: "amount",
-    numeric: true,
-    disablePadding: false,
     label: "Amount Paid (Rs)",
   },
   {
     id: "reason",
-    numeric: false,
-    disablePadding: false,
     label: "Reason for purchase",
   },
   {
     id: "location",
-    numeric: false,
-    disablePadding: false,
     label: "Location of transfusion/storage",
   },
 ];
@@ -108,7 +88,7 @@ const useHeaderStyles = makeStyles((theme) => ({
     fontWeight: "bold",
   },
   body: {
-    fontSize: 16,
+    fontSize: 14,
   },
 }));
 
@@ -125,7 +105,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align="center"
+            align="left"
             sortDirection={orderBy === headCell.id ? order : false}
             className={headerClasses.head}
           >
@@ -161,11 +141,7 @@ EnhancedTableHead.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2),
-    padding: theme.spacing(1),
+    padding: theme.spacing(3),
   },
   table: {
     minWidth: 750,
@@ -212,62 +188,52 @@ export default function EnhancedTable({ list }) {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size="medium"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
-            <TableBody>
-              {stableSort(List, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  return (
-                    <TableRow hover tabIndex={-1} key={index}>
-                      <TableCell align="center">
-                        {row.dateOfTransaction.split("T")[0]}
-                      </TableCell>
-                      <TableCell align="center">{row.salesId}</TableCell>
-                      <TableCell align="center">
-                        {row.purchasedComponent}
-                      </TableCell>
-                      <TableCell align="center">{row.purchasedGroup}</TableCell>
-                      <TableCell align="center">{row.pricePerUnit}</TableCell>
-                      <TableCell align="center">
-                        {row.purchasedQuantity}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.buyerName},{row.buyerContact},{row.buyerEmail}
-                      </TableCell>
-                      <TableCell align="center">
-                        {row.pricePerUnit * row.purchasedQuantity}{" "}
-                      </TableCell>
-                      <TableCell align="center">{row.reason}</TableCell>
-                      <TableCell align="center">{row.location}</TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={List.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
+    <Paper elevation={5}>
+      <TableContainer className={classes.root}>
+        <Table className={classes.table} size="medium">
+          <EnhancedTableHead
+            classes={classes}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+          />
+          <TableBody>
+            {stableSort(List, getComparator(order, orderBy))
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                return (
+                  <TableRow hover tabIndex={-1} key={index}>
+                    <TableCell align="left">
+                      {row.dateOfTransaction.split("T")[0]}
+                    </TableCell>
+                    <TableCell align="left">{row.salesId}</TableCell>
+                    <TableCell align="left">{row.purchasedComponent}</TableCell>
+                    <TableCell align="left">{row.purchasedGroup}</TableCell>
+                    <TableCell align="left">{row.pricePerUnit}</TableCell>
+                    <TableCell align="left">{row.purchasedQuantity}</TableCell>
+                    <TableCell align="left">
+                      {row.buyerName},{row.buyerContact},{row.buyerEmail}
+                    </TableCell>
+                    <TableCell align="left">
+                      {row.pricePerUnit * row.purchasedQuantity}{" "}
+                    </TableCell>
+                    <TableCell align="left">{row.reason}</TableCell>
+                    <TableCell align="left">{row.location}</TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={List.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 }

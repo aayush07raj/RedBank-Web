@@ -82,7 +82,7 @@ function BuyBlood() {
     if (data.reason.trim() === "") {
       errors.reason = "Reason cannot be empty";
     }
-    if (data.location.trim() === "") {
+    if (data.location.trim() === "" && loggedInState.userType === 1) {
       errors.location = "Location cannot be empty";
     }
     return Object.keys(errors).length === 0 ? null : errors;
@@ -95,6 +95,7 @@ function BuyBlood() {
     setErrors(errors);
     if (errors) return;
 
+    console.log("handle submit");
     api
       .post()
       .findBloodBanks(
@@ -113,7 +114,7 @@ function BuyBlood() {
         }
       )
       .then((response) => {
-        console.log(response)
+        console.log(response);
         if (response.data.length != 0) {
           setList(response.data);
         } else {
@@ -121,7 +122,7 @@ function BuyBlood() {
           handleClickOpen();
         }
       })
-      .catch(err =>{
+      .catch((err) => {
         window.alert(err);
       });
   };
@@ -299,7 +300,7 @@ function BuyBlood() {
                 </FormControl>
 
                 {loggedInState.userType === 1 ? (
-                    <TextField
+                  <TextField
                     className={classes.formControl}
                     label="Clinic/Hospital *"
                     type="text"
@@ -312,22 +313,13 @@ function BuyBlood() {
                       errors && errors.location ? errors.location : null
                     }
                   />
-                ):(
-                  <TextField
-                  className={classes.formControl}
-                  label="Clinic/Hospital *"
-                  type="text"
-                  name="location"
-                  value={data.location}
-                  disabled={true}
-                  variant="outlined"
-                />
-                )}
+                ) : null}
+
                 <Button
                   type="submit"
                   variant="contained"
                   className={classes.formControl}
-                  onClick={handleSubmit}
+                  onClick={(e) => handleSubmit(e)}
                   style={{ backgroundColor: "#E94364", color: "white" }}
                 >
                   Search
@@ -362,9 +354,9 @@ function BuyBlood() {
                 bg={data.bg}
                 component={data.component}
                 units={data.units}
-                location={data.location}
+                location={data.location || "N/A"}
                 reason={data.reason}
-              /> 
+              />
             ) : null}
           </Grid>
         </Grid>

@@ -157,7 +157,7 @@ export default function CollapsibleTable() {
                   <Button
                     size="small"
                     onClick={(e) => {
-                      handleDonorsList(drivesList[idx].driveId);
+                      handleDonorsList(row.driveId);
                     }}
                   >
                     View list

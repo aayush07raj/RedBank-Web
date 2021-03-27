@@ -51,44 +51,30 @@ function stableSort(array, comparator) {
 const headCells = [
   {
     id: "name",
-    numeric: false,
-    disablePadding: false,
     label: "Organiser Name",
   },
   {
     id: "date",
-    numeric: false,
-    disablePadding: false,
     label: "Date",
   },
   {
     id: "time",
-    numeric: false,
-    disablePadding: false,
     label: "Time",
   },
   {
     id: "address",
-    numeric: false,
-    disablePadding: false,
     label: "Address",
   },
   {
     id: "contact",
-    numeric: false,
-    disablePadding: false,
     label: "Contact",
   },
   {
     id: "bloodGroups",
-    numeric: false,
-    disablePadding: false,
     label: "Invited Blood Groups",
   },
   {
     id: "register",
-    numeric: false,
-    disablePadding: false,
     label: "Register here",
   },
 ];
@@ -106,7 +92,7 @@ function EnhancedTableHead(props) {
           <TableCell
             key={headCell.id}
             style={{ fontWeight: "bold" }}
-            align="center"
+            align="left"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -265,23 +251,23 @@ export default function EnhancedTable({ list }) {
                 .map((row, index) => {
                   return (
                     <TableRow hover tabIndex={-1} key={row.driveId}>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left">{row.name}</TableCell>
+                      <TableCell align="left">
                         {row.startTimestamp.split("T")[0]} --{" "}
                         {row.endTimestamp.split("T")[0]}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left">
                         {row.startTimestamp.split("T")[1].split(":")[0]} :
                         {row.startTimestamp.split("T")[1].split(":")[1]} --{" "}
                         {row.endTimestamp.split("T")[1].split(":")[0]} :
                         {row.endTimestamp.split("T")[1].split(":")[1]}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left">
                         {row.address}, {row.district}, {row.state},{row.pincode}
                       </TableCell>
-                      <TableCell align="center">{row.contact}</TableCell>
-                      <TableCell align="center">{row.bloodGroups}</TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left">{row.contact}</TableCell>
+                      <TableCell align="left">{row.bloodGroups}</TableCell>
+                      <TableCell align="left">
                         <Button
                           onClick={(e) => handleRegister(row.driveId)}
                           style={{ backgroundColor: "#E94364", color: "white" }}

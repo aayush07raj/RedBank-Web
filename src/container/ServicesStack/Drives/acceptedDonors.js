@@ -78,21 +78,19 @@ export default function AcceptedDonors(props) {
           <Table>
             <TableHead>
               <TableRow>
-                <StyledTableCell align="center">Donor Id</StyledTableCell>
-                <StyledTableCell align="center">Donor Name</StyledTableCell>
-                <StyledTableCell align="center">Blood Group</StyledTableCell>
-                <StyledTableCell align="center">
-                  Donation Status
-                </StyledTableCell>
+                <StyledTableCell align="left">Donor Id</StyledTableCell>
+                <StyledTableCell align="left">Donor Name</StyledTableCell>
+                <StyledTableCell align="left">Blood Group</StyledTableCell>
+                <StyledTableCell align="left">Donation Status</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {newDonorsList.map((row, idx) => (
                 <TableRow key={idx}>
-                  <TableCell align="center">{row.userId}</TableCell>
-                  <TableCell align="center">{row.name}</TableCell>
-                  <TableCell align="center">{row.bloodGroup}</TableCell>
-                  <TableCell align="center">
+                  <TableCell align="left">{row.userId}</TableCell>
+                  <TableCell align="left">{row.name}</TableCell>
+                  <TableCell align="left">{row.bloodGroup}</TableCell>
+                  <TableCell align="left">
                     {row.acceptance === 2 ? (
                       <p style={{ fontWeight: "bold" }}>Pending</p>
                     ) : row.acceptance === 0 ? (

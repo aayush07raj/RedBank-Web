@@ -50,25 +50,32 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: "bbId", numeric: false, disablePadding: false, label: "Blood Bank Id" },
+  { id: "bbId", label: "Blood Bank Id" },
   {
     id: "name",
-    numeric: false,
-    disablePadding: false,
     label: "Name",
   },
   {
     id: "address",
-    numeric: false,
-    disablePadding: false,
     label: "Address",
   },
-  { id: "contact", numeric: false, disablePadding: false, label: "Contact" },
-  { id: "price", numeric: false, disablePadding: false, label: "Price (Rs.)" },
-  { id: "actions", label: "Actions", disableSorting: false },
+  { id: "contact", label: "Contact" },
+  { id: "price", label: "Price (Rs.)" },
+  { id: "actions", label: "Actions" },
 ];
 
+const useHeaderStyles = makeStyles((theme) => ({
+  head: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  body: {
+    fontSize: 14,
+  },
+}));
+
 function EnhancedTableHead(props) {
+  const headerClasses = useHeaderStyles();
   const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -80,9 +87,9 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align="center"
-            style={{ paddingLeft: "20px", fontWeight: "bold" }}
+            align="left"
             sortDirection={orderBy === headCell.id ? order : false}
+            className={headerClasses.head}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -261,15 +268,21 @@ export default function EnhancedTable({
                       tabIndex={-1}
                       key={row.bbId}
                     >
-                      <TableCell align="center">{row.bbId}</TableCell>
-                      <TableCell align="center">{row.bbName}</TableCell>
-                      <TableCell align="center">{row.address}</TableCell>
-                      <TableCell align="center">{row.phoneNo}</TableCell>
-                      <TableCell align="center">{row.price}</TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left">{row.bbId}</TableCell>
+                      <TableCell align="left">{row.bbName}</TableCell>
+                      <TableCell align="left">{row.address}</TableCell>
+                      <TableCell align="left">{row.phoneNo}</TableCell>
+                      <TableCell align="left">{row.price}</TableCell>
+                      <TableCell align="left">
                         <Button
                           onClick={(event) => {
-                            handleClick(event, row.bbName, row.address, row.price, row.bbId);
+                            handleClick(
+                              event,
+                              row.bbName,
+                              row.address,
+                              row.price,
+                              row.bbId
+                            );
                           }}
                           type="button"
                           variant="contained"
