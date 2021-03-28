@@ -231,7 +231,7 @@ export default function EnhancedTable() {
           // if (response.data.success) {
           setAcceptance(1);
           setTitle("Invite accepted");
-          setDescp("check my commitments section for regular updates");
+          setDescp("Check My Activity section for regular updates");
           setOpen(true);
           setList((prevList) => {
             const newList = [...prevList];
@@ -261,7 +261,7 @@ export default function EnhancedTable() {
           // if (response.data.success) {
           setAcceptance(1);
           setTitle("Invite accepted");
-          setDescp("check my commitments section for regular updates");
+          setDescp("Check My Activity section for regular updates");
           setOpen(true);
           setList((prevList) => {
             const newList = [...prevList];
@@ -279,7 +279,7 @@ export default function EnhancedTable() {
   const handleReject = () => {
     setAcceptance(false);
     setTitle("Are you sure");
-    setDescp("please enter your reason of rejection");
+    setDescp("Please enter your reason of rejection");
     setOpen(true);
     // axios call
     if (List[index].inviteType === "drive") {

@@ -179,19 +179,23 @@ export default function CollapsibleTable() {
                 <TableCell align="center">
                   {new Date(row.endDate).getTime() <= new Date().getTime() ? (
                     <p>N/A</p>
-                  ) : (
-                    <Button
+                  ) : 
+                    row.status ? (
+                      <Button
                       size="small"
                       variant="contained"
                       onClick={(e) => {
                         handleCancel(idx, drivesList[idx].driveId);
                       }}
-                      disabled={!drivesList[idx].status}
+                      
                       style={{ backgroundColor: "#E94364", color: "white" }}
                     >
-                      {drivesList[idx].status ? <p>Cancel</p> : <p>Canceled</p>}
+                      Cancel
                     </Button>
-                  )}
+                    ) :(
+                      <p style={{ color: "red" }}>Canceled</p>
+                    ) 
+                  }
                 </TableCell>
               </TableRow>
             ))}

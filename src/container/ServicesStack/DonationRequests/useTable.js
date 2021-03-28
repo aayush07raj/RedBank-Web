@@ -115,7 +115,7 @@ function EnhancedTableHead(props) {
           <TableCell
             key={headCell.id}
             style={{ fontWeight: "bold" }}
-            align="center"
+            align="left"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -214,16 +214,12 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
-  const handleExpire = (e, idx) => {
-    var updatedList = [...active];
-    updatedList[idx].status = false;
-    setList(updatedList);
-
+  const handleExpire = (donationId) => {
     api
       .put()
       .expireDonationRequest(
         {
-          donationId: active[idx].donationId,
+          donationId: donationId,
         },
         {
           headers: {
@@ -232,6 +228,10 @@ export default function EnhancedTable() {
         }
       )
       .then((resp) => {
+        const idx = active.findIndex(item => item.donationId === donationId);
+        var updatedList = [...active];
+        updatedList[idx].status = false;
+        setList(updatedList);
         // if (resp.data.success) {
         //console.log(resp)
         // }
@@ -296,21 +296,21 @@ export default function EnhancedTable() {
                 .map((row, index) => {
                   return (
                     <TableRow hover key={index}>
-                      <TableCell align="center">
+                      <TableCell align="left">
                         {row.requestTime.split("T")[0]} at{"   "}
                         {row.requestTime.split("T")[1].split(":")[0]} :
                         {row.requestTime.split("T")[1].split(":")[1]}
                       </TableCell>
-                      <TableCell align="center">{row.donationId}</TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left">{row.donationId}</TableCell>
+                      <TableCell align="left">
                         {row.bloodGroup ? row.bloodGroup : <p>NA</p>}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell align="left">
                         {row.district}, {row.state}, {row.pincode}
                       </TableCell>
-                      <TableCell align="center">{row.address}</TableCell>
+                      <TableCell align="left">{row.address}</TableCell>
 
-                      <TableCell align="center">
+                      <TableCell align="left">
                         <Button
                           onClick={(e) => {
                             handleView(row.donationId);
@@ -319,18 +319,18 @@ export default function EnhancedTable() {
                           View List
                         </Button>
                       </TableCell>
-                      <TableCell align="center">
-                        {row.status ? <p>Active</p> : <p>Expired</p>}
+                      <TableCell align="left">
+                        {row.status ? <p style={{ fontWeight:"bold", color:"green"}}>Active</p> : <p style={{ fontWeight:"bold", color:"red"}}>Expired</p>}
                       </TableCell>
 
-                      <TableCell align="center">
+                      <TableCell align="left">
                         {row.status ? (
                           <Button
                             type="button"
                             variant="contained"
-                            disabled={!active[index].status}
+                            
                             onClick={(e) => {
-                              handleExpire(e, index);
+                              handleExpire(row.donationId);
                             }}
                             style={{
                               backgroundColor: "#E94364",
@@ -340,13 +340,9 @@ export default function EnhancedTable() {
                             Expire
                           </Button>
                         ) : (
-                          <Button
-                            type="button"
-                            variant="contained"
-                            disabled={!active[index].status}
-                          >
+                          <p style={{ fontWeight:"bold", color:"red"}}>
                             Expired
-                          </Button>
+                          </p>
                         )}
                       </TableCell>
                     </TableRow>

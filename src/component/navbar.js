@@ -250,7 +250,7 @@ export default function MenuAppBar({ user }) {
 
           <div className={classes.sectionDesktop}>
             <IconButton ref={anchorRef} onClick={handleClick2} color="inherit">
-              <Badge color="secondary" badgeContent={notificationsCount}>
+              <Badge  badgeContent={notificationsCount}>
                 <NotificationsIcon />
               </Badge>
             </IconButton>

@@ -103,6 +103,8 @@ function Main() {
     }
   }, [loggedInState]);
 
+  
+
   return (
     <>
       <Navbar />

@@ -6,23 +6,50 @@ import {
   Paper,
   Typography,
   Divider,
+  withStyles
 } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-
 import Navbar from "../../../component/navbar";
 import Footer from "../../../component/footer";
 import Button from "@material-ui/core/Button";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { useStyles } from "../../ServicesStack/serviceCSS";
-
 import PageHeader from "../../../component/pageHeader";
+import CheckIcon from '@material-ui/icons/Check';
+import ClearIcon from '@material-ui/icons/Clear';
+import RemoveIcon from '@material-ui/icons/Remove';
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.black,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const useStyles = makeStyles((theme) => ({ 
+  heading: {
+    marginBottom: theme.spacing(2),
+  },
+  root: {
+    marginTop: theme.spacing(3),
+    padding: theme.spacing(3),
+  },
+  container: {
+    marginTop: theme.spacing(7),
+  },
+}));
+
+
 
 function InviteesList(props) {
   const classes = useStyles();
@@ -56,47 +83,60 @@ function InviteesList(props) {
   return (
     <>
       <Navbar />
-      <PageHeader
-        title="Invitees List "
-        subtitle="list of the Invitees of the selected Request."
-      />
-      <Container maxWidth="lg">
-        <Grid container justify="center" className={classes.table}>
+      <Container maxWidth="md" className={classes.container}>
+      <Typography variant="h4" align="center" className={classes.heading}>
+          List of all Donors
+        </Typography>
+        <Grid container justify="center">
           <Grid item xs={12}>
             <TableContainer component={Paper} className={classes.root}>
               <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">Donor Id</TableCell>
-                    <TableCell align="left">Donor Name</TableCell>
-                    <TableCell align="left">Blood Group</TableCell>
-                    <TableCell align="left">Donation Status</TableCell>
-                  </TableRow>
-                </TableHead>
+              <TableHead>
+              <TableRow>
+                <StyledTableCell style={{width:"20%"}} align="left">Donor Id</StyledTableCell>
+                <StyledTableCell style={{width:"20%"}} align="left">Donor Name</StyledTableCell>
+                <StyledTableCell style={{width:"20%"}} align="left">Blood Group</StyledTableCell>
+                <StyledTableCell style={{width:"20%"}} align="left">Acceptance Status</StyledTableCell>
+                <StyledTableCell style={{width:"20%"}} align="left">Donation Status</StyledTableCell>
+                </TableRow>
+               </TableHead>
                 <TableBody>
                   {newDonorsList.map((row, idx) => (
-                    <TableRow key={idx}>
+                    <TableRow hover key={idx}>
                       <TableCell align="left">{row.userId}</TableCell>
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="left">{row.bloodGroup}</TableCell>
                       <TableCell align="left">
-                        {row.acceptance === 2 ? (
-                          <p style={{ fontWeight: "bold" }}>Pending</p>
-                        ) : row.acceptance === 0 ? (
-                          <p style={{ fontWeight: "bold", color: "red" }}>
-                            Rejected
-                          </p>
-                        ) : (
-                          <Button
-                            disabled={newDonorsList[idx].donationStatus}
-                            variant="contained"
-                            color="secondary"
-                            onClick={(e) => handleClick(idx)}
-                          >
-                            Donated ?
-                          </Button>
-                        )}
+                      {row.acceptance === 2 ? (
+                      <p style={{ fontWeight: "bold" }}>Pending</p>
+                    ) : row.acceptance === 0 ? (
+                      <p style={{ fontWeight: "bold", color: "red" }}>
+                        Rejected
+                      </p>
+                    ) : (
+                      <p style={{fontWeight:"bold", color:"green"}}>Accepted
+                      </p>
+                    )
+                    }
                       </TableCell>
+                      <TableCell align="center">{row.acceptance === 2 ? (
+                      <RemoveIcon/>
+                    ) : row.acceptance === 0 ? (
+                      <ClearIcon style={{ color:"red"}}/>
+                    ) : 
+                    row.donationStatus ? (
+                      <CheckIcon style={{ color:"green"}}/>
+                    ):(
+                      <Button
+                        disabled={newDonorsList[idx].donationStatus}
+                        variant="contained"
+                        color="secondary"
+                        onClick={(e) => handleClick(idx)}
+                      >
+                        Donated ?
+                      </Button> 
+                    )
+                    }</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

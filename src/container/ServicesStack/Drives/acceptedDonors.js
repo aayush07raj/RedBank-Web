@@ -14,6 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import React from "react";
 import api from "../../../Apis/api";
+import CheckIcon from '@material-ui/icons/Check';
+import ClearIcon from '@material-ui/icons/Clear';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -70,7 +73,7 @@ export default function AcceptedDonors(props) {
   return (
     <>
       <Navbar />
-      <Container maxWidth="lg" className={classes.container}>
+      <Container maxWidth="md" className={classes.container}>
         <Typography variant="h4" align="center" className={classes.heading}>
           List of all Donors
         </Typography>
@@ -78,10 +81,11 @@ export default function AcceptedDonors(props) {
           <Table>
             <TableHead>
               <TableRow>
-                <StyledTableCell align="left">Donor Id</StyledTableCell>
-                <StyledTableCell align="left">Donor Name</StyledTableCell>
-                <StyledTableCell align="left">Blood Group</StyledTableCell>
-                <StyledTableCell align="left">Donation Status</StyledTableCell>
+                <StyledTableCell style={{width:"20%"}} align="left">Donor Id</StyledTableCell>
+                <StyledTableCell style={{width:"20%"}} align="left">Donor Name</StyledTableCell>
+                <StyledTableCell style={{width:"20%"}} align="left">Blood Group</StyledTableCell>
+                <StyledTableCell style={{width:"20%"}} align="left">Acceptance Status</StyledTableCell>
+                <StyledTableCell style={{width:"20%"}} align="left">Donation Status</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -98,16 +102,31 @@ export default function AcceptedDonors(props) {
                         Rejected
                       </p>
                     ) : (
+                      <p style={{fontWeight:"bold", color:"green"}}>Accepted
+                      </p>
+                    )
+                    }
+                  </TableCell>
+                  <TableCell align="center">
+                  {row.acceptance === 2 ? (
+                      <RemoveIcon/>
+                    ) : row.acceptance === 0 ? (
+                      <ClearIcon style={{ color:"red"}}/>
+                    ) : 
+                    row.donationStatus ? (
+                      <CheckIcon style={{ color:"green"}}/>
+                    ):(
                       <Button
                         disabled={newDonorsList[idx].donationStatus}
                         variant="contained"
                         color="secondary"
                         onClick={(e) => handleClick(idx)}
                       >
-                        Given ?
-                      </Button>
-                    )}
-                  </TableCell>
+                        Donated ?
+                      </Button> 
+                    )
+                    }                    
+                    </TableCell>
                 </TableRow>
               ))}
             </TableBody>
