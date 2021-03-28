@@ -1,7 +1,7 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 
-function PieChart({ data, name }) {
+function PieChart({ data, type, name }) {
   return (
     <>
       {name === "hos" || name === "bb" ? (
@@ -47,6 +47,13 @@ function PieChart({ data, name }) {
           options={{
             legend: {
               position: "left",
+              align: "end",
+            },
+            title: {
+              display: true,
+              position: "top",
+              text: type,
+              fontSize: "15",
             },
           }}
         />

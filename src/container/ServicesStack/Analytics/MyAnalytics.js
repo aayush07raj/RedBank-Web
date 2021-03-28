@@ -681,7 +681,7 @@ function MyAnalytics() {
               </Grid>
             </TabPanel>
             <TabPanel value={value} index={2}>
-              <Grid container>
+              <Grid container justify="center">
                 <Grid item xs={12}>
                   <Typography
                     variant="h5"
@@ -692,46 +692,31 @@ function MyAnalytics() {
                   </Typography>
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography
-                    variant="h5"
-                    className={classes.heading}
-                    align="center"
-                  >
-                    Blood
-                  </Typography>
+                <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
+                  
                   <PieChart
                     className={classes.heading}
                     data={inventoryData[0]}
                     name="bb"
+                    type="Blood"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography
-                    variant="h5"
-                    className={classes.heading}
-                    align="center"
-                  >
-                    Plasma
-                  </Typography>
+                <Grid  style={{marginBottom:"20px"}} item xs={12} sm={6}>
+                  
                   <PieChart
                     className={classes.heading}
                     data={inventoryData[1]}
                     name="bb"
+                    type="Plasma"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography
-                    variant="h5"
-                    className={classes.heading}
-                    align="center"
-                  >
-                    Platelets
-                  </Typography>
+                <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
+                  
                   <PieChart
                     className={classes.heading}
                     data={inventoryData[2]}
                     name="bb"
+                    type="Platelets"
                   />
                 </Grid>
               </Grid>
@@ -852,7 +837,7 @@ function MyAnalytics() {
               </Grid>
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <Grid container>
+              <Grid container justify="center">
                 <Grid item xs={12}>
                   <Typography
                     variant="h5"
@@ -864,46 +849,31 @@ function MyAnalytics() {
                 </Grid>
                 {inventoryData.length > 0 ? (
                   <>
-                    <Grid item xs={12} sm={6}>
-                      <Typography
-                        variant="h5"
-                        className={classes.heading}
-                        align="center"
-                      >
-                        Blood
-                      </Typography>
+                    <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
+                      
                       <PieChart
                         className={classes.heading}
                         data={inventoryData[0]}
                         name="hos"
+                        type="Blood"
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Typography
-                        variant="h5"
-                        className={classes.heading}
-                        align="center"
-                      >
-                        Plasma
-                      </Typography>
+                    <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
+                      
                       <PieChart
                         className={classes.heading}
                         data={inventoryData[1]}
                         name="hos"
+                        type="Plasma"
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Typography
-                        variant="h5"
-                        className={classes.heading}
-                        align="center"
-                      >
-                        Platelets
-                      </Typography>
+                    <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
+                      
                       <PieChart
                         className={classes.heading}
                         data={inventoryData[2]}
                         name="hos"
+                        type="Platelets"
                       />
                     </Grid>
                   </>
