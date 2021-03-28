@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1  rem",
   },
   container: {
+    flexDirection: "column",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
