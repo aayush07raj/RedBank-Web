@@ -17,6 +17,7 @@ import api from "../../../Apis/api";
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { useStyles } from "../../ServicesStack/serviceCSS";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -30,18 +31,6 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  root: {
-    marginTop: theme.spacing(3),
-    padding: theme.spacing(3),
-  },
-  container: {
-    marginTop: theme.spacing(7),
-  },
-}));
 
 export default function AcceptedDonors(props) {
   const { donorsList, setDonors, driveId } = props.location;
@@ -74,7 +63,7 @@ export default function AcceptedDonors(props) {
     <>
       <Navbar />
       <Container maxWidth="md" className={classes.container}>
-        <Typography variant="h4" align="center" className={classes.heading}>
+        <Typography variant="h4" align="center" className={classes.headingTop}>
           List of all Donors
         </Typography>
         <TableContainer component={Paper} className={classes.root}>

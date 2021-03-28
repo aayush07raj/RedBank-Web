@@ -90,4 +90,16 @@ export const useStyles = makeStyles((theme) => ({
     color: "white",
     marginTop: "20px",
   },
+
+  // Invitee List and accepted donors table
+  headingTop: {
+    marginBottom: theme.spacing(2),
+  },
+  root: {
+    marginTop: theme.spacing(3),
+    padding: theme.spacing(3),
+  },
+  container: {
+    marginTop: theme.spacing(7),
+  },
 }));

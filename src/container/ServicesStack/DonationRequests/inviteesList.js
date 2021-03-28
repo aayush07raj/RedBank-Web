@@ -23,6 +23,7 @@ import PageHeader from "../../../component/pageHeader";
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { useStyles } from "../../ServicesStack/serviceCSS";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -36,18 +37,6 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const useStyles = makeStyles((theme) => ({ 
-  heading: {
-    marginBottom: theme.spacing(2),
-  },
-  root: {
-    marginTop: theme.spacing(3),
-    padding: theme.spacing(3),
-  },
-  container: {
-    marginTop: theme.spacing(7),
-  },
-}));
 
 
 
@@ -84,11 +73,9 @@ function InviteesList(props) {
     <>
       <Navbar />
       <Container maxWidth="md" className={classes.container}>
-      <Typography variant="h4" align="center" className={classes.heading}>
+      <Typography variant="h4" align="center" className={classes.headingTop}>
           List of all Donors
         </Typography>
-        <Grid container justify="center">
-          <Grid item xs={12}>
             <TableContainer component={Paper} className={classes.root}>
               <Table>
               <TableHead>
@@ -142,8 +129,6 @@ function InviteesList(props) {
                 </TableBody>
               </Table>
             </TableContainer>
-          </Grid>
-        </Grid>
       </Container>
       <Container style={{ height: "290px" }} />
       <Footer />
