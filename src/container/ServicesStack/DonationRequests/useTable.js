@@ -228,7 +228,7 @@ export default function EnhancedTable() {
         }
       )
       .then((resp) => {
-        const idx = active.findIndex(item => item.donationId === donationId);
+        const idx = active.findIndex((item) => item.donationId === donationId);
         var updatedList = [...active];
         updatedList[idx].status = false;
         setList(updatedList);
@@ -320,7 +320,15 @@ export default function EnhancedTable() {
                         </Button>
                       </TableCell>
                       <TableCell align="left">
-                        {row.status ? <p style={{ fontWeight:"bold", color:"green"}}>Active</p> : <p style={{ fontWeight:"bold", color:"red"}}>Expired</p>}
+                        {row.status ? (
+                          <p style={{ fontWeight: "bold", color: "green" }}>
+                            Active
+                          </p>
+                        ) : (
+                          <p style={{ fontWeight: "bold", color: "red" }}>
+                            Expired
+                          </p>
+                        )}
                       </TableCell>
 
                       <TableCell align="left">
@@ -328,7 +336,6 @@ export default function EnhancedTable() {
                           <Button
                             type="button"
                             variant="contained"
-                            
                             onClick={(e) => {
                               handleExpire(row.donationId);
                             }}
@@ -340,7 +347,7 @@ export default function EnhancedTable() {
                             Expire
                           </Button>
                         ) : (
-                          <p style={{ fontWeight:"bold", color:"red"}}>
+                          <p style={{ fontWeight: "bold", color: "red" }}>
                             Expired
                           </p>
                         )}

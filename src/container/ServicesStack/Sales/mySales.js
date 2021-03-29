@@ -33,7 +33,7 @@ function MySales() {
         console.log(response);
         setList(response.data);
         // }
-      })
+      });
   }, [loggedInState]);
 
   return (

@@ -31,9 +31,7 @@ import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../../Apis/api";
-import {useStyles} from "./registerCSS";
-
-
+import { useStyles } from "./registerCSS";
 
 function HospitalRegistration(props) {
   const classes = useStyles();
@@ -318,11 +316,25 @@ function HospitalRegistration(props) {
       <LoggedOutNavbar />
 
       <Grid container className={classes.container}>
-        <Grid item md={6} className={classes.image} container justify="center" alignItems="center">
+        <Grid
+          item
+          md={6}
+          className={classes.image}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <img src={hospital} alt="hospital" style={{ maxWidth: "100%" }} />
         </Grid>
 
-        <Grid item xs={12} md={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          md={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <form>
             <Paper className={classes.paperStyle} elevation={5}>
               <h2 className={classes.header} align="center">
@@ -533,10 +545,7 @@ function HospitalRegistration(props) {
                     : "Accept Terms and Conditions"
                 }
               />
-              <Link
-                to="/terms"
-                className={classes.link}
-              >
+              <Link to="/terms" className={classes.link}>
                 (Click here for terms and condition)
               </Link>
               <Button
@@ -549,9 +558,7 @@ function HospitalRegistration(props) {
               </Button>
               {/* indicator for please wait */}
               <Backdrop className={classes.backdrop} open={indicatorOpen}>
-                <CircularProgress
-                 className={classes.progress}
-                />
+                <CircularProgress className={classes.progress} />
                 <Typography variant="h5">Please wait</Typography>
               </Backdrop>
 

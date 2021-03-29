@@ -257,7 +257,9 @@ const EnhancedTableToolbar = (props) => {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-              <Button component={Link} to="/MyDonationReq">Go to My Donation Request</Button>
+                <Button component={Link} to="/MyDonationReq">
+                  Go to My Donation Request
+                </Button>
                 <Button
                   onClick={handleClosed}
                   style={{ backgroundColor: "#E94364", color: "white" }}
@@ -366,7 +368,7 @@ export default function EnhancedTable({ list, formData }) {
 
   return (
     <div align="center" className={classes.root}>
-      <Paper  className={classes.paper}>
+      <Paper className={classes.paper}>
         <EnhancedTableToolbar
           numSelected={selected.length}
           data={selected}
@@ -408,15 +410,9 @@ export default function EnhancedTable({ list, formData }) {
                       </TableCell>
                       <TableCell align="left">{row.userId}</TableCell>
                       <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">
-                         {row.district}
-                      </TableCell>
-                      <TableCell align="left">
-                          {row.state}
-                      </TableCell>
-                      <TableCell align="left">
-                         {row.pincode}
-                      </TableCell>
+                      <TableCell align="left">{row.district}</TableCell>
+                      <TableCell align="left">{row.state}</TableCell>
+                      <TableCell align="left">{row.pincode}</TableCell>
                     </TableRow>
                   );
                 })}

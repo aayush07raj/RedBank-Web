@@ -106,24 +106,28 @@ const Product = (props) => {
           justify="center"
           className={classes.table2}
         >
-          <Paper  style={{ padding: "20px"}}>
-            <Typography align="center"   style={{ fontWeight: "bold"}} className={classes.typo} variant="h5">
+          <Paper style={{ padding: "20px" }}>
+            <Typography
+              align="center"
+              style={{ fontWeight: "bold" }}
+              className={classes.typo}
+              variant="h5"
+            >
               Confirm your Purchase
             </Typography>
             <Divider />
             <Container className={classes.typo}>
               <Grid container>
-               
                 <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Blood Group selected 
+                    Blood Group selected
                   </Typography>
                 </Grid>
                 <Grid item xs={6} container justify="flex-end">
                   <Grid>
-                  <Typography className={classes.typo} variant="h6">
-                    {bg}
-                  </Typography>
+                    <Typography className={classes.typo} variant="h6">
+                      {bg}
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Grid item xs={6}>
@@ -133,75 +137,78 @@ const Product = (props) => {
                 </Grid>
                 <Grid item xs={6} container justify="flex-end">
                   <Grid>
-                  <Typography className={classes.typo} variant="h6">
-                    {component}
-                  </Typography>
+                    <Typography className={classes.typo} variant="h6">
+                      {component}
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Units booked 
+                    Units booked
                   </Typography>
                 </Grid>
                 <Grid item xs={6} container justify="flex-end">
                   <Grid>
-                  <Typography className={classes.typo} variant="h6">
-                    {units}
-                  </Typography>
+                    <Typography className={classes.typo} variant="h6">
+                      {units}
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Seller name 
+                    Seller name
                   </Typography>
                 </Grid>
                 <Grid item xs={6} container justify="flex-end">
                   <Grid item>
-                  <Typography className={classes.typo} variant="h6">
-                    {bbName}
-                  </Typography>
+                    <Typography className={classes.typo} variant="h6">
+                      {bbName}
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Seller address 
+                    Seller address
                   </Typography>
                 </Grid>
-                <Grid  item xs={6} container justify="flex-end">
-                    <Grid item>
+                <Grid item xs={6} container justify="flex-end">
+                  <Grid item>
                     <Typography className={classes.typo} variant="h6">
-                    {address}
-                  </Typography>
-                    </Grid>
+                      {address}
+                    </Typography>
+                  </Grid>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Total amount to be paid 
+                    Total amount to be paid
                   </Typography>
                 </Grid>
-                <Grid  item xs={6} container justify="flex-end">
-                    <Grid item>
-                      <Typography className={classes.typo} variant="h6">
-                        {price * units} INR
-                      </Typography>
-                    </Grid>
+                <Grid item xs={6} container justify="flex-end">
+                  <Grid item>
+                    <Typography className={classes.typo} variant="h6">
+                      {price * units} INR
+                    </Typography>
+                  </Grid>
                 </Grid>
                 <Grid align="center" item xs={12}>
-                <Divider />
-                <Typography className={[classes.note,classes.typo]} variant="body2">
-                  Important note : Booked blood must be collected within 24 hrs
-                </Typography>
-                
+                  <Divider />
+                  <Typography
+                    className={[classes.note, classes.typo]}
+                    variant="body2"
+                  >
+                    Important note : Booked blood must be collected within 24
+                    hrs
+                  </Typography>
                 </Grid>
                 <Grid align="center" item xs={12}>
-                <Button
-                    className={[classes.button,classes.typo]}
+                  <Button
+                    className={[classes.button, classes.typo]}
                     type="button"
                     onClick={handleClickOpen}
                     variant="contained"
                   >
-                  Proceed to buy
-                </Button>
+                    Proceed to buy
+                  </Button>
                 </Grid>
               </Grid>
 
@@ -216,18 +223,17 @@ const Product = (props) => {
 
               {/* confirmation box */}
               <Dialog open={open2} onClose={handleClosed2}>
-                <DialogTitle>
-                  {
-                    "Transaction successful."
-                  }
-                </DialogTitle>
+                <DialogTitle>{"Transaction successful."}</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                  Check 'My Purchases' section for more info about the transaction
+                    Check 'My Purchases' section for more info about the
+                    transaction
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button component={Link} to="/MyPurchases">Go to My Purhcases</Button>
+                  <Button component={Link} to="/MyPurchases">
+                    Go to My Purhcases
+                  </Button>
                   <Button onClick={handleClosed2}>Ok</Button>
                 </DialogActions>
               </Dialog>
@@ -239,15 +245,7 @@ const Product = (props) => {
                 />
                 <Typography variant="h5">Please wait</Typography>
               </Backdrop>
-              
-                  
-                
-              
             </Container>
-
-            
-
-            
           </Paper>
         </Grid>
       </Container>

@@ -32,9 +32,7 @@ import { logging } from "../../redux/Actions/login";
 import Cookies from "universal-cookie";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../../Apis/api";
-import {useStyles} from "./registerCSS";
-
-
+import { useStyles } from "./registerCSS";
 
 function IndividualRegistration(props) {
   const classes = useStyles();
@@ -74,7 +72,6 @@ function IndividualRegistration(props) {
   const history = useHistory();
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
-
 
   const validate = () => {
     const strongRegex = new RegExp(
@@ -276,11 +273,25 @@ function IndividualRegistration(props) {
       <LoggedOutNavbar />
 
       <Grid container className={classes.container}>
-        <Grid item md={6} className={classes.image} container justify="center" alignItems="center">
+        <Grid
+          item
+          md={6}
+          className={classes.image}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <img src={individual} alt="individual" style={{ maxWidth: "100%" }} />
         </Grid>
 
-        <Grid item xs={12} md={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          md={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <form>
             <Paper className={classes.paperStyle} elevation={5}>
               <h2 className={classes.header} align="center">
@@ -485,10 +496,7 @@ function IndividualRegistration(props) {
                     : "Accept Terms and Conditions"
                 }
               />
-              <Link
-                to="/terms"
-                className={classes.link}
-              >
+              <Link to="/terms" className={classes.link}>
                 (Click here for terms and condition)
               </Link>
 
@@ -503,9 +511,7 @@ function IndividualRegistration(props) {
 
               {/* indicator for please wait */}
               <Backdrop className={classes.backdrop} open={indicatorOpen}>
-                <CircularProgress
-                  className={classes.progress}
-                />
+                <CircularProgress className={classes.progress} />
                 <Typography variant="h5">Please wait</Typography>
               </Backdrop>
 

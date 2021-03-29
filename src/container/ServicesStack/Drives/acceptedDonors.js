@@ -14,9 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import React from "react";
 import api from "../../../Apis/api";
-import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
-import RemoveIcon from '@material-ui/icons/Remove';
+import CheckIcon from "@material-ui/icons/Check";
+import ClearIcon from "@material-ui/icons/Clear";
+import RemoveIcon from "@material-ui/icons/Remove";
 import { useStyles } from "../../ServicesStack/serviceCSS";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -30,7 +30,6 @@ const StyledTableCell = withStyles((theme) => ({
     fontSize: 14,
   },
 }))(TableCell);
-
 
 export default function AcceptedDonors(props) {
   const { donorsList, setDonors, driveId } = props.location;
@@ -70,11 +69,21 @@ export default function AcceptedDonors(props) {
           <Table>
             <TableHead>
               <TableRow>
-                <StyledTableCell style={{width:"20%"}} align="left">Donor Id</StyledTableCell>
-                <StyledTableCell style={{width:"20%"}} align="left">Donor Name</StyledTableCell>
-                <StyledTableCell style={{width:"20%"}} align="left">Blood Group</StyledTableCell>
-                <StyledTableCell style={{width:"20%"}} align="left">Acceptance Status</StyledTableCell>
-                <StyledTableCell style={{width:"20%"}} align="left">Donation Status</StyledTableCell>
+                <StyledTableCell style={{ width: "20%" }} align="left">
+                  Donor Id
+                </StyledTableCell>
+                <StyledTableCell style={{ width: "20%" }} align="left">
+                  Donor Name
+                </StyledTableCell>
+                <StyledTableCell style={{ width: "20%" }} align="left">
+                  Blood Group
+                </StyledTableCell>
+                <StyledTableCell style={{ width: "20%" }} align="left">
+                  Acceptance Status
+                </StyledTableCell>
+                <StyledTableCell style={{ width: "20%" }} align="left">
+                  Donation Status
+                </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -91,20 +100,19 @@ export default function AcceptedDonors(props) {
                         Rejected
                       </p>
                     ) : (
-                      <p style={{fontWeight:"bold", color:"green"}}>Accepted
+                      <p style={{ fontWeight: "bold", color: "green" }}>
+                        Accepted
                       </p>
-                    )
-                    }
+                    )}
                   </TableCell>
                   <TableCell align="center">
-                  {row.acceptance === 2 ? (
-                      <RemoveIcon/>
+                    {row.acceptance === 2 ? (
+                      <RemoveIcon />
                     ) : row.acceptance === 0 ? (
-                      <ClearIcon style={{ color:"red"}}/>
-                    ) : 
-                    row.donationStatus ? (
-                      <CheckIcon style={{ color:"green"}}/>
-                    ):(
+                      <ClearIcon style={{ color: "red" }} />
+                    ) : row.donationStatus ? (
+                      <CheckIcon style={{ color: "green" }} />
+                    ) : (
                       <Button
                         disabled={newDonorsList[idx].donationStatus}
                         variant="contained"
@@ -112,10 +120,9 @@ export default function AcceptedDonors(props) {
                         onClick={(e) => handleClick(idx)}
                       >
                         Donated ?
-                      </Button> 
-                    )
-                    }                    
-                    </TableCell>
+                      </Button>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

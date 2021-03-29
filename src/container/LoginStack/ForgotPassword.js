@@ -15,9 +15,7 @@ import {
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../../Apis/api";
-import {useStyles} from "./loginCSS";
-
-
+import { useStyles } from "./loginCSS";
 
 function ForgotPassword() {
   const classes = useStyles();
@@ -78,15 +76,26 @@ function ForgotPassword() {
   return (
     <>
       <LoggedOutNavbar />
-      <Grid
-        container
-        className={classes.container}
-      >
-        <Grid item md={6} className={classes.image} container justify="center" alignItems="center">
+      <Grid container className={classes.container}>
+        <Grid
+          item
+          md={6}
+          className={classes.image}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <img src={forgotPwd} alt="fgtpwd" width="800px" height="600px" />
         </Grid>
 
-        <Grid item xs={12} md={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          md={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <form onSubmit={handleSubmit}>
             <Paper elevation={5} className={classes.paperStyle}>
               <Grid align="center">

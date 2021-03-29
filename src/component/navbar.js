@@ -167,8 +167,8 @@ export default function MenuAppBar({ user }) {
   };
 
   useEffect(() => {
-  const cookies = new Cookies();
-  const authObj = cookies.get("Auth");
+    const cookies = new Cookies();
+    const authObj = cookies.get("Auth");
     if (authObj) {
       dispatch(logging(authObj));
       console.log(authObj);
@@ -250,7 +250,7 @@ export default function MenuAppBar({ user }) {
 
           <div className={classes.sectionDesktop}>
             <IconButton ref={anchorRef} onClick={handleClick2} color="inherit">
-              <Badge  badgeContent={notificationsCount}>
+              <Badge badgeContent={notificationsCount}>
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -418,7 +418,7 @@ export default function MenuAppBar({ user }) {
                                 to="/MyActivity"
                                 variant="h7"
                               >
-                                My Activity 
+                                My Activity
                               </Button>
                             </MenuItem>
                             <MenuItem onClick={handleClose2}>

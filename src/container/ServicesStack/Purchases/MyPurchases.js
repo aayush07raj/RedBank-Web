@@ -9,8 +9,6 @@ import api from "../../../Apis/api";
 import Table from "./table";
 
 function MyPurchase() {
-
-
   const [purchase, setList] = useState([]);
 
   const loggedInState = useSelector((state) => state.loggedIn);
@@ -24,7 +22,6 @@ function MyPurchase() {
         },
       })
       .then((response) => {
-      
         // if (response.data.success) {
         console.log(response);
         setList(response.data);
@@ -33,8 +30,6 @@ function MyPurchase() {
       })
       .catch();
   }, [loggedInState]);
-
-  
 
   const classes = useStyles();
 

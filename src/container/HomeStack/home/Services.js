@@ -9,7 +9,7 @@ import myanalytics from "../../../assets/images/myanalytics.png";
 import ConductDrive from "../../../assets/images/drives.png";
 import Purchases from "../../../assets/images/purchases.jpg";
 import mydrives from "../../../assets/images/drives2.png";
-import inventory from "../../../assets/images/inventory.png"
+import inventory from "../../../assets/images/inventory.png";
 
 export const BankServices = [
   {
@@ -116,15 +116,13 @@ export const IndividualServices = [
   {
     image: commitmentImg,
     name: "My Activity",
-    description:
-      "View your upcoming donations and past donation",
+    description: "View your upcoming donations and past donation",
     page: "MyActivity",
   },
   {
     image: Purchases,
     name: "My Purchases",
-    description:
-      "View a list of invoices corresponding to each purchase.",
+    description: "View a list of invoices corresponding to each purchase.",
     page: "MyPurchases",
   },
 ];

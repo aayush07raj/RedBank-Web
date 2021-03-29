@@ -18,9 +18,7 @@ function NotFound() {
           <img src={notFound} alt="verify" style={{ width: "40%" }} />
         </Grid>
         <Grid item xs={12} container justify="center" alignItems="center">
-          <h1>
-            Error 404 : Page not found.
-          </h1>
+          <h1>Error 404 : Page not found.</h1>
         </Grid>
       </Grid>
     </>

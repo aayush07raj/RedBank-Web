@@ -17,9 +17,7 @@ import ReplayIcon from "@material-ui/icons/Replay";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../../Apis/api";
-import {useStyles} from "./loginCSS";
-
-
+import { useStyles } from "./loginCSS";
 
 function VerifyCode(props) {
   const classes = useStyles();
@@ -87,15 +85,26 @@ function VerifyCode(props) {
   return (
     <>
       <LoggedOutNavbar />
-      <Grid
-        container
-        className={classes.container}
-      >
-        <Grid item md={6} className={classes.image} container justify="center" alignItems="center">
+      <Grid container className={classes.container}>
+        <Grid
+          item
+          md={6}
+          className={classes.image}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <img src={verifyCode} alt="verify" style={{ width: "80%" }} />
         </Grid>
 
-        <Grid item xs={12} md={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          md={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <Paper elevation={5} className={classes.paperStyle}>
             <Grid align="center">
               <h2 className={classes.margin}>Enter the code</h2>
@@ -117,9 +126,7 @@ function VerifyCode(props) {
               />
               {/* indicator for please wait */}
               <Backdrop className={classes.backdrop} open={indicatorOpen}>
-                <CircularProgress
-                  className={classes.circularProgress}
-                />
+                <CircularProgress className={classes.circularProgress} />
                 <Typography variant="h5">Please wait</Typography>
               </Backdrop>
               <Typography className={classes.margin} align="right">

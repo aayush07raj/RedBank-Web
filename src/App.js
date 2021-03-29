@@ -45,7 +45,7 @@ import { ProtectedRoute } from "./protected.route";
 function App() {
   const loggedIn = useSelector((state) => state.loggedIn);
   const resetPassword = useSelector((state) => state.resetPassword);
-  const Individual = 1; 
+  const Individual = 1;
 
   const dispatch = useDispatch();
 
@@ -60,44 +60,92 @@ function App() {
   return (
     <>
       <Switch>
-{/* Common Pages */}
-              <ProtectedRoute exact path="/home" component={Home} />
-              <ProtectedRoute exact path="/About" component={About} />
-              <ProtectedRoute exact path="/profile" component={Profile}/>
-              <ProtectedRoute exact path="/MyDonationReq" component={MyDonationReq} />
-              <ProtectedRoute exact path="/FindDonors" component={FindDonors}/>
-              <ProtectedRoute exact path="/BuyBlood" component={BuyBlood}/>
-              <ProtectedRoute exact path="/BuyBlood/Product" component={Product}/>
-              <ProtectedRoute exact path="/MyPurchases" component={MyPurchases}/>
-              <ProtectedRoute exact path="/MyPurchases/Invoice" component={Invoice}/>
-              <ProtectedRoute exact path="/inviteesList" component={InviteesList}/>
-{/* Urls for Individual only */}
-              <ProtectedRoute exact path="/UpcomingDrive" component={loggedIn.userType === Individual ? UpcomingDrive : UnAuth }/>
-              <ProtectedRoute exact path="/MyActivity" component={loggedIn.userType === Individual ? MyActivity: UnAuth }/>
-              <ProtectedRoute exact path="/MyInvites" component={loggedIn.userType === Individual ? MyInvites: UnAuth} />
-{/* Urls for Ho[ital and Bloodbank only */}
-              <ProtectedRoute exact path="/OrganiseDrive" component={loggedIn.userType === Individual ? UnAuth: ConductDrive}/>
-              <ProtectedRoute exact path="/MyDrives" component={loggedIn.userType === Individual ? UnAuth: MyDrives}/>
-              <ProtectedRoute exact path="/AcceptedDonors" component={loggedIn.userType === Individual ? UnAuth: AcceptedDonors}/>
-              <ProtectedRoute exact path="/MyInventory" component={loggedIn.userType === Individual ? UnAuth: MyInventory}/>
-              <ProtectedRoute exact path="/MySales" component={loggedIn.userType === Individual ? UnAuth: MySales}/>
-              <ProtectedRoute exact path="/MyAnalytics" component={loggedIn.userType === Individual ? UnAuth: MyAnalytics}/>
-              
-{/* LoggedOut URLS */}
-              <Route exact path="/" component={LandingPage} />
-              <Route exact path="/BloodBankRegistration" component={BloodBankRegistration} />
-              <Route exact path="/Login"  component={Login} />
-              <Route exact path="/terms" component={Terms} />
-              <Route exact path="/ForgotPassword" component={ForgotPassword} />
-              <Route exact path="/VerifyCode" component={VerifyCode} />
-              {resetPassword.isOtpVerified ? (
-                <Route exact path="/ResetPassword" component={ResetPassword} />
-              ) : null}
-              <Route exact path="/Options" component={Options} />
-              <Route exact path="/IndividualRegistration" component={IndividualRegistration} />
-              <Route exact path="/HospitalRegistration" component={HospitalRegistration}/>  
+        {/* Common Pages */}
+        <ProtectedRoute exact path="/home" component={Home} />
+        <ProtectedRoute exact path="/About" component={About} />
+        <ProtectedRoute exact path="/profile" component={Profile} />
+        <ProtectedRoute exact path="/MyDonationReq" component={MyDonationReq} />
+        <ProtectedRoute exact path="/FindDonors" component={FindDonors} />
+        <ProtectedRoute exact path="/BuyBlood" component={BuyBlood} />
+        <ProtectedRoute exact path="/BuyBlood/Product" component={Product} />
+        <ProtectedRoute exact path="/MyPurchases" component={MyPurchases} />
+        <ProtectedRoute exact path="/MyPurchases/Invoice" component={Invoice} />
+        <ProtectedRoute exact path="/inviteesList" component={InviteesList} />
+        {/* Urls for Individual only */}
+        <ProtectedRoute
+          exact
+          path="/UpcomingDrive"
+          component={loggedIn.userType === Individual ? UpcomingDrive : UnAuth}
+        />
+        <ProtectedRoute
+          exact
+          path="/MyActivity"
+          component={loggedIn.userType === Individual ? MyActivity : UnAuth}
+        />
+        <ProtectedRoute
+          exact
+          path="/MyInvites"
+          component={loggedIn.userType === Individual ? MyInvites : UnAuth}
+        />
+        {/* Urls for Ho[ital and Bloodbank only */}
+        <ProtectedRoute
+          exact
+          path="/OrganiseDrive"
+          component={loggedIn.userType === Individual ? UnAuth : ConductDrive}
+        />
+        <ProtectedRoute
+          exact
+          path="/MyDrives"
+          component={loggedIn.userType === Individual ? UnAuth : MyDrives}
+        />
+        <ProtectedRoute
+          exact
+          path="/AcceptedDonors"
+          component={loggedIn.userType === Individual ? UnAuth : AcceptedDonors}
+        />
+        <ProtectedRoute
+          exact
+          path="/MyInventory"
+          component={loggedIn.userType === Individual ? UnAuth : MyInventory}
+        />
+        <ProtectedRoute
+          exact
+          path="/MySales"
+          component={loggedIn.userType === Individual ? UnAuth : MySales}
+        />
+        <ProtectedRoute
+          exact
+          path="/MyAnalytics"
+          component={loggedIn.userType === Individual ? UnAuth : MyAnalytics}
+        />
 
-              <Route component={NotFound} />
+        {/* LoggedOut URLS */}
+        <Route exact path="/" component={LandingPage} />
+        <Route
+          exact
+          path="/BloodBankRegistration"
+          component={BloodBankRegistration}
+        />
+        <Route exact path="/Login" component={Login} />
+        <Route exact path="/terms" component={Terms} />
+        <Route exact path="/ForgotPassword" component={ForgotPassword} />
+        <Route exact path="/VerifyCode" component={VerifyCode} />
+        {resetPassword.isOtpVerified ? (
+          <Route exact path="/ResetPassword" component={ResetPassword} />
+        ) : null}
+        <Route exact path="/Options" component={Options} />
+        <Route
+          exact
+          path="/IndividualRegistration"
+          component={IndividualRegistration}
+        />
+        <Route
+          exact
+          path="/HospitalRegistration"
+          component={HospitalRegistration}
+        />
+
+        <Route component={NotFound} />
       </Switch>
     </>
   );

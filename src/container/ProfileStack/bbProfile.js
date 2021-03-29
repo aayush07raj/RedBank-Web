@@ -30,29 +30,29 @@ import bloodBank from "../../assets/images/bbDp.png";
 import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
-  fonts:{
-    [theme.breakpoints.down("xs")]:{
+  fonts: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "12px",
-    }
+    },
   },
-  img:{
+  img: {
     marginBottom: "20px",
     height: 200,
     width: 200,
     marginLeft: "110px",
     borderRadius: "100px",
-    [theme.breakpoints.down("xs")]:{
+    [theme.breakpoints.down("xs")]: {
       marginLeft: "50px",
       width: 120,
       height: 120,
-    }
+    },
   },
   container: {
     marginTop: theme.spacing(1),
     padding: theme.spacing(3),
-    [theme.breakpoints.down("xs")]:{
-      padding: theme.spacing(2)
-    }
+    [theme.breakpoints.down("xs")]: {
+      padding: theme.spacing(2),
+    },
   },
 }));
 
@@ -362,23 +362,32 @@ function BbProfile() {
             </Grid>
 
             <Grid item xs={6}>
-              <Typography className={classes.fonts} variant="h6">Name : </Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Name :{" "}
+              </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography className={classes.fonts} variant="h6">{initialValues.name}</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                {initialValues.name}
+              </Typography>
             </Grid>
 
             {/* unique id */}
             <Grid item xs={6}>
-              <Typography className={classes.fonts} variant="h6">Unique Id :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Unique Id :
+              </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography className={classes.fonts} variant="h6">{initialValues.userId}</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                {initialValues.userId}
+              </Typography>
             </Grid>
 
             {/* user statistics */}
             <Grid item xs={12} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts}
+              <Typography
+                className={classes.fonts}
                 style={{ marginTop: "20px", fontWeight: "bold" }}
                 variant="h5"
               >
@@ -391,30 +400,48 @@ function BbProfile() {
 
             {/* Requests */}
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6">Requests made :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Requests made :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6" color="secondary">
+              <Typography
+                className={classes.fonts}
+                variant="h6"
+                color="secondary"
+              >
                 {fulldata.requestMade}
               </Typography>
             </Grid>
 
             {/* drives conducted */}
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6">Drives conducted :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Drives conducted :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6" color="secondary">
+              <Typography
+                className={classes.fonts}
+                variant="h6"
+                color="secondary"
+              >
                 {fulldata.drivesConducted}
               </Typography>
             </Grid>
 
             {/* sales made */}
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6">Sales made :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Sales made :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6" color="secondary">
+              <Typography
+                className={classes.fonts}
+                variant="h6"
+                color="secondary"
+              >
                 {fulldata.salesMade}
               </Typography>
             </Grid>
@@ -423,7 +450,11 @@ function BbProfile() {
 
         <Grid item md={6} xs={12}>
           <Grid item xs={12} style={{ padding: "10px" }}>
-            <Typography className={classes.fonts} variant="h5" style={{ fontWeight: "bold" }}>
+            <Typography
+              className={classes.fonts}
+              variant="h5"
+              style={{ fontWeight: "bold" }}
+            >
               About
             </Typography>
             <Divider />
@@ -431,27 +462,39 @@ function BbProfile() {
 
           <Grid container justify="center">
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">Email :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Email :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">{fulldata.email}</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                {fulldata.email}
+              </Typography>
             </Grid>
 
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">License number :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                License number :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">{fulldata.license_number}</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                {fulldata.license_number}
+              </Typography>
             </Grid>
 
             {fulldata.phone.map((val, idx) => (
               <>
                 <Grid item xs={6} style={{ padding: "10px" }}>
-                  <Typography className={classes.fonts} variant="h6">{`Phone-${idx + 1} :  `}</Typography>
+                  <Typography className={classes.fonts} variant="h6">{`Phone-${
+                    idx + 1
+                  } :  `}</Typography>
                 </Grid>
                 <Grid item xs={6} style={{ padding: "10px" }}>
                   {enableReadOnly ? (
-                    <Typography className={classes.fonts} variant="h6">{fulldata.phone[idx]}</Typography>
+                    <Typography className={classes.fonts} variant="h6">
+                      {fulldata.phone[idx]}
+                    </Typography>
                   ) : (
                     <TextField
                       type="text"
@@ -491,11 +534,15 @@ function BbProfile() {
             </Grid>
 
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">Address :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Address :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               {enableReadOnly ? (
-                <Typography className={classes.fonts} variant="h6">{fulldata.address} </Typography>
+                <Typography className={classes.fonts} variant="h6">
+                  {fulldata.address}{" "}
+                </Typography>
               ) : (
                 <TextField
                   name="address"
@@ -508,11 +555,16 @@ function BbProfile() {
             </Grid>
 
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">State :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                State :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               {enableReadOnly ? (
-                <Typography className={classes.fonts} variant="h6"> {fulldata.state}</Typography>
+                <Typography className={classes.fonts} variant="h6">
+                  {" "}
+                  {fulldata.state}
+                </Typography>
               ) : (
                 <FormControl
                   variant="standard"
@@ -537,11 +589,16 @@ function BbProfile() {
             </Grid>
 
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">District :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                District :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               {enableReadOnly ? (
-                <Typography className={classes.fonts} variant="h6"> {fulldata.district}</Typography>
+                <Typography className={classes.fonts} variant="h6">
+                  {" "}
+                  {fulldata.district}
+                </Typography>
               ) : (
                 <FormControl
                   variant="standard"
@@ -569,11 +626,16 @@ function BbProfile() {
             </Grid>
 
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">Pincode :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Pincode :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               {enableReadOnly ? (
-                <Typography className={classes.fonts} variant="h6"> {fulldata.pincode}</Typography>
+                <Typography className={classes.fonts} variant="h6">
+                  {" "}
+                  {fulldata.pincode}
+                </Typography>
               ) : (
                 <TextField
                   name="pincode"

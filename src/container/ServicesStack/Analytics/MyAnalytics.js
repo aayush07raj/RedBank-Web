@@ -305,9 +305,9 @@ function MyAnalytics() {
         });
       });
 
-      console.log(currMonth);
+    console.log(currMonth);
     axios
-    
+
       .get(
         `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/2`,
         {
@@ -403,7 +403,9 @@ function MyAnalytics() {
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h5">Component wise Breakdown:</Typography>
+                  <Typography variant="h5">
+                    Component wise Breakdown:
+                  </Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Month</InputLabel>
                     <Select
@@ -504,7 +506,9 @@ function MyAnalytics() {
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h5">Component wise Breakdown:</Typography>
+                  <Typography variant="h5">
+                    Component wise Breakdown:
+                  </Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Month</InputLabel>
                     <Select
@@ -610,7 +614,9 @@ function MyAnalytics() {
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h5">Component wise Breakdown:</Typography>
+                  <Typography variant="h5">
+                    Component wise Breakdown:
+                  </Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Month</InputLabel>
                     <Select
@@ -692,8 +698,7 @@ function MyAnalytics() {
                   </Typography>
                 </Grid>
 
-                <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
-                  
+                <Grid style={{ marginBottom: "20px" }} item xs={12} sm={6}>
                   <PieChart
                     className={classes.heading}
                     data={inventoryData[0]}
@@ -701,8 +706,7 @@ function MyAnalytics() {
                     type="Blood"
                   />
                 </Grid>
-                <Grid  style={{marginBottom:"20px"}} item xs={12} sm={6}>
-                  
+                <Grid style={{ marginBottom: "20px" }} item xs={12} sm={6}>
                   <PieChart
                     className={classes.heading}
                     data={inventoryData[1]}
@@ -710,8 +714,7 @@ function MyAnalytics() {
                     type="Plasma"
                   />
                 </Grid>
-                <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
-                  
+                <Grid style={{ marginBottom: "20px" }} item xs={12} sm={6}>
                   <PieChart
                     className={classes.heading}
                     data={inventoryData[2]}
@@ -849,8 +852,7 @@ function MyAnalytics() {
                 </Grid>
                 {inventoryData.length > 0 ? (
                   <>
-                    <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
-                      
+                    <Grid style={{ marginBottom: "20px" }} item xs={12} sm={6}>
                       <PieChart
                         className={classes.heading}
                         data={inventoryData[0]}
@@ -858,8 +860,7 @@ function MyAnalytics() {
                         type="Blood"
                       />
                     </Grid>
-                    <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
-                      
+                    <Grid style={{ marginBottom: "20px" }} item xs={12} sm={6}>
                       <PieChart
                         className={classes.heading}
                         data={inventoryData[1]}
@@ -867,8 +868,7 @@ function MyAnalytics() {
                         type="Plasma"
                       />
                     </Grid>
-                    <Grid style={{marginBottom:"20px"}} item xs={12} sm={6}>
-                      
+                    <Grid style={{ marginBottom: "20px" }} item xs={12} sm={6}>
                       <PieChart
                         className={classes.heading}
                         data={inventoryData[2]}

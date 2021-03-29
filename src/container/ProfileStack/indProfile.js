@@ -37,43 +37,43 @@ import individual from "../../assets/images/indDp.jpg";
 import api from "../../Apis/api";
 
 const useStyles = makeStyles((theme) => ({
-  fonts:{
-    [theme.breakpoints.down("xs")]:{
+  fonts: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: "12px",
-    }
+    },
   },
-  imgEligible:{
+  imgEligible: {
     marginBottom: "20px",
     height: 200,
     width: 200,
     marginLeft: "110px",
     borderRadius: "100px",
     border: "5px #E94364 solid",
-    [theme.breakpoints.down("xs")]:{
+    [theme.breakpoints.down("xs")]: {
       marginLeft: "50px",
       width: 120,
       height: 120,
-    }
+    },
   },
-  imgNonEligible:{
+  imgNonEligible: {
     marginBottom: "20px",
     height: 200,
     width: 200,
     marginLeft: "110px",
     borderRadius: "100px",
     border: "5px #CCCCCC solid",
-    [theme.breakpoints.down("xs")]:{
+    [theme.breakpoints.down("xs")]: {
       marginLeft: "50px",
       width: 120,
       height: 120,
-    }
+    },
   },
   container: {
     marginTop: theme.spacing(1),
     padding: theme.spacing(3),
-    [theme.breakpoints.down("xs")]:{
-      padding: theme.spacing(2)
-    }
+    [theme.breakpoints.down("xs")]: {
+      padding: theme.spacing(2),
+    },
   },
 }));
 
@@ -367,29 +367,43 @@ function IndProfile() {
             <Grid item xs={12}>
               <CardMedia
                 image={initialValues.profilePicture || individual}
-                className={initialValues.donorStatus === 1 ?(classes.imgEligible):(classes.imgNonEligible)}
+                className={
+                  initialValues.donorStatus === 1
+                    ? classes.imgEligible
+                    : classes.imgNonEligible
+                }
                 component="img"
               />
             </Grid>
 
             <Grid item xs={6}>
-              <Typography className={classes.fonts} variant="h6">Name : </Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Name :{" "}
+              </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography className={classes.fonts} variant="h6">{initialValues.name}</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                {initialValues.name}
+              </Typography>
             </Grid>
 
             {/* unique id */}
             <Grid item xs={6}>
-              <Typography className={classes.fonts} variant="h6">Unique Id :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Unique Id :
+              </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography className={classes.fonts} variant="h6">{initialValues.userId}</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                {initialValues.userId}
+              </Typography>
             </Grid>
 
             {/* donor status */}
             <Grid item xs={6}>
-              <Typography className={classes.fonts} variant="h6">Donor Status :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Donor Status :
+              </Typography>
             </Grid>
             <Grid item xs={6}>
               {initialValues.donorStatus === 0 ? (
@@ -428,7 +442,8 @@ function IndProfile() {
 
             {/* user statistics */}
             <Grid item xs={12} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts}
+              <Typography
+                className={classes.fonts}
                 style={{ marginTop: "20px", fontWeight: "bold" }}
                 variant="h5"
               >
@@ -441,69 +456,106 @@ function IndProfile() {
             </Grid>
             {/* commitments */}
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6">Commitments made :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Commitments made :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6" color="secondary">
+              <Typography
+                className={classes.fonts}
+                variant="h6"
+                color="secondary"
+              >
                 {fulldata.commitmentMade}
               </Typography>
             </Grid>
 
             {/* donations made */}
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6">Donations made :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Donations made :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6" color="secondary">
+              <Typography
+                className={classes.fonts}
+                variant="h6"
+                color="secondary"
+              >
                 {fulldata.donationMade}
               </Typography>
             </Grid>
 
             {/* drives attended */}
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6">Drives attended :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Drives attended :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "7px" }}>
-              <Typography className={classes.fonts} variant="h6" color="secondary">
+              <Typography
+                className={classes.fonts}
+                variant="h6"
+                color="secondary"
+              >
                 {fulldata.drivesAttended}
               </Typography>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item md={6} xs={12} >
+        <Grid item md={6} xs={12}>
           <Grid item xs={12} style={{ padding: "10px" }}>
-            <Typography className={classes.fonts}
+            <Typography
+              className={classes.fonts}
               variant="h5"
               style={{ fontWeight: "bold" }}
-            >About</Typography>
+            >
+              About
+            </Typography>
             <Divider />
           </Grid>
 
-          <Grid  container justify="center">
+          <Grid container justify="center">
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">Email :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Email :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">{fulldata.email}</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                {fulldata.email}
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">DOB :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                DOB :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">{fulldata.dob.split("T")[0]}</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                {fulldata.dob.split("T")[0]}
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">Blood Group :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Blood Group :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">{fulldata.bloodGroup}</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                {fulldata.bloodGroup}
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">Contact :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Contact :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               {enableReadOnly ? (
-                <Typography className={classes.fonts} variant="h6">{fulldata.phone}</Typography>
+                <Typography className={classes.fonts} variant="h6">
+                  {fulldata.phone}
+                </Typography>
               ) : (
                 <TextField
                   name="phone"
@@ -519,11 +571,15 @@ function IndProfile() {
             </Grid>
 
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">Address :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Address :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               {enableReadOnly ? (
-                <Typography className={classes.fonts} variant="h6">{fulldata.address}</Typography>
+                <Typography className={classes.fonts} variant="h6">
+                  {fulldata.address}
+                </Typography>
               ) : (
                 <TextField
                   name="address"
@@ -535,11 +591,16 @@ function IndProfile() {
               )}
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">State :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                State :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               {enableReadOnly ? (
-                <Typography className={classes.fonts} variant="h6"> {fulldata.state}</Typography>
+                <Typography className={classes.fonts} variant="h6">
+                  {" "}
+                  {fulldata.state}
+                </Typography>
               ) : (
                 <FormControl
                   variant="standard"
@@ -563,11 +624,16 @@ function IndProfile() {
               )}
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">District :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                District :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               {enableReadOnly ? (
-                <Typography className={classes.fonts} variant="h6"> {fulldata.district}</Typography>
+                <Typography className={classes.fonts} variant="h6">
+                  {" "}
+                  {fulldata.district}
+                </Typography>
               ) : (
                 <FormControl
                   variant="standard"
@@ -594,11 +660,16 @@ function IndProfile() {
               )}
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
-              <Typography className={classes.fonts} variant="h6">Pincode :</Typography>
+              <Typography className={classes.fonts} variant="h6">
+                Pincode :
+              </Typography>
             </Grid>
             <Grid item xs={6} style={{ padding: "10px" }}>
               {enableReadOnly ? (
-                <Typography className={classes.fonts} variant="h6"> {fulldata.pincode}</Typography>
+                <Typography className={classes.fonts} variant="h6">
+                  {" "}
+                  {fulldata.pincode}
+                </Typography>
               ) : (
                 <TextField
                   name="pincode"

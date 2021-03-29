@@ -16,14 +16,14 @@ import LoggedOutNavbar from "../../component/loggedoutNavbar";
 import { useDispatch } from "react-redux";
 import { resetPassword } from "../../redux/Actions/resetPassword";
 import api from "../../Apis/api";
-import {useStyles} from "./loginCSS";
+import { useStyles } from "./loginCSS";
 
 function ResetPassword(props) {
   const dispatch = useDispatch();
   const { recoveryEmail } = props.location;
   const history = useHistory();
   const classes = useStyles();
-  
+
   const [password, setPassword] = useState("");
   const [cPassword, setCPassword] = useState("");
   const [errors, setError] = useState({});
@@ -81,15 +81,26 @@ function ResetPassword(props) {
   return (
     <>
       <LoggedOutNavbar />
-      <Grid
-        container
-        className={classes.container}
-      >
-        <Grid item md={6} className={classes.image} container justify="center" alignItems="center">
+      <Grid container className={classes.container}>
+        <Grid
+          item
+          md={6}
+          className={classes.image}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <img src={resetPwd} alt="reset" width="600px" height="600px" />
         </Grid>
 
-        <Grid item xs={12} md={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          md={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <form onSubmit={handleSubmit}>
             <Paper elevation={5} className={classes.paperStyle}>
               <Grid align="center">
@@ -143,9 +154,7 @@ function ResetPassword(props) {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>
-              Ok
-            </Button>
+            <Button onClick={handleClose}>Ok</Button>
           </DialogActions>
         </Dialog>
       </Grid>

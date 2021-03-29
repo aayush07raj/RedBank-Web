@@ -388,13 +388,18 @@ function ConductDrive() {
                   <DialogTitle>{"Drive Inititated Successfully"}</DialogTitle>
                   <DialogContent>
                     <DialogContentText>
-                    Drive has been initiated, check My Drives sections for more
-                    details
+                      Drive has been initiated, check My Drives sections for
+                      more details
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button component={Link} to="/MyDrives">Go to My Drives</Button>
-                    <Button style={{ backgroundColor: "#E94364", color: "white" }} onClick={handleClosed}>
+                    <Button component={Link} to="/MyDrives">
+                      Go to My Drives
+                    </Button>
+                    <Button
+                      style={{ backgroundColor: "#E94364", color: "white" }}
+                      onClick={handleClosed}
+                    >
                       Ok
                     </Button>
                   </DialogActions>

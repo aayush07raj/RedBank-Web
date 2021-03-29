@@ -18,9 +18,7 @@ function UnAuth() {
           <img src={unAuth} alt="verify" style={{ width: "40%" }} />
         </Grid>
         <Grid item xs={12} container justify="center" alignItems="center">
-          <h1>
-            Error 401 : You are not Authorised
-          </h1>
+          <h1>Error 401 : You are not Authorised</h1>
         </Grid>
       </Grid>
     </>

@@ -3,9 +3,7 @@ import React from "react";
 import { Grid, Paper, Divider } from "@material-ui/core";
 import LoggedOutNavbar from "../../component/loggedoutNavbar";
 import TnC from "../../assets/images/TnC.png";
-import {useStyles} from "./registerCSS"
-
-
+import { useStyles } from "./registerCSS";
 
 function Terms() {
   const classes = useStyles();
@@ -16,11 +14,25 @@ function Terms() {
         container
         style={{ marginTop: "100px", backgroundColor: "#E94364" }}
       >
-        <Grid item md={6} className={classes.image}  container justify="center" alignItems="center">
+        <Grid
+          item
+          md={6}
+          className={classes.image}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <img src={TnC} alt="TnC" width="800px" height="600px" />
         </Grid>
 
-        <Grid item xs={12} md={6} container justify="center" alignItems="center">
+        <Grid
+          item
+          xs={12}
+          md={6}
+          container
+          justify="center"
+          alignItems="center"
+        >
           <Paper elevation={5} className={classes.paperStyle}>
             <Grid>
               <h1 align="center">Terms & Conditions</h1>

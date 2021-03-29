@@ -6,7 +6,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Typography } from "@material-ui/core/";
 
-function Faqs({title, descp}) {
+function Faqs({ title, descp }) {
   return (
     <>
       <Accordion>
@@ -14,9 +14,7 @@ function Faqs({title, descp}) {
           <Typography>{title}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            {descp}
-          </Typography>
+          <Typography>{descp}</Typography>
         </AccordionDetails>
       </Accordion>
     </>

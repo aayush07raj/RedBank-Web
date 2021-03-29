@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { logging } from "./redux/Actions/login";
 import Cookies from "universal-cookie";
 
-export const ProtectedRoute = ({ component: Component, ...rest}) => {
+export const ProtectedRoute = ({ component: Component, ...rest }) => {
   const loggedIn = useSelector((state) => state.loggedIn);
   const dispatch = useDispatch();
   const cookies = new Cookies();
@@ -18,19 +18,17 @@ export const ProtectedRoute = ({ component: Component, ...rest}) => {
     }
   }, [dispatch]);
 
-        return(
-            <Route
-            {...rest}
-            render = {(props)=>
-              (authObj) ? (
-                
-                <Component {...props} />
-              ):(
-                // null
-                <Redirect to="/Login"/>
-              )
-            }
-            />
-        );
-    };
-
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        authObj ? (
+          <Component {...props} />
+        ) : (
+          // null
+          <Redirect to="/Login" />
+        )
+      }
+    />
+  );
+};
