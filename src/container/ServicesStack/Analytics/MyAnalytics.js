@@ -74,11 +74,14 @@ function MyAnalytics() {
   const handleYearChangeSales = (e) => {
     setCurrYear(e.target.value);
     axios
-      .get(`http://localhost:8080/salesanalytics/yearly/${e.target.value}/1`, {
-        headers: {
-          Authorization: "Bearer " + loggedInState.userToken,
-        },
-      })
+      .get(
+        `http://localhost:8080/salesanalytics/yearly/${e.target.value}/1/sales`,
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
       .then((response) => {
         setYearlySales((prevState) => {
           const data = { ...prevState };
@@ -103,7 +106,7 @@ function MyAnalytics() {
 
     axios
       .get(
-        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/1`,
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/1/sales`,
         {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
@@ -122,11 +125,14 @@ function MyAnalytics() {
   const handleYearChangeRevenue = (e) => {
     setCurrYear(e.target.value);
     axios
-      .get(`http://localhost:8080/salesanalytics/yearly/${e.target.value}/0`, {
-        headers: {
-          Authorization: "Bearer " + loggedInState.userToken,
-        },
-      })
+      .get(
+        `http://localhost:8080/salesanalytics/yearly/${e.target.value}/0/revenue`,
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
       .then((response) => {
         setYearlyRevenue((prevState) => {
           const data = { ...prevState };
@@ -149,7 +155,7 @@ function MyAnalytics() {
     }
     axios
       .get(
-        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/0`,
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/0/revenue`,
         {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
@@ -168,11 +174,14 @@ function MyAnalytics() {
   const handleYearChangePurchase = (e) => {
     setCurrYear(e.target.value);
     axios
-      .get(`http://localhost:8080/salesanalytics/yearly/${e.target.value}/2`, {
-        headers: {
-          Authorization: "Bearer " + loggedInState.userToken,
-        },
-      })
+      .get(
+        `http://localhost:8080/salesanalytics/yearly/${e.target.value}/2/purchase`,
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
       .then((response) => {
         setYearlyPurchase((prevState) => {
           const data = { ...prevState };
@@ -195,7 +204,7 @@ function MyAnalytics() {
     }
     axios
       .get(
-        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/2`,
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/2/purchase`,
         {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
@@ -226,11 +235,14 @@ function MyAnalytics() {
       //sales call
       //yearly call
       axios
-        .get(`http://localhost:8080/salesanalytics/yearly/${currYear}/1`, {
-          headers: {
-            Authorization: "Bearer " + loggedInState.userToken,
-          },
-        })
+        .get(
+          `http://localhost:8080/salesanalytics/yearly/${currYear}/1/sales`,
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
         .then((response) => {
           setYearlySales((prevState) => {
             const data = { ...prevState };
@@ -242,7 +254,7 @@ function MyAnalytics() {
       //monthly call
       axios
         .get(
-          `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/1`,
+          `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/1/sales`,
           {
             headers: {
               Authorization: "Bearer " + loggedInState.userToken,
@@ -259,11 +271,14 @@ function MyAnalytics() {
 
       // revenue call
       axios
-        .get(`http://localhost:8080/salesanalytics/yearly/${currYear}/0`, {
-          headers: {
-            Authorization: "Bearer " + loggedInState.userToken,
-          },
-        })
+        .get(
+          `http://localhost:8080/salesanalytics/yearly/${currYear}/0/revenue`,
+          {
+            headers: {
+              Authorization: "Bearer " + loggedInState.userToken,
+            },
+          }
+        )
         .then((response) => {
           setYearlyRevenue((prevState) => {
             const data = { ...prevState };
@@ -274,7 +289,7 @@ function MyAnalytics() {
 
       axios
         .get(
-          `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/0`,
+          `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/0/revenue`,
           {
             headers: {
               Authorization: "Bearer " + loggedInState.userToken,
@@ -292,11 +307,14 @@ function MyAnalytics() {
 
     //purchase call
     axios
-      .get(`http://localhost:8080/salesanalytics/yearly/${currYear}/2`, {
-        headers: {
-          Authorization: "Bearer " + loggedInState.userToken,
-        },
-      })
+      .get(
+        `http://localhost:8080/salesanalytics/yearly/${currYear}/2/purchase`,
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
       .then((response) => {
         setYearlyPurchase((prevState) => {
           const data = { ...prevState };
@@ -309,7 +327,7 @@ function MyAnalytics() {
     axios
 
       .get(
-        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/2`,
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/2/purchase`,
         {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,

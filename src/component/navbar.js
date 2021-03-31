@@ -54,6 +54,16 @@ const useStyles = makeStyles((theme) => ({
     height: "400px",
     overflow: "auto",
   },
+  sectionDesktop: {
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
+  },
+  showAbout: {
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
+  },
 }));
 
 export default function MenuAppBar({ user }) {
@@ -243,12 +253,16 @@ export default function MenuAppBar({ user }) {
           <Typography to="/Home" component={Link} variant="h6">
             <img src={Logo} alt="logo" className={classes.logo} />
           </Typography>
-          <Typography variant="h5" style={{ padding: "10px" }}>
+          <Typography
+            className={classes.sectionDesktop}
+            variant="h5"
+            style={{ padding: "10px" }}
+          >
             RedBank
           </Typography>
           <Typography className={classes.space}></Typography>
 
-          <div className={classes.sectionDesktop}>
+          <div>
             <IconButton ref={anchorRef} onClick={handleClick2} color="inherit">
               <Badge badgeContent={notificationsCount}>
                 <NotificationsIcon />
@@ -358,7 +372,13 @@ export default function MenuAppBar({ user }) {
               )}
             </Popper>
 
-            <Button color="inherit" component={Link} to="/About" variant="h7">
+            <Button
+              className={classes.sectionDesktop}
+              color="inherit"
+              component={Link}
+              to="/About"
+              variant="h7"
+            >
               About
             </Button>
             <Button ref={anchorRef2} onClick={handleToggle2} color="inherit">
@@ -709,6 +729,17 @@ export default function MenuAppBar({ user }) {
                             variant="h7"
                           >
                             Profile
+                          </Button>
+                        </MenuItem>
+                        <MenuItem className={classes.showAbout}>
+                          <InfoIcon />
+                          <Button
+                            color="inherit"
+                            component={Link}
+                            to="/About"
+                            variant="h7"
+                          >
+                            About
                           </Button>
                         </MenuItem>
                         <MenuItem onClick={handleClose3}>

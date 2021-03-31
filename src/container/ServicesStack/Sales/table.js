@@ -217,8 +217,12 @@ export default function EnhancedTable({ list }) {
                     <TableCell align="left">
                       {row.pricePerUnit * row.purchasedQuantity}{" "}
                     </TableCell>
-                    <TableCell align="left">{row.reason}</TableCell>
-                    <TableCell align="left">{row.location}</TableCell>
+                    <TableCell align="left">
+                      {row.reason ? row.reason : <>N/A</>}
+                    </TableCell>
+                    <TableCell align="left">
+                      {row.location ? row.location : <> N/A </>}
+                    </TableCell>
                   </TableRow>
                 );
               })}

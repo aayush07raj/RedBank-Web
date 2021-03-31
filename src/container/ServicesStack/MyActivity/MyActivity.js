@@ -30,6 +30,7 @@ function MyCommitments() {
         },
       })
       .then((response) => {
+        console.log(response.data);
         // if (response.data.success) {
         setList(response.data);
         // }

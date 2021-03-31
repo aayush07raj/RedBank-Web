@@ -130,9 +130,11 @@ function App() {
         <Route exact path="/terms" component={Terms} />
         <Route exact path="/ForgotPassword" component={ForgotPassword} />
         <Route exact path="/VerifyCode" component={VerifyCode} />
-        {resetPassword.isOtpVerified ? (
-          <Route exact path="/ResetPassword" component={ResetPassword} />
-        ) : null}
+        <Route
+          exact
+          path="/ResetPassword"
+          component={resetPassword.isOtpVerified ? ResetPassword : NotFound}
+        />
         <Route exact path="/Options" component={Options} />
         <Route
           exact
