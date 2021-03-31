@@ -224,9 +224,7 @@ export default function EnhancedTable({ list }) {
                         : row.driveId}
                     </TableCell>
                     <TableCell align="left">{row.recipientAddress}</TableCell>
-                    <TableCell align="left">
-                      {row.recipientName} ({row.recipientType})
-                    </TableCell>
+                    <TableCell align="left">{row.recipientName}</TableCell>
                     <TableCell align="left">
                       {row.recipientContact}, {row.recipientEmail}
                     </TableCell>

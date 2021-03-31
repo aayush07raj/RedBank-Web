@@ -15,6 +15,7 @@ import Paper from "@material-ui/core/Paper";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { Link, useHistory } from "react-router-dom";
+import RemoveIcon from "@material-ui/icons/Remove";
 
 function createData(name, date, bg, component, units, contact, amount) {
   return { name, date, bg, component, units, contact, amount };
@@ -50,7 +51,7 @@ const headCells = [
   {
     id: "dateOfTransaction",
 
-    label: "Date of purchase",
+    label: "Date",
   },
   {
     id: "purchaseId",
@@ -60,7 +61,7 @@ const headCells = [
   {
     id: "soldGroup",
 
-    label: "Product purchased",
+    label: "Product",
   },
 
   {
@@ -72,17 +73,17 @@ const headCells = [
   {
     id: "reason",
 
-    label: "Reason for purchase",
+    label: "Reason",
   },
   {
     id: "location",
 
-    label: "Location of transfusion/storage",
+    label: "Location",
   },
   {
     id: "soldQuantity",
 
-    label: "Units purchased",
+    label: "Units",
   },
   {
     id: "pricePerUnit",
@@ -92,7 +93,7 @@ const headCells = [
   {
     id: "amount",
 
-    label: "Amount Paid (Rs)",
+    label: "Total amount (Rs)",
   },
 ];
 
@@ -259,7 +260,7 @@ export default function EnhancedTable({ list }) {
                       {row.reason ? row.reason : <>N/A</>}
                     </TableCell>
                     <TableCell style={{ width: "10%" }} align="left">
-                      {row.location ? row.location : <>N/A</>}
+                      {row.location === "N/A" ? <RemoveIcon /> : row.location}
                     </TableCell>
                     <TableCell style={{ width: "10%" }} align="left">
                       {row.soldQuantity}

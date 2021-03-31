@@ -306,7 +306,13 @@ export default function EnhancedTable() {
                         {row.bloodGroup ? row.bloodGroup : <p>NA</p>}
                       </TableCell>
                       <TableCell align="left">
-                        {row.district}, {row.state}, {row.pincode}
+                        {row.state === "All" ? (
+                          <>{row.state}</>
+                        ) : (
+                          <>
+                            {row.district}, {row.state}, {row.pincode}
+                          </>
+                        )}
                       </TableCell>
                       <TableCell align="left">{row.address}</TableCell>
 

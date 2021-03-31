@@ -121,39 +121,39 @@ export default function CollapsibleTable() {
         <Table>
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Drive Id</StyledTableCell>
-              <StyledTableCell align="center">Date</StyledTableCell>
-              <StyledTableCell align="center">Time</StyledTableCell>
-              <StyledTableCell align="center" style={{ width: "30%" }}>
+              <StyledTableCell align="left">Drive Id</StyledTableCell>
+              <StyledTableCell align="left">Date</StyledTableCell>
+              <StyledTableCell align="left">Time</StyledTableCell>
+              <StyledTableCell align="left" style={{ width: "30%" }}>
                 Address
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="left">
                 Blood Groups Invited
               </StyledTableCell>
-              <StyledTableCell align="center">Donors List</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell align="left">Donors List</StyledTableCell>
+              <StyledTableCell align="left">Status</StyledTableCell>
               <StyledTableCell align="center">Cancel drive</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {drivesList.map((row, idx) => (
               <TableRow key={idx}>
-                <TableCell align="center">{row.driveId}</TableCell>
-                <TableCell align="center">
+                <TableCell align="left">{row.driveId}</TableCell>
+                <TableCell align="left">
                   {row.startTimestamp.split("T")[0]} to{" "}
                   {row.endTimestamp.split("T")[0]}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="left">
                   {row.startTimestamp.split("T")[1].split(":")[0]} :
                   {row.startTimestamp.split("T")[1].split(":")[1]} to{" "}
                   {row.endTimestamp.split("T")[1].split(":")[0]} :
                   {row.endTimestamp.split("T")[1].split(":")[1]}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="left">
                   {row.address}, {row.district}, {row.state}, {row.pincode}
                 </TableCell>
-                <TableCell align="center">{row.bloodGroups}</TableCell>
-                <TableCell align="center">
+                <TableCell align="left">{row.bloodGroups}</TableCell>
+                <TableCell align="left">
                   <Button
                     size="small"
                     onClick={(e) => {
@@ -163,22 +163,29 @@ export default function CollapsibleTable() {
                     View list
                   </Button>
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="left">
                   {!drivesList[idx].status ? (
-                    <p style={{ color: "red" }}>Canceled</p>
+                    <p style={{ color: "red", fontWeight: "bold" }}>Canceled</p>
                   ) : new Date(row.endTimestamp).getTime() <=
                     new Date().getTime() ? (
-                    <p style={{ color: "grey" }}>Completed</p>
+                    <p style={{ color: "grey", fontWeight: "bold" }}>
+                      Completed
+                    </p>
                   ) : new Date(row.startTimestamp).getTime() >=
                     new Date().getTime() ? (
-                    <p style={{ color: "#007CFF" }}> Upcoming</p>
+                    <p style={{ color: "#007CFF", fontWeight: "bold" }}>
+                      Upcoming
+                    </p>
                   ) : (
-                    <p style={{ color: "green" }}> Active </p>
+                    <p style={{ color: "green", fontWeight: "bold" }}>Active</p>
                   )}
                 </TableCell>
                 <TableCell align="center">
-                  {new Date(row.endDate).getTime() <= new Date().getTime() ? (
-                    <p>N/A</p>
+                  {new Date(row.endTimestamp).getTime() <=
+                  new Date().getTime() ? (
+                    <p style={{ color: "grey", fontWeight: "bold" }}>
+                      Completed
+                    </p>
                   ) : row.status ? (
                     <Button
                       size="small"
@@ -191,7 +198,7 @@ export default function CollapsibleTable() {
                       Cancel
                     </Button>
                   ) : (
-                    <p style={{ color: "red" }}>Canceled</p>
+                    <p style={{ color: "red", fontWeight: "bold" }}>Canceled</p>
                   )}
                 </TableCell>
               </TableRow>

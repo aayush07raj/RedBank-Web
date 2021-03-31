@@ -57,7 +57,7 @@ export const useStyles = makeStyles((theme) => ({
 
   // My Analytics
   charts: {
-    margin: theme.spacing(3),
+    marginTop: theme.spacing(3),
   },
   tabs: {
     flexGrow: 1,
@@ -100,5 +100,13 @@ export const useStyles = makeStyles((theme) => ({
   },
   container: {
     marginTop: theme.spacing(7),
+  },
+
+  imageBreakpoint: {
+    [theme.breakpoints.down("xs")]: {
+      margin: "50px",
+      width: 300,
+      height: 300,
+    },
   },
 }));

@@ -63,7 +63,6 @@ function PieChart({ data, type, name }) {
             labels: ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"],
             datasets: [
               {
-                label: "blood",
                 data: data,
                 backgroundColor: [
                   "rgba(233, 67, 100,0.2)",

@@ -180,7 +180,7 @@ const Product = (props) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Typography className={classes.typo} variant="h6">
-                    Total amount to be paid
+                    Total amount :
                   </Typography>
                 </Grid>
                 <Grid item xs={6} container justify="flex-end">

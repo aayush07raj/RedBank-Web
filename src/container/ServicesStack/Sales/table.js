@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import RemoveIcon from "@material-ui/icons/Remove";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -42,36 +42,22 @@ function stableSort(array, comparator) {
 const headCells = [
   {
     id: "dateOfTransaction",
-    label: "Date of Transaction",
+    label: "Date",
   },
   {
     id: "salesId",
-    label: "Purchase Id",
+    label: "Transaction Id",
   },
   {
-    id: "purchasedComponent",
-    label: "Component Sold",
+    id: "product",
+    label: "Product",
   },
-  {
-    id: "purchasedGroup",
-    label: "Blood Group Sold",
-  },
-  {
-    id: "pricePerUnit",
-    label: "Price/Unit",
-  },
-  {
-    id: "purchasedQuantity",
-    label: "Units Sold",
-  },
+
   {
     id: "buyerDetails",
     label: "Buyer Details",
   },
-  {
-    id: "amount",
-    label: "Amount Paid (Rs)",
-  },
+
   {
     id: "reason",
     label: "Reason for purchase",
@@ -79,6 +65,18 @@ const headCells = [
   {
     id: "location",
     label: "Location of transfusion/storage",
+  },
+  {
+    id: "purchasedQuantity",
+    label: "Units",
+  },
+  {
+    id: "pricePerUnit",
+    label: "Price/Unit",
+  },
+  {
+    id: "amount",
+    label: "Total amount (Rs)",
   },
 ];
 
@@ -207,21 +205,23 @@ export default function EnhancedTable({ list }) {
                       {row.dateOfTransaction.split("T")[0]}
                     </TableCell>
                     <TableCell align="left">{row.salesId}</TableCell>
-                    <TableCell align="left">{row.purchasedComponent}</TableCell>
-                    <TableCell align="left">{row.purchasedGroup}</TableCell>
-                    <TableCell align="left">{row.pricePerUnit}</TableCell>
-                    <TableCell align="left">{row.purchasedQuantity}</TableCell>
+                    <TableCell align="left">
+                      {row.purchasedGroup} ({row.purchasedComponent})
+                    </TableCell>
                     <TableCell align="left">
                       {row.buyerName},{row.buyerContact},{row.buyerEmail}
                     </TableCell>
+
+                    <TableCell align="left">
+                      {row.reason ? row.reason : <RemoveIcon />}
+                    </TableCell>
+                    <TableCell align="left">
+                      {row.location === "N/A" ? <RemoveIcon /> : row.location}
+                    </TableCell>
+                    <TableCell align="left">{row.purchasedQuantity}</TableCell>
+                    <TableCell align="left">{row.pricePerUnit}</TableCell>
                     <TableCell align="left">
                       {row.pricePerUnit * row.purchasedQuantity}{" "}
-                    </TableCell>
-                    <TableCell align="left">
-                      {row.reason ? row.reason : <>N/A</>}
-                    </TableCell>
-                    <TableCell align="left">
-                      {row.location ? row.location : <> N/A </>}
                     </TableCell>
                   </TableRow>
                 );

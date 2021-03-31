@@ -410,7 +410,14 @@ export default function EnhancedTable() {
                       )}
                     </TableCell>
                     <TableCell align="left">
-                      {row.address}, {row.district}, {row.state}, {row.pincode}
+                      {row.inviteType === "drive" ? (
+                        <>
+                          {row.address}, {row.district}, {row.state},{" "}
+                          {row.pincode}
+                        </>
+                      ) : (
+                        row.address
+                      )}
                     </TableCell>
                     <TableCell align="left">
                       {row.recipientName}, {row.recipientContact},{" "}
@@ -495,12 +502,12 @@ export default function EnhancedTable() {
                 Submit
               </Button>
               <Button onClick={handleClose} color="primary">
-                Cancel
+                Ok
               </Button>
             </>
           ) : (
             <Button onClick={handleClose} color="primary">
-              Cancel
+              Ok
             </Button>
           )}
         </DialogActions>

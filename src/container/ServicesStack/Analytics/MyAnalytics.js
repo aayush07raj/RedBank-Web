@@ -60,16 +60,22 @@ function MyAnalytics() {
     "December",
   ];
   const [currMonth, setCurrMonth] = useState(monthNames[new Date().getMonth()]);
+  const [currReason, setCurrReason] = useState();
+  const [currReason2, setCurrReason2] = useState();
 
   const [yearlySales, setYearlySales] = useState({});
   const [monthlySales, setMonthlySales] = useState({});
-  const [inventoryData, setInventoryData] = useState([]);
 
   const [yearlyRevenue, setYearlyRevenue] = useState({});
   const [monthlyRevenue, setMonthlyRevenue] = useState({});
 
   const [yearlyPurchase, setYearlyPurchase] = useState({});
   const [monthlyPurchase, setMonthlyPurchase] = useState({});
+
+  const [yearlyReason, setYearlyReason] = useState({});
+  const [monthlyReason, setMonthlyReason] = useState({});
+
+  const [inventoryData, setInventoryData] = useState([]);
 
   const handleYearChangeSales = (e) => {
     setCurrYear(e.target.value);
@@ -220,6 +226,47 @@ function MyAnalytics() {
       });
   };
 
+  const handleYearReasonChange = (e) => {
+    setCurrReason(e.target.value);
+    axios
+      .get(
+        `http://localhost:8080/salesanalytics/yearly/${currYear}/4/${e.target.value}`,
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
+        setYearlyReason((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data;
+          return data;
+        });
+      });
+  };
+
+  const handleMonthReasonChange = (e) => {
+    setCurrReason2(e.target.value);
+    axios
+      .get(
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${currMonth}/4/${e.target.value}`,
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        setMonthlyReason((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data;
+          return data;
+        });
+      });
+  };
+
   useEffect(() => {
     let idx =
       1 +
@@ -323,9 +370,7 @@ function MyAnalytics() {
         });
       });
 
-    console.log(currMonth);
     axios
-
       .get(
         `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/2/purchase`,
         {
@@ -336,6 +381,44 @@ function MyAnalytics() {
       )
       .then((response) => {
         setMonthlyPurchase((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data;
+          return data;
+        });
+      });
+
+    // other analytics call
+    setCurrReason("Accident");
+    setCurrReason2("Accident");
+    axios
+      .get(
+        `http://localhost:8080/salesanalytics/yearly/${currYear}/4/Accident`,
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
+        setYearlyReason((prevState) => {
+          const data = { ...prevState };
+          data.data = response.data;
+          return data;
+        });
+      });
+
+    axios
+      .get(
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/4/Accident`,
+        {
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        setMonthlyReason((prevState) => {
           const data = { ...prevState };
           data.data = response.data;
           return data;
@@ -366,7 +449,6 @@ function MyAnalytics() {
     setValue(newValue);
   };
 
-  console.log(monthlyPurchase);
   return (
     <>
       <Navbar />
@@ -382,18 +464,14 @@ function MyAnalytics() {
                 <Tab label="Sales " />
                 <Tab label="Purchase " />
                 <Tab label="Inventory " />
+                <Tab label="Others " />
               </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-              <Grid
-                container
-                justify="center"
-                className={classes.charts}
-                spacing={5}
-              >
+              <Grid container spacing={2}>
                 {/* Sales graphs  */}
                 <Grid item xs={12}>
-                  <Typography variant="h5">Monthly wise sales:</Typography>
+                  <Typography variant="h5">Month wise sales:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Year</InputLabel>
                     <Select
@@ -411,16 +489,16 @@ function MyAnalytics() {
                     </Select>
                     <FormHelperText>Analytics for: {currYear}</FormHelperText>
                   </FormControl>
-                  <Grid item xs={12} align="center">
-                    <BarChart
-                      data={yearlySales.data ? yearlySales.data : {}}
-                      labels={monthNames}
-                      legends="Units sold"
-                      type="yearly"
-                    />
-                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} align="center">
+                  <BarChart
+                    data={yearlySales.data ? yearlySales.data : {}}
+                    labels={monthNames}
+                    legends="Units sold"
+                    type="yearly"
+                  />
+                </Grid>
+                <Grid item xs={12} className={classes.charts}>
                   <Typography variant="h5">
                     Component wise Breakdown:
                   </Typography>
@@ -495,8 +573,8 @@ function MyAnalytics() {
                 </Grid>
 
                 {/* Revenue graphs  */}
-                <Grid item xs={12}>
-                  <Typography variant="h5">Monthly wise revenue:</Typography>
+                <Grid item xs={12} className={classes.charts}>
+                  <Typography variant="h5">Month wise revenue:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Year</InputLabel>
                     <Select
@@ -523,7 +601,7 @@ function MyAnalytics() {
                     />
                   </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.charts}>
                   <Typography variant="h5">
                     Component wise Breakdown:
                   </Typography>
@@ -597,14 +675,9 @@ function MyAnalytics() {
               </Grid>
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <Grid
-                container
-                justify="center"
-                className={classes.charts}
-                spacing={5}
-              >
+              <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <Typography variant="h5">Monthly wise purchase:</Typography>
+                  <Typography variant="h5">Month wise purchase:</Typography>
                   <FormControl className={classes.formControl}>
                     <InputLabel>Select Year</InputLabel>
                     <Select
@@ -622,16 +695,16 @@ function MyAnalytics() {
                     </Select>
                     <FormHelperText>Analytics for: {currYear}</FormHelperText>
                   </FormControl>
-                  <Grid item xs={12} align="center">
-                    <BarChart
-                      data={yearlyPurchase.data ? yearlyPurchase.data : {}}
-                      legends="Units purchased"
-                      labels={monthNames}
-                      type="yearly"
-                    />
-                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} align="center">
+                  <BarChart
+                    data={yearlyPurchase.data ? yearlyPurchase.data : {}}
+                    legends="Units purchased"
+                    labels={monthNames}
+                    type="yearly"
+                  />
+                </Grid>
+                <Grid item xs={12} className={classes.charts}>
                   <Typography variant="h5">
                     Component wise Breakdown:
                   </Typography>
@@ -738,6 +811,149 @@ function MyAnalytics() {
                     data={inventoryData[2]}
                     name="bb"
                     type="Platelets"
+                  />
+                </Grid>
+              </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h5">Month wise breakdown:</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>Select Year</InputLabel>
+                    <Select
+                      value={currYear}
+                      onChange={(e) => setCurrYear(e.target.value)}
+                      renderValue={(currYear) => `${currYear}`}
+                    >
+                      <MenuItem value={"2021"}>2021</MenuItem>
+                      <MenuItem value={"2020"}>2020</MenuItem>
+                      <MenuItem value={"2019"}>2019</MenuItem>
+                      <MenuItem value={"2018"}>2018</MenuItem>
+                      <MenuItem value={"2017"}>2017</MenuItem>
+                      <MenuItem value={"2016"}>2016</MenuItem>
+                      <MenuItem value={"2015"}>2015</MenuItem>
+                    </Select>
+                    <FormHelperText>Analytics for: {currYear}</FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>Select Reason</InputLabel>
+                    <Select
+                      value={currReason}
+                      onChange={handleYearReasonChange}
+                      renderValue={(currReason) => `${currReason}`}
+                    >
+                      <MenuItem value={"Accident"}>Accident</MenuItem>
+                      <MenuItem value={"Surgery"}>Surgery</MenuItem>
+                      <MenuItem value={"Others"}>Others</MenuItem>
+                    </Select>
+                    <FormHelperText>
+                      Analytics for: {currYear}, {currReason}
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <BarChart
+                    data={yearlyReason.data ? yearlyReason.data : {}}
+                    labels={monthNames}
+                    legends="Units sold"
+                    type="yearly"
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={2} className={classes.charts}>
+                <Grid item xs={12}>
+                  <Typography variant="h5">
+                    Component wise breakdown:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>Select Month</InputLabel>
+                    <Select
+                      value={currMonth}
+                      onChange={(e) => setCurrMonth(e.target.value)}
+                      renderValue={(currMonth) => `${currMonth}`}
+                    >
+                      <MenuItem value={"January"}>January</MenuItem>
+                      <MenuItem value={"Febuary"}>Febuary</MenuItem>
+                      <MenuItem value={"March"}>March</MenuItem>
+                      <MenuItem value={"April"}>April</MenuItem>
+                      <MenuItem value={"May"}>May</MenuItem>
+                      <MenuItem value={"June"}>June</MenuItem>
+                      <MenuItem value={"July"}>July</MenuItem>
+                      <MenuItem value={"August"}>August</MenuItem>
+                      <MenuItem value={"September"}>September</MenuItem>
+                      <MenuItem value={"October"}>October</MenuItem>
+                      <MenuItem value={"November"}>November</MenuItem>
+                      <MenuItem value={"December"}>December</MenuItem>
+                    </Select>
+                    <FormHelperText>
+                      Analytics for: {currMonth},{currYear}
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel>Select Reason</InputLabel>
+                    <Select
+                      value={currReason2}
+                      onChange={handleMonthReasonChange}
+                      renderValue={(currReason2) => `${currReason2}`}
+                    >
+                      <MenuItem value={"Accident"}>Accident</MenuItem>
+                      <MenuItem value={"Surgery"}>Surgery</MenuItem>
+                      <MenuItem value={"Others"}>Others</MenuItem>
+                    </Select>
+                    <FormHelperText>
+                      Analytics for: {currYear}, {currReason2}
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyReason.data &&
+                      monthlyReason.data.bloodObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyReason.data.bloodObject
+                        : [1]
+                    }
+                    name="blood"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyReason.data &&
+                      monthlyReason.data.plasmaObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyReason.data.plasmaObject
+                        : [1]
+                    }
+                    name="plasma"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <PieChart
+                    data={
+                      monthlyReason.data &&
+                      monthlyReason.data.plateletObject.reduce(
+                        (a, b) => a + b,
+                        0
+                      ) !== 0
+                        ? monthlyReason.data.plateletObject
+                        : [1]
+                    }
+                    name="platelets"
                   />
                 </Grid>
               </Grid>
