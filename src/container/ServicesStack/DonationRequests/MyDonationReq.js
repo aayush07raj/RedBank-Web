@@ -32,7 +32,6 @@ function MyDonationReq() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height: "340px" }}></Container>
       <Footer />
     </>
   );

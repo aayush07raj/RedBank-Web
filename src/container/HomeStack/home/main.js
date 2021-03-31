@@ -114,6 +114,7 @@ function Main() {
         >
           {loggedInState.userType === 1 ? null : (
             <Box className={[classes.hero, classes.box2]}>
+              <Typography variant="h4">Be a bridge for a good deed</Typography>
               <Button
                 className={classes.button}
                 component={Link}
@@ -125,7 +126,9 @@ function Main() {
             </Box>
           )}
           <Box className={[classes.hero, classes.box1]}>
-            <Typography variant="h4"></Typography>
+            <Typography variant="h4">
+              Our community is ready to help you
+            </Typography>
             <Button
               className={classes.button}
               variant="outlined"
@@ -141,6 +144,9 @@ function Main() {
           </Box>
           {loggedInState.userType === 1 ? (
             <Box className={[classes.hero, classes.box2]}>
+              <Typography variant="h4">
+                Your one deed will save someone's life
+              </Typography>
               <Button
                 className={classes.button}
                 component={Link}

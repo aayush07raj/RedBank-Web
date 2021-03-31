@@ -24,7 +24,6 @@ function MyBloodDonationDrives() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height: "250px" }} />
       <Footer />
     </>
   );

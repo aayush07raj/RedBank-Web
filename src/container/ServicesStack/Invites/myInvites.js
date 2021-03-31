@@ -35,7 +35,6 @@ function MyInvites() {
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height: "320px" }}></Container>
       <Footer />
     </>
   );

@@ -17,9 +17,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
+import { Container, Grid, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import api from "../../../Apis/api";
 import { TramRounded } from "@material-ui/icons";
+
+import empty from "../../../assets/images/empty.png";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -167,6 +170,17 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
+  imageBreakpoint: {
+    height: "400px",
+    width: "400px",
+    [theme.breakpoints.down("xs")]: {
+      width: 300,
+      height: 300,
+    },
+  },
+  headingTop: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 export default function EnhancedTable() {
@@ -280,113 +294,133 @@ export default function EnhancedTable() {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <TableContainer>
-          <Table className={classes.table}>
-            <EnhancedTableHead
-              classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
+    <>
+      {active.length > 0 ? (
+        <div className={classes.root}>
+          <Paper className={classes.paper}>
+            <TableContainer>
+              <Table className={classes.table}>
+                <EnhancedTableHead
+                  classes={classes}
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                />
+                <TableBody>
+                  {stableSort(active, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      return (
+                        <TableRow hover key={index}>
+                          <TableCell align="left">
+                            {row.requestTime.split("T")[0]} at{"   "}
+                            {row.requestTime.split("T")[1].split(":")[0]} :
+                            {row.requestTime.split("T")[1].split(":")[1]}
+                          </TableCell>
+                          <TableCell align="left">{row.donationId}</TableCell>
+                          <TableCell align="left">
+                            {row.bloodGroup ? row.bloodGroup : <p>NA</p>}
+                          </TableCell>
+                          <TableCell align="left">
+                            {row.state === "All" ? (
+                              <>{row.state}</>
+                            ) : (
+                              <>
+                                {row.district}, {row.state}, {row.pincode}
+                              </>
+                            )}
+                          </TableCell>
+                          <TableCell align="left">{row.address}</TableCell>
+
+                          <TableCell align="left">
+                            <Button
+                              onClick={(e) => {
+                                handleView(row.donationId);
+                              }}
+                            >
+                              View List
+                            </Button>
+                          </TableCell>
+                          <TableCell align="left">
+                            {row.status ? (
+                              <p style={{ fontWeight: "bold", color: "green" }}>
+                                Active
+                              </p>
+                            ) : (
+                              <p style={{ fontWeight: "bold", color: "red" }}>
+                                Expired
+                              </p>
+                            )}
+                          </TableCell>
+
+                          <TableCell align="left">
+                            {row.status ? (
+                              <Button
+                                type="button"
+                                variant="contained"
+                                onClick={(e) => {
+                                  handleExpire(row.donationId);
+                                }}
+                                style={{
+                                  backgroundColor: "#E94364",
+                                  color: "white",
+                                }}
+                              >
+                                Expire
+                              </Button>
+                            ) : (
+                              <p style={{ fontWeight: "bold", color: "red" }}>
+                                Expired
+                              </p>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={active.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
             />
-            <TableBody>
-              {stableSort(active, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  return (
-                    <TableRow hover key={index}>
-                      <TableCell align="left">
-                        {row.requestTime.split("T")[0]} at{"   "}
-                        {row.requestTime.split("T")[1].split(":")[0]} :
-                        {row.requestTime.split("T")[1].split(":")[1]}
-                      </TableCell>
-                      <TableCell align="left">{row.donationId}</TableCell>
-                      <TableCell align="left">
-                        {row.bloodGroup ? row.bloodGroup : <p>NA</p>}
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.state === "All" ? (
-                          <>{row.state}</>
-                        ) : (
-                          <>
-                            {row.district}, {row.state}, {row.pincode}
-                          </>
-                        )}
-                      </TableCell>
-                      <TableCell align="left">{row.address}</TableCell>
 
-                      <TableCell align="left">
-                        <Button
-                          onClick={(e) => {
-                            handleView(row.donationId);
-                          }}
-                        >
-                          View List
-                        </Button>
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.status ? (
-                          <p style={{ fontWeight: "bold", color: "green" }}>
-                            Active
-                          </p>
-                        ) : (
-                          <p style={{ fontWeight: "bold", color: "red" }}>
-                            Expired
-                          </p>
-                        )}
-                      </TableCell>
-
-                      <TableCell align="left">
-                        {row.status ? (
-                          <Button
-                            type="button"
-                            variant="contained"
-                            onClick={(e) => {
-                              handleExpire(row.donationId);
-                            }}
-                            style={{
-                              backgroundColor: "#E94364",
-                              color: "white",
-                            }}
-                          >
-                            Expire
-                          </Button>
-                        ) : (
-                          <p style={{ fontWeight: "bold", color: "red" }}>
-                            Expired
-                          </p>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={active.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-
-        {/* dialog for no list ot be shown */}
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>{"Not Found"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Sorry, no list to be shown</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Paper>
-    </div>
+            {/* dialog for no list ot be shown */}
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>{"Not Found"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Sorry, no list to be shown
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Paper>
+          <Container style={{ height: "200px" }}></Container>
+        </div>
+      ) : (
+        <Grid container justify="center">
+          <Grid item>
+            <img src={empty} className={classes.imageBreakpoint} />
+            <Typography
+              align="center"
+              variant="h4"
+              className={classes.headingTop}
+            >
+              Sorry, no data found
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
+    </>
   );
 }

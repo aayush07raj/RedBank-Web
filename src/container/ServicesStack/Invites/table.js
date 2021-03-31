@@ -19,10 +19,12 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import { Container, Grid, Typography } from "@material-ui/core";
 import { Modal, TextField } from "@material-ui/core";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { useSelector } from "react-redux";
 import api from "../../../Apis/api";
+import empty from "../../../assets/images/empty.png";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -160,6 +162,17 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 20,
     width: 1,
+  },
+  imageBreakpoint: {
+    height: "400px",
+    width: "400px",
+    [theme.breakpoints.down("xs")]: {
+      width: 300,
+      height: 300,
+    },
+  },
+  headingTop: {
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -350,168 +363,192 @@ export default function EnhancedTable() {
   };
 
   return (
-    <Paper elevation={4}>
-      <TableContainer className={classes.root}>
-        <Table className={classes.table} size="medium">
-          <EnhancedTableHead
-            classes={classes}
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {stableSort(List, getComparator(order, orderBy))
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                return (
-                  <TableRow hover tabIndex={-1} key={index}>
-                    <TableCell align="left">
-                      {row.inviteTimestamp.split("T")[0]}
-                    </TableCell>
-                    <TableCell id={index} align="left">
-                      {row.inviteType === "donation" ? (
-                        row.recipientType === "Individual" ? (
-                          <>Individual</>
-                        ) : row.recipientType === "Hospital" ? (
-                          <>Hospital</>
-                        ) : (
-                          <>BloodBank </>
-                        )
-                      ) : (
-                        <>Drive</>
-                      )}
-                    </TableCell>
-                    <TableCell align="left">
-                      {row.inviteType === "drive"
-                        ? row.driveId
-                        : row.donationId}
-                    </TableCell>
+    <>
+      {List.length > 0 ? (
+        <div>
+          <Paper elevation={4}>
+            <TableContainer className={classes.root}>
+              <Table className={classes.table} size="medium">
+                <EnhancedTableHead
+                  classes={classes}
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                />
+                <TableBody>
+                  {stableSort(List, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      return (
+                        <TableRow hover tabIndex={-1} key={index}>
+                          <TableCell align="left">
+                            {row.inviteTimestamp.split("T")[0]}
+                          </TableCell>
+                          <TableCell id={index} align="left">
+                            {row.inviteType === "donation" ? (
+                              row.recipientType === "Individual" ? (
+                                <>Individual</>
+                              ) : row.recipientType === "Hospital" ? (
+                                <>Hospital</>
+                              ) : (
+                                <>BloodBank </>
+                              )
+                            ) : (
+                              <>Drive</>
+                            )}
+                          </TableCell>
+                          <TableCell align="left">
+                            {row.inviteType === "drive"
+                              ? row.driveId
+                              : row.donationId}
+                          </TableCell>
 
-                    <TableCell align="left">
-                      {row.inviteType === "drive" ? (
-                        <p>
-                          {row.startTimestamp.split("T")[0]} to{" "}
-                          {row.endTimestamp.split("T")[0]}
-                        </p>
-                      ) : (
-                        <p>N/A</p>
-                      )}
-                    </TableCell>
-                    <TableCell align="left">
-                      {row.inviteType === "drive" ? (
-                        <p>
-                          {row.startTimestamp.split("T")[1].split(":")[0]} :
-                          {row.startTimestamp.split("T")[1].split(":")[1]} to{" "}
-                          {row.endTimestamp.split("T")[1].split(":")[0]} :
-                          {row.endTimestamp.split("T")[1].split(":")[1]}
-                        </p>
-                      ) : (
-                        <p>N/A</p>
-                      )}
-                    </TableCell>
-                    <TableCell align="left">
-                      {row.inviteType === "drive" ? (
-                        <>
-                          {row.address}, {row.district}, {row.state},{" "}
-                          {row.pincode}
-                        </>
-                      ) : (
-                        row.address
-                      )}
-                    </TableCell>
-                    <TableCell align="left">
-                      {row.recipientName}, {row.recipientContact},{" "}
-                      {row.recipientEmail}
-                    </TableCell>
-                    <TableCell align="left">
-                      {List[index].status !== 2 ? (
-                        List[index].status === 1 ? (
-                          <p>Accepted</p>
-                        ) : List[index].status === 0 ? (
-                          <p>Rejected</p>
-                        ) : null
-                      ) : (
-                        <ButtonGroup variant="text">
-                          <Button
-                            type="button"
-                            variant="contained"
-                            onClick={(e) => handleAccept(index)}
-                            style={{
-                              backgroundColor: "#E94364",
-                              color: "white",
-                            }}
-                            disabled={
-                              loggedInState.donorStatus === 2 ? true : false
-                            }
-                          >
-                            Accept
-                          </Button>
-                          <Button
-                            type="button"
-                            variant="contained"
-                            onClick={(e) => {
-                              setIndex(index);
-                              setOpen(true);
-                            }}
-                          >
-                            Ignore
-                          </Button>
-                        </ButtonGroup>
-                      )}
-                    </TableCell>
-                    <TableCell align="left"></TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={List.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-
-      {/* dialog for accepted or rejected */}
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{descp}</DialogContentText>
-          {acceptance === false ? (
-            <TextField
-              name="Message"
-              value={Message}
-              onChange={(e) => {
-                setRejectionMessage(e.target.value);
-              }}
-              margin="dense"
-              label="type Message"
-              type="text"
-              fullWidth
+                          <TableCell align="left">
+                            {row.inviteType === "drive" ? (
+                              <p>
+                                {row.startTimestamp.split("T")[0]} to{" "}
+                                {row.endTimestamp.split("T")[0]}
+                              </p>
+                            ) : (
+                              <p>N/A</p>
+                            )}
+                          </TableCell>
+                          <TableCell align="left">
+                            {row.inviteType === "drive" ? (
+                              <p>
+                                {row.startTimestamp.split("T")[1].split(":")[0]}{" "}
+                                :
+                                {row.startTimestamp.split("T")[1].split(":")[1]}{" "}
+                                to{" "}
+                                {row.endTimestamp.split("T")[1].split(":")[0]} :
+                                {row.endTimestamp.split("T")[1].split(":")[1]}
+                              </p>
+                            ) : (
+                              <p>N/A</p>
+                            )}
+                          </TableCell>
+                          <TableCell align="left">
+                            {row.inviteType === "drive" ? (
+                              <>
+                                {row.address}, {row.district}, {row.state},{" "}
+                                {row.pincode}
+                              </>
+                            ) : (
+                              row.address
+                            )}
+                          </TableCell>
+                          <TableCell align="left">
+                            {row.recipientName}, {row.recipientContact},{" "}
+                            {row.recipientEmail}
+                          </TableCell>
+                          <TableCell align="left">
+                            {List[index].status !== 2 ? (
+                              List[index].status === 1 ? (
+                                <p>Accepted</p>
+                              ) : List[index].status === 0 ? (
+                                <p>Rejected</p>
+                              ) : null
+                            ) : (
+                              <ButtonGroup variant="text">
+                                <Button
+                                  type="button"
+                                  variant="contained"
+                                  onClick={(e) => handleAccept(index)}
+                                  style={{
+                                    backgroundColor: "#E94364",
+                                    color: "white",
+                                  }}
+                                  disabled={
+                                    loggedInState.donorStatus === 2
+                                      ? true
+                                      : false
+                                  }
+                                >
+                                  Accept
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="contained"
+                                  onClick={(e) => {
+                                    setIndex(index);
+                                    setOpen(true);
+                                  }}
+                                >
+                                  Ignore
+                                </Button>
+                              </ButtonGroup>
+                            )}
+                          </TableCell>
+                          <TableCell align="left"></TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={List.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
             />
-          ) : null}
-        </DialogContent>
-        <DialogActions>
-          {acceptance === false ? (
-            <>
-              <Button onClick={handleReject} color="primary">
-                Submit
-              </Button>
-              <Button onClick={handleClose} color="primary">
-                Ok
-              </Button>
-            </>
-          ) : (
-            <Button onClick={handleClose} color="primary">
-              Ok
-            </Button>
-          )}
-        </DialogActions>
-      </Dialog>
-    </Paper>
+
+            {/* dialog for accepted or rejected */}
+            <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>{title}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>{descp}</DialogContentText>
+                {acceptance === false ? (
+                  <TextField
+                    name="Message"
+                    value={Message}
+                    onChange={(e) => {
+                      setRejectionMessage(e.target.value);
+                    }}
+                    margin="dense"
+                    label="type Message"
+                    type="text"
+                    fullWidth
+                  />
+                ) : null}
+              </DialogContent>
+              <DialogActions>
+                {acceptance === false ? (
+                  <>
+                    <Button onClick={handleReject} color="primary">
+                      Submit
+                    </Button>
+                    <Button onClick={handleClose} color="primary">
+                      Ok
+                    </Button>
+                  </>
+                ) : (
+                  <Button onClick={handleClose} color="primary">
+                    Ok
+                  </Button>
+                )}
+              </DialogActions>
+            </Dialog>
+          </Paper>
+          <Container style={{ height: "200px" }}></Container>
+        </div>
+      ) : (
+        <Grid container justify="center">
+          <Grid item>
+            <img src={empty} className={classes.imageBreakpoint} />
+            <Typography
+              align="center"
+              variant="h4"
+              className={classes.headingTop}
+            >
+              Sorry, no data found
+            </Typography>
+          </Grid>
+        </Grid>
+      )}
+    </>
   );
 }
