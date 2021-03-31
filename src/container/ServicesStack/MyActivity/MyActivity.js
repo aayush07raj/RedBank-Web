@@ -8,6 +8,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import axios from "axios";
+import empty from "../../../assets/images/empty.png";
 
 import Navbar from "../../../component/navbar";
 import Footer from "../../../component/footer";
@@ -49,11 +50,28 @@ function MyCommitments() {
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.tables}>
           <Grid item xs={12}>
-            <Table list={commitmentsList} />
+            {commitmentsList.length > 0 ? (
+              <>
+                <Table list={commitmentsList} />
+                <Container style={{ height: "200px" }}></Container>
+              </>
+            ) : (
+              <Grid container justify="center">
+                <Grid item>
+                  <img src={empty} className={classes.imageBreakpoint} />
+                  <Typography
+                    align="center"
+                    variant="h4"
+                    className={classes.headingTop}
+                  >
+                    Sorry, no data found
+                  </Typography>
+                </Grid>
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height: "300px" }}></Container>
       <Footer />
     </>
   );

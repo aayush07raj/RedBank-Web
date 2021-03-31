@@ -15,6 +15,7 @@ import { useStyles } from "../../ServicesStack/serviceCSS";
 import Table from "./table";
 import PageHeader from "../../../component/pageHeader";
 import api from "../../../Apis/api";
+import empty from "../../../assets/images/empty.png";
 
 function MySales() {
   const classes = useStyles();
@@ -46,11 +47,29 @@ function MySales() {
       <Container maxWidth="xl">
         <Grid container justify="center" className={classes.table}>
           <Grid item xs={12}>
-            <Table list={sale} />
+            {sale.length > 0 ? (
+              <>
+                <Table list={sale} />
+                <Container style={{ height: "200px" }}></Container>
+              </>
+            ) : (
+              <Grid container justify="center">
+                <Grid item>
+                  <img src={empty} className={classes.imageBreakpoint} />
+                  <Typography
+                    align="center"
+                    variant="h4"
+                    className={classes.headingTop}
+                  >
+                    Sorry, no data found
+                  </Typography>
+                </Grid>
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </Container>
-      <Container style={{ height: "280px" }}></Container>
+
       <Footer />
     </>
   );

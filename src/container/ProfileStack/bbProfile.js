@@ -54,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
     },
   },
+  marginTop: {
+    marginTop: "20px",
+  },
 }));
 
 function BbProfile() {
@@ -736,11 +739,11 @@ function BbProfile() {
           </Dialog>
         </Grid>
 
-        <Grid item xs={12} style={{ marginTop: "20px" }}>
+        <Grid item xs={12} className={classes.marginTop}>
           <Divider />
           <Grid container align="center">
             {/* For Edit Button */}
-            <Grid item xs={12}>
+            <Grid item xs={12} className={classes.marginTop}>
               {enableReadOnly ? (
                 <Button onClick={handleClickOpenEdit} endIcon={<EditIcon />}>
                   Edit profile
@@ -751,7 +754,7 @@ function BbProfile() {
                 </Button>
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} className={classes.marginTop}>
               {verify ? (
                 <>
                   <Button

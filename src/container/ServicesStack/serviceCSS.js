@@ -103,8 +103,10 @@ export const useStyles = makeStyles((theme) => ({
   },
 
   imageBreakpoint: {
+    height: "400px",
+    width: "400px",
     [theme.breakpoints.down("xs")]: {
-      margin: "50px",
+      // margin: "50px",
       width: 300,
       height: 300,
     },

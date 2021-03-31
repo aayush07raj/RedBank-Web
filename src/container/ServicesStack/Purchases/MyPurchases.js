@@ -45,16 +45,14 @@ function MyPurchase() {
         <Grid container justify="center" className={classes.table}>
           <Grid item sm={12}>
             {purchase.length > 0 ? (
-              <Table list={purchase} />
+              <>
+                <Table list={purchase} />
+                <Container style={{ height: "200px" }}></Container>
+              </>
             ) : (
               <Grid container justify="center">
                 <Grid item>
-                  <img
-                    src={empty}
-                    height="600px"
-                    width="600px"
-                    className={classes.imageBreakpoint}
-                  />
+                  <img src={empty} className={classes.imageBreakpoint} />
                   <Typography
                     align="center"
                     variant="h4"

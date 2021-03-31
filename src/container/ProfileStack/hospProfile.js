@@ -54,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
     },
   },
+  marginTop: {
+    marginTop: "20px",
+  },
 }));
 
 function HosProfile() {
@@ -716,9 +719,9 @@ function HosProfile() {
           </Dialog>
         </Grid>
 
-        <Grid item xs={12} style={{ marginTop: "20px" }}>
+        <Grid item xs={12} className={classes.marginTop}>
           <Divider />
-          <Grid container align="center">
+          <Grid container align="center" className={classes.marginTop}>
             {/* For Edit Button */}
             <Grid item xs={12}>
               {enableReadOnly ? (
@@ -731,7 +734,7 @@ function HosProfile() {
                 </Button>
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} className={classes.marginTop}>
               {verify ? (
                 <>
                   <Button
