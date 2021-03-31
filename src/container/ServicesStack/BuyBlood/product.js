@@ -199,6 +199,13 @@ const Product = (props) => {
                     Important note : Booked blood must be collected within 24
                     hrs
                   </Typography>
+                  <Typography
+                    className={[classes.note, classes.typo]}
+                    variant="body2"
+                  >
+                    Important note : Bring your Identity card for your
+                    verification, once you come for the transfusion.
+                  </Typography>
                 </Grid>
                 <Grid align="center" item xs={12}>
                   <Button
