@@ -184,6 +184,8 @@ export default {
           `http://localhost:8080/donationrequests/fetchdonationdonorlist/${donationId}`,
           headers
         ),
+      fetchTodaysStats: (headers) =>
+        axios.get("http://localhost:8080/salesanalytics/fetchnow", headers),
     };
   },
 };

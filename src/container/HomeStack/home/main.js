@@ -63,7 +63,11 @@ const useStyles = makeStyles((theme) => ({
   button: {
     color: "white",
     marginTop: "20px",
-    border: "2px solid white",
+    border: "2px solid #e94364",
+  },
+  bbStats: {
+    padding: theme.spacing(2),
+    opacity: 0.7,
   },
 }));
 
@@ -71,9 +75,9 @@ function Main() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const loggedInState = useSelector((state) => state.loggedIn);
-
   const [notify, setNotify] = React.useState("");
   const [name, setName] = React.useState("");
+  const [todaysStats, setStats] = useState({});
 
   useEffect(() => {
     if (loggedInState.userType === 1) {
@@ -100,6 +104,19 @@ function Main() {
         })
         .catch();
     }
+
+    if (loggedInState.userType === 3) {
+      api
+        .get()
+        .fetchTodaysStats({
+          headers: {
+            Authorization: "Bearer " + loggedInState.userToken,
+          },
+        })
+        .then((response) => {
+          setStats(response.data);
+        });
+    }
   }, [loggedInState]);
 
   return (
@@ -109,24 +126,25 @@ function Main() {
         <Carousel
           style={{ marginTop: "5px" }}
           showArrows={false}
-          enableAutoPlay
-          autoPlaySpeed={5000}
+          // enableAutoPlay
+          // autoPlaySpeed={5000}
         >
           {loggedInState.userType === 1 ? null : (
             <Box className={[classes.hero, classes.box2]}>
-              <Typography variant="h4">Be a bridge for a good deed</Typography>
+              <Typography variant="h3">Be a bridge for a good deed</Typography>
               <Button
                 className={classes.button}
                 component={Link}
-                to="/ConductDrive"
+                to="/OrganiseDrive"
                 variant="outlined"
               >
                 Conduct a Drive
               </Button>
             </Box>
           )}
+
           <Box className={[classes.hero, classes.box1]}>
-            <Typography variant="h4">
+            <Typography variant="h3">
               Our community is ready to help you
             </Typography>
             <Button
@@ -135,16 +153,67 @@ function Main() {
               component={Link}
               to="/FindDonors"
             >
-              {" "}
               Find a Donor
             </Button>
           </Box>
-          <Box className={[classes.hero, classes.box3]}>
-            <Typography variant="h4">Stats to be shown</Typography>
-          </Box>
+
+          {loggedInState.userType === 3 ? (
+            <Box className={[classes.hero, classes.box3]}>
+              <Typography variant="h3" style={{ padding: "20px" }}>
+                Today's statistics
+              </Typography>
+              <Grid container justify="center" spacing={5}>
+                <Grid item>
+                  <Typography variant="h4" className={classes.bbStats}>
+                    Amount collected : ₹ {todaysStats.amountCollected}
+                  </Typography>
+                  <Typography variant="h4" className={classes.bbStats}>
+                    Amount spent : ₹ {todaysStats.amountSpent}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="h4" className={classes.bbStats}>
+                    Blood units bought : {todaysStats.unitsBought}
+                  </Typography>
+                  <Typography variant="h4" className={classes.bbStats}>
+                    Blood units sold : {todaysStats.unitsSold}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Box>
+          ) : loggedInState.userType === 1 ? (
+            <Box className={[classes.hero, classes.box3]}>
+              <Typography variant="h3">
+                See the list of all your invites in one place
+              </Typography>
+              <Button
+                className={classes.button}
+                component={Link}
+                to="/MyInvites"
+                variant="outlined"
+              >
+                My Invites
+              </Button>
+            </Box>
+          ) : (
+            <Box className={[classes.hero, classes.box3]}>
+              <Typography variant="h3">
+                Manage your stock of blood components hassle free
+              </Typography>
+              <Button
+                className={classes.button}
+                component={Link}
+                to="/MyInventory"
+                variant="outlined"
+              >
+                Click here
+              </Button>
+            </Box>
+          )}
+
           {loggedInState.userType === 1 ? (
             <Box className={[classes.hero, classes.box2]}>
-              <Typography variant="h4">
+              <Typography variant="h3">
                 Your one deed will save someone's life
               </Typography>
               <Button
@@ -153,7 +222,6 @@ function Main() {
                 to="/UpcomingDrive"
                 variant="outlined"
               >
-                {" "}
                 Donate Now
               </Button>
             </Box>
