@@ -80,7 +80,7 @@ function HosProfile() {
     requestMade: "",
   });
 
-  const [errors, setError] = useState({
+  const [errors, setErrors] = useState({
     phone: "",
     license_number: "",
     address: "",
@@ -125,6 +125,35 @@ function HosProfile() {
     }
 
     return Object.keys(errors).length === 0 ? null : errors;
+  };
+
+  const validateField = (fieldName, fieldValue) => {
+    var error = "";
+
+    if (fieldName === "address" && fieldValue.trim() === "") {
+      error = "Address cannot be empty";
+    } else if (fieldName === "state" && fieldValue === "") {
+      error = "State cannot be empty";
+    } else if (fieldName === "district" && fieldValue === "") {
+      error = "District cannot be empty";
+    } else if (
+      fieldName === "pincode" &&
+      !/^[1-9][0-9]{5}$/.test(fieldValue.trim())
+    ) {
+      error = "Invalid pincode format";
+    } else if (fulldata.phone.length >= 1 && !fulldata.phone[0]) {
+      errors.phone = "wrong number";
+    } else if (fulldata.phone.length >= 2 && !fulldata.phone[1]) {
+      errors.phone = "wrong number";
+    } else if (fulldata.phone.length >= 3 && !fulldata.phone[2]) {
+      errors.phone = "wrong number";
+    } else if (fulldata.phone.length >= 4 && !fulldata.phone[3]) {
+      errors.phone = "wrong number";
+    } else if (fulldata.phone.length >= 5 && !fulldata.phone[4]) {
+      errors.phone = "wrong number";
+    }
+
+    return error === "" ? null : error;
   };
 
   const validatePass = () => {
@@ -185,6 +214,10 @@ function HosProfile() {
     const updatedData = { ...fulldata };
     updatedData[name] = value;
     setfulldata(updatedData);
+    const error = validateField(name, value);
+    const updatedErrors = { ...errors };
+    updatedErrors[name] = error;
+    setErrors(updatedErrors);
   };
 
   useEffect(() => {
@@ -226,7 +259,7 @@ function HosProfile() {
     e.preventDefault();
     const errors = validate();
     setTouched([true, true, true, true, true]);
-    setError(errors);
+    setErrors(errors);
     if (errors) return;
 
     api
@@ -288,7 +321,7 @@ function HosProfile() {
 
   const changePassword = (e) => {
     const errors = validatePass();
-    setError(errors);
+    setErrors(errors);
 
     if (errors) {
       return;

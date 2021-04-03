@@ -104,7 +104,7 @@ function IndProfile() {
     commitmentMade: "",
   });
 
-  const [errors, setError] = useState({
+  const [errors, setErrors] = useState({
     phone: "",
     bloodGroup: "",
     dob: "",
@@ -141,6 +141,28 @@ function IndProfile() {
 
     return Object.keys(errors).length === 0 ? null : errors;
   };
+  const validateField = (fieldName, fieldValue) => {
+    var error = "";
+
+    if (fieldName === "bloodGroup" && fieldValue === "") {
+      error = "Blood Group cannot be empty";
+    } else if (fieldName === "address" && fieldValue.trim() === "") {
+      error = "Address cannot be empty";
+    } else if (fieldName === "state" && fieldValue === "") {
+      error = "State cannot be empty";
+    } else if (fieldName === "district" && fieldValue === "") {
+      error = "District cannot be empty";
+    } else if (
+      fieldName === "pincode" &&
+      !/^[1-9][0-9]{5}$/.test(fieldValue.trim())
+    ) {
+      error = "Invalid pincode format";
+    } else if (fieldName === "phone" && !/^\d{10}$/.test(fieldValue.trim())) {
+      error = "Invalid Phone number";
+    }
+
+    return error === "" ? null : error;
+  };
 
   const validatePass = () => {
     const strongRegex = new RegExp(
@@ -172,6 +194,10 @@ function IndProfile() {
 
     updatedData[name] = value;
     setfulldata(updatedData);
+    const error = validateField(name, value);
+    const updatedErrors = { ...errors };
+    updatedErrors[name] = error;
+    setErrors(updatedErrors);
   };
 
   useEffect(() => {
@@ -240,7 +266,7 @@ function IndProfile() {
   const handleSave = (e) => {
     e.preventDefault();
     const errors = validate();
-    setError(errors);
+    setErrors(errors);
     if (errors) return;
 
     api
@@ -301,7 +327,7 @@ function IndProfile() {
 
   const changePassword = (e) => {
     const errors = validatePass();
-    setError(errors);
+    setErrors(errors);
 
     if (errors) {
       return;

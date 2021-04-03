@@ -53,7 +53,7 @@ function MyCommitments() {
             {commitmentsList.length > 0 ? (
               <>
                 <Table list={commitmentsList} />
-                <Container style={{ height: "200px" }}></Container>
+                <Container style={{ height: "250px" }}></Container>
               </>
             ) : (
               <Grid container justify="center">
@@ -64,7 +64,7 @@ function MyCommitments() {
                     variant="h4"
                     className={classes.headingTop}
                   >
-                    Sorry, no data found
+                    Not yet, Donate to someone!
                   </Typography>
                 </Grid>
               </Grid>

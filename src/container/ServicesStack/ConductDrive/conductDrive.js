@@ -59,7 +59,7 @@ function ConductDrive() {
   const regex = /^[0-9]*$/;
 
   const loggedInState = useSelector((state) => state.loggedIn);
-  const [errors, setError] = useState({});
+  const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
   const classes = useStyles();
@@ -77,6 +77,10 @@ function ConductDrive() {
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
+    const error = validateField(name, value);
+    const updatedErrors = { ...errors };
+    updatedErrors[name] = error;
+    setErrors(updatedErrors);
   };
 
   const validate = () => {
@@ -117,10 +121,46 @@ function ConductDrive() {
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
+  const validateField = (fieldName, fieldValue) => {
+    var error = "";
+    const currDate = new Date();
+
+    if (fieldName === "address" && fieldValue.trim() === "") {
+      error = "Address cannot be empty";
+    } else if (fieldName === "bloodGroups" && fieldValue.length === 0) {
+      error = "Blood Group cannot be empty";
+    } else if (fieldName === "state" && fieldValue === "") {
+      error = "State cannot be empty";
+    } else if (fieldName === "district" && fieldValue === "") {
+      error = "District cannot be empty";
+    } else if (fieldName === "pincode" && fieldValue === "") {
+      error = "Pincode cannot be empty";
+    } else if (fieldName === "starTime" && fieldValue === "") {
+      error = "Start Time cannot be empty";
+    } else if (
+      fieldName === "endTime" &&
+      (fieldValue === "" || fieldValue < data.startTime)
+    ) {
+      error = "End Time cannot be less than start time";
+    } else if (
+      fieldName === "startDate" &&
+      (fieldValue === "" || new Date(fieldValue) < currDate)
+    ) {
+      error = "Invalid Date";
+    } else if (
+      (fieldName === "endDate" && fieldValue === "") ||
+      new Date(fieldValue) < new Date(data.startDate)
+    ) {
+      error = "End Date cannot be less than Start Date";
+    }
+
+    return error === "" ? null : error;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
-    setError(errors);
+    setErrors(errors);
     if (errors) return;
 
     setIndicatorOpen(true);

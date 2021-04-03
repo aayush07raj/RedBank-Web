@@ -56,6 +56,11 @@ function UpcomingDrive() {
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
+
+    const error = validateField(name, value);
+    const updatedErrors = { ...errors };
+    updatedErrors[name] = error;
+    setErrors(updatedErrors);
   };
 
   const validate = () => {
@@ -72,6 +77,20 @@ function UpcomingDrive() {
     }
 
     return Object.keys(errors).length === 0 ? null : errors;
+  };
+
+  const validateField = (fieldName, fieldValue) => {
+    var error = "";
+
+    if (fieldName === "state" && fieldValue === "") {
+      error = "State cannot be empty";
+    } else if (fieldName === "district" && fieldValue === "") {
+      error = "District cannot be empty";
+    } else if (fieldName === "pincode" && !regex.test(fieldValue)) {
+      error = "Invalid pincode format";
+    }
+
+    return error === "" ? null : error;
   };
 
   const handleSubmit = (e) => {

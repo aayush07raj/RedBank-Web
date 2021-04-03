@@ -47,7 +47,7 @@ function MyPurchase() {
             {purchase.length > 0 ? (
               <>
                 <Table list={purchase} />
-                <Container style={{ height: "200px" }}></Container>
+                <Container style={{ height: "250px" }}></Container>
               </>
             ) : (
               <Grid container justify="center">
@@ -58,7 +58,7 @@ function MyPurchase() {
                     variant="h4"
                     className={classes.headingTop}
                   >
-                    Sorry, no data found
+                    Not yet, Buy something!
                   </Typography>
                 </Grid>
               </Grid>
@@ -66,7 +66,6 @@ function MyPurchase() {
           </Grid>
         </Grid>
       </Container>
-
       <Footer />
     </>
   );

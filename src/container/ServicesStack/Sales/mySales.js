@@ -50,7 +50,7 @@ function MySales() {
             {sale.length > 0 ? (
               <>
                 <Table list={sale} />
-                <Container style={{ height: "200px" }}></Container>
+                <Container style={{ height: "250px" }}></Container>
               </>
             ) : (
               <Grid container justify="center">
@@ -61,7 +61,7 @@ function MySales() {
                     variant="h4"
                     className={classes.headingTop}
                   >
-                    Sorry, no data found
+                    Not yet.
                   </Typography>
                 </Grid>
               </Grid>

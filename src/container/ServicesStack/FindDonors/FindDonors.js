@@ -40,7 +40,7 @@ function FindDonors() {
 
   const reqBody = {};
   const loggedInState = useSelector((state) => state.loggedIn);
-  const [errors, setError] = useState({});
+  const [errors, setErrors] = useState({});
   const [enable, setEnable] = useState(true);
   const [selectedStateIndex, setSelectedStateIndex] = useState(0);
   const [donorsList, setList] = useState([]);
@@ -58,6 +58,11 @@ function FindDonors() {
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
+
+    const error = validateField(name, value);
+    const updatedErrors = { ...errors };
+    updatedErrors[name] = error;
+    setErrors(updatedErrors);
   };
 
   // submission and validation
@@ -80,10 +85,26 @@ function FindDonors() {
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
+  const validateField = (fieldName, fieldValue) => {
+    var error = "";
+
+    if (fieldName === "address" && fieldValue.trim() === "") {
+      error = "Address cannot be empty";
+    } else if (fieldName === "bloodGroup" && fieldValue === "") {
+      error = "Blood Group cannot be empty";
+    } else if (fieldName === "state" && fieldValue === "") {
+      error = "State cannot be empty";
+    } else if (fieldName === "district" && fieldValue === "") {
+      error = "District cannot be empty";
+    }
+
+    return error === "" ? null : error;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate();
-    setError(errors);
+    setErrors(errors);
     if (errors) return;
 
     reqBody.state = data.state;

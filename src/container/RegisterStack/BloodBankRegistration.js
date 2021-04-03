@@ -93,6 +93,10 @@ function BloodBankRegistration(props) {
       const updatedData = { ...data };
       updatedData[e.target.name] = e.target.checked;
       setData(updatedData);
+      const error = validateField(name, value);
+      const updatedErrors = { ...errors };
+      updatedErrors[name] = error;
+      setErrors(updatedErrors);
     } else {
       if (name === "state") {
         setEnable(false);
@@ -104,6 +108,10 @@ function BloodBankRegistration(props) {
       const updatedData = { ...data };
       updatedData[name] = value;
       setData(updatedData);
+      const error = validateField(name, value);
+      const updatedErrors = { ...errors };
+      updatedErrors[name] = error;
+      setErrors(updatedErrors);
     }
   };
 
@@ -111,6 +119,11 @@ function BloodBankRegistration(props) {
     const updatedData = { ...data };
     updatedData.phone[id] = e.target.value;
     setData(updatedData);
+    const { name, value } = e.target;
+    const error = validateField(name, value);
+    const updatedErrors = { ...errors };
+    updatedErrors[name] = error;
+    setErrors(updatedErrors);
   };
 
   const handleAdd = () => {
@@ -200,6 +213,72 @@ function BloodBankRegistration(props) {
     }
 
     return Object.keys(errors).length === 0 ? null : errors;
+  };
+
+  const validateField = (fieldName, fieldValue) => {
+    const strongRegex = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+    );
+    var error = "";
+
+    if (
+      fieldName === "name" &&
+      (fieldValue.trim() === "" ||
+        fieldValue.trim().length < 3 ||
+        fieldValue.trim().length > 20)
+    ) {
+      error = " Username is either empty or invalid ";
+    } else if (
+      fieldName === "email" &&
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        fieldValue.trim()
+      )
+    ) {
+      error = "Email is either empty or invalid";
+    } else if (
+      fieldName === "license" &&
+      !/^(?=.{5,20}$)(?![.])(?!.*[.]{2})[a-zA-Z0-9.]+(?<![.])$/.test(
+        fieldValue.trim()
+      )
+    ) {
+      error = " License is either empty or invalid ";
+    } else if (fieldName === "address" && fieldValue.trim() === "") {
+      error = "Address cannot be empty";
+    } else if (fieldName === "state" && fieldValue === "") {
+      error = "State cannot be empty";
+    } else if (fieldName === "district" && fieldValue === "") {
+      error = "District cannot be empty";
+    } else if (
+      fieldName === "pincode" &&
+      !/^[1-9][0-9]{5}$/.test(fieldValue.trim())
+    ) {
+      error = "Invalid pincode format";
+    } else if (
+      fieldName === "password" &&
+      !strongRegex.test(fieldValue.trim())
+    ) {
+      error =
+        "Use 8 or more characters with a mix of letters, numbers & symbols";
+    } else if (
+      fieldName === "cPassword" &&
+      (fieldValue !== data.password || fieldValue === "")
+    ) {
+      error = "Password is either empty or Passwords do not match";
+    } else if (fieldName === "terms" && !fieldValue) {
+      error = "Please accept our terms and conditions";
+    } else if (data.phone.length >= 1 && data.phone[0].length < 10) {
+      error = "wrong number";
+    } else if (data.phone.length >= 2 && !data.phone[1]) {
+      error = "wrong number";
+    } else if (data.phone.length >= 3 && !data.phone[2]) {
+      error = "wrong number";
+    } else if (data.phone.length >= 4 && !data.phone[3]) {
+      error = "wrong number";
+    } else if (data.phone.length >= 5 && !data.phone[4]) {
+      error = "wrong number";
+    }
+
+    return error === "" ? null : error;
   };
 
   const [touched, setTouched] = useState([false, false, false, false, false]);

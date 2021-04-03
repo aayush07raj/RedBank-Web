@@ -24,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "auto",
     backgroundColor: "#E94364",
     maxWidth: "100%",
+    position: "absolute",
+    width: "100%",
   },
 }));
 

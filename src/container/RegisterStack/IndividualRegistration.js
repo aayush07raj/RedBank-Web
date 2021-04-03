@@ -139,12 +139,80 @@ function IndividualRegistration(props) {
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
+  const validateField = (fieldName, fieldValue) => {
+    const strongRegex = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+    );
+
+    var error = "";
+
+    if (
+      fieldName === "name" &&
+      (fieldValue.trim() === "" ||
+        fieldValue.trim().length < 3 ||
+        fieldValue.trim().length > 20)
+    ) {
+      error = " Username is either empty or invalid ";
+    } else if (
+      fieldName === "email" &&
+      !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        fieldValue.trim()
+      )
+    ) {
+      error = "Email is either empty or invalid";
+    } else if (fieldName === "address" && fieldValue.trim() === "") {
+      error = "Address cannot be empty";
+    } else if (fieldName === "state" && fieldValue === "") {
+      error = "State cannot be empty";
+    } else if (fieldName === "bloodGroup" && fieldValue === "") {
+      error = "Blood Group cannot be empty";
+    } else if (fieldName === "district" && fieldValue === "") {
+      error = "District cannot be empty";
+    } else if (
+      fieldName === "pincode" &&
+      !/^[1-9][0-9]{5}$/.test(fieldValue.trim())
+    ) {
+      error = "Invalid pincode format";
+    } else if (
+      fieldName === "password" &&
+      !strongRegex.test(fieldValue.trim())
+    ) {
+      error =
+        "Use 8 or more characters with a mix of letters, numbers & symbols";
+    } else if (
+      fieldName === "cPassword" &&
+      (fieldValue !== data.password || fieldValue === "")
+    ) {
+      error = "Password is either empty or Passwords do not match";
+    } else if (fieldName === "terms" && !fieldValue) {
+      error = "Please accept our terms and conditions";
+    }
+
+    let age = new Date().getFullYear() - new Date(fieldValue).getFullYear();
+    const m = new Date().getMonth() - new Date(fieldValue).getMonth();
+    if (
+      m < 0 ||
+      (m === 0 && new Date().getDate() < new Date(fieldValue).getDate())
+    ) {
+      age--;
+    } else if (fieldName === "dob" && (age < 18 || age > 65)) {
+      error = "User must be between 18 and 65 of age";
+    } else if (fieldName === "phone" && !/^\d{10}$/.test(fieldValue.trim())) {
+      error = "Invalid Phone number";
+    }
+    return error === "" ? null : error;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "terms") {
       const updatedData = { ...data };
       updatedData[e.target.name] = e.target.checked;
       setData(updatedData);
+      const error = validateField(name, value);
+      const updatedErrors = { ...errors };
+      updatedErrors[name] = error;
+      setErrors(updatedErrors);
     } else {
       if (name === "state") {
         setEnable(false);
@@ -155,6 +223,11 @@ function IndividualRegistration(props) {
       const updatedData = { ...data };
       updatedData[name] = value;
       setData(updatedData);
+
+      const error = validateField(name, value);
+      const updatedErrors = { ...errors };
+      updatedErrors[name] = error;
+      setErrors(updatedErrors);
     }
   };
 

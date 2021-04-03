@@ -123,213 +123,217 @@ function Main() {
     <>
       <Navbar />
       <div>
-        <Carousel
-          style={{ marginTop: "5px" }}
-          showArrows={false}
-          // enableAutoPlay
-          // autoPlaySpeed={5000}
-        >
-          {loggedInState.userType === 1 ? null : (
-            <Box className={[classes.hero, classes.box2]}>
-              <Typography variant="h3">Be a bridge for a good deed</Typography>
+        <div>
+          <Carousel
+            style={{ marginTop: "5px" }}
+            showArrows={false}
+            // enableAutoPlay
+            // autoPlaySpeed={5000}
+          >
+            {loggedInState.userType === 1 ? null : (
+              <Box className={[classes.hero, classes.box2]}>
+                <Typography variant="h3">
+                  Be a bridge for a good deed
+                </Typography>
+                <Button
+                  className={classes.button}
+                  component={Link}
+                  to="/OrganiseDrive"
+                  variant="outlined"
+                >
+                  Conduct a Drive
+                </Button>
+              </Box>
+            )}
+
+            <Box className={[classes.hero, classes.box1]}>
+              <Typography variant="h3">
+                Our community is ready to help you
+              </Typography>
               <Button
                 className={classes.button}
-                component={Link}
-                to="/OrganiseDrive"
                 variant="outlined"
+                component={Link}
+                to="/FindDonors"
               >
-                Conduct a Drive
+                Find a Donor
               </Button>
             </Box>
-          )}
 
-          <Box className={[classes.hero, classes.box1]}>
-            <Typography variant="h3">
-              Our community is ready to help you
-            </Typography>
-            <Button
-              className={classes.button}
-              variant="outlined"
-              component={Link}
-              to="/FindDonors"
-            >
-              Find a Donor
-            </Button>
-          </Box>
+            {loggedInState.userType === 3 ? (
+              <Box className={[classes.hero, classes.box3]}>
+                <Typography variant="h3" style={{ padding: "20px" }}>
+                  Today's statistics
+                </Typography>
+                <Grid container justify="center" spacing={5}>
+                  <Grid item>
+                    <Typography variant="h4" className={classes.bbStats}>
+                      Amount collected : ₹ {todaysStats.amountCollected}
+                    </Typography>
+                    <Typography variant="h4" className={classes.bbStats}>
+                      Amount spent : ₹ {todaysStats.amountSpent}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h4" className={classes.bbStats}>
+                      Blood units bought : {todaysStats.unitsBought}
+                    </Typography>
+                    <Typography variant="h4" className={classes.bbStats}>
+                      Blood units sold : {todaysStats.unitsSold}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Box>
+            ) : loggedInState.userType === 1 ? (
+              <Box className={[classes.hero, classes.box3]}>
+                <Typography variant="h3">
+                  See the list of all your invites in one place
+                </Typography>
+                <Button
+                  className={classes.button}
+                  component={Link}
+                  to="/MyInvites"
+                  variant="outlined"
+                >
+                  My Invites
+                </Button>
+              </Box>
+            ) : (
+              <Box className={[classes.hero, classes.box3]}>
+                <Typography variant="h3">
+                  Manage your stock of blood components hassle free
+                </Typography>
+                <Button
+                  className={classes.button}
+                  component={Link}
+                  to="/MyInventory"
+                  variant="outlined"
+                >
+                  Click here
+                </Button>
+              </Box>
+            )}
 
-          {loggedInState.userType === 3 ? (
-            <Box className={[classes.hero, classes.box3]}>
-              <Typography variant="h3" style={{ padding: "20px" }}>
-                Today's statistics
-              </Typography>
-              <Grid container justify="center" spacing={5}>
-                <Grid item>
-                  <Typography variant="h4" className={classes.bbStats}>
-                    Amount collected : ₹ {todaysStats.amountCollected}
-                  </Typography>
-                  <Typography variant="h4" className={classes.bbStats}>
-                    Amount spent : ₹ {todaysStats.amountSpent}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="h4" className={classes.bbStats}>
-                    Blood units bought : {todaysStats.unitsBought}
-                  </Typography>
-                  <Typography variant="h4" className={classes.bbStats}>
-                    Blood units sold : {todaysStats.unitsSold}
-                  </Typography>
-                </Grid>
+            {loggedInState.userType === 1 ? (
+              <Box className={[classes.hero, classes.box2]}>
+                <Typography variant="h3">
+                  Your one deed will save someone's life
+                </Typography>
+                <Button
+                  className={classes.button}
+                  component={Link}
+                  to="/UpcomingDrive"
+                  variant="outlined"
+                >
+                  Donate Now
+                </Button>
+              </Box>
+            ) : null}
+          </Carousel>
+
+          <Container maxWidth="lg" className={classes.blogsContainer}>
+            <Grid container justify="flex-start">
+              <Grid item xs={12} align="center">
+                {loggedInState.userType === 1 ? (
+                  <>
+                    <Typography variant="h4" className={classes.space}>
+                      Hello{" "}
+                      <span style={{ color: "#E94364", fontWeight: "bold" }}>
+                        {name}
+                      </span>
+                      , your current donor status :{" "}
+                      <span style={{ color: "#E94364", fontWeight: "bold" }}>
+                        {notify}
+                      </span>
+                    </Typography>
+                    <Typography variant="h5" className={classes.space}>
+                      Go to{" "}
+                      <Button
+                        component={Link}
+                        to="/profile"
+                        size="large"
+                        color="secondary"
+                      >
+                        Profile
+                      </Button>{" "}
+                      to change the status
+                    </Typography>
+                  </>
+                ) : null}
+                <Divider className={classes.space} />
               </Grid>
-            </Box>
-          ) : loggedInState.userType === 1 ? (
-            <Box className={[classes.hero, classes.box3]}>
-              <Typography variant="h3">
-                See the list of all your invites in one place
-              </Typography>
-              <Button
-                className={classes.button}
-                component={Link}
-                to="/MyInvites"
-                variant="outlined"
-              >
-                My Invites
-              </Button>
-            </Box>
-          ) : (
-            <Box className={[classes.hero, classes.box3]}>
-              <Typography variant="h3">
-                Manage your stock of blood components hassle free
-              </Typography>
-              <Button
-                className={classes.button}
-                component={Link}
-                to="/MyInventory"
-                variant="outlined"
-              >
-                Click here
-              </Button>
-            </Box>
-          )}
+              <Grid item xs={12} align="center">
+                <Typography className={classes.space} variant="h4">
+                  Services provided by us
+                </Typography>
+              </Grid>
+              <Grid container spacing={3}>
+                {loggedInState.userType === 1 ? (
+                  <>
+                    {IndividualServices.map((item, idx) => (
+                      <Grid item xs={12} sm={6} md={3}>
+                        <ServiceCard
+                          key={idx}
+                          img={item.image}
+                          name={item.name}
+                          descp={item.description}
+                          page={item.page}
+                        />
+                      </Grid>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {loggedInState.userType === 3 ? (
+                      <>
+                        {BankServices.map((item, idx) => (
+                          <Grid item xs={12} sm={6} md={3}>
+                            <ServiceCard
+                              key={idx}
+                              img={item.image}
+                              name={item.name}
+                              descp={item.description}
+                              page={item.page}
+                            />
+                          </Grid>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        {HospitalServices.map((item, idx) => (
+                          <Grid item xs={12} sm={6} md={3}>
+                            <ServiceCard
+                              key={idx}
+                              img={item.image}
+                              name={item.name}
+                              descp={item.description}
+                              page={item.page}
+                            />
+                          </Grid>
+                        ))}
+                      </>
+                    )}
+                  </>
+                )}
+              </Grid>
+            </Grid>
 
-          {loggedInState.userType === 1 ? (
-            <Box className={[classes.hero, classes.box2]}>
-              <Typography variant="h3">
-                Your one deed will save someone's life
-              </Typography>
-              <Button
-                className={classes.button}
-                component={Link}
-                to="/UpcomingDrive"
-                variant="outlined"
-              >
-                Donate Now
-              </Button>
-            </Box>
-          ) : null}
-        </Carousel>
-
-        <Container maxWidth="lg" className={classes.blogsContainer}>
-          <Grid container justify="flex-start">
-            <Grid item xs={12} align="center">
-              {loggedInState.userType === 1 ? (
-                <>
-                  <Typography variant="h4" className={classes.space}>
-                    Hello{" "}
-                    <span style={{ color: "#E94364", fontWeight: "bold" }}>
-                      {name}
-                    </span>
-                    , your current donor status :{" "}
-                    <span style={{ color: "#E94364", fontWeight: "bold" }}>
-                      {notify}
-                    </span>
-                  </Typography>
-                  <Typography variant="h5" className={classes.space}>
-                    Go to{" "}
-                    <Button
-                      component={Link}
-                      to="/profile"
-                      size="large"
-                      color="secondary"
-                    >
-                      Profile
-                    </Button>{" "}
-                    to change the status
-                  </Typography>
-                </>
-              ) : null}
-              <Divider className={classes.space} />
+            <Grid className={classes.bloodTable} container justify="center">
+              <Grid item xs={6}>
+                <Typography
+                  variant="h5"
+                  align="center"
+                  style={{ padding: "20px" }}
+                >
+                  Blood Compatibility Table
+                </Typography>
+                <BloodTable />
+              </Grid>
             </Grid>
-            <Grid item xs={12} align="center">
-              <Typography className={classes.space} variant="h4">
-                Services provided by us
-              </Typography>
-            </Grid>
-            <Grid container spacing={3}>
-              {loggedInState.userType === 1 ? (
-                <>
-                  {IndividualServices.map((item, idx) => (
-                    <Grid item xs={12} sm={6} md={3}>
-                      <ServiceCard
-                        key={idx}
-                        img={item.image}
-                        name={item.name}
-                        descp={item.description}
-                        page={item.page}
-                      />
-                    </Grid>
-                  ))}
-                </>
-              ) : (
-                <>
-                  {loggedInState.userType === 3 ? (
-                    <>
-                      {BankServices.map((item, idx) => (
-                        <Grid item xs={12} sm={6} md={3}>
-                          <ServiceCard
-                            key={idx}
-                            img={item.image}
-                            name={item.name}
-                            descp={item.description}
-                            page={item.page}
-                          />
-                        </Grid>
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      {HospitalServices.map((item, idx) => (
-                        <Grid item xs={12} sm={6} md={3}>
-                          <ServiceCard
-                            key={idx}
-                            img={item.image}
-                            name={item.name}
-                            descp={item.description}
-                            page={item.page}
-                          />
-                        </Grid>
-                      ))}
-                    </>
-                  )}
-                </>
-              )}
-            </Grid>
-          </Grid>
-
-          <Grid className={classes.bloodTable} container justify="center">
-            <Grid item xs={6}>
-              <Typography
-                variant="h5"
-                align="center"
-                style={{ padding: "20px" }}
-              >
-                Blood Compatibility Table
-              </Typography>
-              <BloodTable />
-            </Grid>
-          </Grid>
-        </Container>
+          </Container>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 }

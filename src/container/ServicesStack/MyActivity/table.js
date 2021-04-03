@@ -258,7 +258,7 @@ export default function EnhancedTable({ list }) {
                         </p>
                       ) : (
                         <p style={{ fontWeight: "bold", color: "red" }}>
-                          Incomplete
+                          Awaiting
                         </p>
                       )}
                     </TableCell>

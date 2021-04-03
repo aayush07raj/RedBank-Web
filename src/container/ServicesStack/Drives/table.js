@@ -227,7 +227,7 @@ export default function CollapsibleTable() {
               </TableBody>
             </Table>
           </TableContainer>
-          <Container style={{ height: "200px" }}></Container>
+          <Container style={{ height: "250px" }}></Container>
         </div>
       ) : (
         <Grid container justify="center">
@@ -238,7 +238,7 @@ export default function CollapsibleTable() {
               variant="h4"
               className={classes.headingTop}
             >
-              Sorry, no data found
+              Organise a drive to be shown here
             </Typography>
           </Grid>
         </Grid>

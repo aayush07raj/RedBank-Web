@@ -533,7 +533,7 @@ export default function EnhancedTable() {
               </DialogActions>
             </Dialog>
           </Paper>
-          <Container style={{ height: "200px" }}></Container>
+          <Container style={{ height: "250px" }}></Container>
         </div>
       ) : (
         <Grid container justify="center">
@@ -544,7 +544,14 @@ export default function EnhancedTable() {
               variant="h4"
               className={classes.headingTop}
             >
-              Sorry, no data found
+              Not yet
+            </Typography>
+            <Typography
+              align="center"
+              variant="h4"
+              className={classes.headingTop}
+            >
+              Check later someone might need you
             </Typography>
           </Grid>
         </Grid>

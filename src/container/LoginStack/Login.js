@@ -4,7 +4,6 @@ import login from "../../assets/images/login.png";
 import avatar from "../../assets/images/avatar.png";
 import { Grid, Paper, TextField, Button, Typography } from "@material-ui/core";
 import LoggedOutNavbar from "../../component/loggedoutNavbar";
-import axios from "axios";
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { logging } from "../../redux/Actions/login";
@@ -67,25 +66,27 @@ function Login() {
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
-    const errors = validateField(name, value);
-    setErrors(errors);
+    const error = validateField(name, value);
+    const updatedErrors = { ...errors };
+    updatedErrors[name] = error;
+    setErrors(updatedErrors);
   };
 
-  const validateField = (fieldName) => {
-    const errors = {};
+  const validateField = (fieldName, fieldValue) => {
+    var error = "";
 
     if (
       fieldName === "email" &&
       !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-        data.email.trim()
+        fieldValue.trim()
       )
     ) {
-      errors.email = "Email is either empty or invalid";
-    } else if (fieldName === "password" && !data.password) {
-      errors.password = "Password cannot be empty";
+      error = "Email is either empty or invalid";
+    } else if (fieldName === "password" && !fieldValue) {
+      error = "Password cannot be empty";
     }
 
-    return Object.keys(errors).length === 0 ? null : errors;
+    return error === "" ? null : error;
   };
 
   const validate = () => {

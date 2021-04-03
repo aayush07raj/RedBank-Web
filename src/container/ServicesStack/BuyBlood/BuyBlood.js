@@ -62,6 +62,11 @@ function BuyBlood() {
     const updatedData = { ...data };
     updatedData[name] = value;
     setData(updatedData);
+
+    const error = validateField(name, value);
+    const updatedErrors = { ...errors };
+    updatedErrors[name] = error;
+    setErrors(updatedErrors);
   };
 
   const validate = () => {
@@ -86,6 +91,33 @@ function BuyBlood() {
       errors.location = "Location cannot be empty";
     }
     return Object.keys(errors).length === 0 ? null : errors;
+  };
+  const validateField = (fieldName, fieldValue) => {
+    var error = "";
+
+    if (fieldName === "bg" && fieldValue.trim() === "") {
+      error = "Bloood Group cannot be empty";
+    }
+    if (fieldName === "component" && fieldValue.trim() === "") {
+      error = "Component cannot be empty";
+    }
+    if (fieldName === "units" && fieldValue.trim() === "") {
+      error = "Units cannot be empty";
+    }
+    if (fieldName === "component" && fieldValue.trim() === "") {
+      error = "Component cannot be empty";
+    }
+    if (fieldName === "reason" && fieldValue === "") {
+      error = "Reason cannot be empty";
+    }
+    if (
+      fieldName === "location" &&
+      fieldValue.trim() === "" &&
+      loggedInState.userType === 1
+    ) {
+      error = "Location cannot be empty";
+    }
+    return error === "" ? null : error;
   };
 
   const handleSubmit = (e) => {
@@ -279,7 +311,7 @@ function BuyBlood() {
                 <FormControl
                   variant="outlined"
                   className={classes.formControl}
-                  error={errors && errors.bg ? true : false}
+                  error={errors && errors.reason ? true : false}
                 >
                   <InputLabel>Select reason for purchase*</InputLabel>
                   <Select
