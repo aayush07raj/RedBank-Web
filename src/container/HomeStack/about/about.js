@@ -29,7 +29,7 @@ import api from "../../../Apis/api";
 const useStyles = makeStyles((theme) => ({
   hero: {
     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://elements-cover-images-0.imgix.net/6e855666-1764-4019-be9e-998505bd3fdf?auto=compress&crop=edges&fit=crop&fm=jpeg&h=630&w=1200&s=fffbff5628fab9da0e2697d748790e92')`,
-    height: "600px",
+    height: "500px",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
@@ -241,8 +241,10 @@ function About(props) {
           </Grid>
           <Grid container className={classes.blogsContainer} justify="center">
             <Grid item xs={12} align="center">
-              <Typography variant="h4">FAQS</Typography>
               <Divider />
+              <Typography className={classes.blogsContainer} variant="h4">
+                FAQS
+              </Typography>
             </Grid>
 
             <Grid item xs={6}>
