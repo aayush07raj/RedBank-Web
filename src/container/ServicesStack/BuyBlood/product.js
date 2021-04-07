@@ -190,21 +190,18 @@ const Product = (props) => {
                     </Typography>
                   </Grid>
                 </Grid>
-                <Grid align="center" item xs={12}>
+                <Grid item xs={12}>
                   <Divider />
-                  <Typography
-                    className={[classes.note, classes.typo]}
-                    variant="body2"
-                  >
-                    Important note : Booked blood must be collected within 24
-                    hrs
+                  <Typography className={[classes.note]} variant="body2">
+                    Important note :
                   </Typography>
-                  <Typography
-                    className={[classes.note, classes.typo]}
-                    variant="body2"
-                  >
-                    Important note : Bring your Identity card for your
-                    verification, once you come for the transfusion.
+                  <Typography className={[classes.note]} variant="body2">
+                    1. Booked blood must be collected within 24 hrs
+                  </Typography>
+                  <Typography className={[classes.note]} variant="body2">
+                    2. Bring your Identity card for your verification along with
+                    other necessary documents, when you come for the
+                    transfusion.
                   </Typography>
                 </Grid>
                 <Grid align="center" item xs={12}>

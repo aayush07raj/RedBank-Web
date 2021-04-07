@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     color: "white",
     marginTop: "20px",
-    border: "2px solid #e94364",
+    border: "2px solid white",
   },
   bbStats: {
     padding: theme.spacing(2),

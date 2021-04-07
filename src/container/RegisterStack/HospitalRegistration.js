@@ -219,7 +219,7 @@ function HospitalRegistration(props) {
     }
     for (let i = 0; i < data.phone.length; i++) {
       if (data.phone[i].length !== 10) {
-        errors.phone[i] = "wrong number";
+        errors.phone[i] = "Invalid Phone number";
       } else {
         errors.phone[i] = "";
       }

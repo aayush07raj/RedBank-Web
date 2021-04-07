@@ -551,7 +551,7 @@ export default function EnhancedTable() {
               variant="h4"
               className={classes.headingTop}
             >
-              Check later someone might need you
+              Check later, someone might need you
             </Typography>
           </Grid>
         </Grid>

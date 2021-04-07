@@ -58,7 +58,7 @@ function MyPurchase() {
                     variant="h4"
                     className={classes.headingTop}
                   >
-                    Not yet, Buy something!
+                    Not purchases made yet !
                   </Typography>
                 </Grid>
               </Grid>

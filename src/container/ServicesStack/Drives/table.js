@@ -238,7 +238,7 @@ export default function CollapsibleTable() {
               variant="h4"
               className={classes.headingTop}
             >
-              Organise a drive to be shown here
+              No drives to be shown !
             </Typography>
           </Grid>
         </Grid>

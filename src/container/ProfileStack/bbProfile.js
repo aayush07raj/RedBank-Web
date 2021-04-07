@@ -81,7 +81,7 @@ function BbProfile() {
   });
 
   const [errors, setErrors] = useState({
-    phone: "",
+    phone: ["", "", "", "", ""],
     license_number: "",
     address: "",
     state: "",
@@ -92,7 +92,16 @@ function BbProfile() {
   });
 
   const validate = () => {
-    const errors = {};
+    const errors = {
+      phone: ["", "", "", "", ""],
+      license_number: "",
+      address: "",
+      state: "",
+      district: "",
+      pincode: "",
+      password: "",
+      cpassword: "",
+    };
 
     if (fulldata.address.trim() === "") {
       errors.address = "Address cannot be empty";
@@ -106,20 +115,12 @@ function BbProfile() {
     if (!/^[1-9][0-9]{5}$/.test(fulldata.pincode.trim())) {
       errors.pincode = "Invalid pincode format";
     }
-    if (fulldata.phone.length >= 1 && !fulldata.phone[0]) {
-      errors.phone = "wrong number";
-    }
-    if (fulldata.phone.length >= 2 && !fulldata.phone[1]) {
-      errors.phone = "wrong number";
-    }
-    if (fulldata.phone.length >= 3 && !fulldata.phone[2]) {
-      errors.phone = "wrong number";
-    }
-    if (fulldata.phone.length >= 4 && !fulldata.phone[3]) {
-      errors.phone = "wrong number";
-    }
-    if (fulldata.phone.length >= 5 && !fulldata.phone[4]) {
-      errors.phone = "wrong number";
+    for (let i = 0; i < fulldata.phone.length; i++) {
+      if (fulldata.phone[i].length !== 10) {
+        errors.phone[i] = "Invalid Phone number";
+      } else {
+        errors.phone[i] = "";
+      }
     }
 
     return Object.keys(errors).length === 0 ? null : errors;
@@ -138,16 +139,8 @@ function BbProfile() {
       !/^[1-9][0-9]{5}$/.test(fieldValue.trim())
     ) {
       error = "Invalid pincode format";
-    } else if (fulldata.phone.length >= 1 && !fulldata.phone[0]) {
-      errors.phone = "wrong number";
-    } else if (fulldata.phone.length >= 2 && !fulldata.phone[1]) {
-      errors.phone = "wrong number";
-    } else if (fulldata.phone.length >= 3 && !fulldata.phone[2]) {
-      errors.phone = "wrong number";
-    } else if (fulldata.phone.length >= 4 && !fulldata.phone[3]) {
-      errors.phone = "wrong number";
-    } else if (fulldata.phone.length >= 5 && !fulldata.phone[4]) {
-      errors.phone = "wrong number";
+    } else if (fieldName === "phone" && !/^\d{10}$/.test(fieldValue.trim())) {
+      error = "Invalid Phone number";
     }
 
     return error === "" ? null : error;
@@ -168,7 +161,6 @@ function BbProfile() {
     return Object.keys(errors).length === 0 ? null : errors;
   };
 
-  const [touched, setTouched] = useState([false, false, false, false, false]);
   const [maxLimit, setMaxLimit] = useState("Add");
   const [enable, setEnable] = useState(true);
   const [visibility, setVisibility] = useState("visible");
@@ -178,6 +170,22 @@ function BbProfile() {
     const updatedData = { ...fulldata };
     updatedData.phone[id] = e.target.value;
     setfulldata(updatedData);
+
+    const { name, value } = e.target;
+    const error = validateField("phone", value);
+    if (error) {
+      setErrors((prevState) => {
+        const updatedPhoneErrors = [...prevState.phone];
+        updatedPhoneErrors[id] = error;
+        return { ...prevState, phone: updatedPhoneErrors };
+      });
+    } else {
+      setErrors((prevState) => {
+        const updatedPhoneErrors = [...prevState.phone];
+        updatedPhoneErrors[id] = "";
+        return { ...prevState, phone: updatedPhoneErrors };
+      });
+    }
   };
 
   const handleAdd = () => {
@@ -255,11 +263,10 @@ function BbProfile() {
   const handleSave = (e) => {
     e.preventDefault();
     const errors = validate();
-    setTouched([true, true, true, true, true]);
-    setErrors(errors);
-    if (errors) return;
 
-    // if(validate()){
+    setErrors(errors);
+
+    // if (errors) return;
 
     api
       .put()
@@ -325,6 +332,7 @@ function BbProfile() {
     if (errors) {
       return;
     }
+
     api
       .put()
       .changePassword(
@@ -534,16 +542,15 @@ function BbProfile() {
                       value={val}
                       onChange={(e) => {
                         handleNumberChange(e, idx);
-                        setTouched((prevState) => {
-                          let newState = [...prevState];
-                          newState[idx] = true;
-                          return newState;
-                        });
                       }}
                       key={idx}
                       inputProps={{
                         maxLength: 10,
                       }}
+                      error={errors.phone[idx] !== "" ? true : false}
+                      helperText={
+                        errors.phone[idx] !== "" ? errors.phone[idx] : ""
+                      }
                     />
                   )}
                 </Grid>

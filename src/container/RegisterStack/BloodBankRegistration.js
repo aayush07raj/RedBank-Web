@@ -221,7 +221,7 @@ function BloodBankRegistration(props) {
     }
     for (let i = 0; i < data.phone.length; i++) {
       if (data.phone[i].length !== 10) {
-        errors.phone[i] = "wrong number";
+        errors.phone[i] = "Invalid Phone number";
       } else {
         errors.phone[i] = "";
       }
@@ -293,8 +293,13 @@ function BloodBankRegistration(props) {
 
     const errors = validate();
 
+    console.log(errors);
+
     setErrors(errors);
+
     if (errors) return;
+
+    console.log("2");
 
     // showing progress bar
     setIndicatorOpen(true);

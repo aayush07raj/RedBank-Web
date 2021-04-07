@@ -61,7 +61,7 @@ function MySales() {
                     variant="h4"
                     className={classes.headingTop}
                   >
-                    Not yet.
+                    No sales made yet.
                   </Typography>
                 </Grid>
               </Grid>
