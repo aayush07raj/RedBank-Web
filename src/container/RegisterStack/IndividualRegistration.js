@@ -186,6 +186,8 @@ function IndividualRegistration(props) {
       error = "Password is either empty or Passwords do not match";
     } else if (fieldName === "terms" && !fieldValue) {
       error = "Please accept our terms and conditions";
+    } else if (fieldName === "phone" && !/^\d{10}$/.test(fieldValue.trim())) {
+      error = "Invalid Phone number";
     }
 
     let age = new Date().getFullYear() - new Date(fieldValue).getFullYear();
@@ -197,8 +199,6 @@ function IndividualRegistration(props) {
       age--;
     } else if (fieldName === "dob" && (age < 18 || age > 65)) {
       error = "User must be between 18 and 65 of age";
-    } else if (fieldName === "phone" && !/^\d{10}$/.test(fieldValue.trim())) {
-      error = "Invalid Phone number";
     }
     return error === "" ? null : error;
   };

@@ -117,11 +117,22 @@ function HospitalRegistration(props) {
     const updatedData = { ...data };
     updatedData.phone[id] = e.target.value;
     setData(updatedData);
+
     const { name, value } = e.target;
-    const error = validateField(name, value);
-    const updatedErrors = { ...errors };
-    updatedErrors[name] = error;
-    setErrors(updatedErrors);
+    const error = validateField("phone", value);
+    if (error) {
+      setErrors((prevState) => {
+        const updatedPhoneErrors = [...prevState.phone];
+        updatedPhoneErrors[id] = error;
+        return { ...prevState, phone: updatedPhoneErrors };
+      });
+    } else {
+      setErrors((prevState) => {
+        const updatedPhoneErrors = [...prevState.phone];
+        updatedPhoneErrors[id] = "";
+        return { ...prevState, phone: updatedPhoneErrors };
+      });
+    }
   };
 
   const handleAdd = () => {
@@ -149,7 +160,19 @@ function HospitalRegistration(props) {
     const strongRegex = new RegExp(
       "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
     );
-    const errors = {};
+    const errors = {
+      name: "",
+      email: "",
+      license: "",
+      phone: ["", "", "", "", ""],
+      address: "",
+      state: "",
+      district: "",
+      pincode: "",
+      password: "",
+      cPassword: "",
+      terms: "",
+    };
 
     if (
       data.name.trim() === "" ||
@@ -194,20 +217,12 @@ function HospitalRegistration(props) {
     if (!data.terms) {
       errors.terms = "Please accept our terms and conditions";
     }
-    if (data.phone.length >= 1 && !data.phone[0]) {
-      errors.phone = "wrong number";
-    }
-    if (data.phone.length >= 2 && !data.phone[1]) {
-      errors.phone = "wrong number";
-    }
-    if (data.phone.length >= 3 && !data.phone[2]) {
-      errors.phone = "wrong number";
-    }
-    if (data.phone.length >= 4 && !data.phone[3]) {
-      errors.phone = "wrong number";
-    }
-    if (data.phone.length >= 5 && !data.phone[4]) {
-      errors.phone = "wrong number";
+    for (let i = 0; i < data.phone.length; i++) {
+      if (data.phone[i].length !== 10) {
+        errors.phone[i] = "wrong number";
+      } else {
+        errors.phone[i] = "";
+      }
     }
 
     return Object.keys(errors).length === 0 ? null : errors;
@@ -264,7 +279,10 @@ function HospitalRegistration(props) {
       error = "Password is either empty or Passwords do not match";
     } else if (fieldName === "terms" && !fieldValue) {
       error = "Please accept our terms and conditions";
+    } else if (fieldName === "phone" && !/^\d{10}$/.test(fieldValue.trim())) {
+      error = "Invalid Phone number";
     }
+
     return error === "" ? null : error;
   };
 
@@ -463,20 +481,13 @@ function HospitalRegistration(props) {
                   value={val}
                   onChange={(e) => {
                     handleNumberChange(e, idx);
-                    setTouched((prevState) => {
-                      let newState = [...prevState];
-                      newState[idx] = true;
-                      return newState;
-                    });
                   }}
                   key={idx}
                   inputProps={{
                     maxLength: 10,
                   }}
-                  error={!data.phone[idx] && touched[idx] ? true : false}
-                  helperText={
-                    !data.phone[idx] && touched[idx] ? errors.phone : ""
-                  }
+                  error={errors.phone[idx] !== "" ? true : false}
+                  helperText={errors.phone[idx] !== "" ? errors.phone[idx] : ""}
                 />
               ))}
               <div>

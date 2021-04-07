@@ -11,7 +11,6 @@ import HospitalRegistration from "./container/RegisterStack/HospitalRegistration
 import BloodBankRegistration from "./container/RegisterStack/BloodBankRegistration";
 import Home from "./container/HomeStack/home/main";
 import Terms from "./container/RegisterStack/terms";
-import Test from "./container/RegisterStack/Test";
 import Profile from "./container/ProfileStack/index";
 import About from "./container/HomeStack/about/about";
 import { useSelector, useDispatch } from "react-redux";
