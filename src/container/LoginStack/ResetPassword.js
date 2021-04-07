@@ -46,10 +46,8 @@ function ResetPassword(props) {
         newPassword: password,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.success) {
           setOpen(true);
-          dispatch(resetPassword());
         }
       });
   };
@@ -75,7 +73,8 @@ function ResetPassword(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
-    history.push("/login");
+    dispatch(resetPassword());
+    history.push("/Login");
     setOpen(false);
   };
 
