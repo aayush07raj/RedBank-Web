@@ -340,7 +340,6 @@ export default function MenuAppBar({ user }) {
                                         fontSize: "13px",
                                         backgroundColor: "#E94364",
                                         color: "white",
-                                        border: "1px solid #000000",
                                       }
                                 }
                               >

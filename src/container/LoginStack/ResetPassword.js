@@ -149,7 +149,7 @@ function ResetPassword(props) {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>{"Success"}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
+            <DialogContentText>
               Password changed successfully.
             </DialogContentText>
           </DialogContent>
