@@ -78,7 +78,7 @@ const headCells = [
   {
     id: "location",
 
-    label: "Location",
+    label: "Clinic/Hospital",
   },
   {
     id: "soldQuantity",

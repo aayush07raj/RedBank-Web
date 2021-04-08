@@ -114,7 +114,7 @@ function Footer() {
                 to="/MyDonationReq"
                 className={classes.text}
               >
-                My Donation Request
+                My Requests
               </Button>
             </ul>
             <ul>

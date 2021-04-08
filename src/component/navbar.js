@@ -459,7 +459,7 @@ export default function MenuAppBar({ user }) {
                                 to="/MyDonationReq"
                                 variant="h7"
                               >
-                                My Donation Requests
+                                My Requests
                               </Button>
                             </MenuItem>
                             <MenuItem onClick={handleClose2}>
@@ -531,7 +531,7 @@ export default function MenuAppBar({ user }) {
                                     to="/MyDonationReq"
                                     variant="h7"
                                   >
-                                    My Donation Requests
+                                    My Requests
                                   </Button>
                                 </MenuItem>
                                 <MenuItem onClick={handleClose2}>
@@ -634,7 +634,7 @@ export default function MenuAppBar({ user }) {
                                     to="/MyDonationReq"
                                     variant="h7"
                                   >
-                                    My Donation Requests
+                                    My Requests
                                   </Button>
                                 </MenuItem>
                                 <MenuItem onClick={handleClose2}>

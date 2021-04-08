@@ -137,7 +137,7 @@ function InviteesList(props) {
           </Table>
         </TableContainer>
       </Container>
-      <Container style={{ height: "290px" }} />
+      <Container style={{ height: "350px" }} />
       <Footer />
     </>
   );
