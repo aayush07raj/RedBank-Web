@@ -433,14 +433,18 @@ function ConductDrive() {
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button component={Link} to="/MyDrives">
-                      Go to My Drives
-                    </Button>
                     <Button
-                      style={{ backgroundColor: "#E94364", color: "white" }}
+                      className={classes.confirmBtn}
                       onClick={handleClosed}
                     >
                       Ok
+                    </Button>
+                    <Button
+                      component={Link}
+                      to="/MyDrives"
+                      className={classes.confirmBtn}
+                    >
+                      Go to My Drives
                     </Button>
                   </DialogActions>
                 </Dialog>

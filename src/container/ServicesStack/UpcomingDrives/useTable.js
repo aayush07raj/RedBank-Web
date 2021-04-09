@@ -18,8 +18,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import api from "../../../Apis/api";
-
-import axios from "axios";
 import { useSelector } from "react-redux";
 
 function descendingComparator(a, b, orderBy) {
@@ -180,8 +178,6 @@ export default function EnhancedTable({ list }) {
   const [orderBy, setOrderBy] = React.useState("contact");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [dialogTitle, setTitle] = useState("");
-  const [dialogDescp, setDescp] = useState("");
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -203,7 +199,7 @@ export default function EnhancedTable({ list }) {
       .post()
       .registerForDrive(
         {
-          driveId: "DRV01",
+          driveId,
         },
         {
           headers: {
@@ -218,10 +214,7 @@ export default function EnhancedTable({ list }) {
           setOpen2(true);
         }
       })
-      .catch((err) => {
-        setTitle("Server Error");
-        setDescp(err);
-      });
+      .catch((err) => {});
   };
 
   const [open, setOpen] = React.useState(false);
@@ -301,10 +294,7 @@ export default function EnhancedTable({ list }) {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button
-              onClick={handleClose}
-              style={{ backgroundColor: "#E94364", color: "white" }}
-            >
+            <Button onClick={handleClose} className={classes.confirmBtn}>
               Ok
             </Button>
           </DialogActions>
@@ -316,10 +306,7 @@ export default function EnhancedTable({ list }) {
             <DialogContentText>You are already registered</DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button
-              onClick={handleClose2}
-              style={{ backgroundColor: "#E94364", color: "white" }}
-            >
+            <Button onClick={handleClose2} className={classes.confirmBtn}>
               Ok
             </Button>
           </DialogActions>

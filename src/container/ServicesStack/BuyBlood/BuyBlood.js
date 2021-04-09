@@ -368,11 +368,7 @@ function BuyBlood() {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button
-                  onClick={handleClose}
-                  style={{ backgroundColor: "#E94364", color: "white" }}
-                  autoFocus
-                >
+                <Button onClick={handleClose} className={classes.confirmBtn}>
                   Ok
                 </Button>
               </DialogActions>

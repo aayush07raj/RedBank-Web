@@ -21,6 +21,10 @@ export const useStyles = makeStyles((theme) => ({
   container: {
     margin: "20px auto",
   },
+  confirmBtn: {
+    color: "#E94364",
+    fontWeight: "bold",
+  },
   header: {
     marginTop: "10px",
     alignContent: "center",

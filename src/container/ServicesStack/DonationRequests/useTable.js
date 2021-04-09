@@ -399,7 +399,7 @@ export default function EnhancedTable() {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose} className={classes.confirmBtn}>
                   Ok
                 </Button>
               </DialogActions>

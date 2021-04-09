@@ -24,6 +24,10 @@ export const useStyles = makeStyles((theme) => ({
     margin: "auto",
     padding: theme.spacing(2),
   },
+  confirmBtn: {
+    color: "#E94364",
+    fontWeight: "bold",
+  },
   formControl: {
     marginTop: theme.spacing(3),
     minWidth: 250,

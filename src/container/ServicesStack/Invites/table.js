@@ -526,10 +526,16 @@ export default function EnhancedTable() {
                       fullWidth
                     />
                     <DialogActions>
-                      <Button onClick={handleReject} color="variant">
+                      <Button
+                        onClick={handleReject}
+                        className={classes.confirmBtn}
+                      >
                         Submit
                       </Button>
-                      <Button onClick={handleClose} color="variant">
+                      <Button
+                        onClick={handleClose}
+                        className={classes.confirmBtn}
+                      >
                         Cancel
                       </Button>
                     </DialogActions>
@@ -543,7 +549,10 @@ export default function EnhancedTable() {
                       Check My Activity section for regular updates
                     </DialogContentText>
                     <DialogActions>
-                      <Button onClick={handleClose} color="variant">
+                      <Button
+                        onClick={handleClose}
+                        className={classes.confirmBtn}
+                      >
                         Ok
                       </Button>
                     </DialogActions>

@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
     },
   },
+  confirmBtn: {
+    color: "#E94364",
+    fontWeight: "bold",
+  },
   marginTop: {
     marginTop: "20px",
   },
@@ -711,10 +715,10 @@ function HosProfile() {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={changePassword} color="primary">
+              <Button onClick={changePassword} className={classes.confirmBtn}>
                 Submit
               </Button>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={handleClose} className={classes.confirmBtn}>
                 Cancel
               </Button>
             </DialogActions>
@@ -734,8 +738,7 @@ function HosProfile() {
                   handleCloseEdit();
                   setEdit(false);
                 }}
-                color="primary"
-                autoFocus
+                className={classes.confirmBtn}
               >
                 Got it
               </Button>
@@ -751,7 +754,7 @@ function HosProfile() {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleCloseSave} color="primary" autoFocus>
+              <Button onClick={handleCloseSave} className={classes.confirmBtn}>
                 Ok
               </Button>
             </DialogActions>

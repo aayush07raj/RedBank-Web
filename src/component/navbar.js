@@ -47,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
   space: {
     margin: "auto",
   },
+  button: {
+    color: "#E94364",
+    fontWeight: "bold",
+  },
   logo: {
     height: 40,
   },
@@ -759,15 +763,19 @@ export default function MenuAppBar({ user }) {
             </Popper>
 
             <Dialog open={open4} onClose={handleClose4}>
-              <DialogTitle>{"Confirm logout"}</DialogTitle>
+              <DialogTitle>Confirm logout</DialogTitle>
               <DialogContent dividers>
                 <DialogContentText>
                   Are you sure you want to logout ?
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose4}>No</Button>
-                <Button onClick={handleLogout}>Yes</Button>
+                <Button onClick={handleLogout} className={classes.button}>
+                  Yes
+                </Button>
+                <Button onClick={handleClose4} className={classes.button}>
+                  No
+                </Button>
               </DialogActions>
             </Dialog>
           </div>

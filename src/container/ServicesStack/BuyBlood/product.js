@@ -226,8 +226,12 @@ const Product = (props) => {
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleSubmit}>Yes</Button>
-                  <Button onClick={handleClosed}>No</Button>
+                  <Button onClick={handleSubmit} className={classes.confirmBtn}>
+                    Yes
+                  </Button>
+                  <Button onClick={handleClosed} className={classes.confirmBtn}>
+                    No
+                  </Button>
                 </DialogActions>
               </Dialog>
 
@@ -241,10 +245,19 @@ const Product = (props) => {
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button component={Link} to="/MyPurchases">
+                  <Button
+                    onClick={handleClosed2}
+                    className={classes.confirmBtn}
+                  >
+                    Ok
+                  </Button>
+                  <Button
+                    component={Link}
+                    className={classes.confirmBtn}
+                    to="/MyPurchases"
+                  >
                     Go to My Purhcases
                   </Button>
-                  <Button onClick={handleClosed2}>Ok</Button>
                 </DialogActions>
               </Dialog>
 

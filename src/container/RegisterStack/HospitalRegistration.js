@@ -665,7 +665,7 @@ function HospitalRegistration(props) {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={handleClose} className={classes.confirmBtn}>
                 Ok
               </Button>
             </DialogActions>
@@ -690,10 +690,10 @@ function HospitalRegistration(props) {
               />
             </DialogContent>
             <DialogActions>
-              <Button color="inherit" onClick={handleClose2}>
+              <Button className={classes.confirmBtn} onClick={handleClose2}>
                 Verify
               </Button>
-              <Button onClick={changeEmail} color="inherit">
+              <Button onClick={changeEmail} className={classes.confirmBtn}>
                 Change Email
               </Button>
             </DialogActions>

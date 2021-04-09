@@ -611,7 +611,7 @@ function IndividualRegistration(props) {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={handleClose} className={classes.confirmBtn}>
                 Ok
               </Button>
             </DialogActions>
@@ -639,10 +639,10 @@ function IndividualRegistration(props) {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose2} color="inherit">
+              <Button onClick={handleClose2} className={classes.confirmBtn}>
                 Verify
               </Button>
-              <Button onClick={changeEmail} color="inherit">
+              <Button onClick={changeEmail} className={classes.confirmBtn}>
                 Change Email
               </Button>
             </DialogActions>

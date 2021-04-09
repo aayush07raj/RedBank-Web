@@ -113,6 +113,7 @@ function UpcomingDrive() {
           if (response.data.length != 0) {
             setState(response.data);
           } else {
+            setState([]);
             handleClickOpen();
           }
         })
@@ -233,10 +234,7 @@ function UpcomingDrive() {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button
-                onClick={handleClose}
-                style={{ backgroundColor: "#E94364", color: "white" }}
-              >
+              <Button onClick={handleClose} className={classes.confirmBtn}>
                 Ok
               </Button>
             </DialogActions>

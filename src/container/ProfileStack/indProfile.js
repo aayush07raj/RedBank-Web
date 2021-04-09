@@ -55,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
       height: 120,
     },
   },
+  confirmBtn: {
+    color: "#E94364",
+    fontWeight: "bold",
+  },
   imgNonEligible: {
     marginBottom: "20px",
     height: 200,
@@ -752,10 +756,10 @@ function IndProfile() {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={changePassword} color="primary">
+              <Button onClick={changePassword} className={classes.confirmBtn}>
                 Submit
               </Button>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={handleClose} className={classes.confirmBtn}>
                 Cancel
               </Button>
             </DialogActions>
@@ -775,8 +779,7 @@ function IndProfile() {
                   handleCloseEdit();
                   setEdit(false);
                 }}
-                color="primary"
-                autoFocus
+                className={classes.confirmBtn}
               >
                 Got it
               </Button>
@@ -792,7 +795,7 @@ function IndProfile() {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleCloseSave} color="primary" autoFocus>
+              <Button onClick={handleCloseSave} className={classes.confirmBtn}>
                 Ok
               </Button>
             </DialogActions>
