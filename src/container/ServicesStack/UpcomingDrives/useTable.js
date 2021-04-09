@@ -213,13 +213,9 @@ export default function EnhancedTable({ list }) {
       )
       .then((response) => {
         if (response.data.success) {
-          setTitle("Registration Successful");
-          setDescp("You have been successfully registered");
           setOpen(true);
         } else {
-          setTitle("Registration Failed");
-          setDescp("You are already registered");
-          setOpen(true);
+          setOpen2(true);
         }
       })
       .catch((err) => {
@@ -230,8 +226,13 @@ export default function EnhancedTable({ list }) {
 
   const [open, setOpen] = React.useState(false);
 
+  const [open2, setOpen2] = React.useState(false);
+
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleClose2 = () => {
+    setOpen2(false);
   };
 
   return (
@@ -293,13 +294,30 @@ export default function EnhancedTable({ list }) {
 
         {/* dialog for succesfully registered, already registered */}
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>{dialogTitle}</DialogTitle>
+          <DialogTitle>Registration Successful</DialogTitle>
           <DialogContent dividers>
-            <DialogContentText>{dialogDescp}</DialogContentText>
+            <DialogContentText>
+              You have been successfully registered
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button
               onClick={handleClose}
+              style={{ backgroundColor: "#E94364", color: "white" }}
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog open={open2} onClose={handleClose2}>
+          <DialogTitle>Registration Failed</DialogTitle>
+          <DialogContent dividers>
+            <DialogContentText>You are already registered</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleClose2}
               style={{ backgroundColor: "#E94364", color: "white" }}
             >
               Ok

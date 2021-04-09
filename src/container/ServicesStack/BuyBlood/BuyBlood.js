@@ -361,7 +361,7 @@ function BuyBlood() {
             {/* dialog for results */}
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle>{"No results found"}</DialogTitle>
-              <DialogContent>
+              <DialogContent dividers>
                 <DialogContentText>
                   Either there are no blood banks found in the selected
                   location, or they dont meet your requirements.

@@ -221,13 +221,13 @@ const Product = (props) => {
                 <DialogTitle>Confirm Purchase</DialogTitle>
                 <DialogContent dividers>
                   <DialogContentText>
-                    are you sure you want to proceed ?. You will not be able to
+                    Are you sure you want to proceed ? You will not be able to
                     cancel the transaction after this.
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleClosed}>No</Button>
                   <Button onClick={handleSubmit}>Yes</Button>
+                  <Button onClick={handleClosed}>No</Button>
                 </DialogActions>
               </Dialog>
 

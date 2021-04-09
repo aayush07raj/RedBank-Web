@@ -393,7 +393,7 @@ export default function EnhancedTable() {
             {/* dialog for no list ot be shown */}
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle>{"Not Found"}</DialogTitle>
-              <DialogContent>
+              <DialogContent dividers>
                 <DialogContentText>
                   Sorry, no list to be shown
                 </DialogContentText>

@@ -278,7 +278,7 @@ function FindDonors() {
             {/* dialog for results */}
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle>{"No results found"}</DialogTitle>
-              <DialogContent>
+              <DialogContent dividers>
                 <DialogContentText>
                   No active donors found in the selected location
                 </DialogContentText>

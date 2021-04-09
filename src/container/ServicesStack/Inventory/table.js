@@ -190,7 +190,7 @@ export default function CustomizedTables() {
       {/* dialog for verifying current password */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Verify current password</DialogTitle>
-        <DialogContent>
+        <DialogContent dividers>
           <DialogContentText>
             For security reasons, please enter your current password
           </DialogContentText>
@@ -207,10 +207,10 @@ export default function CustomizedTables() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="variant">
             Cancel
           </Button>
-          <Button onClick={handleEdit} color="primary">
+          <Button onClick={handleEdit} color="variant">
             Verify
           </Button>
         </DialogActions>
@@ -223,7 +223,7 @@ export default function CustomizedTables() {
           <DialogContentText>{errorMsg}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose2} color="primary" autoFocus>
+          <Button onClick={handleClose2} color="variant" autoFocus>
             Got it
           </Button>
         </DialogActions>

@@ -681,7 +681,7 @@ function HosProfile() {
             fullWidth={true}
           >
             <DialogTitle>Change Password</DialogTitle>
-            <DialogContent>
+            <DialogContent dividers>
               <DialogContentText>
                 Please enter your new password and confirm it
               </DialogContentText>
@@ -723,7 +723,7 @@ function HosProfile() {
           {/* dialog for edit profile */}
           <Dialog open={openEdit} onClose={handleCloseEdit}>
             <DialogTitle>{"Start editing"}</DialogTitle>
-            <DialogContent>
+            <DialogContent dividers>
               <DialogContentText>
                 Go ahead, you can start editing
               </DialogContentText>
@@ -745,7 +745,7 @@ function HosProfile() {
           {/* dialog for save profile, password changed successfully */}
           <Dialog open={openSave} onClose={handleCloseSave}>
             <DialogTitle>{"Success"}</DialogTitle>
-            <DialogContent>
+            <DialogContent dividers>
               <DialogContentText>
                 All changes saved successfully
               </DialogContentText>

@@ -242,7 +242,7 @@ export default function EnhancedTable() {
         )
         .then((response) => {
           // if (response.data.success) {
-          setAcceptance(1);
+          // setAcceptance(1);
           setTitle("Invite accepted");
           setDescp("Check My Activity section for regular updates");
           setOpen(true);
@@ -272,7 +272,7 @@ export default function EnhancedTable() {
         )
         .then((response) => {
           // if (response.data.success) {
-          setAcceptance(1);
+          // setAcceptance(1);
           setTitle("Invite accepted");
           setDescp("Check My Activity section for regular updates");
           setOpen(true);
@@ -290,7 +290,7 @@ export default function EnhancedTable() {
   const [index, setIndex] = useState(0);
 
   const handleReject = () => {
-    setAcceptance(false);
+    // setAcceptance(false);
     setTitle("Are you sure");
     setDescp("Please enter your reason of rejection");
     setOpen(true);
@@ -356,6 +356,13 @@ export default function EnhancedTable() {
 
   // dialog
   const [open, setOpen] = React.useState(false);
+
+  // state for confirmation dialog
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClosed2 = () => {
+    setOpen2(false);
+  };
 
   const handleClose = () => {
     setRejectionMessage("");
@@ -453,7 +460,10 @@ export default function EnhancedTable() {
                                 <Button
                                   type="button"
                                   variant="contained"
-                                  onClick={(e) => handleAccept(index)}
+                                  onClick={(e) => {
+                                    handleAccept(index);
+                                    setAcceptance(true);
+                                  }}
                                   style={{
                                     backgroundColor: "#E94364",
                                     color: "white",
@@ -472,6 +482,7 @@ export default function EnhancedTable() {
                                   onClick={(e) => {
                                     setIndex(index);
                                     setOpen(true);
+                                    setAcceptance(false);
                                   }}
                                 >
                                   Ignore
@@ -495,42 +506,50 @@ export default function EnhancedTable() {
               onChangePage={handleChangePage}
               onChangeRowsPerPage={handleChangeRowsPerPage}
             />
-
-            {/* dialog for accepted or rejected */}
             <Dialog open={open} onClose={handleClose}>
-              <DialogTitle>{title}</DialogTitle>
-              <DialogContent>
-                <DialogContentText>{descp}</DialogContentText>
-                {acceptance === false ? (
-                  <TextField
-                    name="Message"
-                    value={Message}
-                    onChange={(e) => {
-                      setRejectionMessage(e.target.value);
-                    }}
-                    margin="dense"
-                    label="type Message"
-                    type="text"
-                    fullWidth
-                  />
-                ) : null}
-              </DialogContent>
-              <DialogActions>
-                {acceptance === false ? (
-                  <>
-                    <Button onClick={handleReject} color="primary">
-                      Submit
-                    </Button>
-                    <Button onClick={handleClose} color="primary">
-                      Ok
-                    </Button>
-                  </>
-                ) : (
-                  <Button onClick={handleClose} color="primary">
-                    Ok
-                  </Button>
-                )}
-              </DialogActions>
+              {acceptance === false ? (
+                <>
+                  <DialogTitle>Are you Sure?</DialogTitle>
+                  <DialogContent dividers>
+                    <DialogContentText>
+                      Please enter your reason of rejection
+                    </DialogContentText>
+                    <TextField
+                      name="Message"
+                      value={Message}
+                      onChange={(e) => {
+                        setRejectionMessage(e.target.value);
+                      }}
+                      margin="dense"
+                      label="Type Message"
+                      type="text"
+                      fullWidth
+                    />
+                    <DialogActions>
+                      <Button onClick={handleReject} color="variant">
+                        Submit
+                      </Button>
+                      <Button onClick={handleClose} color="variant">
+                        Cancel
+                      </Button>
+                    </DialogActions>
+                  </DialogContent>
+                </>
+              ) : (
+                <>
+                  <DialogTitle>{title}</DialogTitle>
+                  <DialogContent dividers>
+                    <DialogContentText>
+                      Check My Activity section for regular updates
+                    </DialogContentText>
+                    <DialogActions>
+                      <Button onClick={handleClose} color="variant">
+                        Ok
+                      </Button>
+                    </DialogActions>
+                  </DialogContent>
+                </>
+              )}
             </Dialog>
           </Paper>
           <Container style={{ height: "250px" }}></Container>
