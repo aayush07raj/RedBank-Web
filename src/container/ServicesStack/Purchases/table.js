@@ -75,6 +75,7 @@ const headCells = [
 
     label: "Reason",
   },
+
   {
     id: "location",
 

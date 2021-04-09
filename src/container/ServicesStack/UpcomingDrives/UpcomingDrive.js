@@ -223,7 +223,7 @@ function UpcomingDrive() {
           </Grid>
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>{"No results found"}</DialogTitle>
-            <DialogContent>
+            <DialogContent dividers>
               <DialogContentText>
                 {loggedInState.donorStatus === 2 ? (
                   <>You are not eligible to register for a drive</>
@@ -233,7 +233,10 @@ function UpcomingDrive() {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="primary" autoFocus>
+              <Button
+                onClick={handleClose}
+                style={{ backgroundColor: "#E94364", color: "white" }}
+              >
                 Ok
               </Button>
             </DialogActions>

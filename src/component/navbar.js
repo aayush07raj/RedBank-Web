@@ -759,17 +759,15 @@ export default function MenuAppBar({ user }) {
             </Popper>
 
             <Dialog open={open4} onClose={handleClose4}>
-              <DialogTitle id="alert-dialog-title">
-                {"Are You Sure, you want to logout?"}
-              </DialogTitle>
-              <DialogContent></DialogContent>
+              <DialogTitle>{"Confirm logout"}</DialogTitle>
+              <DialogContent dividers>
+                <DialogContentText>
+                  Are you sure you want to logout ?
+                </DialogContentText>
+              </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose4} color="inherit">
-                  No
-                </Button>
-                <Button onClick={handleLogout} color="inherit" autoFocus>
-                  Yes
-                </Button>
+                <Button onClick={handleClose4}>No</Button>
+                <Button onClick={handleLogout}>Yes</Button>
               </DialogActions>
             </Dialog>
           </div>

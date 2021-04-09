@@ -251,7 +251,7 @@ const EnhancedTableToolbar = (props) => {
             {/* dialog for confirmation */}
             <Dialog open={open} onClose={handleClosed}>
               <DialogTitle>{"Notification sent successfully"}</DialogTitle>
-              <DialogContent>
+              <DialogContent dividers>
                 <DialogContentText>
                   Check 'My Donation requests' section for more information
                 </DialogContentText>

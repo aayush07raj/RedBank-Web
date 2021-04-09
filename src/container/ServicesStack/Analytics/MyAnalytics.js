@@ -817,6 +817,11 @@ function MyAnalytics() {
             </TabPanel>
             <TabPanel value={value} index={3}>
               <Grid container spacing={2}>
+                <Grid item xs={12} align="center">
+                  <Typography variant="h5">
+                    Reason wise analysis of sales
+                  </Typography>
+                </Grid>
                 <Grid item xs={12}>
                   <Typography variant="h5">Month wise breakdown:</Typography>
                 </Grid>

@@ -294,7 +294,7 @@ export default function EnhancedTable({ list }) {
         {/* dialog for succesfully registered, already registered */}
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>{dialogTitle}</DialogTitle>
-          <DialogContent>
+          <DialogContent dividers>
             <DialogContentText>{dialogDescp}</DialogContentText>
           </DialogContent>
           <DialogActions>

@@ -267,7 +267,7 @@ function HosProfile() {
     e.preventDefault();
     const errors = validate();
     setErrors(errors);
-    if (errors) return;
+    // if (errors) return;
 
     api
       .put()

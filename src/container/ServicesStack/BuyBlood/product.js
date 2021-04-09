@@ -218,7 +218,13 @@ const Product = (props) => {
 
               {/* Are you sure dialog */}
               <Dialog open={open} onClose={handleClosed}>
-                <DialogTitle>{"Are You Sure?"}</DialogTitle>
+                <DialogTitle>Confirm Purchase</DialogTitle>
+                <DialogContent dividers>
+                  <DialogContentText>
+                    are you sure you want to proceed ?. You will not be able to
+                    cancel the transaction after this.
+                  </DialogContentText>
+                </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClosed}>No</Button>
                   <Button onClick={handleSubmit}>Yes</Button>
@@ -227,8 +233,8 @@ const Product = (props) => {
 
               {/* confirmation box */}
               <Dialog open={open2} onClose={handleClosed2}>
-                <DialogTitle>{"Transaction successful."}</DialogTitle>
-                <DialogContent>
+                <DialogTitle>{"Transaction Successful"}</DialogTitle>
+                <DialogContent dividers>
                   <DialogContentText>
                     Check 'My Purchases' section for more info about the
                     transaction

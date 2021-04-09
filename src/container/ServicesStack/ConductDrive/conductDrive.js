@@ -426,10 +426,10 @@ function ConductDrive() {
                 {/* Confirmation dialog box */}
                 <Dialog open={open} onClose={handleClosed}>
                   <DialogTitle>{"Drive Inititated Successfully"}</DialogTitle>
-                  <DialogContent>
+                  <DialogContent dividers>
                     <DialogContentText>
-                      Drive has been initiated, check My Drives sections for
-                      more details
+                      Drive has been initiated, check "My Drives" section for
+                      more information
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
