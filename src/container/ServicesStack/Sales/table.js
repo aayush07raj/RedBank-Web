@@ -64,7 +64,7 @@ const headCells = [
   },
   {
     id: "location",
-    label: "Location of transfusion/storage",
+    label: "Clinic/Hospital",
   },
   {
     id: "purchasedQuantity",

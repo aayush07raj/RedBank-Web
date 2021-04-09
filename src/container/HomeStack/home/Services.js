@@ -49,7 +49,7 @@ export const BankServices = [
   },
   {
     image: sentRequestImg,
-    name: "My Donation Requests",
+    name: "My Requests",
     description:
       "View a list of donation requests made by you via RedBank and the list of the invited donors",
     page: "MyDonationReq",
@@ -101,7 +101,7 @@ export const IndividualServices = [
   },
   {
     image: sentRequestImg,
-    name: "My Donation Request",
+    name: "My Requests",
     description:
       "View a list of donation requests made by you via RedBank and the list of the invited donors",
     page: "MyDonationReq",
@@ -165,7 +165,7 @@ export const HospitalServices = [
   },
   {
     image: sentRequestImg,
-    name: "My Donation Request",
+    name: "My Requests",
     description:
       "View a list of donation requests made by you via RedBank and the list of the invited donors",
     page: "MyDonationReq",

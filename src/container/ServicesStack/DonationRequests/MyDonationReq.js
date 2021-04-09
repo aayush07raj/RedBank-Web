@@ -22,7 +22,7 @@ function MyDonationReq() {
     <>
       <Navbar />
       <PageHeader
-        title="My Donation Request "
+        title="My Requests"
         subtitle="Here you can view all your sent request for donors."
       />
       <Container maxWidth="xl">
