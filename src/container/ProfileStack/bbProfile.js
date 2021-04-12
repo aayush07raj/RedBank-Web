@@ -744,7 +744,7 @@ function BbProfile() {
           {/* dialog for edit profile */}
           <Dialog open={openEdit} onClose={handleCloseEdit}>
             <DialogTitle>{"Start editing"}</DialogTitle>
-            <DialogContent>
+            <DialogContent dividers>
               <DialogContentText>
                 Go ahead, you can start editing
               </DialogContentText>

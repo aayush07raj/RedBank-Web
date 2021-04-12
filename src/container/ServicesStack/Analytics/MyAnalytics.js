@@ -248,9 +248,18 @@ function MyAnalytics() {
 
   const handleMonthReasonChange = (e) => {
     setCurrReason2(e.target.value);
+    let idx =
+      1 +
+      monthNames.findIndex((val) => {
+        return val === currMonth;
+      });
+
+    if ((idx + "").length === 1) {
+      idx = "0" + idx;
+    }
     axios
       .get(
-        `http://localhost:8080/salesanalytics/monthly/${currYear}/${currMonth}/4/${e.target.value}`,
+        `http://localhost:8080/salesanalytics/monthly/${currYear}/${idx}/4/${e.target.value}`,
         {
           headers: {
             Authorization: "Bearer " + loggedInState.userToken,
