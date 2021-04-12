@@ -11,6 +11,9 @@
 # production
 /build
 
+#firebase Keys
+/src/hidden.js
+
 # misc
 .DS_Store
 .env.local

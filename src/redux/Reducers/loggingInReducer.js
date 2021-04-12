@@ -5,6 +5,7 @@ const initialLoginState = {
   userType: "",
   userToken: "",
   userId: "",
+  donorStatus: 0,
 };
 
 const loggingInReducer = (state = initialLoginState, action) => {
@@ -14,6 +15,9 @@ const loggingInReducer = (state = initialLoginState, action) => {
     }
     case "LOGGING_OUT": {
       return initialLoginState;
+    }
+    case "SET_DONOR_STATUS": {
+      return { ...state, donorStatus: action.donorStatus };
     }
     default:
       return state;
